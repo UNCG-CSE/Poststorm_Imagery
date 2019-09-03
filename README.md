@@ -2,9 +2,9 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Team C-Sick 🤢](#team-c-sick-%f0%9f%a4%a2)
-- [Project Pre-Requisites 📋](#project-pre-requisites-%f0%9f%93%8b)
-- [Data Source 💾](#data-source-%f0%9f%92%be)
+- [Team C-Sick 🤢](#team-c-sick-)
+- [Project Pre-Requisites 📋](#project-pre-requisites-)
+- [Data Source 💾](#data-source-)
 
 ## Team C-Sick 🤢
 
