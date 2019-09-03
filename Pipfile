@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+jupyter = "*"
 
 [requires]
 python_version = "3.6"
