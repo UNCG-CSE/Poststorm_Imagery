@@ -28,8 +28,12 @@ try:
 
         storm_list.append(Storm(storm_id, storm_name, storm_year))
 
+    # Present the storm as a number the user can reference quickly
+    storm_number = 1
+
     for storm in storm_list:
-        print(storm)
+        print(str(storm_number) + '.  \t' + str(storm))
+        storm_number += 1
 
 except Exception as e:
     print('Error occurred while trying to connect to ' + URL_BASE)
