@@ -1,5 +1,7 @@
 # Post-Storm Imagery 🌪️ <!-- omit in toc -->
 
+Clasification and alaysis of post-storm response imagery.
+
 ## Table of Contents <!-- omit in toc -->
 
 - [Team C-Sick 🤢](#team-c-sick-)
