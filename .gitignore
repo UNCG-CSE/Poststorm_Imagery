@@ -131,7 +131,3 @@ dmypy.json
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
-
-# All data, except a placeholder / info file to ensure directory generation
-data/
-!/data/input/info.md
