@@ -10,6 +10,8 @@ jupyter = "*"
 numpy = "*"
 pandas = "*"
 matplotlib = "*"
+requests = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.6"
