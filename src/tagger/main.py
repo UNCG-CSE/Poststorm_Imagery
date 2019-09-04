@@ -1,9 +1,8 @@
 import re
+import requests
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
-
-import requests
 
 try:
     r = requests.get(URL_BASE)
