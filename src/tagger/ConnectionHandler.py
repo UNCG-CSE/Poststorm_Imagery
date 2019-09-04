@@ -14,6 +14,9 @@ URL_STORMS_REGEX_PATTERN = \
 
 
 class ConnectionHandler:
+    """An object that facilitates the connection between the user's computer and
+    the NOAA website, reachable by HTTP(S)
+    """
 
     # Declare variable to hold the HTTP request information
     r: Response
@@ -21,13 +24,12 @@ class ConnectionHandler:
     storm_list: List[Storm] = list()
 
     def __init__(self):
+        """Connect to the website and analyze the content"""
         self.connect()
         self.generate_storm_list()
 
     def connect(self):
-        """
-        Attempt to connect to the website via an HTTP request
-        """
+        """Attempts to connect to the website via an HTTP request"""
         storm_list = list()
 
         try:
@@ -43,7 +45,7 @@ class ConnectionHandler:
             print('Error: ' + str(e))
 
     def generate_storm_list(self):
-
+        """Generates a list of tracked storms from the HTTP request"""
         self.storm_list = list()
 
         for storm_id, storm_name, storm_year in re.findall(URL_STORMS_REGEX_PATTERN, self.r.text):
