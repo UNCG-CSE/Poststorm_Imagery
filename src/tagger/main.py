@@ -6,7 +6,8 @@ from tagger.Storm import Storm
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
-URL_STORMS_REGEX_PATTERN = "<a href=\"https://geodesy\\.noaa\\.gov/storm_archive/storms/([^/]+)/index\\.html\">([^\\(]+)\\(([^\\)]+)\\)</a>"
+URL_STORMS_REGEX_PATTERN = \
+    "<a href=\"https://geodesy\\.noaa\\.gov/storm_archive/storms/([^/]+)/index\\.html\">([^\\(]+)\\(([^\\)]+)\\)</a>"
 
 # Declare variable to hold the HTTP request information
 r: Response
