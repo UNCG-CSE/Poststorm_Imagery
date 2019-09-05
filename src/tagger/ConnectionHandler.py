@@ -9,8 +9,7 @@ from src.tagger.Storm import Storm
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
 URL_STORMS_REGEX_PATTERN = \
-    "<a href=\"https://geodesy\\.noaa\\.gov/storm_archive/storms/([^/]+)" \
-    "/index\\.html\">([^\\(]+)\\(([^\\)]+)\\)</a>"
+    "<a href=\"(.+/storms/([^/]+)/index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>"
 
 
 class ConnectionHandler:
