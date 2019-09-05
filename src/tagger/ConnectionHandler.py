@@ -60,8 +60,8 @@ class ConnectionHandler:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for storm_id, storm_name, storm_year in re.findall(URL_STORMS_REGEX_PATTERN, self.r.text):
+        for storm_url, storm_id, storm_name, storm_year in re.findall(URL_STORMS_REGEX_PATTERN, self.r.text):
 
             # Search for the given pattern
             if re.search(search_re, storm_id) or re.search(search_re, storm_name) or re.search(search_re, storm_year):
-                self.storm_list.append(Storm(storm_id, storm_name, storm_year))
+                self.storm_list.append(Storm(storm_url, storm_id, storm_name, storm_year))
