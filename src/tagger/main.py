@@ -11,7 +11,9 @@ parser = argparse.ArgumentParser('Options for tagging images via command line')
 parser.add_argument('--storm', '-s', default='.*', help='Regular expression search for storm')
 parser.add_argument('--tar', '-t', default='.*', help='Regular expression search for tar files')
 parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE, help='The path to save .tar files to')
+# TODO: Fix boolean arguments not being usable in if statement (line 40)
 parser.add_argument('--download', '-d', type=bool, default=False, help='Download the .tar files found?')
+parser.add_argument('--overwrite', '-o', type=bool, default=False, help='Overwrite existing files?')
 OPTIONS = parser.parse_args()
 
 c = ConnectionHandler()
@@ -38,4 +40,4 @@ for storm in storms:
 if OPTIONS.download:
     print('Downloading files...')
     for storm in storms:
-        print(storms[0].get_tar_list()[0].download_url(OPTIONS.path))
+        print(storms[0].get_tar_list()[0].download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite))
