@@ -11,6 +11,8 @@ numpy = "*"
 pandas = "*"
 matplotlib = "*"
 requests = "*"
+tqdm = "*"
+click = "*"
 
 [requires]
 python_version = "3.6"
