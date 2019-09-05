@@ -44,7 +44,7 @@ class ConnectionHandler:
     r: Response
 
     storm_list: List[Storm] = list()
-    storm_list_last_pattern: str
+    storm_list_last_pattern: str = None
 
     tar_list: List[Tar] = list()
 
