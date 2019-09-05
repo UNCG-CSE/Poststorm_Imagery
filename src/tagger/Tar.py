@@ -22,9 +22,10 @@ class ProgressBar(tqdm):
         self.update(b * b_size - self.n)
 
 
-TAR_PATH_CACHE: str = 'data/tar_cache/'
+TAR_PATH_CACHE: str = '../../data/tar_cache/'
 
 UNKNOWN = 'Unknown'
+
 
 class Tar:
     """An object that stores information about a particular storm"""
@@ -55,8 +56,6 @@ class Tar:
         # Grab the file name from the end of the URL
         self.tar_file_name = re.findall('.*/([^/]+)\\.tar', self.tar_url)[0]
 
-        self.tar_file_path = TAR_PATH_CACHE + str(self.tar_file_name)
-
     def __str__(self):
         """Prints out the tar label and date in a human readable format"""
         if self.tar_date == UNKNOWN and self.tar_label == UNKNOWN:
@@ -64,19 +63,21 @@ class Tar:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self):
-        with ProgressBar(unit='B', unit_scale=True, miniters=1,
-                         desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
-            urllib.request.urlretrieve(self.tar_url, filename=self.tar_file_path, reporthook=t.update_to, data=None)
+    def download_url(self, output_file_dir_path: str = TAR_PATH_CACHE, overwrite: bool = False):
+        # TODO: Ensure user ends output file dir path with a / to prevent messed up file name
+        self.tar_file_path = output_file_dir_path + str(self.tar_file_name) + '.tar'
+
+        # If the tar file does not exist locally in the cache
+        if (os.path.isfile(self.tar_file_path) and overwrite) or not os.path.isfile(self.tar_file_path):
+
+            with ProgressBar(unit='B', unit_scale=True, miniters=1,
+                             desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
+                urllib.request.urlretrieve(self.tar_url, filename=self.tar_file_path, reporthook=t.update_to, data=None)
 
     def get_tar_info(self):
         """Loads an archive (.tar) into memory if it doesn't already exist"""
 
         if self.tar_index is None:
-
-            # If the tar file does not exist locally in the cache
-            if not os.path.isfile(self.tar_file_path):
-                self.download_url()
 
             # Open the tar file for reading with transparent compression
             self.tar_file = tarfile.open(self.tar_file_path, 'r')

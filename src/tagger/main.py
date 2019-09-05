@@ -1,19 +1,22 @@
 import argparse
 from typing import List
 
+from src.tagger import Tar
 from src.tagger.ConnectionHandler import ConnectionHandler
 
-# Add custom options to the script when running command line
+# Add custom OPTIONS to the script when running command line
 from src.tagger.Storm import Storm
 
 parser = argparse.ArgumentParser('Options for tagging images via command line')
 parser.add_argument('--storm', '-s', default='.*', help='Regular expression search for storm')
 parser.add_argument('--tar', '-t', default='.*', help='Regular expression search for tar files')
-options = parser.parse_args()
+parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE, help='The path to save .tar files to')
+parser.add_argument('--download', '-d', type=bool, default=False, help='Download the .tar files found?')
+OPTIONS = parser.parse_args()
 
 c = ConnectionHandler()
 
-storms: List[Storm] = c.get_storm_list(options.storm)
+storms: List[Storm] = c.get_storm_list(OPTIONS.storm)
 
 # Present the storm as a number the user can reference quickly
 storm_number: int = 1
@@ -31,3 +34,8 @@ for storm in storms:
 
     print()
     storm_number += 1
+
+if OPTIONS.download:
+    print('Downloading files...')
+    for storm in storms:
+        print(storms[0].get_tar_list()[0].download_url(OPTIONS.path))

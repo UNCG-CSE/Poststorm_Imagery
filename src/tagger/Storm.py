@@ -7,7 +7,7 @@ from src.tagger.ConnectionHandler import get_http_response
 from src.tagger.Tar import Tar
 
 # Matches .tar files for a given storm (Florence and newer)
-URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+)</a><a href=\"(.+\\.tar)\">\\(([^\\)]+)\\)</a>"
+URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+?)</a><a href=\"(.+?\\.tar)\">\\(([^\\)]+)\\)</a>"
 # Groups: <tar_date>, <tar_url>, <tar_label>
 
 # Matches .tar files for a given storm (Gordon)
