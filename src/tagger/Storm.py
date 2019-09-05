@@ -55,7 +55,7 @@ class Storm:
         """Generates a list of archive (.tar) files from the given storm
 
         Args:
-            search_re (str): A regular expression to search all .tar files for.
+            search_re (str): A regular expression to search all .tar files for
         """
 
         # Load the storm's index.html
@@ -88,6 +88,12 @@ class Storm:
                 self.tar_list.append(Tar(tar_url=tar_url))
 
     def get_tar_list(self, search_re: str = '.*') -> List[Tar]:
+        """Get a list of all .tar objects with the associated regular expression
+
+        Args:
+            search_re (str): The regular expression to search for. Applies to
+                tar date, url, and label
+        """
 
         # If the user has already asked for a list with the same search expression (answer is not already known)
         if search_re != self.tar_list_last_pattern:

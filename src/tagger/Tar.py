@@ -7,15 +7,15 @@ from tqdm import tqdm
 
 
 class ProgressBar(tqdm):
-    """Provides `update_to(n)` which uses `tqdm.update(delta_n)`."""
+    """Provides `update_to(n)` which uses `tqdm.update(delta_n)` ."""
+
     def update_to(self, b=1, b_size=1, t_size=None):
-        """
-        b  : int, optional
-            Number of blocks transferred so far [default: 1].
-        bsize  : int, optional
-            Size of each block (in tqdm units) [default: 1].
-        tsize  : int, optional
-            Total size (in tqdm units). If [default: None] remains unchanged.
+        """Update a progress bar to show progress on a particular task
+
+        Args:
+            b (int): Number of blocks transferred so far [default: 1].
+            b_size (int): Size of each block (in tqdm units) [default: 1].
+            t_size (int): Total size (in tqdm units). If [default: None] remains unchanged.
         """
         if t_size is not None:
             self.total = t_size
@@ -45,8 +45,9 @@ class Tar:
         """Initializes the object with required information for a tar file
 
         Args:
-            tar_date (str): The date that the archive corresponds to (format varies based on source URL)
             tar_url (str): The url to download the .tar file
+            tar_date (str): The date that the archive corresponds to (format
+                varies based on source URL)
             tar_label (str): The label associated with the archive
         """
         self.tar_date = tar_date
@@ -65,6 +66,11 @@ class Tar:
 
     def download_url(self, output_file_dir_path: str = TAR_PATH_CACHE, overwrite: bool = False):
         # TODO: Ensure user ends output file dir path with a / to prevent messed up file name
+        """
+        Args:
+            output_file_dir_path (str):
+            overwrite (bool):
+        """
         self.tar_file_path = output_file_dir_path + str(self.tar_file_name) + '.tar'
 
         if not overwrite:
