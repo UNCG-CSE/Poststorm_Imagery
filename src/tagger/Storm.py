@@ -6,9 +6,17 @@ from requests import Response
 from src.tagger.ConnectionHandler import get_http_response
 from src.tagger.Tar import Tar
 
-# Matches .tar files for a given storm
-URL_STORMS_REGEX_PATTERN_TAR = "&nbsp;([^<;]+)</a><a href=\"(.+)\"\\(([^\\)]+)\\)</a>"
+# Matches .tar files for a given storm (Florence and newer)
+URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+)</a><a href=\"(.+\\.tar)\">\\(([^\\)]+)\\)</a>"
 # Groups: <tar_date>, <tar_url>, <tar_label>
+
+# Matches .tar files for a given storm (Gordon)
+URL_STORMS_REGEX_PATTERN_TAR_2 = "<a href=\"(.+?\\.tar)\"[^\r]*?&nbsp;&nbsp;([^(&]+)\\(([^)]+)\\)"
+# Groups: <tar_url>, <tar_date>, <tar_label>
+
+# Matches .tar files for an unrecognized formats
+URL_STORMS_REGEX_PATTERN_TAR_FINAL = "<a href=\"(.+?\\.tar)\""
+# Groups: <tar_url>, <tar_date>, <tar_label>
 
 
 class Storm:
@@ -22,7 +30,8 @@ class Storm:
     # Declare variable to hold the HTTP request information
     r: Response
 
-    tar_list: List[Tar] = None
+    tar_list: List[Tar] = list()
+    tar_list_last_pattern: str = None
 
     def __init__(self, storm_url: str, storm_id: str, storm_title: str, storm_year: str or int):
         """Initializes the object with required information for a storm
@@ -52,14 +61,37 @@ class Storm:
         # Load the storm's index.html
         self.r = get_http_response(self.storm_url)
 
+        # Clear all existing tar files
         self.tar_list = list()
+
+        # Remember the search query
+        self.tar_list_last_pattern = search_re
 
         # Make search pattern case-insensitive
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for tar_date, tar_url, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR, self.r.text):
+        for tar_date, tar_url, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_1, self.r.text):
 
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
-                self.tar_list.append(Tar(tar_date, tar_url, tar_label))
+                self.tar_list.append(Tar(tar_url, tar_date, tar_label))
+
+        for tar_url, tar_date, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_2, self.r.text):
+
+            # Search for the given pattern
+            if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
+                self.tar_list.append(Tar(tar_url, tar_date, tar_label))
+
+        if len(self.tar_list) == 0:
+            for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_FINAL, self.r.text):
+                self.tar_list.append(Tar(tar_url=tar_url))
+
+    def get_tar_list(self, search_re: str = '.*') -> List[Tar]:
+
+        # If the user has already asked for a list with the same search expression (answer is not already known)
+        if search_re != self.tar_list_last_pattern:
+            # Generate the list of tar files (clear old list if one exists)
+            self.generate_tar_list(search_re)
+
+        return self.tar_list

@@ -24,6 +24,7 @@ class ProgressBar(tqdm):
 
 TAR_PATH_CACHE: str = 'data/tar_cache/'
 
+UNKNOWN = 'Unknown'
 
 class Tar:
     """An object that stores information about a particular storm"""
@@ -39,7 +40,7 @@ class Tar:
     tar_file: tarfile.TarFile
     tar_index: tarfile.TarInfo = None
 
-    def __init__(self, tar_date: str, tar_url: str, tar_label: str):
+    def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
 
         Args:
@@ -54,11 +55,14 @@ class Tar:
         # Grab the file name from the end of the URL
         self.tar_file_name = re.findall('.*/([^/]+)\\.tar', self.tar_url)[0]
 
-        self.tar_file_path = TAR_PATH_CACHE + str(self.tar_file)
+        self.tar_file_path = TAR_PATH_CACHE + str(self.tar_file_name)
 
     def __str__(self):
         """Prints out the tar label and date in a human readable format"""
-        return self.tar_label + '(' + self.tar_date + ')'
+        if self.tar_date == UNKNOWN and self.tar_label == UNKNOWN:
+            return self.tar_file_name + '.tar'
+        else:
+            return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
     def download_url(self):
         with ProgressBar(unit='B', unit_scale=True, miniters=1,
