@@ -67,12 +67,18 @@ class Tar:
         # TODO: Ensure user ends output file dir path with a / to prevent messed up file name
         self.tar_file_path = output_file_dir_path + str(self.tar_file_name) + '.tar'
 
-        # If the tar file does not exist locally in the cache
-        if (os.path.isfile(self.tar_file_path) and overwrite) or not os.path.isfile(self.tar_file_path):
+        if not overwrite:
 
-            with ProgressBar(unit='B', unit_scale=True, miniters=1,
-                             desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
-                urllib.request.urlretrieve(self.tar_url, filename=self.tar_file_path, reporthook=t.update_to, data=None)
+            # If the tar file does not exist locally in the cache
+            if os.path.isfile(self.tar_file_path):
+                print('A file at ' + self.tar_file_path + ' already exists')
+
+            else:
+
+                with ProgressBar(unit='B', unit_scale=True, miniters=1,
+                                 desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
+                    urllib.request.urlretrieve(self.tar_url, filename=self.tar_file_path,
+                                               reporthook=t.update_to, data=None)
 
     def get_tar_info(self):
         """Loads an archive (.tar) into memory if it doesn't already exist"""
