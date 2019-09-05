@@ -8,6 +8,8 @@ from src.tagger.Storm import Storm
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
+
+# Matches all links (HTML) that end with '/storms/<some chars>/index.html' as well as a label of a storm name and year
 URL_STORMS_REGEX_PATTERN = \
     "<a href=\"(.+/storms/([^/]+)/index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>"
 
