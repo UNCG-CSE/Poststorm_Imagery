@@ -1,5 +1,4 @@
 import re
-import tarfile
 from typing import List
 
 from requests import Response

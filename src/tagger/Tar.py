@@ -6,7 +6,7 @@ import urllib.request
 from tqdm import tqdm
 
 
-class ProgressBar(tqdm):
+class _ProgressBar(tqdm):
     """Provides `update_to(n)` which uses `tqdm.update(delta_n)` ."""
 
     def update_to(self, b=1, b_size=1, t_size=None):
@@ -66,10 +66,12 @@ class Tar:
 
     def download_url(self, output_file_dir_path: str = TAR_PATH_CACHE, overwrite: bool = False):
         # TODO: Ensure user ends output file dir path with a / to prevent messed up file name
-        """
+        """Download a file from the given path. Whether or not to overwrite any existing file can also be specified by
+        the `overwrite` variable
         Args:
-            output_file_dir_path (str):
-            overwrite (bool):
+            output_file_dir_path (str): The full or relative path (from src/tagger/Tar.py) to download the file to
+            overwrite (bool): Whether to overwrite the file or not. True = Overwrite any file with the same name, False
+                = Don't overwrite file if a file by the same name exists.
         """
         self.tar_file_path = output_file_dir_path + str(self.tar_file_name) + '.tar'
 
@@ -81,8 +83,8 @@ class Tar:
 
             else:
 
-                with ProgressBar(unit='B', unit_scale=True, miniters=1,
-                                 desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
+                with _ProgressBar(unit='B', unit_scale=True, miniters=1,
+                                  desc=self.tar_url.split('/')[-1]) as t:  # all optional kwargs
                     urllib.request.urlretrieve(self.tar_url, filename=self.tar_file_path,
                                                reporthook=t.update_to, data=None)
 
