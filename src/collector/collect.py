@@ -4,7 +4,6 @@ from typing import List
 from src.collector import Tar
 from src.collector.ConnectionHandler import ConnectionHandler
 
-# Add custom OPTIONS to the script when running command line
 from src.collector.Storm import Storm
 
 # Document and register parameters for this program in command-line
@@ -33,6 +32,7 @@ parser.add_argument('--overwrite', '-o', action='store_true',
                     help='If included, the program will overwrite any existing .tar files found in the directory by '
                          'the same name (Default: %(default)s).')
 
+# Add custom OPTIONS to the script when running command line
 OPTIONS = parser.parse_args()
 
 c = ConnectionHandler()
