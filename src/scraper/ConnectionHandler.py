@@ -44,8 +44,7 @@ class ConnectionHandler:
 
     from src.scraper.Storm import Storm
 
-    # Declare variable to hold the HTTP request information
-    r: Response
+    r: Response  # Declare variable to hold the HTTP request information
 
     storm_list: List[Storm] = list()
     storm_list_last_pattern: str = None
@@ -83,18 +82,16 @@ class ConnectionHandler:
                 self.storm_list.append(Storm(storm_url, storm_id, storm_name, storm_year))
 
     def get_storm_list(self, search_re: str = '.*') -> List[Storm]:
-
-        # If the user has already asked for a list with the same search expression (answer is not already known)
         """Retrieve a list of all storms that match a particular regular expression
 
         Args:
             search_re (str): A regular expression to search all general storm
                 data for. Search applies to storm name and year.
         """
-        if search_re != self.storm_list_last_pattern:
 
+        # If the user has already asked for a list with the same search expression (answer is not already known)
+        if search_re != self.storm_list_last_pattern:
             # Generate the list of storms (clear old list if one exists)
             self.generate_storm_list(search_re)
 
         return self.storm_list
-
