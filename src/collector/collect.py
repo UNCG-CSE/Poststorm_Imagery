@@ -7,12 +7,32 @@ from src.collector.ConnectionHandler import ConnectionHandler
 # Add custom OPTIONS to the script when running command line
 from src.collector.Storm import Storm
 
-parser = argparse.ArgumentParser('Options for tagging images via command line')
-parser.add_argument('--storm', '-s', default='.*', help='Regular expression search for storm')
-parser.add_argument('--tar', '-t', default='.*', help='Regular expression search for tar files')
-parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE, help='The path to save .tar files to')
-parser.add_argument('--download', '-d', action='store_true', help='Download the .tar files found?')
-parser.add_argument('--overwrite', '-o', action='store_true', help='Overwrite existing files?')
+# Document and register parameters for this program in command-line
+
+parser = argparse.ArgumentParser(prog='collect')
+
+parser.add_argument('--storm', '-s', default='.*',
+                    help='Search all storms for a specific term or match a regular expression. '
+                         'Search applies to storm title (including prefixes like "Hurricane") '
+                         'as well as the year the storm occurred. Defaults to ALL storms (%(default)s).')
+
+parser.add_argument('--tar', '-t', default='.*',
+                    help='Search .tar files for a specific term or match a regular expression. '
+                         'Search applies to the date string listed on the website (format varies based on storm) if found '
+                         'as well as the file name (excluding the .tar) and the label (usually "TIF" or "RAW JPEG". '
+                         'Defaults to ALL .tar files (%(default)s).')
+
+parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE,
+                    help='The path on your system to download the tar files to (Default: %(default)s).')
+
+parser.add_argument('--download', '-d', action='store_true',
+                    help='If included, the program will automatically download all files found, sequentially '
+                         '(Default: %(default)s).')
+
+parser.add_argument('--overwrite', '-o', action='store_true',
+                    help='If included, the program will overwrite any existing .tar files found in the directory by '
+                         'the same name (Default: %(default)s).')
+
 OPTIONS = parser.parse_args()
 
 c = ConnectionHandler()
