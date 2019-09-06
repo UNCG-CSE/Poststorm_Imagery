@@ -7,12 +7,8 @@ verify_ssl = true
 
 [packages]
 jupyter = "*"
-numpy = "*"
-pandas = "*"
-matplotlib = "*"
 requests = "*"
 tqdm = "*"
-click = "*"
 
 [requires]
 python_version = "3.6"
