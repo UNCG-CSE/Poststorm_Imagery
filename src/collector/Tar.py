@@ -1,6 +1,7 @@
 import os
 import re
 import tarfile
+from math import ceil
 
 import requests
 from tqdm import tqdm
@@ -99,12 +100,21 @@ class Tar:
             else:
                 print('Downloading files...')
 
+            # Get the current amount of bytes downloaded
+            local_size = os.path.getsize(tar_file_path_part)
+
             # Get the amount of remaining bytes for the download
             total_size = int(dl_r.headers.get('content-length'))
 
+            # How many bytes to load into memory before saving to the file
+            chunk_size: int = 1024 * 1024
+
+            # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
+            unit = 'MiB'
+
             # Write the data and output the progress
-            for data in tqdm(iterable=dl_r.iter_content(), desc='Progress (' + self.tar_file_name + '.tar)',
-                             total=total_size, unit='B', unit_scale=True, miniters=1):
+            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Progress (' + self.tar_file_name + '.tar)',
+                             total=ceil((total_size + local_size) / chunk_size), initial=ceil(local_size / chunk_size), unit=' ' + unit, miniters=1):
                 f.write(data)
 
             dl_r.close()
