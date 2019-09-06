@@ -2,8 +2,8 @@ import re
 from typing import List
 
 from requests import Response
-from src.scraper.ConnectionHandler import get_http_response
-from src.scraper.Tar import Tar
+from src.collector.ConnectionHandler import get_http_response
+from src.collector.Tar import Tar
 
 # Matches .tar files for a given storm (Florence and newer)
 URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+?)</a><a href=\"(.+?\\.tar)\">\\(([^\\)]+)\\)</a>"
