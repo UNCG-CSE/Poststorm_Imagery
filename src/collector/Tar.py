@@ -107,6 +107,8 @@ class Tar:
                              total=total_size, unit='B', unit_scale=True, miniters=1):
                 f.write(data)
 
+            dl_r.close()
+
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
