@@ -1,25 +1,9 @@
 import os
 import re
 import tarfile
-import urllib.request
 
+import requests
 from tqdm import tqdm
-
-
-class _ProgressBar(tqdm):
-    """Provides `update_to(n)` which uses `tqdm.update(delta_n)` ."""
-
-    def update_to(self, b=1, b_size=1, t_size=None):
-        """Update a progress bar to show progress on a particular task
-
-        Args:
-            b (int): Number of blocks transferred so far [default: 1].
-            b_size (int): Size of each block (in tqdm units) [default: 1].
-            t_size (int): Total size (in tqdm units). If [default: None] remains unchanged.
-        """
-        if t_size is not None:
-            self.total = t_size
-        self.update(b * b_size - self.n)
 
 
 TAR_PATH_CACHE: str = '../../data/tar_cache/'
@@ -98,12 +82,30 @@ class Tar:
         # Suffix for the file until download is complete
         tar_file_path_part: str = self.tar_file_path + '.part'
 
-        # Download the file with a progress bar associated with it, to a .part file (incomplete download file)
-        with _ProgressBar(unit='B', unit_scale=True, miniters=1,
-                          desc=self.tar_url.split('/')[-1]) as t:  # All optional kwargs
+        # See how far a file has been downloaded at the specified path if one exists
+        with open(tar_file_path_part, 'ab') as f:
+            headers = {}
+            pos = f.tell()
+            if pos:
+                # Add a header that specifies only to send back the bytes needed
+                headers['Range'] = 'bytes=' + str(pos) + '-'
 
-            urllib.request.urlretrieve(self.tar_url, filename=tar_file_path_part,
-                                       reporthook=t.update_to, data=None)
+            # Send the HTTP request asking for the remaining bytes
+            dl_r = requests.get(self.tar_url, headers=headers, stream=True)
+
+            # Check if the server sent only the remaining data
+            if dl_r.status_code == requests.codes.partial_content:
+                print('Downloading the rest of ' + self.tar_file_name + '.tar ...')
+            else:
+                print('Downloading files...')
+
+            # Get the amount of remaining bytes for the download
+            total_size = int(dl_r.headers.get('content-length'))
+
+            # Write the data and output the progress
+            for data in tqdm(iterable=dl_r.iter_content(), desc='Progress (' + self.tar_file_name + '.tar)',
+                             total=total_size, unit='B', unit_scale=True, miniters=1):
+                f.write(data)
 
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)

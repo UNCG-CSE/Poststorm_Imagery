@@ -37,6 +37,5 @@ for storm in storms:
     storm_number += 1
 
 if OPTIONS.download:
-    print('Downloading files...')
     for storm in storms:
         print(storms[0].get_tar_list()[0].download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite))
