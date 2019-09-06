@@ -108,7 +108,6 @@ class Tar:
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
-
     def get_tar_info(self):
         """Loads an archive (.tar) into memory if it doesn't already exist"""
 
