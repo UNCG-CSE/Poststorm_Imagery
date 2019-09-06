@@ -94,6 +94,9 @@ class Tar:
             # Send the HTTP request asking for the remaining bytes
             dl_r = requests.get(self.tar_url, headers=headers, stream=True)
 
+            # Send the HTTP request asking for the full size
+            dl_r_full = requests.get(self.tar_url, headers=headers, stream=True)
+
             # Check if the server sent only the remaining data
             if dl_r.status_code == requests.codes.partial_content:
                 print('Downloading the rest of ' + self.tar_file_name + '.tar ...')
@@ -104,7 +107,15 @@ class Tar:
             local_size = os.path.getsize(tar_file_path_part)
 
             # Get the amount of remaining bytes for the download
-            total_size = int(dl_r.headers.get('content-length'))
+            remaining_size = int(dl_r.headers.get('content-length'))
+
+            full_size: int = local_size + remaining_size
+
+            # Ensure that both the program and the website are on the same page
+            if full_size != dl_r_full.headers.get('content-length'):
+                print('Remaining file size does not match with local cache. '
+                      'Something went wrong with partial file request!')
+                exit()
 
             # How many bytes to load into memory before saving to the file
             chunk_size: int = 1024 * 1024
@@ -115,7 +126,7 @@ class Tar:
             # TODO: Find a fix for the bug where ' MiB/s' sometimes turns into 's/ MiB'
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Progress (' + self.tar_file_name + '.tar)',
-                             total=ceil((total_size + local_size) / chunk_size), initial=ceil(local_size / chunk_size), unit=' ' + unit, miniters=1):
+                             total=ceil((remaining_size + local_size) / chunk_size), initial=ceil(local_size / chunk_size), unit=' ' + unit, miniters=1):
                 f.write(data)
 
             dl_r.close()
