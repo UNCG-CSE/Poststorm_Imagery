@@ -1,4 +1,5 @@
 import argparse
+import time
 from typing import List
 
 from src.collector import Tar
@@ -58,4 +59,16 @@ for storm in storms:
 
 if OPTIONS.download:
     for storm in storms:
-        print(storms[0].get_tar_list()[0].download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite))
+        download_incomplete: bool = True
+
+        while download_incomplete:
+            try:
+                print(storms[0].get_tar_list()[0].download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite))
+                download_incomplete = False
+            except (KeyboardInterrupt, SystemExit):
+                # Want to make sure that you can still interrupt the process (work-around for broad exception problem)
+                raise
+            except not (KeyboardInterrupt, SystemExit) as e:
+                print('The download encountered an error: ' + e)
+                print('Will retry download in 10 seconds...')
+                time.sleep(10)
