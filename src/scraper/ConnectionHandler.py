@@ -4,7 +4,7 @@ from typing import List
 import requests
 from requests import Response
 
-from src.tagger.Tar import Tar
+from src.scraper.Tar import Tar
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
@@ -42,7 +42,7 @@ class ConnectionHandler:
     the NOAA website, reachable by HTTP(S)
     """
 
-    from src.tagger.Storm import Storm
+    from src.scraper.Storm import Storm
 
     # Declare variable to hold the HTTP request information
     r: Response
@@ -79,7 +79,7 @@ class ConnectionHandler:
 
             # Search for the given pattern
             if re.search(search_re, storm_id) or re.search(search_re, storm_name) or re.search(search_re, storm_year):
-                from src.tagger.Storm import Storm
+                from src.scraper.Storm import Storm
                 self.storm_list.append(Storm(storm_url, storm_id, storm_name, storm_year))
 
     def get_storm_list(self, search_re: str = '.*') -> List[Storm]:

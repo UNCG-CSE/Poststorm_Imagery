@@ -67,7 +67,7 @@ class Tar:
         """Download a file from the given path. Whether or not to overwrite any existing file can also be specified by
         the `overwrite` variable
         Args:
-            output_file_dir_path (str): The full or relative path (from src/tagger/Tar.py) to download the file to
+            output_file_dir_path (str): The full or relative path (from src/scraper/Tar.py) to download the file to
             overwrite (bool): Whether to overwrite the file or not. True = Overwrite any file with the same name, False
                 = Don't overwrite file if a file by the same name exists.
         """
