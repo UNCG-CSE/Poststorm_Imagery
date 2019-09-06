@@ -1,11 +1,11 @@
 import argparse
 from typing import List
 
-from src.scraper import Tar
-from src.scraper.ConnectionHandler import ConnectionHandler
+from src.collector import Tar
+from src.collector.ConnectionHandler import ConnectionHandler
 
 # Add custom OPTIONS to the script when running command line
-from src.scraper.Storm import Storm
+from src.collector.Storm import Storm
 
 parser = argparse.ArgumentParser('Options for tagging images via command line')
 parser.add_argument('--storm', '-s', default='.*', help='Regular expression search for storm')
