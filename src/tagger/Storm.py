@@ -21,16 +21,15 @@ URL_STORMS_REGEX_PATTERN_TAR_FINAL = "<a href=\"(.+?\\.tar)\""
 class Storm:
     """An object that stores information about a particular storm"""
 
-    storm_url: str
-    storm_id: str
-    storm_title: str
-    storm_year: int
+    storm_url: str  # The full url to the storm's index.html page
+    storm_id: str  # The name given to the storm, located in the url to identify it in the list
+    storm_title: str  # The full name of the storm as listed on the NOAA page
+    storm_year: int  # The year that the storm occurred
 
-    # Declare variable to hold the HTTP request information
-    r: Response
+    r: Response  # Holds the HTTP request information
 
-    tar_list: List[Tar] = list()
-    tar_list_last_pattern: str = None
+    tar_list: List[Tar] = list()  # A list of all tars associated with the storm (from the index.html)
+    tar_list_last_pattern: str = None  # The last regular expression used to create the list of tar files
 
     def __init__(self, storm_url: str, storm_id: str, storm_title: str, storm_year: str or int):
         """Initializes the object with required information for a storm

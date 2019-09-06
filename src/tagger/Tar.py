@@ -30,16 +30,15 @@ UNKNOWN = 'Unknown'
 class Tar:
     """An object that stores information about a particular storm"""
 
-    tar_date: str
-    tar_url: str
-    tar_label: str
+    tar_date: str  # The date listed with the tar (format varies based on storm)
+    tar_url: str  # The url location of the tar on the remote website
+    tar_label: str  # The label associated with the tar (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
-    tar_file_name: str
+    tar_file_name: str  # The .tar file's name not including the file suffix (.tar)
+    tar_file_path: str  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
 
-    tar_file_path: str
-
-    tar_file: tarfile.TarFile
-    tar_index: tarfile.TarInfo = None
+    tar_file: tarfile.TarFile  # The TarFile object stored in memory
+    tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
 
     def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
