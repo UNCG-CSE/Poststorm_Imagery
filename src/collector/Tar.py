@@ -50,7 +50,7 @@ class Tar:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
     def download_url(self, output_folder_path: str = TAR_PATH_CACHE, overwrite: bool = False):
-        """Download a file from the given path. Whether or not to overwrite any
+        """Download the tar file to the given path. Whether or not to overwrite any
         existing file can also be specified by the `overwrite` variable.
 
         True: Overwrite any file with the same name.
