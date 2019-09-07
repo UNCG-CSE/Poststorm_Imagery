@@ -50,12 +50,17 @@ class Tar:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
     def download_url(self, output_folder_path: str = TAR_PATH_CACHE, overwrite: bool = False):
-        """Download a file from the given path. Whether or not to overwrite any existing file can also be specified by
-        the `overwrite` variable
+        """Download a file from the given path. Whether or not to overwrite any
+        existing file can also be specified by the `overwrite` variable.
+
+        True: Overwrite any file with the same name.
+        False: Don't overwrite file if a file by the same name exists.
+
         Args:
-            output_folder_path (str): The full or relative path (from src/collector/Tar.py) to download the file to
-            overwrite (bool): Whether to overwrite the file or not. True = Overwrite any file with the same name, False
-                = Don't overwrite file if a file by the same name exists.
+            output_folder_path (str): The location to save the downloaded tar
+                file to
+            overwrite (bool): Whether or not to replace an existing tar file by
+                the same name if it exists
         """
 
         # The full path of the file including the file name and file type
@@ -123,7 +128,7 @@ class Tar:
             unit = 'MiB'
 
             # Write the data and output the progress
-            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Progress (' + self.tar_file_name + '.tar)',
+            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=' ' + unit, miniters=1):
                 f.write(data)
@@ -132,15 +137,3 @@ class Tar:
 
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
-
-    def get_tar_info(self):
-        """Loads an archive (.tar) into memory if it doesn't already exist"""
-
-        if self.tar_index is None:
-
-            # Open the tar file for reading with transparent compression
-            self.tar_file = tarfile.open(self.tar_file_path, 'r')
-            self.tar_index = self.tar_file.getmembers()
-            self.tar_file.close()
-
-        return self.tar_index
