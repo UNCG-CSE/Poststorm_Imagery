@@ -13,11 +13,11 @@ A JavaScript developed and hosted dashboard to tag Post-Storm images.
 
 The only requirement is **Node.js** which is JavaScript ran by Chrome's V8 JavaScript engine to basicly allow JavaScript to be ran server side. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
 
-Now that you have **Node.js** installed you will see 2 folders, `node_server` and `web_server`. To install packages run `npm install` which will install all packages needed. For **Node.js** `package.json` is basicly like `pipfile` and manages all your dependicies and additional utiliy scripts and project meta data.
+Now that you have **Node.js** installed you will see 2 folders, `node_server` and `web_server`. To install packages run `npm install` while inside the folder which will install all packages needed. For **Node.js** `package.json` is basicly like `pipfile` and manages all your dependicies and additional utiliy scripts and project meta data.
 
 Starting with `node_server`, after installing packages run `node server.js` which will run `server.js` and start the server at `YOUR_IP:4000`.
 
-Now for `web_server` run `npm run dev` which basicly runs a script called `dev` in the `package.json` which runs **Next.js** and starts rendering and sending the HTML page to the user. This will run the webserver on `YOUR_IP:3000`
+Now for `web_server` run `npm run dev` which basicly runs a script called `dev` in the `package.json` which runs **Next.js** and starts rendering and sending the HTML page to the user. This will run the webserver on `YOUR_IP:3000`. **NOTE** this currently does not work due to the web server needing to connect to a specific IP for the node server, so for now I have to have a Google VM running to act as the server.
 
 
 
