@@ -141,5 +141,6 @@ class Tar:
             # Open the tar file for reading with transparent compression
             self.tar_file = tarfile.open(self.tar_file_path, 'r')
             self.tar_index = self.tar_file.getmembers()
+            self.tar_file.close()
 
         return self.tar_index
