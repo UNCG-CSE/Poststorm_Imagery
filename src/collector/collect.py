@@ -2,6 +2,7 @@ import argparse
 import time
 from typing import List
 
+from collector.helpers import normalize_path
 from src.collector import Tar
 from src.collector.ConnectionHandler import ConnectionHandler
 
@@ -62,9 +63,12 @@ if OPTIONS.download:
         for tar in storm.get_tar_list():
             download_incomplete: bool = True
 
+            # Save the tar to a directory based on the storm's ID (normalize the path to avoid errors)
+            save_path = normalize_path(normalize_path(OPTIONS.path) + storm.storm_id.title())
+
             while download_incomplete:
                 try:
-                    tar.download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite)
+                    tar.download_url(output_folder_path=save_path, overwrite=OPTIONS.overwrite)
                     download_incomplete = False
                 except (KeyboardInterrupt, SystemExit):
                     # Want to make sure that you can still interrupt the process (work-around for broad exception problem)
