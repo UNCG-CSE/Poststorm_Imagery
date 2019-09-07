@@ -92,7 +92,7 @@ class Tar:
             dl_r_full = requests.head(self.tar_url, stream=True)
 
             # Ask the server how big its' package is
-            full_size_origin = int(dl_r_full.headers.get('content-length'))
+            full_size_origin = int(dl_r_full.headers.get('Content-Length'))
 
             # Stop talking to the server about this
             dl_r_full.close()
