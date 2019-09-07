@@ -58,7 +58,7 @@ class Tar:
         """
 
         # Add a separator to the end of the specified path if one doesn't exist
-        if not output_file_dir_path.endswith('/') or not output_file_dir_path.endswith('\\'):
+        if not output_file_dir_path.endswith('/') and not output_file_dir_path.endswith('\\'):
 
             # Ensure OS specific path separator is used (Windows = '\', Mac & Linux = '/')
             if re.search('(/)', output_file_dir_path):
@@ -95,7 +95,7 @@ class Tar:
             dl_r = requests.get(self.tar_url, headers=headers, stream=True)
 
             # Send the HTTP request asking for the full size
-            dl_r_full = requests.get(self.tar_url, headers=headers, stream=True)
+            dl_r_full = requests.get(self.tar_url, stream=True)
 
             # Check if the server sent only the remaining data
             if dl_r.status_code == requests.codes.partial_content:
@@ -112,7 +112,7 @@ class Tar:
             full_size: int = local_size + remaining_size
 
             # Ensure that both the program and the website are on the same page
-            if full_size != dl_r_full.headers.get('content-length'):
+            if full_size != int(dl_r_full.headers.get('content-length')):
                 print('Remaining file size does not match with local cache. '
                       'Something went wrong with partial file request!')
                 exit()
