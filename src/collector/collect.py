@@ -2,7 +2,7 @@ import argparse
 import time
 from typing import List
 
-from collector.helpers import normalize_path
+from src.collector.helpers import normalize_path
 from src.collector import Tar
 from src.collector.ConnectionHandler import ConnectionHandler
 

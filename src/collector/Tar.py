@@ -6,7 +6,7 @@ from math import ceil
 import requests
 from tqdm import tqdm
 
-from collector.helpers import normalize_path
+from src.collector.helpers import normalize_path
 
 TAR_PATH_CACHE: str = '../../data/tar_cache/'
 
