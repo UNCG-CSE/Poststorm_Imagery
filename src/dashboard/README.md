@@ -3,13 +3,13 @@ A JavaScript developed and hosted dashboard to tag Post-Storm images.
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Requirements](#requirements)
+- [Requirements 📝](#requirements-)
 - [Resources 💎](#resources-)
 - [How it works 🤔](#how-it-works-)
 	- [Frontend 📺](#frontend-)
 	- [Backend 📡](#backend-)
 
-## Requirements
+## Requirements 📝
 
 The only requirement is **Node.js** which is JavaScript ran by Chrome's V8 JavaScript engine to basicly allow JavaScript to be ran server side. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
 
