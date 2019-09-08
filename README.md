@@ -21,8 +21,8 @@ Team Members:
  [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and 
  [**John Weber**](https://github.com/JWeb56).
 
-Instructor: [**Somya Mohanty**](https://github.com/somyamohanty)  
-Adviser: [**Evan B. Goldstein**](https://github.com/ebgoldstein)
+Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
+Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contribution Conventions
 
