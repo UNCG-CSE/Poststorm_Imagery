@@ -6,6 +6,7 @@ Clasification and alaysis of post-storm response imagery.
 
 - [Team C-Sick 🤢](#team-c-sick-)
 - [Project Pre-Requisites 📋](#project-pre-requisites-)
+- [Contribution Conventions](#contribution-conventions)
 - [Data Source 💾](#data-source-)
 
 ## Team C-Sick 🤢
@@ -22,6 +23,10 @@ Team Members:
 
 Instructor: [**Somya Mohanty**](https://github.com/somyamohanty)  
 Adviser: [**Evan B. Goldstein**](https://github.com/ebgoldstein)
+
+## Contribution Conventions
+
+Before committing to the repository **please** read [CONTRIBUTE.md](CONTRIBUTE.md)
 
 ## Project Pre-Requisites 📋
 
