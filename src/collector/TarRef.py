@@ -10,6 +10,49 @@ from tqdm import tqdm
 UNKNOWN = 'Unknown'
 
 
+def verify_integrity(tar_file_path: str or Union[bytes, str]) -> bool:
+
+    print('Checking the archive\'s integrity...')
+    # Check archive integrity by trying to read every file (may take a while)
+    try:
+        # print('  Opening file locally...')
+        tf = tarfile.open(tar_file_path)
+        # print('  Testing members...')
+        for member in tf.getmembers():
+            # print('    Testing member ' + member.name + '...')
+            tf.extractfile(member.name)
+
+    except IOError as e:
+        print('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
+        print('It is recommended to delete the archive and restart the download.')
+        print('Error: ' + str(e))
+
+        return False
+
+    return True
+
+
+def extract_archive(tar_file_path: str or Union[bytes, str]):
+
+    tf = tarfile.open(tar_file_path)
+
+    extract_dir_path = tar_file_path.replace('.tar', '')
+
+    # Create the directory specified if it does not exist
+    if not os.path.exists(extract_dir_path):
+        os.makedirs(extract_dir_path)
+
+    notify_skip_files = False
+
+    for member in tf.getmembers():
+        if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
+            print('Creating \t' + member.name + '...')
+            tf.extract(member, extract_dir_path)
+        elif not notify_skip_files and member.name != '.':
+            print('Skipping \t' + member.name + ' and other files that already exist...')
+            notify_skip_files = True
+
+
 class TarRef:
     """An object that stores information about a particular storm"""
 
@@ -44,7 +87,7 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile:
+    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile or None:
         """Download the tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` variable.
 
@@ -59,7 +102,7 @@ class TarRef:
 
             # If the tar file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.tar_file_path):
-                print('File \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
+                print('\nFile \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
                 return tarfile.open(self.tar_file_path)
 
         # Create the directory specified if it does not exist
@@ -124,13 +167,19 @@ class TarRef:
 
             dl_r.close()
 
-            local_size = os.path.getsize(tar_file_path_part)
+        local_size = os.path.getsize(tar_file_path_part)
 
-            # Check to see that the file size is correct (in case of dropped connection)
-            if full_size_local != full_size_origin:
-                raise ConnectionError('File was not fully downloaded. Retry download!')
+        # Check to see that the file size is correct (in case of dropped connection)
+        if local_size < full_size_origin:
+            raise ConnectionError('File was not fully downloaded. Retry download!')
+
+        if verify_integrity(tar_file_path_part) is False:
+            return None
 
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
         return tarfile.open(self.tar_file_path)
+
+
+
