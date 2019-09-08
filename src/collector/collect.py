@@ -86,11 +86,7 @@ if OPTIONS.download:
                 try:
                     tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
                     download_incomplete = False
-
-                except (KeyboardInterrupt, SystemExit):
-                    # Want to make sure that you can still interrupt the process (avoids too broad of exception)
-                    raise
-                except not (KeyboardInterrupt, SystemExit) as e:
-                    print('The download encountered an error: ' + e)
+                except Exception as e:
+                    print('The download encountered an error: ' + str(e))
                     print('Will retry download in 10 seconds...')
                     time.sleep(10)
