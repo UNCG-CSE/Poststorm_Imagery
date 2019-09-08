@@ -4,7 +4,7 @@ from typing import List
 import requests
 from requests import Response
 
-from src.collector.Tar import Tar
+from collector import TarRef
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
@@ -48,8 +48,6 @@ class ConnectionHandler:
 
     storm_list: List[Storm] = list()
     storm_list_last_pattern: str = None
-
-    tar_list: List[Tar] = list()
 
     def __init__(self):
         """Connect to the website and analyze the content"""

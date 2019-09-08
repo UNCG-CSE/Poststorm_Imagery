@@ -10,7 +10,7 @@ from tqdm import tqdm
 UNKNOWN = 'Unknown'
 
 
-class Tar:
+class TarRef:
     """An object that stores information about a particular storm"""
 
     tar_date: str  # The date listed with the tar (format varies based on storm)
@@ -46,7 +46,7 @@ class Tar:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_folder_path: str = TAR_PATH_CACHE, overwrite: bool = False):
+    def download_url(self, output_dir: str, overwrite: bool = False):
         """Download the tar file to the given path. Whether or not to overwrite any
         existing file can also be specified by the `overwrite` variable.
 
