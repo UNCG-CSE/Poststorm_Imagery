@@ -17,8 +17,8 @@ URL_STORMS_REGEX_PATTERN_INDEX = "<a href=\"(.+/storms/([^/]+)/index\\.html)\">(
 def get_http_response(url: str) -> Response:
     """Attempts to connect to the website via an HTTP request
 
-    Args:
-        url (str): The full url to connect to
+    :param url: The full url to connect to
+    :returns: The response received from the url
     """
 
     # Declare variable to hold the HTTP request information
@@ -57,9 +57,7 @@ class ConnectionHandler:
     def generate_storm_list(self, search_re: str = '.*'):
         """Generates a list of tracked storms from the HTTP request
 
-        Args:
-            search_re (str): A regular expression to search all general storm
-                data for. Search applies to storm name and year.
+        :param search_re: A regular expression to search all general storm data for. Search applies to storm name and year.
         """
 
         # Clear all existing storms
@@ -82,9 +80,8 @@ class ConnectionHandler:
     def get_storm_list(self, search_re: str = '.*') -> List[Storm]:
         """Retrieve a list of all storms that match a particular regular expression
 
-        Args:
-            search_re (str): A regular expression to search all general storm
-                data for. Search applies to storm name and year.
+        :param search_re: A regular expression to search all general storm data for. Search applies to storm name and year.
+        :returns: A list of storms as Storm objects
         """
 
         # If the user has already asked for a list with the same search expression (answer is not already known)
