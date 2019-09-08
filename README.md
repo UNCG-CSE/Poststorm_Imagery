@@ -1,6 +1,6 @@
 # Post-Storm Imagery 🌪️ <!-- omit in toc -->
 
-Clasification and alaysis of post-storm response imagery.
+Classification and analysis of post-storm response imagery.
 
 ## Table of Contents <!-- omit in toc -->
 
