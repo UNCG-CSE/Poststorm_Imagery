@@ -29,7 +29,7 @@ class Storm:
 
     r: Response  # Holds the HTTP request information
 
-    tar_list: List[Tar] = list()  # A list of all tars associated with the storm (from the index.html)
+    tar_list: List[TarRef] = list()  # A list of all tars associated with the storm (from the index.html)
     tar_list_last_pattern: str = None  # The last regular expression used to create the list of tar files
 
     def __init__(self, storm_url: str, storm_id: str, storm_title: str, storm_year: str or int):
@@ -74,19 +74,19 @@ class Storm:
 
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
-                self.tar_list.append(Tar(tar_url, tar_date, tar_label))
+                self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
 
         for tar_url, tar_date, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_2, self.r.text):
 
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
-                self.tar_list.append(Tar(tar_url, tar_date, tar_label))
+                self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
 
         if len(self.tar_list) == 0:
             for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_FINAL, self.r.text):
-                self.tar_list.append(Tar(tar_url=tar_url))
+                self.tar_list.append(TarRef(tar_url=tar_url))
 
-    def get_tar_list(self, search_re: str = '.*') -> List[Tar]:
+    def get_tar_list(self, search_re: str = '.*') -> List[TarRef]:
         """Get a list of all .tar objects with the associated regular expression
 
         Args:

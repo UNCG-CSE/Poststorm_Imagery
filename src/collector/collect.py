@@ -1,4 +1,5 @@
 import argparse
+import os
 import time
 from typing import List, Union
 
@@ -26,7 +27,7 @@ parser.add_argument('--tar', '-t', default='.*',
                          'as well as the file name (excluding the .tar) and the label (usually "TIF" or "RAW JPEG". '
                          'Defaults to ALL .tar files (%(default)s).')
 
-parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE,
+parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
 
 parser.add_argument('--download', '-d', action='store_true',
