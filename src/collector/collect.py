@@ -84,8 +84,8 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
-                    download_incomplete = False
+                    if tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite) is not None:
+                        download_incomplete = False
                 except (KeyboardInterrupt, SystemExit):
                     # Want to make sure that you can still interrupt the process (work-around for broad exception problem)
                     raise
