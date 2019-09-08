@@ -2,13 +2,10 @@ import os
 import re
 import tarfile
 from math import ceil
+from typing import Union
 
 import requests
 from tqdm import tqdm
-
-from src.collector.helpers import normalize_path
-
-TAR_PATH_CACHE: str = '../../data/tar_cache/'
 
 UNKNOWN = 'Unknown'
 
@@ -21,7 +18,7 @@ class Tar:
     tar_label: str  # The label associated with the tar (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
     tar_file_name: str  # The .tar file's name not including the file suffix (.tar)
-    tar_file_path: str  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
+    tar_file_path: Union[bytes, str]  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
 
     tar_file: tarfile.TarFile  # The TarFile object stored in memory
     tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
@@ -57,25 +54,25 @@ class Tar:
         False: Don't overwrite file if a file by the same name exists.
 
         Args:
-            output_folder_path (str): The location to save the downloaded tar
+            output_dir (str): The location to save the downloaded tar
                 file to
             overwrite (bool): Whether or not to replace an existing tar file by
                 the same name if it exists
         """
 
         # The full path of the file including the file name and file type
-        self.tar_file_path = output_folder_path + str(self.tar_file_name) + '.tar'
+        self.tar_file_path = os.path.join(output_dir, str(self.tar_file_name) + '.tar')
 
         if not overwrite:
 
             # If the tar file does not exist locally in the cache
-            if os.path.exists(output_folder_path) and os.path.isfile(self.tar_file_path):
-                print('A file at ' + self.tar_file_path + ' already exists')
-                return
+            if os.path.exists(output_dir) and os.path.isfile(self.tar_file_path):
+                print('File \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
+                return None
 
         # Create the directory specified if it does not exist
-        if not os.path.exists(output_folder_path):
-            os.makedirs(output_folder_path)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         # Suffix for the file until download is complete
         tar_file_path_part: str = self.tar_file_path + '.part'

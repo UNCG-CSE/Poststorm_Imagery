@@ -1,14 +1,17 @@
 import argparse
 import time
-from typing import List
+from typing import List, Union
 
-from src.collector.helpers import normalize_path
-from src.collector import Tar
-from src.collector.ConnectionHandler import ConnectionHandler
+from collector.ConnectionHandler import ConnectionHandler
+from collector.Storm import Storm
 
-from src.collector.Storm import Storm
+################################################################
+# Build and document parameters for the command-line arguments #
+################################################################
 
-# Document and register parameters for this program in command-line
+DATA_PATH: Union[bytes, str] = os.path.abspath('../../data')
+TAR_PATH_CACHE: Union[bytes, str] = os.path.join(DATA_PATH, 'tar_cache')
+
 
 parser = argparse.ArgumentParser(prog='collect')
 
@@ -35,7 +38,19 @@ parser.add_argument('--overwrite', '-o', action='store_true',
                          'the same name (Default: %(default)s).')
 
 # Add custom OPTIONS to the script when running command line
-OPTIONS = parser.parse_args()
+OPTIONS: argparse.Namespace = parser.parse_args()
+
+# Convert string to absolute path for uniformity
+DOWNLOAD_PATH = os.path.abspath(OPTIONS.path)
+
+# Expand out any path keywords or variables
+DOWNLOAD_PATH = os.path.expanduser(os.path.expandvars(DOWNLOAD_PATH))
+
+
+#######################################
+# Start the actual collection of data #
+#######################################
+
 
 c = ConnectionHandler()
 
@@ -64,11 +79,11 @@ if OPTIONS.download:
             download_incomplete: bool = True
 
             # Save the tar to a directory based on the storm's ID (normalize the path to avoid errors)
-            save_path = normalize_path(normalize_path(OPTIONS.path) + storm.storm_id.title())
+            save_path: Union[bytes, str] = os.path.join(DOWNLOAD_PATH, storm.storm_id.title())
 
             while download_incomplete:
                 try:
-                    tar.download_url(output_folder_path=save_path, overwrite=OPTIONS.overwrite)
+                    tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
                     download_incomplete = False
                 except (KeyboardInterrupt, SystemExit):
                     # Want to make sure that you can still interrupt the process (work-around for broad exception problem)
