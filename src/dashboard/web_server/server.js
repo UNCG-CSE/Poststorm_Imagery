@@ -73,7 +73,7 @@ async function main() {
                 });
             });
             
-            
+             
             //Make a route to get a random image
             app_express.get('/get_image', (req, res) => {
                 const selected_img=image_list[Math.floor(Math.random()*image_list.length)]
