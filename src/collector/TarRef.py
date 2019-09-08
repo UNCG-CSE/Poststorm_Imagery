@@ -26,11 +26,9 @@ class TarRef:
     def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
 
-        Args:
-            tar_url (str): The url to download the .tar file
-            tar_date (str): The date that the archive corresponds to (format
-                varies based on source URL)
-            tar_label (str): The label associated with the archive
+        :param tar_url: The url to download the .tar file
+        :param tar_date: The date that the archive corresponds to (format varies based on source URL)
+        :param tar_label: The label associated with the archive
         """
         self.tar_date = tar_date
         self.tar_url = tar_url
@@ -50,15 +48,10 @@ class TarRef:
         """Download the tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` variable.
 
-        `True` - Overwrite any file with the same name.\n
-        `False` - Don't overwrite file if a file by the same name exists.
-
-        Args:
-            output_dir (str): The location to save the downloaded tar file to
-            overwrite (bool): Whether or not to replace an existing tar file by
-                the same name if it exists
+        :param output_dir: The location to save the downloaded tar file to (a path on the local machine)
+        :param overwrite: Whether or not to overwrite a file if one already exists by the same name
+        :returns: The tar file that was downloaded
         """
-
         # The full path of the file including the file name and file type
         self.tar_file_path = os.path.join(output_dir, str(self.tar_file_name) + '.tar')
 
