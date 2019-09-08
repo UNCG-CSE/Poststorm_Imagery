@@ -46,16 +46,15 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, overwrite: bool = False):
-        """Download the tar file to the given path. Whether or not to overwrite any
-        existing file can also be specified by the `overwrite` variable.
+    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile:
+        """Download the tar file to the given path. Whether or not to overwrite
+        any existing file can also be specified by the `overwrite` variable.
 
-        True: Overwrite any file with the same name.
-        False: Don't overwrite file if a file by the same name exists.
+        `True` - Overwrite any file with the same name.\n
+        `False` - Don't overwrite file if a file by the same name exists.
 
         Args:
-            output_dir (str): The location to save the downloaded tar
-                file to
+            output_dir (str): The location to save the downloaded tar file to
             overwrite (bool): Whether or not to replace an existing tar file by
                 the same name if it exists
         """
@@ -68,7 +67,7 @@ class TarRef:
             # If the tar file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.tar_file_path):
                 print('File \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
-                return None
+                return tarfile.open(self.tar_file_path)
 
         # Create the directory specified if it does not exist
         if not os.path.exists(output_dir):
@@ -132,5 +131,13 @@ class TarRef:
 
             dl_r.close()
 
+            local_size = os.path.getsize(tar_file_path_part)
+
+            # Check to see that the file size is correct (in case of dropped connection)
+            if full_size_local != full_size_origin:
+                raise ConnectionError('File was not fully downloaded. Retry download!')
+
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
+
+        return tarfile.open(self.tar_file_path)
