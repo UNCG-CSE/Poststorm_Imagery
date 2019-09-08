@@ -130,7 +130,7 @@ class Tar:
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
                              total=ceil((remaining_size + local_size) / chunk_size),
-                             initial=ceil(local_size / chunk_size), unit=' ' + unit, miniters=1):
+                             initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
                 f.write(data)
 
             dl_r.close()
