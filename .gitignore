@@ -107,3 +107,5 @@ ENV/
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+
+src/python/data/
