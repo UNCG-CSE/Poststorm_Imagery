@@ -4,7 +4,6 @@ from typing import List
 from Poststorm_Imagery.python.collector.ResponseGetter import get_http_response
 from Poststorm_Imagery.python.collector.Storm import Storm
 
-import requests
 from requests import Response
 
 URL_BASE = 'https://storms.ngs.noaa.gov/'
