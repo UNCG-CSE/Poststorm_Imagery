@@ -4,7 +4,6 @@
 import pytest
 import random
 
-from Poststorm_Imagery import python
 from Poststorm_Imagery.python import Poststorm_Imagery
 
 
