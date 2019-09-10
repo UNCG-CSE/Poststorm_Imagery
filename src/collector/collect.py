@@ -1,8 +1,10 @@
 import argparse
 import os
+import sys
 import time
 from typing import List, Union
 
+from collector import TarRef
 from collector.ConnectionHandler import ConnectionHandler
 from collector.Storm import Storm
 
@@ -85,8 +87,16 @@ if OPTIONS.download:
             while download_incomplete:
                 try:
                     tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
-                    download_incomplete = False
+                    if TarRef.verify_integrity(tar.tar_file_path) is False:
+                        print('Integrity could not be verified!')
+                        os.remove(tar.tar_file_path)
+                    else:
+                        print('Extracting files...')
+                        TarRef.extract_archive(tar.tar_file_path)
+                        download_incomplete = False
                 except Exception as e:
                     print('The download encountered an error: ' + str(e))
+
+                if download_incomplete:
                     print('Will retry download in 10 seconds...')
                     time.sleep(10)
