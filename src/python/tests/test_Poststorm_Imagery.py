@@ -4,7 +4,7 @@
 import pytest
 import random
 
-from Poststorm_Imagery.python import Poststorm_Imagery
+from src.python.Poststorm_Imagery import Poststorm_Imagery
 
 
 @pytest.fixture
