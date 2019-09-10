@@ -1,12 +1,11 @@
 import argparse
 import os
-import sys
 import time
 from typing import List, Union
 
-from collector import TarRef
-from collector.ConnectionHandler import ConnectionHandler
-from collector.Storm import Storm
+from Poststorm_Imagery.python.collector import TarRef
+from Poststorm_Imagery.python.collector.ConnectionHandler import ConnectionHandler
+from Poststorm_Imagery.python.collector.Storm import Storm
 
 ################################################################
 # Build and document parameters for the command-line arguments #
