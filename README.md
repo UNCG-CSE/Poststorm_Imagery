@@ -1,5 +1,18 @@
 # Post-Storm Imagery 🌪️ <!-- omit in toc -->
 
+![https://travis-ci.org/UNCG-CSE/Poststorm_Imagery](
+https://img.shields.io/travis/UNCG-CSE/Poststorm_Imagery.svg?branch=master 
+"Build Status (master)")
+![https://codecov.io/gh/Matmorcat/Poststorm_Imagery](
+https://codecov.io/gh/Matmorcat/Poststorm_Imagery/branch/master/graph/badge.svg
+"Code Coverage (master)")
+![https://post-storm-imagery.readthedocs.io/en/latest/?badge=latest](
+https://readthedocs.org/projects/post-storm-imagery/badge/?version=latest
+"Documentation Status (master)")
+![https://pyup.io/repos/github/Matmorcat/Poststorm_Imagery/](
+https://pyup.io/repos/github/Matmorcat/Poststorm_Imagery/shield.svg
+"Package Updates (master)")
+
 Classification and analysis of post-storm response imagery.
 
 ## Table of Contents <!-- omit in toc -->
