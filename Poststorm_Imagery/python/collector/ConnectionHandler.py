@@ -4,8 +4,6 @@ from typing import List
 import requests
 from requests import Response
 
-from collector import TarRef
-
 URL_BASE = 'https://storms.ngs.noaa.gov/'
 URL_STORMS = URL_BASE + 'storms/'
 
@@ -42,7 +40,7 @@ class ConnectionHandler:
     the NOAA website, reachable by HTTP(S)
     """
 
-    from src.collector.Storm import Storm
+    from Poststorm_Imagery.python.collector.Storm import Storm
 
     r: Response  # Declare variable to hold the HTTP request information
 
@@ -74,7 +72,7 @@ class ConnectionHandler:
 
             # Search for the given pattern
             if re.search(search_re, storm_id) or re.search(search_re, storm_name) or re.search(search_re, storm_year):
-                from src.collector.Storm import Storm
+                from Poststorm_Imagery.python.collector.Storm import Storm
                 self.storm_list.append(Storm(storm_url, storm_id, storm_name, storm_year))
 
     def get_storm_list(self, search_re: str = '.*') -> List[Storm]:
