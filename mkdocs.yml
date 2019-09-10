@@ -9,3 +9,6 @@ nav:
     - Home: index.md
 
 theme: readthedocs
+
+extra:
+    version: 0.2.0
