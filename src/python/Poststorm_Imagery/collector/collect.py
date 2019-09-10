@@ -1,13 +1,19 @@
 import argparse
+import os
 import time
-from typing import List
+from typing import List, Union
 
-from src.collector import Tar
-from src.collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector import TarRef
+from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.Storm import Storm
 
-from src.collector.Storm import Storm
+################################################################
+# Build and document parameters for the command-line arguments #
+################################################################
 
-# Document and register parameters for this program in command-line
+DATA_PATH: Union[bytes, str] = os.path.abspath('../../data')
+TAR_PATH_CACHE: Union[bytes, str] = os.path.join(DATA_PATH, 'tar_cache')
+
 
 parser = argparse.ArgumentParser(prog='collect')
 
@@ -22,7 +28,7 @@ parser.add_argument('--tar', '-t', default='.*',
                          'as well as the file name (excluding the .tar) and the label (usually "TIF" or "RAW JPEG". '
                          'Defaults to ALL .tar files (%(default)s).')
 
-parser.add_argument('--path', '-p', default=Tar.TAR_PATH_CACHE,
+parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
 
 parser.add_argument('--download', '-d', action='store_true',
@@ -34,7 +40,19 @@ parser.add_argument('--overwrite', '-o', action='store_true',
                          'the same name (Default: %(default)s).')
 
 # Add custom OPTIONS to the script when running command line
-OPTIONS = parser.parse_args()
+OPTIONS: argparse.Namespace = parser.parse_args()
+
+# Convert string to absolute path for uniformity
+DOWNLOAD_PATH = os.path.abspath(OPTIONS.path)
+
+# Expand out any path keywords or variables
+DOWNLOAD_PATH = os.path.expanduser(os.path.expandvars(DOWNLOAD_PATH))
+
+
+#######################################
+# Start the actual collection of data #
+#######################################
+
 
 c = ConnectionHandler()
 
@@ -62,14 +80,22 @@ if OPTIONS.download:
         for tar in storm.get_tar_list():
             download_incomplete: bool = True
 
+            # Save the tar to a directory based on the storm's ID (normalize the path to avoid errors)
+            save_path: Union[bytes, str] = os.path.join(DOWNLOAD_PATH, storm.storm_id.title())
+
             while download_incomplete:
                 try:
-                    tar.download_url(output_file_dir_path=OPTIONS.path, overwrite=OPTIONS.overwrite)
-                    download_incomplete = False
-                except (KeyboardInterrupt, SystemExit):
-                    # Want to make sure that you can still interrupt the process (work-around for broad exception problem)
-                    raise
-                except not (KeyboardInterrupt, SystemExit) as e:
-                    print('The download encountered an error: ' + e)
+                    tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
+                    if TarRef.verify_integrity(tar.tar_file_path) is False:
+                        print('Integrity could not be verified!')
+                        os.remove(tar.tar_file_path)
+                    else:
+                        print('Extracting files...')
+                        TarRef.extract_archive(tar.tar_file_path)
+                        download_incomplete = False
+                except Exception as e:
+                    print('The download encountered an error: ' + str(e))
+
+                if download_incomplete:
                     print('Will retry download in 10 seconds...')
                     time.sleep(10)
