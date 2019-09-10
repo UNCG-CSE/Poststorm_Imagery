@@ -26642,12 +26642,12 @@ _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(f
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log("Image fetched");
-                      _context.next = 3;
+                      _context.next = 2;
                       return received_data.json();
 
-                    case 3:
+                    case 2:
                       data = _context.sent;
+                      console.log("Image fetched");
 
                     case 4:
                     case "end":
