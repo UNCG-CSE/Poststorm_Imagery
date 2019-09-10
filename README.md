@@ -35,18 +35,9 @@ Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contribution Conventions
 
-[![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
-https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)
-[![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=beta)](
-https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
-[![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
-https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
-
 Before committing to the repository **please** read [CONTRIBUTE.md](docs/CONTRIBUTE.md)
 
-# Beta Branch
+## Beta Branch
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
