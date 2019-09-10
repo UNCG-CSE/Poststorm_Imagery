@@ -986,8 +986,8 @@ Index.getInitialProps = async function () {
     client_ip: IP
   };
   const res = await fetch(API_URL).then(async function (received_data) {
-    console.log("Image fetched");
     data = await received_data.json();
+    console.log("Image fetched");
   }).catch(function () {
     console.log("Failed to fetch image");
   });
