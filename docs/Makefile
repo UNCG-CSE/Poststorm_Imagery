@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = Poststorm_Imagery
+SPHINXPROJ    = python
 SOURCEDIR     = .
 BUILDDIR      = _build
 

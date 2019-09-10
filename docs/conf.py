@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Poststorm_Imagery documentation build configuration file, created by
+# python documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -128,7 +128,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Poststorm_Imagery.tex',
+    (master_doc, 'python.tex',
      u'Post-Storm Imagery Documentation',
      u'Matthew Charles Moretz', 'manual'),
 ]
@@ -139,7 +139,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'Poststorm_Imagery',
+    (master_doc, 'python',
      u'Post-Storm Imagery Documentation',
      [author], 1)
 ]
@@ -151,10 +151,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Poststorm_Imagery',
+    (master_doc, 'python',
      u'Post-Storm Imagery Documentation',
      author,
-     'Poststorm_Imagery',
+     'python',
      'One line description of project.',
      'Miscellaneous'),
 ]
