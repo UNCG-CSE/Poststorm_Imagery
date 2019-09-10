@@ -9,6 +9,7 @@ verify_ssl = true
 jupyter = "*"
 requests = "*"
 tqdm = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"

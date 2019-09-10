@@ -5,6 +5,7 @@ import pytest
 import random
 
 from Poststorm_Imagery import python
+from Poststorm_Imagery.python import Poststorm_Imagery
 
 
 @pytest.fixture
@@ -20,14 +21,14 @@ def generate_numbers():
 def test_sum_numbers(generate_numbers):
     """Sample test function for sum_numbers, using pytest fixture."""
 
-    our_result = python.sum_numbers(generate_numbers)
+    our_result = Poststorm_Imagery.sum_numbers(generate_numbers)
     assert our_result == sum(generate_numbers)
 
 
 def test_max_number(generate_numbers):
     """Sample test function for max_number, using pytest fixture."""
 
-    our_result = python.max_number(generate_numbers)
+    our_result = Poststorm_Imagery.max_number(generate_numbers)
     assert our_result == max(generate_numbers)
 
 

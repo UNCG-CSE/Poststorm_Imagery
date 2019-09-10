@@ -6,8 +6,8 @@ Post-Storm Imagery
 .. disabled image:: https://img.shields.io/pypi/v/Poststorm_Imagery.svg
         :target: https://pypi.python.org/pypi/Poststorm_Imagery
 
-.. image:: https://img.shields.io/travis/Matmorcat/Poststorm_Imagery.svg
-        :target: https://travis-ci.org/Matmorcat/Poststorm_Imagery
+.. image:: https://img.shields.io/travis/UNCG-CSE/Poststorm_Imagery.svg
+        :target: https://travis-ci.org/UNCG-CSE/Poststorm_Imagery
 
 .. image:: https://codecov.io/gh/Matmorcat/Poststorm_Imagery/branch/master/graph/badge.svg
         :target: https://codecov.io/gh/Matmorcat/Poststorm_Imagery
