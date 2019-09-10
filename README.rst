@@ -3,7 +3,7 @@ Post-Storm Imagery
 ==================
 
 
-.. image:: https://img.shields.io/pypi/v/Poststorm_Imagery.svg
+.. disabled image:: https://img.shields.io/pypi/v/Poststorm_Imagery.svg
         :target: https://pypi.python.org/pypi/Poststorm_Imagery
 
 .. image:: https://img.shields.io/travis/Matmorcat/Poststorm_Imagery.svg
