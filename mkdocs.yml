@@ -6,7 +6,6 @@ site_author: 'C-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 nav:
-    - Readme: ../README.md
     - Home: index.md
 
 theme: readthedocs
