@@ -4,8 +4,8 @@ from typing import List
 from requests import Response
 
 # Matches .tar files for a given storm (Florence and newer)
-from Poststorm_Imagery.python.collector.ConnectionHandler import get_http_response
-from Poststorm_Imagery.python.collector.TarRef import TarRef
+from src.python.Poststorm_Imagery.collector.ConnectionHandler import get_http_response
+from src.python.Poststorm_Imagery.collector.TarRef import TarRef
 
 URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+?)</a><a href=\"(.+?\\.tar)\">\\(([^\\)]+)\\)</a>"
 # Groups: <tar_date>, <tar_url>, <tar_label>

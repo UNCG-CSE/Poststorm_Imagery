@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from Poststorm_Imagery.python.collector.ResponseGetter import get_http_response
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_http_response
 
 
 class TestGetHTTPResponse(TestCase):

@@ -1,8 +1,8 @@
 import re
 from typing import List
 
-from Poststorm_Imagery.python.collector.ResponseGetter import get_http_response
-from Poststorm_Imagery.python.collector.Storm import Storm
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_http_response
+from src.python.Poststorm_Imagery.collector.Storm import Storm
 
 from requests import Response
 
