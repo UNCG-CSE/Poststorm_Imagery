@@ -12,8 +12,8 @@ Post-Storm Imagery
 .. image:: https://codecov.io/gh/Matmorcat/Poststorm_Imagery/branch/master/graph/badge.svg
         :target: https://codecov.io/gh/Matmorcat/Poststorm_Imagery
 
-.. image:: https://readthedocs.org/projects/Poststorm-Imagery/badge/?version=latest
-        :target: https://Poststorm-Imagery.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/post-storm-imagery/badge/?version=latest
+        :target: https://post-storm-imagery.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
