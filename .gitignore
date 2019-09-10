@@ -101,3 +101,9 @@ ENV/
 # mypy
 .mypy_cache/
 !/.gitignore
+.idea/.gitignore
+.idea/Poststorm_Imagery.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
