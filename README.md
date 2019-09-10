@@ -30,7 +30,7 @@ Before committing to the repository **please** read [CONTRIBUTE.md](CONTRIBUTE.m
 
 ## Project Pre-Requisites 📋
 
-- Python v3.6+
+- Python 3.5, 3.6, and 3.7
 - Pipenv
 
 ***You will need these in order to run the project.***
