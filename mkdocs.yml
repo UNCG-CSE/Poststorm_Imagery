@@ -1,1 +1,13 @@
-site_name: My Docs
+site_name: 'Post-Storm Imagery'
+repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery'
+site_description: 'Classification and analysis of post-storm response imagery.'
+site_author: 'C-Sick Team'
+
+# TODO: Change to correct URL for hosting
+site_url: 'http://127.0.0.1:8000/'
+
+nav:
+    - Readme: ../README.md
+    - Home: index.md
+
+theme: readthedocs
