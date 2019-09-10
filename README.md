@@ -1,5 +1,14 @@
 # Post-Storm Imagery 🌪️ <!-- omit in toc -->
 
+[![Travis-CI](https://img.shields.io/travis/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
+https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
+[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master/graph/badge.svg?token=LWncqYANtK)](
+https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)
+[![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=latest)](
+https://post-storm-imagery.readthedocs.io/en/latest/?badge=latest)
+[![PyUp](https://pyup.io/repos/github/Matmorcat/Poststorm_Imagery/shield.svg)](
+https://pyup.io/repos/github/Matmorcat/Poststorm_Imagery/)
+
 Classification and analysis of post-storm response imagery.
 
 ## Table of Contents <!-- omit in toc -->
@@ -30,7 +39,7 @@ Before committing to the repository **please** read [CONTRIBUTE.md](CONTRIBUTE.m
 
 ## Project Pre-Requisites 📋
 
-- Python v3.6+
+- Python 3.5, 3.6, or 3.7
 - Pipenv
 
 ***You will need these in order to run the project.***
