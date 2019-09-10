@@ -21,7 +21,7 @@
 import os
 import sys
 
-from Poststorm_Imagery.Poststorm_Imagery import python
+from Poststorm_Imagery import python
 
 sys.path.insert(0, os.path.abspath('..'))
 
