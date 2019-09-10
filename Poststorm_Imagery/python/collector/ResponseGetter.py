@@ -9,9 +9,6 @@ def get_http_response(url: str) -> Response:
     :returns: The response received from the url
     """
 
-    # Declare variable to hold the HTTP request information
-    r: Response = None
-
     try:
         r = requests.get(url)
         if r.status_code == requests.codes.ok:
