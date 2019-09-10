@@ -10,7 +10,7 @@ def get_http_response(url: str) -> Response:
     """
 
     # Declare variable to hold the HTTP request information
-    r: Response
+    r: Response = None
 
     try:
         r = requests.get(url)
