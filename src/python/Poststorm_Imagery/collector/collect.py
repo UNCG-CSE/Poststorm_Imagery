@@ -3,9 +3,9 @@ import os
 import time
 from typing import List, Union
 
-from Poststorm_Imagery.python.collector import TarRef
-from Poststorm_Imagery.python.collector.ConnectionHandler import ConnectionHandler
-from Poststorm_Imagery.python.collector.Storm import Storm
+from src.python.Poststorm_Imagery.collector import TarRef
+from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.Storm import Storm
 
 ################################################################
 # Build and document parameters for the command-line arguments #
