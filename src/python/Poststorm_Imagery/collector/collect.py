@@ -68,12 +68,15 @@ storms: List[Storm] = c.get_storm_list(OPTIONS.storm)
 # Present the storm as a number the user can reference quickly
 storm_number: int = 1
 
-# Keep a running total of the number of bytes a
+# Keep a running total of the number of bytes of the download
 stat_total_tar_size: int = 0
 
+# Keep a running total of the number of bytes of downloaded already
+stat_total_tar_downloaded: int = 0
+
 if OPTIONS.no_status is False:
-    print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm +
-          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
+    print('Download Status Report (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') <-s ' + OPTIONS.storm +
+          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + __version__)
     print()
 
     for storm in storms:
@@ -99,11 +102,15 @@ if OPTIONS.no_status is False:
 
                     if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
                         exists_str += '  ... ERROR: Sizes do not match!'
+                    else:
+                        stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
                 elif os.path.exists(os.path.join(tar_file_path, '.part')):
                     exists_str += 'Partially downloaded: ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      os.path.join(tar_file_path, '.part')))
+
+                    stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
                 else:
                     exists_str += 'Not downloaded.'
@@ -123,7 +130,7 @@ if OPTIONS.no_status is False:
         print()
         storm_number += 1
 
-    print('Total: ' + helpers.get_byte_size_readable(stat_total_tar_size))
+    print('Total: ' + helpers.get_byte_size_readable(stat_total_tar_downloaded) + ' / ' + helpers.get_byte_size_readable(stat_total_tar_size))
 
 if OPTIONS.download:
     for storm in storms:
