@@ -21,7 +21,7 @@ specific arguments.
     `collect.py -s Florence`
     will output something like
     
-    ```text
+    ```  
     1.  Hurricane Florence (2018)  
         - (September 15 A 2018) 20180915a_RGB.tar [TIF]  
         - (September 16 A 2018) 20180916a_RGB.tar [TIF]  
@@ -44,7 +44,7 @@ specific arguments.
     `collect.py -s Florence -t "Sep.* 20 "`
     will output something like
     
-    ```text
+    ```  
     1.  Hurricane Florence (2018)  
         - (September 20 A 2018) 20180920a_RGB.tar [TIF]  
         - (September 20 B 2018) 20180920b_RGB.tar [TIF]  
@@ -55,7 +55,7 @@ specific arguments.
     `collect.py -s Florence|Barry`
     will output something like
     
-    ```text
+    ```  
     1.  Hurricane Barry (2019)
         - (July 16 2019) 20190716a_RGB.tar [TIF]  
         - (July 17 2019) 20190717a_RGB.tar [TIF]  
@@ -83,7 +83,7 @@ specific arguments.
     `collect.py -s 2018`
     will output something like
     
-    ```text
+    ```  
     1.  Hurricane Michael (2018)  
         - (October 11 A 2018) 20181011a_RGB.tar [TIF]  
         - (October 12 A 2018) 20181012a_RGB.tar [TIF]  
@@ -121,7 +121,7 @@ specific arguments.
     
     You should see an output like this in the console:
     
-    ```text
+    ```  
     1.  Hurricane Florence (2018)  
         - (September 20 A 2018) 20180920a_RGB.tar [TIF]  
         - (September 20 B 2018) 20180920b_RGB.tar [TIF]  
