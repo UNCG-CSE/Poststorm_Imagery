@@ -8,7 +8,7 @@ from src.python.Poststorm_Imagery.collector.ConnectionHandler import get_http_re
 from src.python.Poststorm_Imagery.collector.TarRef import TarRef
 
 # Matches .tar files for most (if not all) formats
-URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "<a href=\"\\s*([^\"]+?\\.tar)\\s*\""
+URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "\"\\s*(http[^\"]+\\.tar)\\s*\""
 # Groups: <tar_url>
 
 
