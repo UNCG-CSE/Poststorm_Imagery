@@ -27,9 +27,9 @@ parser.add_argument('--storm', '-s', default='.*',
 
 parser.add_argument('--tar', '-t', default='.*',
                     help='Search .tar files for a specific term or match a regular expression. '
-                         'Search applies to the date string listed on the website (format varies based on storm) if found '
-                         'as well as the file name (excluding the .tar) and the label (usually "TIF" or "RAW JPEG". '
-                         'Defaults to ALL .tar files (%(default)s).')
+                         'Search applies to the date string listed on the website (format varies based on storm) if '
+                         'found as well as the file name (excluding the .tar) and the label (usually "TIF" or '
+                         '"RAW JPEG". Defaults to ALL .tar files (%(default)s).')
 
 parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
@@ -72,7 +72,8 @@ storm_number: int = 1
 stat_total_tar_size: int = 0
 
 if OPTIONS.no_status is False:
-    print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
+    print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm +
+          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
     print()
 
     for storm in storms:
