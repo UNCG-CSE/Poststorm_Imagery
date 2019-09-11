@@ -67,7 +67,7 @@ storm_number: int = 1
 # Keep a running total of the number of bytes a
 stat_total_tar_size: int = 0
 
-print('JPEG Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
+print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
 print()
 
 for storm in storms:
