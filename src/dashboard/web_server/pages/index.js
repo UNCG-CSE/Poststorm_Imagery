@@ -38,7 +38,7 @@ const Index = (props) => (
 Index.getInitialProps = async function() {
     
     const IP =await public_ip.v4()
-    const API_URL='http://'+IP+':3000/get_image'
+    const API_URL='http://'+IP+':3000/images/get_image'
     //Default data incase Fetch fails. 
     let data = {
         file_url:undefined,
