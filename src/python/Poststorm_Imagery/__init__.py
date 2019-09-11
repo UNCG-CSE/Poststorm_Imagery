@@ -4,4 +4,4 @@
 
 __author__ = """Matthew Charles Moretz"""
 __email__ = 'mcmoretz@uncg.edu'
-__version__ = '0.5.1'
+__version__ = '0.5.2'
