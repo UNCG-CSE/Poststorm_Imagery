@@ -1,9 +1,11 @@
 import argparse
 import os
 import time
+from datetime import datetime
 
 from typing import List, Union
 
+from src.python.Poststorm_Imagery import __version__
 from src.python.Poststorm_Imagery.collector import TarRef, helpers
 from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
 from src.python.Poststorm_Imagery.collector.Storm import Storm
@@ -64,6 +66,8 @@ storm_number: int = 1
 
 # Keep a running total of the number of bytes a
 stat_total_tar_size: int = 0
+
+print('JPEG Download Status Update (' + datetime.now().strftime("%d, %B %d, %y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
 
 for storm in storms:
     print(str(storm_number) + '.  \t' + str(storm))
