@@ -151,6 +151,8 @@ if OPTIONS.download:
                         TarRef.extract_archive(tar.tar_file_path)
                         download_incomplete = False
                 except Exception as e:
+                    if e == KeyboardInterrupt or SystemExit:
+                        raise
                     print('The download encountered an error: ' + str(e))
 
                 if download_incomplete:
