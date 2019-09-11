@@ -11,8 +11,8 @@ specific arguments.
 |     `--storm`, `-s` | *\<regex>*  | Search all storms for a specific term or pattern    | `.*`                   |
 |       `--tar`, `-t` | *\<regex>*  | Search all tar files for a specific term or pattern | `.*`                   |
 |      `--path`, `-p` | *\<path>*   | The path on your computer to save the files to      | `../../data/tar_cache` |
-|  `--download`, `-d` |             | Download the .tar files as well after listing them  | `../../data/tar_cache` |
-| `--overwrite`, `-o` |             | Overwrite existing .tar files with the same name    | `../../data/tar_cache` |
+|  `--download`, `-d` |             | Download the .tar files as well after listing them  | *False* |
+| `--overwrite`, `-o` |             | Overwrite existing .tar files with the same name    | *False* |
 
 
 ## Example Usage
