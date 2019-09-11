@@ -38,6 +38,10 @@ parser.add_argument('--download', '-d', action='store_true',
                     help='If included, the program will automatically download all files found, sequentially '
                          '(Default: %(default)s).')
 
+parser.add_argument('--no_status', '-n', action='store_true',
+                    help='If included, the program will generate no status report (useful for downloading files '
+                         'immediately, without waiting on a report to print) (Default: %(default)s).')
+
 parser.add_argument('--overwrite', '-o', action='store_true',
                     help='If included, the program will overwrite any existing .tar files found in the directory by '
                          'the same name (Default: %(default)s).')
@@ -67,57 +71,58 @@ storm_number: int = 1
 # Keep a running total of the number of bytes a
 stat_total_tar_size: int = 0
 
-print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
-print()
-
-for storm in storms:
-    print(str(storm_number) + '.  \t' + str(storm))
-
-    stat_storm_tar_size: int = 0
-
-    tar_list = storms[storm_number - 1].get_tar_list(OPTIONS.tar)
-
-    if len(tar_list) > 0:
-        for tar_file in tar_list:
-
-            # Create an appending string to print statuses next to .tar info
-            exists_str: str = ''
-
-            tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
-                                         str(tar_file.tar_file_name) + '.tar')
-
-            if os.path.exists(tar_file_path):
-                exists_str += 'Fully downloaded: ' + \
-                             helpers.get_byte_size_readable(os.path.getsize(
-                                 tar_file_path))
-
-                if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
-                    exists_str += '  ... ERROR: Sizes do not match!'
-
-            elif os.path.exists(os.path.join(tar_file_path, '.part')):
-                exists_str += 'Partially downloaded: ' + \
-                             helpers.get_byte_size_readable(os.path.getsize(
-                                 os.path.join(tar_file_path, '.part')))
-
-            else:
-                exists_str += 'Not downloaded.'
-
-            print('\t' * 2 + '- ' + str(tar_file) +
-                  '  ... ' + helpers.get_byte_size_readable(tar_file.get_file_size_origin()) +
-                  '  ... ' + exists_str)
-
-            stat_total_tar_size += tar_file.get_file_size_origin()
-            stat_storm_tar_size += tar_file.get_file_size_origin()
-
-        print('\t' * 2 + 'Total: ' + helpers.get_byte_size_readable(stat_storm_tar_size))
-
-    else:
-        print('\t' * 2 + '<No .tar files detected in index.html>')
-
+if OPTIONS.no_status is False:
+    print('Download Status Update (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
     print()
-    storm_number += 1
 
-print('Total: ' + helpers.get_byte_size_readable(stat_total_tar_size))
+    for storm in storms:
+        print(str(storm_number) + '.  \t' + str(storm))
+
+        stat_storm_tar_size: int = 0
+
+        tar_list = storms[storm_number - 1].get_tar_list(OPTIONS.tar)
+
+        if len(tar_list) > 0:
+            for tar_file in tar_list:
+
+                # Create an appending string to print statuses next to .tar info
+                exists_str: str = ''
+
+                tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
+                                             str(tar_file.tar_file_name) + '.tar')
+
+                if os.path.exists(tar_file_path):
+                    exists_str += 'Fully downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     tar_file_path))
+
+                    if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
+                        exists_str += '  ... ERROR: Sizes do not match!'
+
+                elif os.path.exists(os.path.join(tar_file_path, '.part')):
+                    exists_str += 'Partially downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     os.path.join(tar_file_path, '.part')))
+
+                else:
+                    exists_str += 'Not downloaded.'
+
+                print('\t' * 2 + '- ' + str(tar_file) +
+                      '  ... ' + helpers.get_byte_size_readable(tar_file.get_file_size_origin()) +
+                      '  ... ' + exists_str)
+
+                stat_total_tar_size += tar_file.get_file_size_origin()
+                stat_storm_tar_size += tar_file.get_file_size_origin()
+
+            print('\t' * 2 + 'Total: ' + helpers.get_byte_size_readable(stat_storm_tar_size))
+
+        else:
+            print('\t' * 2 + '<No .tar files detected in index.html>')
+
+        print()
+        storm_number += 1
+
+    print('Total: ' + helpers.get_byte_size_readable(stat_total_tar_size))
 
 if OPTIONS.download:
     for storm in storms:
