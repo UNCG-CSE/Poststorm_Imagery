@@ -68,6 +68,7 @@ storm_number: int = 1
 stat_total_tar_size: int = 0
 
 print('JPEG Download Status Update (' + datetime.now().strftime("%d, %B %d, %y at %I:%M %p") + ') < -s ' + OPTIONS.storm + ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on collect.py v' + __version__)
+print()
 
 for storm in storms:
     print(str(storm_number) + '.  \t' + str(storm))
