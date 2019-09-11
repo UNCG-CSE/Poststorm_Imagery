@@ -7,6 +7,8 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
+
 UNKNOWN = 'Unknown'
 
 
@@ -117,14 +119,7 @@ class TarRef:
             headers = {}
             pos = f.tell()
 
-            # Ask the server for head
-            dl_r_full = requests.head(self.tar_url, stream=True)
-
-            # Ask the server how big its' package is
-            full_size_origin = int(dl_r_full.headers.get('Content-Length'))
-
-            # Stop talking to the server about this
-            dl_r_full.close()
+            full_size_origin = self.get_file_size_origin()
 
             if pos:
                 # Add a header that specifies only to send back the bytes needed
@@ -180,6 +175,16 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         return tarfile.open(self.tar_file_path)
+
+    def get_file_size_origin(self):
+        return get_full_content_length(self.tar_url)
+
+    def get_size_readable(self) -> str:
+        size = int(self.get_file_size_origin())
+        if size < 2 ** 30:  # GiB = 2^30
+            return str(round(size / 2 ** 20, 2)) + ' MiBs'
+        else:
+            return str(round(size / 2 ** 30, 2)) + ' GiBs'
 
 
 
