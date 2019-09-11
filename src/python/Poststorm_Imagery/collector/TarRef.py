@@ -7,6 +7,8 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
+
 UNKNOWN = 'Unknown'
 
 
@@ -61,10 +63,13 @@ class TarRef:
     tar_label: str  # The label associated with the tar (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
     tar_file_name: str  # The .tar file's name not including the file suffix (.tar)
-    tar_file_path: Union[bytes, str]  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
+    tar_file_path: Union[bytes, str] or None = None  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
 
     tar_file: tarfile.TarFile  # The TarFile object stored in memory
     tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
+
+    # Save a cache of the file size in bytes
+    tar_file_origin_size: int or None = None
 
     def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
@@ -117,14 +122,7 @@ class TarRef:
             headers = {}
             pos = f.tell()
 
-            # Ask the server for head
-            dl_r_full = requests.head(self.tar_url, stream=True)
-
-            # Ask the server how big its' package is
-            full_size_origin = int(dl_r_full.headers.get('Content-Length'))
-
-            # Stop talking to the server about this
-            dl_r_full.close()
+            full_size_origin = self.get_file_size_origin()
 
             if pos:
                 # Add a header that specifies only to send back the bytes needed
@@ -180,6 +178,13 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         return tarfile.open(self.tar_file_path)
+
+    def get_file_size_origin(self):
+
+        if self.tar_file_origin_size is not None:
+            return self.tar_file_origin_size
+
+        return get_full_content_length(self.tar_url)
 
 
 
