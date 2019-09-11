@@ -62,7 +62,8 @@ class Storm:
 
         # Find all storm data by regex parsing of URLs
         for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_GENERAL, self.r.text):
-            self.tar_list.append(TarRef(tar_url=tar_url))
+            if re.search(search_re, tar_url):
+                self.tar_list.append(TarRef(tar_url=tar_url))
 
     """ DISABLED: Does not cover JPEG files reliably
 
