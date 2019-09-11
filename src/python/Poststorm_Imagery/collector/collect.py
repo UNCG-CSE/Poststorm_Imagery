@@ -1,6 +1,7 @@
 import argparse
 import os
 import time
+
 from typing import List, Union
 
 from src.python.Poststorm_Imagery.collector import TarRef
@@ -68,7 +69,7 @@ for storm in storms:
 
     if len(tar_list) > 0:
         for tar_file in tar_list:
-            print('\t' * 2 + '- ' + str(tar_file))
+            print('\t' * 2 + '- ' + str(tar_file) + '  ... ' + tar_file.get_size_readable())
     else:
         print('\t' * 2 + '<No .tar files detected in index.html>')
 
