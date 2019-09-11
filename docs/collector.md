@@ -41,7 +41,7 @@ specific arguments.
 
     ```
     
--   To list all .tar files for *Hurricane Florence* that were taken on **September 20th**,
+-   To list all .tar files for *Hurricane Florence* that were taken on **September 20th**,  
     `collect.py -s Florence -t "Sep.* 20 "`
     will output something like
     
@@ -52,7 +52,7 @@ specific arguments.
         - (September 20 C 2018) 20180920c_RGB.tar [TIF]
     ```
     
--   If you want a list of all .tar files for *Hurricane Florence* & *Hurricane Barry*,
+-   If you want a list of all .tar files for *Hurricane Florence* & *Hurricane Barry*,  
     `collect.py -s Florence|Barry`
     will output something like
     
@@ -80,7 +80,7 @@ specific arguments.
         - (September 22 B 2018) 20180922b_RGB.tar [TIF]
     ```
     
--   If you want a list of all .tar files for storms from 2018**,
+-   If you want a list of all .tar files for storms from 2018**,  
     `collect.py -s 2018`
     will output something like
     
