@@ -17,6 +17,8 @@ specific arguments.
 
 ## Example Usage
 
+    TODO: UPDATE, information out of date as of revision 93792136c3e66f55ebf77f2e6313e85875a5741d
+
 -   To list all .tar files for *Hurricane Florence*,
     `collect.py -s Florence`
     will output something like
