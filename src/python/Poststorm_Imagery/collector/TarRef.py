@@ -68,6 +68,9 @@ class TarRef:
     tar_file: tarfile.TarFile  # The TarFile object stored in memory
     tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
 
+    # Save a cache of the file size in bytes
+    tar_file_origin_size: int or None = None
+
     def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
 
@@ -177,14 +180,11 @@ class TarRef:
         return tarfile.open(self.tar_file_path)
 
     def get_file_size_origin(self):
-        return get_full_content_length(self.tar_url)
 
-    def get_size_readable(self) -> str:
-        size = int(self.get_file_size_origin())
-        if size < 2 ** 30:  # GiB = 2^30
-            return str(round(size / 2 ** 20, 2)) + ' MiBs'
-        else:
-            return str(round(size / 2 ** 30, 2)) + ' GiBs'
+        if self.tar_file_origin_size is not None:
+            return self.tar_file_origin_size
+
+        return get_full_content_length(self.tar_url)
 
 
 
