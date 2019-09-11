@@ -4,7 +4,7 @@ import time
 
 from typing import List, Union
 
-from src.python.Poststorm_Imagery.collector import TarRef
+from src.python.Poststorm_Imagery.collector import TarRef, helpers
 from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
 from src.python.Poststorm_Imagery.collector.Storm import Storm
 
@@ -62,19 +62,33 @@ storms: List[Storm] = c.get_storm_list(OPTIONS.storm)
 # Present the storm as a number the user can reference quickly
 storm_number: int = 1
 
+# Keep a running total of the number of bytes a
+stat_total_tar_size: int = 0
+
 for storm in storms:
     print(str(storm_number) + '.  \t' + str(storm))
+
+    stat_storm_tar_size: int = 0
 
     tar_list = storms[storm_number - 1].get_tar_list(OPTIONS.tar)
 
     if len(tar_list) > 0:
         for tar_file in tar_list:
-            print('\t' * 2 + '- ' + str(tar_file) + '  ... ' + tar_file.get_size_readable())
+            print('\t' * 2 + '- ' + str(tar_file) +
+                  '  ... ' + helpers.get_byte_size_readable(tar_file.get_file_size_origin()))
+
+            stat_total_tar_size += tar_file.get_file_size_origin()
+            stat_storm_tar_size += tar_file.get_file_size_origin()
+
+        print('\t' * 2 + 'Total: ' + helpers.get_byte_size_readable(stat_storm_tar_size))
+
     else:
         print('\t' * 2 + '<No .tar files detected in index.html>')
 
     print()
     storm_number += 1
+
+print('Total: ' + helpers.get_byte_size_readable(stat_total_tar_size))
 
 if OPTIONS.download:
     for storm in storms:
