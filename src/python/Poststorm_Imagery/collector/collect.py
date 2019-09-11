@@ -64,7 +64,7 @@ storm_number: int = 1
 for storm in storms:
     print(str(storm_number) + '.  \t' + str(storm))
 
-    tar_list = storms[storm_number - 1].get_tar_list()
+    tar_list = storms[storm_number - 1].get_tar_list(OPTIONS.tar)
 
     if len(tar_list) > 0:
         for tar_file in tar_list:
@@ -77,7 +77,7 @@ for storm in storms:
 
 if OPTIONS.download:
     for storm in storms:
-        for tar in storm.get_tar_list():
+        for tar in storm.get_tar_list(OPTIONS.tar):
             download_incomplete: bool = True
 
             # Save the tar to a directory based on the storm's ID (normalize the path to avoid errors)
