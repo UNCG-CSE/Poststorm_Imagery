@@ -74,8 +74,29 @@ for storm in storms:
 
     if len(tar_list) > 0:
         for tar_file in tar_list:
+
+            # Create an appending string to print statuses next to .tar info
+            exists_str: str = ''
+
+            if tar_file.tar_file_path is not None:
+                if os.path.exists(os.path.join(tar_file.tar_file_path, '.part')):
+                    exists_str += 'Partially downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     os.path.join(tar_file.tar_file_path, '.part')))
+                elif os.path.exists(tar_file.tar_file_path):
+                    exists_str += 'Fully downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     tar_file.tar_file_path))
+
+                    if os.path.getsize(tar_file.tar_file_path) != tar_file.get_file_size_origin():
+                        exists_str += '  ... ERROR: Sizes do not match!'
+
+            else:
+                exists_str += 'Not downloaded.'
+
             print('\t' * 2 + '- ' + str(tar_file) +
-                  '  ... ' + helpers.get_byte_size_readable(tar_file.get_file_size_origin()))
+                  '  ... ' + helpers.get_byte_size_readable(tar_file.get_file_size_origin()) +
+                  '  ... ' + exists_str)
 
             stat_total_tar_size += tar_file.get_file_size_origin()
             stat_storm_tar_size += tar_file.get_file_size_origin()
