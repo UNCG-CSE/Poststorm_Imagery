@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node server.js",
+    "devn": "nodemon server.js",
     "build": "next build",
     "export": "next export",
     "start": "NODE_ENV=production node server.js"
@@ -22,6 +23,7 @@
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.18.0",
     "next-images": "^1.1.2",
+    "nodemon": "^1.19.2",
     "path": "^0.12.7",
     "public-ip": "^3.2.0",
     "react": "^16.9.0",

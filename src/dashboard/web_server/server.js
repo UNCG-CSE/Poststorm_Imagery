@@ -36,71 +36,35 @@ async function main() {
     app_next.prepare()
     .then(async () => {
         
-        //Test Api for testing
-        gen_test_api()
-        
+      
         //Generate routs for all images in file
         //await gen_image_routes()
+        
+        // app_express.use('/subapp', function (req, res, next) {
+        //     res.json(
+        //         {  
+        //             test_rng:Math.random(), 
+        //         }
+        //     )
+        // });
 
-        let promise =  new Promise(async (resolve, reject) => {
-            var count=0;
-            await READDIR(DIR_DATA,async function (err, files) {
-                //handling error,??? does this even work lol
-                if (err) {
-                    return console.log('Unable to scan directory: ' + err);
-                } 
-                //listing all files using forEach
-                files.forEach(function (file) {
-                
-                    //Get the file name without extension.
-                    const file_name=file.split('.').slice(0, -1).join('.')
-                    const file_ext=file.split('.')[1]
-                    const file_route='/'+IMAGE_ROUTE+'/'+file_name
-                    const file_path=IMAGE_FOLDER+'/'+file
-                    const file_url='http://'+SITE_IP+file_route
-                    count++;
-                    //Add that to the list of images with routes
-                    let image_route={
-                        file_name:file_name,
-                        file_ext:file_ext,
-                        file_route:file_route,
-                        file_url:file_url
-                    }
-                    image_list.push(image_route)
-                    //console.log(image_route)
-                    console.log(file_name)
-                    //Create a route with that images name,and send that file.
-                    app_express.get(file_route, (req, res, next) => {
-                        res.sendFile(path.resolve(path.resolve(__dirname,file_path)));
-                    });
-                });
-                console.log('in',count)
-                
-                //Make a route to get a random image
-                app_express.get('/get_image', (req, res) => {
-                    const selected_img=image_list[Math.floor(Math.random()*image_list.length)]
-                    res.json(
-                        selected_img
-                    )
-                })
-                resolve("done!")
-            });
-        }); 
-
-        let result = await promise
+        app_express.use('/images', require('./routes/photos'))
+        app_express.use('/test', require('./routes/test_api'))
 
         //For any requests, let Next.Js handle it. 
         //Put this after all custom routes so that Next js knows not to error that route
-            
+        console.log('before get')    
         app_express.get('*', (req, res) => {
             return handle(req, res)
         })
-        console.log('1')    
+            
     
         //have the server listen on PORT and use machines IP
         app_express.listen(PORT,'0.0.0.0', (err) => {
             console.log(`> Ready on ${IP}:${PORT}`)
         });
+
+        show_routes()
     })
     .catch((ex) => {
         console.error(ex.stack)
@@ -108,31 +72,49 @@ async function main() {
     })
 }
 
-async function gen_test_api(){
-    app_express.get('/test_api', (req, res) => {
-        res.json(
-            {
-                test_api:'wowe test api',
-                test_port:PORT,
-                test_IP:IP,
-                test_site_url:SITE_IP,
-                test_rng:Math.random(),
-                test_api_ver:1.0
-            }
-        )
-    })
-
-    app_express.get('/test_api_routes', (req, res) => {
-        res.json(
-            app_express._router.stack
-        )
-    })
-
-    return 0;
-}
-
 async function gen_image_routes(){
-   
+   return new Promise(async (resolve, reject) => {
+        READDIR(DIR_DATA,async function (err, files) {
+            //handling error,??? does this even work lol
+            if (err) {
+                return console.log('Unable to scan directory: ' + err);
+            } 
+            //listing all files using forEach
+            files.forEach(function (file) {
+            
+                //Get the file name without extension.
+                const file_name=file.split('.').slice(0, -1).join('.')
+                const file_ext=file.split('.')[1]
+                const file_route='/'+IMAGE_ROUTE+'/'+file_name
+                const file_path=IMAGE_FOLDER+'/'+file
+                const file_url='http://'+SITE_IP+file_route
+                
+                //Add that to the list of images with routes
+                let image_route={
+                    file_name:file_name,
+                    file_ext:file_ext,
+                    file_route:file_route,
+                    file_url:file_url
+                }
+                image_list.push(image_route)
+                //console.log(image_route)
+                console.log(file_name)
+                //Create a route with that images name,and send that file.
+                app_express.get(file_route, (req, res, next) => {
+                    res.sendFile(path.resolve(path.resolve(__dirname,file_path)));
+                });
+            });
+         
+            //Make a route to get a random image
+            app_express.get('/get_image', (req, res) => {
+                const selected_img=image_list[Math.floor(Math.random()*image_list.length)]
+                res.json(
+                    selected_img
+                )
+            })
+            resolve("done!")
+        });
+    }); 
 }
 
 
