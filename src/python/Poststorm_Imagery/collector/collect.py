@@ -6,10 +6,11 @@ from datetime import datetime
 
 from typing import List, Union
 
-from src.python.Poststorm_Imagery import __version__
-from src.python.Poststorm_Imagery.collector import TarRef, helpers
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
-from src.python.Poststorm_Imagery.collector.Storm import Storm
+import requests
+
+from collector import TarRef, helpers
+from collector.ConnectionHandler import ConnectionHandler
+from collector.Storm import Storm
 
 ################################################################
 # Build and document parameters for the command-line arguments #
@@ -80,7 +81,7 @@ stat_total_tar_downloaded: int = 0
 
 if OPTIONS.no_status is False:
     print('Download Status Report (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') <-s ' + OPTIONS.storm +
-          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + __version__)
+          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__)
     print()
 
     for storm in storms:
