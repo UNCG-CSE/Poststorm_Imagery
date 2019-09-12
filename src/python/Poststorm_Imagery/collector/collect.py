@@ -106,7 +106,7 @@ if OPTIONS.no_status is False:
                         stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
                 elif os.path.exists(tar_file_path + '.part'):
-                    exists_str += 'Partially downloaded: ' + \
+                    exists_str += 'Partially downloaded (local): ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      tar_file_path + '.part'))
 
