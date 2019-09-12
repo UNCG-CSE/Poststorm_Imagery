@@ -157,11 +157,14 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
-            # Write the data and output the progress
-            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
-                             total=ceil((remaining_size + local_size) / chunk_size),
-                             initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
-                f.write(data)
+            try:
+                # Write the data and output the progress
+                for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
+                                 total=ceil((remaining_size + local_size) / chunk_size),
+                                 initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
+                    f.write(data)
+            except:
+                raise
 
             dl_r.close()
 
