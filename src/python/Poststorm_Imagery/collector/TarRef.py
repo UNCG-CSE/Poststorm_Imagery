@@ -190,7 +190,8 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         # Remove the lock file
-        os.remove(tar_file_path_part + '.lock')
+        # os.remove(tar_file_path_part + '.lock')
+        # TODO: Implement check for file downloaded, but not fully synced in Google Drive
 
         return tarfile.open(self.tar_file_path)
 
