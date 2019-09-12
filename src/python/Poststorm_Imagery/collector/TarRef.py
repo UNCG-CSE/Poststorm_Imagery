@@ -7,6 +7,7 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
+from src.python.Poststorm_Imagery.collector import helpers
 from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
 
 UNKNOWN = 'Unknown'
@@ -92,10 +93,11 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile or None:
+    def download_url(self, output_dir: str, user: str, overwrite: bool = False) -> tarfile.TarFile or None:
         """Download the tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` variable.
 
+        :param user: The user to download as (locking mechanism)
         :param output_dir: The location to save the downloaded tar file to (a path on the local machine)
         :param overwrite: Whether or not to overwrite a file if one already exists by the same name
         :returns: The tar file that was downloaded
@@ -162,6 +164,7 @@ class TarRef:
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
                 f.write(data)
+                helpers.update_file_part_lock(part_file=tar_file_path_part, user=user, part_size_byte=os.path.getsize(tar_file_path_part))
 
             dl_r.close()
 

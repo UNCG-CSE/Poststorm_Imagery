@@ -1,4 +1,5 @@
 import argparse
+import getpass
 import os
 import time
 from datetime import datetime
@@ -33,6 +34,9 @@ parser.add_argument('--tar', '-t', default='.*',
 
 parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
+
+parser.add_argument('--user', '-u', default=getpass.getuser(),
+                    help='The current user downloading the file (Default: %(default)s).')
 
 parser.add_argument('--download', '-d', action='store_true',
                     help='If included, the program will automatically download all files found, sequentially '
@@ -142,7 +146,7 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
+                    tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
                     if TarRef.verify_integrity(tar.tar_file_path) is False:
                         print('Integrity could not be verified!')
                         os.remove(tar.tar_file_path)
