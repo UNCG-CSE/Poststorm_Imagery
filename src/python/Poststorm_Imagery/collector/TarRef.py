@@ -172,7 +172,7 @@ class TarRef:
                                                  part_size_byte=os.path.getsize(tar_file_path_part),
                                                  total_size_byte=full_size_origin)
                     f.write(data)
-            except:
+            except Exception as e:
                 raise
 
             dl_r.close()
