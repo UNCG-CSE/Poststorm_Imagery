@@ -1,6 +1,7 @@
 import os
 import re
 import tarfile
+from datetime import datetime
 from math import ceil
 from typing import Union
 
@@ -159,12 +160,15 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
+            last_lock_update = datetime.now()
+
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
+                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                    helpers.update_file_part_lock(part_file=tar_file_path_part, user=user, part_size_byte=os.path.getsize(tar_file_path_part))
                 f.write(data)
-                helpers.update_file_part_lock(part_file=tar_file_path_part, user=user, part_size_byte=os.path.getsize(tar_file_path_part))
 
             dl_r.close()
 
