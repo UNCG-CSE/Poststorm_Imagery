@@ -120,12 +120,13 @@ if OPTIONS.no_status is False:
 
                     lock_info = helpers.get_lock_info(part_file=tar_file_path + '.part')
                     partial_size: int = lock_info['size_bytes']
+                    total_size: int = lock_info['total_size_bytes']
                     user: str = lock_info['user']
 
                     exists_str += 'Partially downloaded (' + user + '): ' + \
                                   helpers.get_byte_size_readable(partial_size)
 
-                    if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
+                    if total_size is not None and total_size != tar_file.get_file_size_origin():
                         exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
                     else:
                         stat_total_tar_downloaded += partial_size
