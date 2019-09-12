@@ -189,6 +189,9 @@ class TarRef:
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
+        # Remove the lock file
+        os.remove(tar_file_path_part + '.lock')
+
         return tarfile.open(self.tar_file_path)
 
     def get_file_size_origin(self):
