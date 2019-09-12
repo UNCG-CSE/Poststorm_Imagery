@@ -177,8 +177,7 @@ if OPTIONS.download:
                         print('Another user is in the process of downloading ' + tar.tar_file_name + '.tar!  ... Skipping')
                         download_incomplete = False
 
-                except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError,
-                        ConnectionHandler) as e:
+                except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError) as e:
                     print('The download ran into a connection error: ' + str(e))
                 except ConnectionRefusedError as e:
                     print('I don\'t think the website likes you right now. Error: ' + str(e))
