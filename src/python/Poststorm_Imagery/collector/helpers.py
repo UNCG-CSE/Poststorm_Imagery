@@ -25,11 +25,11 @@ def update_file_lock(part_file: str or Union[bytes, str], user: str, part_size_b
 
 
 def get_lock_info(part_file: str or Union[bytes, str]) -> Dict:
-    if os.path.exists(part_file) is False:
-        return dict()
+    if os.path.exists(part_file + '.lock') is False:
+        return {'user': None, 'size_bytes': None, 'total_size_bytes': None}
 
     with open(part_file + '.lock', 'r') as lock:
-        output = dict()
+        output = {'user': None, 'size_bytes': None, 'total_size_bytes': None}
         for line in lock.readlines():
             if line.startswith('user = '):
                 output['user'] = str(re.findall('^user = (.*)', line)[0])

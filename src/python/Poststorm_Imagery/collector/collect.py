@@ -160,8 +160,8 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    lock_info = helpers.get_lock_info(part_file=tar.tar_file_path + '.part')
-                    if OPTIONS.overwrite or type(lock_info['user']) != str or OPTIONS.user == lock_info['user']:
+                    lock_info = helpers.get_lock_info(part_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar'))
+                    if OPTIONS.overwrite or lock_info['user'] is None or OPTIONS.user == lock_info['user']:
 
                         tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
                         if TarRef.verify_integrity(tar.tar_file_path) is False:
