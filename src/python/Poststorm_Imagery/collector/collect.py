@@ -110,7 +110,7 @@ if OPTIONS.no_status is False:
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      tar_file_path + '.part'))
 
-                    stat_total_tar_downloaded += os.path.getsize(tar_file_path)
+                    stat_total_tar_downloaded += os.path.getsize(tar_file_path + '.part')
 
                 else:
                     exists_str += 'Not downloaded.'
