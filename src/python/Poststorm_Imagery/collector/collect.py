@@ -177,7 +177,7 @@ if OPTIONS.download:
                         print('Another user is in the process of downloading ' + tar.tar_file_name + '.tar!  ... Skipping')
                         download_incomplete = False
                 except Exception as e:
-                    if e == KeyboardInterrupt or SystemExit:
+                    if e == KeyboardInterrupt:
                         raise
                     print('The download encountered an error: ' + str(e))
 
