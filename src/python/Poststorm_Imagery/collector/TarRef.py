@@ -49,7 +49,7 @@ def extract_archive(tar_file_path: str or Union[bytes, str]):
     notify_skip_files = False
 
     for member in tf.getmembers():
-        if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[0])) is False:
+        if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
             print('Creating \t' + member.name + '...')
             tf.extract(member, extract_dir_path)
         elif not notify_skip_files and member.name != '.':
