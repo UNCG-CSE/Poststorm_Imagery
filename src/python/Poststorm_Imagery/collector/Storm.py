@@ -4,19 +4,12 @@ from typing import List
 from requests import Response
 
 # Matches .tar files for a given storm (Florence and newer)
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import get_http_response
-from src.python.Poststorm_Imagery.collector.TarRef import TarRef
+from collector.ConnectionHandler import get_http_response
+from collector.TarRef import TarRef
 
-URL_STORMS_REGEX_PATTERN_TAR_1 = "&nbsp;([^<;]+?)</a><a href=\"(.+?\\.tar)\">\\(([^\\)]+)\\)</a>"
-# Groups: <tar_date>, <tar_url>, <tar_label>
-
-# Matches .tar files for a given storm (Gordon)
-URL_STORMS_REGEX_PATTERN_TAR_2 = "<a href=\"(.+?\\.tar)\"[^\r]*?&nbsp;&nbsp;([^(&]+)\\(([^)]+)\\)"
-# Groups: <tar_url>, <tar_date>, <tar_label>
-
-# Matches .tar files for an unrecognized formats
-URL_STORMS_REGEX_PATTERN_TAR_FINAL = "<a href=\"(.+?\\.tar)\""
-# Groups: <tar_url>, <tar_date>, <tar_label>
+# Matches .tar files for most (if not all) formats
+URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "\"\\s*(http[^\"]+\\.tar)\\s*\""
+# Groups: <tar_url>
 
 
 class Storm:
@@ -68,21 +61,38 @@ class Storm:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
+        for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_GENERAL, self.r.text):
+            if re.search(search_re, tar_url):
+
+                exists = False
+
+                for tar in self.tar_list:
+                    if tar.tar_url == tar_url:
+                        exists = True
+                        break
+
+                if exists is False:
+                    self.tar_list.append(TarRef(tar_url=tar_url))
+
+    """ DISABLED: Does not cover JPEG files reliably
+
+        # Find all storm data by regex parsing of URLs
         for tar_date, tar_url, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_1, self.r.text):
 
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
                 self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
-
+                
         for tar_url, tar_date, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_2, self.r.text):
-
+    
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
                 self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
-
+    
         if len(self.tar_list) == 0:
             for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_FINAL, self.r.text):
                 self.tar_list.append(TarRef(tar_url=tar_url))
+    """
 
     def get_tar_list(self, search_re: str = '.*') -> List[TarRef]:
         """Get a list of all .tar objects with the associated regular expression
