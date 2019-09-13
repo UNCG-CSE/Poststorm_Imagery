@@ -8,13 +8,13 @@ from typing import List, Union
 
 import requests
 
-from collector import helpers, strings
+from collector import h, s
 from collector.ConnectionHandler import ConnectionHandler
 from collector.Storm import Storm
 from collector.TarRef import TarRef
 
-DATA_PATH: Union[bytes, str] = os.path.abspath(strings.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, strings.TAR_CACHE)
+DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
+TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
 
 
 ################################################
@@ -72,50 +72,48 @@ if OPTIONS.no_status is False:
     stat_total_tar_size: int = 0  # Running total of bytes on website
     stat_total_tar_downloaded: int = 0  # Running total of bytes downloaded (all local .tar files)
 
+    ############################################
+    # Print out a report of what is downloaded #
+    ############################################
 
-    #############################################
-    # Start the actual collection of .tar files #
-    #############################################
-
-    print('Download Status Report (' + datetime.now().strftime(strings.STRFTIME_FORMAT) + ') <-s ' + OPTIONS.storm +
+    print('Download Status Report (' + datetime.now().strftime(s.STRFTIME_FORMAT) + ') <-s ' + OPTIONS.storm +
           ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__ + '\n')
 
     for storm in storms:
+        stat_storm_tar_size: int = 0  # Running total of bytes downloaded (by storm)
+        tar_list: List[TarRef] = storm.get_tar_list(OPTIONS.tar)  # All TarRef for each storm
 
         # Output storm number, name, and year
         print(storm_number, '.  \t', storm)
 
-        stat_storm_tar_size: int = 0  # Running total of bytes downloaded (by storm)
-        tar_list: List[TarRef] = storm.get_tar_list(OPTIONS.tar)  # All TarRef for the storm
-
+        # Display .tar file statistics if any .tar files are found
         if len(tar_list) > 0:
             for tar_file in tar_list:
+
+                # The path of the tar file including the .tar suffix
+                tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
+                                             str(tar_file.tar_file_name) + '.tar')
 
                 # Create an appending string to print statuses next to .tar info
                 exists_str: str = ''
 
-                tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
-                                             str(tar_file.tar_file_name) + '.tar')
+                if os.path.exists(tar_file_path + s.LOCK_SUFFIX):
 
-                if os.path.exists(tar_file_path + strings.LOCK_SUFFIX):
-
-                    lock_info = helpers.get_lock_info(base_file=tar_file_path)
+                    lock_info = h.get_lock_info(base_file=tar_file_path)
                     user: str = lock_info['user']
-                    total_size: int = lock_info[strings.LOCK_TOTAL_SIZE_BYTES_FIELD]
+                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
 
                     if user == OPTIONS.user:
-                        exists_str += 'Fully downloaded: ' + \
-                                      helpers.to_readable_bytes(total_size)
+                        exists_str += 'Fully downloaded: ' + h.to_readable_bytes(total_size)
                     else:
-                        exists_str += 'Fully downloaded (' + user + '): ' + \
-                                      helpers.to_readable_bytes(total_size)
+                        exists_str += 'Fully downloaded (' + user + '): ' + h.to_readable_bytes(total_size)
 
                     if type(total_size) is int:
                         stat_total_tar_downloaded += total_size
 
                 elif os.path.exists(tar_file_path):
                     exists_str += 'Fully downloaded: ' + \
-                                 helpers.to_readable_bytes(os.path.getsize(
+                                  h.to_readable_bytes(os.path.getsize(
                                      tar_file_path))
 
                     if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
@@ -123,41 +121,41 @@ if OPTIONS.no_status is False:
                     else:
                         stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
-                elif os.path.exists(tar_file_path + strings.PART_SUFFIX + strings.LOCK_SUFFIX):
+                elif os.path.exists(tar_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX):
 
-                    lock_info = helpers.get_lock_info(base_file=tar_file_path + strings.PART_SUFFIX)
-                    partial_size: int = lock_info[strings.LOCK_PART_SIZE_BYTES_FIELD]
-                    total_size: int = lock_info[strings.LOCK_TOTAL_SIZE_BYTES_FIELD]
+                    lock_info = h.get_lock_info(base_file=tar_file_path + s.PART_SUFFIX)
+                    partial_size: int = lock_info[s.LOCK_PART_SIZE_BYTES_FIELD]
+                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
                     user: str = lock_info['user']
 
                     exists_str += 'Partially downloaded (' + user + '): ' + \
-                                  helpers.to_readable_bytes(partial_size) + '  ... Last Update: ' + \
-                                  str(datetime.fromtimestamp(os.path.getmtime(tar_file_path + strings.PART_SUFFIX + strings.LOCK_SUFFIX))
-                                      .strftime(strings.STRFTIME_FORMAT))
+                                  h.to_readable_bytes(partial_size) + '  ... Last Update: ' + \
+                                  str(datetime.fromtimestamp(os.path.getmtime(tar_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX))
+                                      .strftime(s.STRFTIME_FORMAT))
 
                     if total_size is not None and total_size != tar_file.get_file_size_origin():
                         exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
                     else:
                         stat_total_tar_downloaded += partial_size
 
-                elif os.path.exists(tar_file_path + strings.PART_SUFFIX):
+                elif os.path.exists(tar_file_path + s.PART_SUFFIX):
                     exists_str += 'Partially downloaded: ' + \
-                                 helpers.to_readable_bytes(os.path.getsize(
-                                     tar_file_path + strings.PART_SUFFIX))
+                                  h.to_readable_bytes(os.path.getsize(
+                                     tar_file_path + s.PART_SUFFIX))
 
-                    stat_total_tar_downloaded += os.path.getsize(tar_file_path + strings.PART_SUFFIX)
+                    stat_total_tar_downloaded += os.path.getsize(tar_file_path + s.PART_SUFFIX)
 
                 else:
                     exists_str += 'Not downloaded.'
 
                 print('\t' * 2 + '- ' + str(tar_file) +
-                      '  ... ' + helpers.to_readable_bytes(tar_file.get_file_size_origin()) +
+                      '  ... ' + h.to_readable_bytes(tar_file.get_file_size_origin()) +
                       '  ... ' + exists_str)
 
                 stat_total_tar_size += tar_file.get_file_size_origin()
                 stat_storm_tar_size += tar_file.get_file_size_origin()
 
-            print('\t' * 2 + 'Total: ' + helpers.to_readable_bytes(stat_storm_tar_size))
+            print('\t' * 2 + 'Total: ' + h.to_readable_bytes(stat_storm_tar_size))
 
         else:
             print('\t' * 2 + '<No .tar files detected in index.html>')
@@ -165,7 +163,7 @@ if OPTIONS.no_status is False:
         print()
         storm_number += 1
 
-    print('Total: ' + helpers.to_readable_bytes(stat_total_tar_downloaded) + ' / ' + helpers.to_readable_bytes(stat_total_tar_size))
+    print('Total: ' + h.to_readable_bytes(stat_total_tar_downloaded) + ' / ' + h.to_readable_bytes(stat_total_tar_size))
 
 
 #############################################
@@ -182,12 +180,12 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    lock_info_part = helpers.get_lock_info(
-                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar' + strings.PART_SUFFIX))
+                    lock_info_part = h.get_lock_info(
+                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar' + s.PART_SUFFIX))
 
                     if OPTIONS.overwrite is False and \
-                        helpers.is_locked_by_another_user(base_file=str(tar.tar_file_name) + '.tar',
-                                                          this_user=OPTIONS.user):
+                        h.is_locked_by_another_user(base_file=str(tar.tar_file_name) + '.tar',
+                                                    this_user=OPTIONS.user):
 
                         print('Another user has fully downloaded ' + tar.tar_file_name +
                               '.tar!  ... Skipping')

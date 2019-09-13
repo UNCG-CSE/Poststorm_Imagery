@@ -6,7 +6,7 @@ from collector.Storm import Storm
 
 from requests import Response
 
-from collector import strings
+from collector import s
 
 
 # Matches reference link to each storm (HTML)
@@ -25,7 +25,7 @@ class ConnectionHandler:
 
     def __init__(self):
         """Connect to the website and analyze the content"""
-        self.r = get_http_response(strings.URL_BASE)
+        self.r = get_http_response(s.URL_BASE)
         self.generate_storm_list()
 
     def generate_storm_list(self, search_re: str = '.*'):
@@ -44,7 +44,7 @@ class ConnectionHandler:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for storm_url, storm_id, storm_name, storm_year in re.findall(strings.URL_STORMS_REGEX_PATTERN_INDEX, self.r.text):
+        for storm_url, storm_id, storm_name, storm_year in re.findall(s.URL_STORMS_REGEX_PATTERN_INDEX, self.r.text):
 
             # Search for the given pattern
             if re.search(search_re, storm_id) or re.search(search_re, storm_name) or re.search(search_re, storm_year):
