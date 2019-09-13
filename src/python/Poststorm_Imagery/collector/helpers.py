@@ -43,6 +43,8 @@ def get_lock_info(base_file: str or Union[bytes, str]) -> Dict:
 
 
 def is_locked_by_another_user(base_file: str or Union[bytes, str], this_user: str) -> bool:
+    if os.path.exists(base_file + '.lock') is False:
+        return False
 
     with open(base_file + '.lock', 'r') as lock:
         for line in lock.readlines():
