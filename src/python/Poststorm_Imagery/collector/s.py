@@ -1,3 +1,4 @@
+"""A file that contains some commonly used strings (constants)"""
 
 FORMAT_TIME = '%B %d, %Y at %I:%M %p'
 
