@@ -114,7 +114,8 @@ if OPTIONS.no_status is False:
                         exists_str += 'Fully downloaded (' + user + '): ' + \
                                       helpers.get_byte_size_readable(total_size)
 
-                    stat_total_tar_downloaded += total_size
+                    if type(total_size) is int:
+                        stat_total_tar_downloaded += total_size
 
                 elif os.path.exists(tar_file_path):
                     exists_str += 'Fully downloaded: ' + \
