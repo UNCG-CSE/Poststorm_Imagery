@@ -2,19 +2,13 @@
 const express = require('express')
 const app_express = express();
 const next = require('next')
-const path = require('path');
-const fs = require('fs');
-const public_ip = require('public-ip');
-const util = require('util');
 
 //---START---
 
 async function main() {
     const CONSTANTS = await require('./server_constants')
-    const {PORT,SITE_IP} = CONSTANTS
+    const {PORT_WEB,SITE_IP} = CONSTANTS
     
-    
-
     const dev = process.env.NODE_ENV !== 'production'
     const app_next = next({ dev })
     const handle = app_next.getRequestHandler()
@@ -22,32 +16,18 @@ async function main() {
     app_next.setAssetPrefix('')//http://cdn.com/myapp
     app_next.prepare()
     .then(async () => { 
-        app_express.use('/images', require('./routes/images'))
-        app_express.use('/test', require('./routes/test'))
-
         app_express.get('*', (req, res) => {
             return handle(req, res)
         })
 
-        app_express.listen(PORT,'0.0.0.0', (err) => {
-            console.log(`> Ready on http://${SITE_IP}`)
+        app_express.listen(PORT_WEB,'0.0.0.0', (err) => {
+            console.log(`> Website ready on http://${SITE_IP(PORT_WEB)}`)
         });
-
-        //show_routes()
     })
     .catch((ex) => {
         console.error(ex.stack)
         process.exit(1)
     })
-}
-
-
-
-
-async function show_routes(args={})
-{   
-    console.log(app_express._router.stack)
-    
 }
 
 main()

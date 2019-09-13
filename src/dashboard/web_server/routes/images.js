@@ -12,9 +12,8 @@ async function main() {
   const CONSTANTS = await require('../server_constants')
   const {SITE_IP} = CONSTANTS
   const IMAGE_FOLDER='data'
-  const IMAGE_ROUTE='images'
   const image_list=await fs.readdirSync(IMAGE_FOLDER)
-  const SCRIPT_NAME = path.basename(__filename);
+  const SCRIPT_NAME = path.basename(__filename).split('.').slice(0, -1).join('.');
   
   // fs.readdirSync('./data').forEach(file => {
   //   //console.log(file);
@@ -22,10 +21,11 @@ async function main() {
 
   router.use('/get_image', function (req, res, next) {
     const selected_img=image_list[Math.floor(Math.random()*image_list.length)]
-    const img_url=`${SITE_IP}/${SCRIPT_NAME}/${selected_img}`
+    const img_url=`http://${SITE_IP}/${SCRIPT_NAME}/${selected_img}`
     res.json(
         {
           url:img_url,
+          file_name:selected_img,
           time:new Date()
         }
       
@@ -38,7 +38,7 @@ async function main() {
       const file_path=`${IMAGE_FOLDER}/${image_name}`
       const file_route=`${file_path}`
       //console.log(IP)
-      var options = {
+      const options = {
           root: './',
           dotfiles: 'allow',
           headers: {
@@ -46,18 +46,29 @@ async function main() {
             'x-sent': true
           }
       }
-  
-      //erro catching http://expressjs.com/en/4x/api.html#res.sendFile
-      res.sendFile(file_route, options, function (err) {
-          if (err) {
-            console.log(err);
-            res.send(`<p>The image <b>'${image_name}'</b> does not exist 😢</p>`)
-          }
-          else {
-            //console.log('Sent:', fileName);
-          }
-      });
       
+      try {
+        if (fs.existsSync(file_path)) {
+          //file exists
+          res.sendFile(file_route, options, function (err) {
+            //error catching http://expressjs.com/en/4x/api.html#res.sendFile
+            if (err) {
+              //need so that node can handle 
+              //res.status(404).send("Sorry! You can't see that.")
+              next(err)
+            } else {
+              console.log(`Sent: ${file_route} time: ${options.headers['x-timestamp']}`)
+            }
+          })
+        }
+        else {
+          next()  
+        }
+      } catch(err) {
+        console.error(err)
+        next()
+      }
+  
   });
 }
 
