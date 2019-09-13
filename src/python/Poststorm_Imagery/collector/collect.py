@@ -3,6 +3,7 @@ import getpass
 import os
 import time
 from datetime import datetime
+from math import floor
 
 from typing import List, Union
 
@@ -80,10 +81,11 @@ if OPTIONS.no_status is False:
 
     for storm in storms:
         stat_storm_tar_size: int = 0  # Running total of bytes downloaded (by storm)
+        stat_storm_tar_downloaded: int = 0  # Running total of bytes downloaded (by storm)
         tar_list: List[TarRef] = storm.get_tar_list(OPTIONS.tar)  # All TarRef for each storm
 
         # Output storm number, name, and year
-        print(storm_number, '.  \t', storm)
+        print(str(storm_number) + '.  \t' + str(storm))
 
         # Display .tar file statistics if any .tar files are found
         if len(tar_list) > 0:
@@ -93,7 +95,7 @@ if OPTIONS.no_status is False:
                 tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
                                              str(tar_file.tar_file_name) + '.tar')
 
-                total_size: int = None  # Size of the .tar file in bytes
+                total_size: None or int = None  # Size of the .tar file in bytes
 
                 # Create an appending string to print statuses next to .tar info
                 exists_str: str = ''
@@ -119,6 +121,7 @@ if OPTIONS.no_status is False:
 
                     if type(total_size) is int:
                         stat_total_tar_downloaded += total_size
+                        stat_storm_tar_downloaded += total_size
 
                 #########################################
                 # The fully downloaded file is uploaded #
@@ -129,6 +132,7 @@ if OPTIONS.no_status is False:
                     exists_str += 'Fully downloaded: ' + h.to_readable_bytes(total_size)
 
                     stat_total_tar_downloaded += total_size
+                    stat_storm_tar_downloaded += total_size
 
                 #################################################################
                 # A download for the .tar file has been started by another user #
@@ -152,6 +156,7 @@ if OPTIONS.no_status is False:
 
                     if type(partial_size) is int:
                         stat_total_tar_downloaded += partial_size
+                        stat_storm_tar_downloaded += partial_size
 
                 #################################################
                 # Part file exists without any lock association #
@@ -162,6 +167,7 @@ if OPTIONS.no_status is False:
                                   h.to_readable_bytes(os.path.getsize(tar_file_path + s.PART_SUFFIX))
 
                     stat_total_tar_downloaded += os.path.getsize(tar_file_path + s.PART_SUFFIX)
+                    stat_storm_tar_downloaded += os.path.getsize(tar_file_path + s.PART_SUFFIX)
 
                 ###################################################################
                 # No fully or partially downloaded file exists or has a lock file #
@@ -170,8 +176,8 @@ if OPTIONS.no_status is False:
                 else:
                     exists_str += 'Not downloaded.'
 
-                print('\t\t- ', tar_file, '  ... ', h.to_readable_bytes(tar_file.get_file_size_origin()),
-                      '  ... ', exists_str)
+                print('\t\t-', tar_file, ' ...', h.to_readable_bytes(tar_file.get_file_size_origin()),
+                      ' ...', exists_str)
 
                 # Resort to querying the website if the total size cannot be determined locally
                 if type(total_size) is not int:
@@ -180,7 +186,9 @@ if OPTIONS.no_status is False:
                 stat_total_tar_size += total_size
                 stat_storm_tar_size += total_size
 
-            print('\t' * 2 + 'Total: ' + h.to_readable_bytes(stat_storm_tar_size))
+            print('\t\tTotal:', h.to_readable_bytes(stat_storm_tar_downloaded), '/',
+                  h.to_readable_bytes(stat_storm_tar_size),
+                  ' (' + str(floor((stat_storm_tar_downloaded / stat_storm_tar_size) * 100)) + '%)')
 
         else:
             print('\t' * 2 + '<No .tar files detected in index.html>')
@@ -188,7 +196,7 @@ if OPTIONS.no_status is False:
         print()
         storm_number += 1
 
-    print('Total: ', h.to_readable_bytes(stat_total_tar_downloaded), ' / ', h.to_readable_bytes(stat_total_tar_size))
+    print('Total:', h.to_readable_bytes(stat_total_tar_downloaded), '/', h.to_readable_bytes(stat_total_tar_size), ' (' + str(floor((stat_total_tar_downloaded / stat_total_tar_size) * 100)) + '%)')
 
 #############################################
 # Start the actual collection of .tar files #
