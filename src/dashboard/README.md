@@ -13,13 +13,13 @@ A JavaScript developed and hosted dashboard to tag Post-Storm images.
 
 The only requirement is **Node.js** which is JavaScript ran by Chrome's V8 JavaScript engine to basicly allow JavaScript to be ran server side. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
 
-Now that you have **Node.js** installed you will see 2 folders, `node_server` and `web_server`. To install packages run `npm install` while inside the folder which will install all packages needed. For **Node.js** `package.json` is basicly like `pipfile` and manages all your dependicies and additional utiliy scripts and project meta data.
+Check that `node` and `npm` are installed with `node -v` and `npm -v`
 
-Starting with `node_server`, after installing packages run `node server.js` which will run `server.js` and start the server at `YOUR_IP:4000`.
+Move to `web_server` folder and using your favorite terminal run `npm install` to install all packages. Once thats done you will need to run the web server and the image server. First determine if you want to run both node servers off localhost or your machines IP.
 
-Now for `web_server` run `npm run dev` which basicly runs a script called `dev` in the `package.json` which runs **Next.js** and starts rendering and sending the HTML page to the user. This will run the webserver on `YOUR_IP:3000`. **NOTE** this currently does not work due to the web server needing to connect to a specific IP for the node server, so for now I have to have a Google VM running to act as the server.
+To run off localhost run `npm run web` to run the web server and `npm run node` to run the image server. Then connect to `http://localhost:3000/` for the website or `http://localhost:4000/` to see the image server working
 
-
+If instead you want to run of the machines IP, run `npm run web-host` and `npm run node-host`. Then connect to `http://<YOUR IP>:3000/` for website or `http://<YOUR IP>:4000/` for image server.
 
 ## Resources 💎
 Post-Storm image tagging dashboard created using **Next.js** for server side rendering of HTML pages, **React.js** for UI development and **Node.js** for the server side of things.
@@ -60,4 +60,4 @@ Links to the resources can be found here.
 ### Backend 📡
 **Node.js** has two tasks. The first task is for **Node.js** to generate a unique route for compressed and uncompressed image and store this list and interact with a database. The second task is for **Node.js** to run **Next.js** whenever a user connects to the site. Once a user requests a image **Node.js** will leverage the information from the first task and randomly select an availible image and attach that link to the server side rendered HTML and then send it to the user.
 
-Since **Node.js** is a  single-threaded, non-blocking, asynchronously program, the first and second tasks are broken up into 2 **Node.js** servers to improve performance,but is still on the same machine.
+Since **Node.js** is a  single-threaded, non-blocking, asynchronously program, the first and second tasks are broken up into 2 **Node.js** servers to improve performance since they will run on 2 threads,but is still on the same machine.
