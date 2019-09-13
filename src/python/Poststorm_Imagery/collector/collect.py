@@ -129,7 +129,9 @@ if OPTIONS.no_status is False:
                     user: str = lock_info['user']
 
                     exists_str += 'Partially downloaded (' + user + '): ' + \
-                                  helpers.get_byte_size_readable(partial_size)
+                                  helpers.get_byte_size_readable(partial_size) + '  ... Last Update: ' + \
+                                  str(datetime.fromtimestamp(os.path.getmtime(tar_file_path + '.part.lock'))
+                                      .strftime("%B %d, %Y at %I:%M %p"))
 
                     if total_size is not None and total_size != tar_file.get_file_size_origin():
                         exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
