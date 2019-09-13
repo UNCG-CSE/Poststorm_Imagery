@@ -165,7 +165,8 @@ class TarRef:
 
             try:
                 # Write the data and output the progress
-                for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
+                for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
+                                 desc='Downloading ' + self.tar_file_name + '.tar',
                                  total=ceil((remaining_size + local_size) / chunk_size),
                                  initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
                     if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
@@ -197,12 +198,12 @@ class TarRef:
         update_file_lock(base_file=self.tar_file_path, user=user)
 
         if verify_integrity(self.tar_file_path) is False:
-            print('Integrity could not be verified!')
             os.remove(self.tar_file_path)
+            Exception('Integrity could not be verified! Deleting it!')
+
         else:
             print('Extracting files...')
             extract_archive(self.tar_file_path)
-            download_incomplete = False
 
         return tarfile.open(self.tar_file_path)
 
