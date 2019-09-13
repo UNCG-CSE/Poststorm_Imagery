@@ -111,7 +111,7 @@ class TarRef:
 
             # If the tar file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.tar_file_path):
-                print('\nFile \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
+                print('File \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
                 return tarfile.open(self.tar_file_path)
 
         # Create the directory specified if it does not exist
@@ -137,9 +137,9 @@ class TarRef:
 
             # Check if the server sent only the remaining data
             if dl_r.status_code == requests.codes.partial_content:
-                print('Downloading the rest of ' + self.tar_file_name + '.tar ...')
+                print('\nDownloading the rest of ' + self.tar_file_name + '.tar ...')
             else:
-                print('Downloading files...')
+                print('\nDownloading files...')
 
             # Get the current amount of bytes downloaded
             local_size = os.path.getsize(tar_file_path_part)
