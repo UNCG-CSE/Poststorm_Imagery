@@ -12,8 +12,8 @@ def get_byte_size_readable(byte_count: int) -> str:
         return str(round(byte_count / 2 ** 30, 2)) + ' GiBs'
 
 
-def update_file_lock(base_file: str or Union[bytes, str], user: str, part_size_byte: None or int = None,
-                     total_size_byte: None or int = None):
+def update_file_lock(base_file: str or Union[bytes, str], user: str,
+                     total_size_byte: int, part_size_byte: None or int = None):
     lock = open(base_file + '.lock', 'w')
     lock.write('user = ' + user + '\n')
     if part_size_byte is not None:
