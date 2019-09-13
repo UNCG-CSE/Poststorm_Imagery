@@ -188,13 +188,6 @@ if OPTIONS.download:
                     elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
 
                         tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
-                        if TarRef.verify_integrity(tar.tar_file_path) is False:
-                            print('Integrity could not be verified!')
-                            os.remove(tar.tar_file_path)
-                        else:
-                            print('Extracting files...')
-                            TarRef.extract_archive(tar.tar_file_path)
-                            download_incomplete = False
 
                     else:
                         print('Another user is in the process of downloading ' + tar.tar_file_name +

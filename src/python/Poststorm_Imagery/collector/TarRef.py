@@ -196,6 +196,14 @@ class TarRef:
         # Tell others that the full file is downloaded
         update_file_lock(base_file=self.tar_file_path, user=user)
 
+        if verify_integrity(self.tar_file_path) is False:
+            print('Integrity could not be verified!')
+            os.remove(self.tar_file_path)
+        else:
+            print('Extracting files...')
+            extract_archive(self.tar_file_path)
+            download_incomplete = False
+
         return tarfile.open(self.tar_file_path)
 
     def get_file_size_origin(self):
