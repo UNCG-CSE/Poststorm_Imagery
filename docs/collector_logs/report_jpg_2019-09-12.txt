@@ -1,0 +1,50 @@
+Download Status Report (September 12, 2019 at 12:14 AM) <-s .* -t jpg -p D:\Shared drives\C-Sick\data> on v0.5.3
+
+1.  	Hurricane Dorian (2019)
+		- 20190904a_jpgs.tar  ... 1.73 GiBs  ... Partially downloaded: 14.0 MiBs
+		- 20190905a_jpgs.tar  ... 18.12 GiBs  ... Not downloaded.
+		- 20190905b_jpgs.tar  ... 4.64 GiBs  ... Not downloaded.
+		- 20190906a_jpgs.tar  ... 9.14 GiBs  ... Partially downloaded: 4.76 GiBs
+		- 20190906b_jpgs.tar  ... 16.89 GiBs  ... Not downloaded.
+		- 20190907a_jpgs.tar  ... 7.79 GiBs  ... Not downloaded.
+		- 20190907b_jpgs.tar  ... 6.55 GiBs  ... Not downloaded.
+		Total: 64.85 GiBs
+
+2.  	Hurricane Barry (2019)
+		- 20190716a_jpgs.tar  ... 40.19 GiBs  ... Partially downloaded: 37.62 GiBs
+		- 20190717a_jpgs.tar  ... 11.19 GiBs  ... Not downloaded.
+		- 20190719a_jpgs.tar  ... 4.66 GiBs  ... Not downloaded.
+		Total: 56.04 GiBs
+
+3.  	Hurricane Michael (2018)
+		- 20181011a_jpgs.tar  ... 22.56 GiBs  ... Not downloaded.
+		- 20181012a_jpgs.tar  ... 15.65 GiBs  ... Not downloaded.
+		- 20181012b_jpgs.tar  ... 12.86 GiBs  ... Not downloaded.
+		- 20181013a_jpgs.tar  ... 16.15 GiBs  ... Not downloaded.
+		- 20181014a_jpgs.tar  ... 23.24 GiBs  ... Not downloaded.
+		Total: 90.45 GiBs
+
+4.  	Hurricane Florence (2018)
+		- 20180915a_jpgs.tar  ... 10.62 GiBs  ... Not downloaded.
+		- 20180916a_jpgs.tar  ... 23.09 GiBs  ... Not downloaded.
+		- 20180916b_jpgs.tar  ... 16.62 GiBs  ... Not downloaded.
+		- 20180917a_jpgs.tar  ... 22.06 GiBs  ... Not downloaded.
+		- 20180918a_jpgs.tar  ... 26.76 GiBs  ... Not downloaded.
+		- 20180919a_jpgs.tar  ... 22.78 GiBs  ... Not downloaded.
+		- 20180919b_jpgs.tar  ... 11.11 GiBs  ... Not downloaded.
+		- 20180919c_jpgs.tar  ... 13.58 GiBs  ... Fully downloaded: 13.58 GiBs
+		- 20180920a_jpgs.tar  ... 28.03 GiBs  ... Not downloaded.
+		- 20180920b_jpgs.tar  ... 13.41 GiBs  ... Not downloaded.
+		- 20180920c_jpgs.tar  ... 16.51 GiBs  ... Not downloaded.
+		- 20180921a_jpgs.tar  ... 4.52 GiBs  ... Not downloaded.
+		- 20180921b_jpgs.tar  ... 5.49 GiBs  ... Not downloaded.
+		- 20180922a_jpgs.tar  ... 6.58 GiBs  ... Not downloaded.
+		- 20180922b_jpgs.tar  ... 3.33 GiBs  ... Fully downloaded: 3.33 GiBs
+		Total: 224.5 GiBs
+
+5.  	Tropical Storm Gordon (2018)
+		- 20180906a_jpgs.tar  ... 5.41 GiBs  ... Fully downloaded: 5.41 GiBs
+		- 20180907a_jpgs.tar  ... 4.75 GiBs  ... Fully downloaded: 4.75 GiBs
+		Total: 10.16 GiBs
+
+Total: 69.47 GiBs / 445.99 GiBs

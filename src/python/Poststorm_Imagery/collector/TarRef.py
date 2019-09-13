@@ -1,11 +1,16 @@
 import os
 import re
 import tarfile
+from datetime import datetime
 from math import ceil
 from typing import Union
 
 import requests
 from tqdm import tqdm
+
+from collector import helpers
+from collector.ResponseGetter import get_full_content_length
+from collector.helpers import update_file_lock
 
 UNKNOWN = 'Unknown'
 
@@ -61,10 +66,13 @@ class TarRef:
     tar_label: str  # The label associated with the tar (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
     tar_file_name: str  # The .tar file's name not including the file suffix (.tar)
-    tar_file_path: Union[bytes, str]  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
+    tar_file_path: Union[bytes, str] or None = None  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
 
     tar_file: tarfile.TarFile  # The TarFile object stored in memory
     tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
+
+    # Save a cache of the file size in bytes
+    tar_file_origin_size: int or None = None
 
     def __init__(self, tar_url: str, tar_date: str = UNKNOWN, tar_label: str = UNKNOWN):
         """Initializes the object with required information for a tar file
@@ -87,10 +95,11 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile or None:
+    def download_url(self, output_dir: str, user: str, overwrite: bool = False) -> tarfile.TarFile or None:
         """Download the tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` variable.
 
+        :param user: The user to download as (locking mechanism)
         :param output_dir: The location to save the downloaded tar file to (a path on the local machine)
         :param overwrite: Whether or not to overwrite a file if one already exists by the same name
         :returns: The tar file that was downloaded
@@ -117,14 +126,7 @@ class TarRef:
             headers = {}
             pos = f.tell()
 
-            # Ask the server for head
-            dl_r_full = requests.head(self.tar_url, stream=True)
-
-            # Ask the server how big its' package is
-            full_size_origin = int(dl_r_full.headers.get('Content-Length'))
-
-            # Stop talking to the server about this
-            dl_r_full.close()
+            full_size_origin = self.get_file_size_origin()
 
             if pos:
                 # Add a header that specifies only to send back the bytes needed
@@ -159,10 +161,17 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
+            last_lock_update = datetime.now()
+
             # Write the data and output the progress
-            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
+            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
+                             desc='Downloading ' + self.tar_file_name + '.tar',
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
+                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                    helpers.update_file_lock(base_file=tar_file_path_part, user=user,
+                                             part_size_byte=os.path.getsize(tar_file_path_part),
+                                             total_size_byte=full_size_origin)
                 f.write(data)
 
             dl_r.close()
@@ -179,7 +188,28 @@ class TarRef:
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
+        # Remove the lock file
+        os.remove(tar_file_path_part + '.lock')
+
+        # Tell others that the full file is downloaded
+        update_file_lock(base_file=self.tar_file_path, user=user)
+
+        if verify_integrity(self.tar_file_path) is False:
+            os.remove(self.tar_file_path)
+            Exception('Integrity could not be verified! Deleting it!')
+
+        else:
+            print('Extracting files...')
+            extract_archive(self.tar_file_path)
+
         return tarfile.open(self.tar_file_path)
+
+    def get_file_size_origin(self):
+
+        if self.tar_file_origin_size is not None:
+            return self.tar_file_origin_size
+
+        return get_full_content_length(self.tar_url)
 
 
 
