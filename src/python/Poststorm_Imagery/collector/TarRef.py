@@ -182,9 +182,6 @@ class TarRef:
         if local_size < full_size_origin:
             raise ConnectionError('File was not fully downloaded. Retry download!')
 
-        if verify_integrity(tar_file_path_part) is False:
-            return None
-
         # File download is complete. Change the name to reflect that it is a proper .tar file
         os.rename(tar_file_path_part, self.tar_file_path)
 
