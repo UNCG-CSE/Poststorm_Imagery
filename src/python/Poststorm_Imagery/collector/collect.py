@@ -235,8 +235,6 @@ if OPTIONS.download:
                     print('The download ran into a connection error: ' + str(e))
                 except ConnectionRefusedError as e:
                     print('I don\'t think the website likes you right now. Error: ' + str(e))
-                except Exception as e:
-                    print('The download encountered an unknown error: ' + str(e))
 
                 if download_incomplete:
                     print('Will retry download in 10 seconds...')
