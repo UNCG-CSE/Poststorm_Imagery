@@ -193,7 +193,8 @@ class TarRef:
         os.remove(tar_file_path_part + '.lock')
 
         # Tell others that the full file is downloaded
-        update_file_lock(base_file=self.tar_file_path, user=user, total_size_byte=full_size_origin)
+        update_file_lock(base_file=self.tar_file_path, user=user,
+                         total_size_byte=full_size_origin, part_size_byte=full_size_origin)
 
         if verify_integrity(self.tar_file_path) is False:
             os.remove(self.tar_file_path)
