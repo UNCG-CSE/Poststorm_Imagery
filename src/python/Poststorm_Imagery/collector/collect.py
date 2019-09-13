@@ -110,8 +110,19 @@ if OPTIONS.no_status is False:
                     else:
                         stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
+                elif os.path.exists(tar_file_path + '.lock'):
+
+                    lock_info = helpers.get_lock_info(base_file=tar_file_path)
+                    user: str = lock_info['user']
+                    total_size: int = lock_info['total_size_bytes']
+
+                    exists_str += 'Fully downloaded (' + user + '): ' + \
+                                  helpers.get_byte_size_readable(total_size)
+
+                    stat_total_tar_downloaded += total_size
+
                 elif os.path.exists(tar_file_path + '.part'):
-                    exists_str += 'Partially downloaded (you): ' + \
+                    exists_str += 'Partially downloaded: ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      tar_file_path + '.part'))
 
@@ -119,7 +130,7 @@ if OPTIONS.no_status is False:
 
                 elif os.path.exists(tar_file_path + '.part.lock'):
 
-                    lock_info = helpers.get_lock_info(part_file=tar_file_path + '.part')
+                    lock_info = helpers.get_lock_info(base_file=tar_file_path + '.part')
                     partial_size: int = lock_info['size_bytes']
                     total_size: int = lock_info['total_size_bytes']
                     user: str = lock_info['user']
@@ -162,8 +173,19 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    lock_info = helpers.get_lock_info(part_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar'))
-                    if OPTIONS.overwrite or lock_info['user'] is None or OPTIONS.user == lock_info['user']:
+                    lock_info_part = helpers.get_lock_info(
+                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar.part'))
+                    lock_info_full = helpers.get_lock_info(
+                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar'))
+
+                    if OPTIONS.overwrite is False and (lock_info_full['user'] is not None
+                                                       or OPTIONS.user != lock_info_full['user']):
+
+                        print('Another user has fully downloaded ' + tar.tar_file_name +
+                              '.tar!  ... Skipping')
+                        download_incomplete = False
+
+                    elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
 
                         tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
                         if TarRef.verify_integrity(tar.tar_file_path) is False:
@@ -175,7 +197,8 @@ if OPTIONS.download:
                             download_incomplete = False
 
                     else:
-                        print('Another user is in the process of downloading ' + tar.tar_file_name + '.tar!  ... Skipping')
+                        print('Another user is in the process of downloading ' + tar.tar_file_name +
+                              '.tar!  ... Skipping')
                         download_incomplete = False
 
                 except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError) as e:
