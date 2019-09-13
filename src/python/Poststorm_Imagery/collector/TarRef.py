@@ -15,7 +15,12 @@ UNKNOWN = 'Unknown'
 
 
 def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
+    """Takes in a file's path and reads through each record in the .tar's index to see if it is valid. This does not
+    ensure that the file is completely error-free, but ensures that the .tar has some validity.
 
+    :param tar_file_path: The path to the file to check
+    :return: True if the file seems valid, False if it does not
+    """
     print('Checking the archive\'s integrity...')
     # Check archive integrity by trying to read every file (may take a while)
     try:
@@ -37,9 +42,13 @@ def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
 
 
 def extract_archive(tar_file_path: Union[bytes, str]):
+    """Extract all the contents of a .tar file into a directory of the same name (minus .tar).
 
+    :param tar_file_path: The path to the .tar file (including .tar) to extract
+    """
     tf = tarfile.open(tar_file_path)
 
+    # Extract to a directory of the same name, but without '.tar'
     extract_dir_path = tar_file_path.replace('.tar', '')
 
     # Create the directory specified if it does not exist
@@ -49,6 +58,7 @@ def extract_archive(tar_file_path: Union[bytes, str]):
     notify_skip_files = False
 
     for member in tf.getmembers():
+        # TODO: Fix not skipping over files in a sub-directory
         if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
             print('Creating \t' + member.name + '...')
             tf.extract(member, extract_dir_path)
@@ -58,7 +68,8 @@ def extract_archive(tar_file_path: Union[bytes, str]):
 
 
 class TarRef:
-    """An object that stores information about a particular storm"""
+    """An object that stores information about a particular storm. Does not store the actual .tar archive by default,
+    but instead stores a reference to the .tar on a remote host (the NOAA website) and its information locally."""
 
     tar_date: str  # The date listed with the tar (format varies based on storm)
     tar_url: str  # The url location of the tar on the remote website
@@ -87,16 +98,16 @@ class TarRef:
         # Grab the file name from the end of the URL
         self.tar_file_name = re.findall('.*/([^/]+)\\.tar', self.tar_url)[0]
 
-    def __str__(self):
-        """Prints out the tar label and date in a human readable format"""
+    def __str__(self) -> str:
+        """Prints out the .tar label and date in a human readable format"""
         if self.tar_date == UNKNOWN and self.tar_label == UNKNOWN:
             return self.tar_file_name + '.tar'
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
     def download_url(self, output_dir: str, user: str, overwrite: bool = False) -> tarfile.TarFile or None:
-        """Download the tar file to the given path. Whether or not to overwrite
-        any existing file can also be specified by the `overwrite` variable.
+        """Download the .tar file to the given path. Whether or not to overwrite
+        any existing file can also be specified by the `overwrite` parameter.
 
         :param user: The user to download as (locking mechanism)
         :param output_dir: The location to save the downloaded tar file to (a path on the local machine)
@@ -168,6 +179,7 @@ class TarRef:
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
+                # Update the lock file every so often so others know it is being downloaded
                 if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
                     h.update_file_lock(base_file=tar_file_path_part, user=user,
                                        part_size_byte=os.path.getsize(tar_file_path_part),
@@ -202,8 +214,12 @@ class TarRef:
 
         return tarfile.open(self.tar_file_path)
 
-    def get_file_size_origin(self):
+    def get_file_size_origin(self) -> int:
+        """Checks to see if the TarRef object has its full size cached. If it doesn't then it will make a request to
+        the website and get the size of the .tar file from the header.
 
+        :return: The size of the .tar file in bytes
+        """
         if self.tar_file_origin_size is not None:
             return self.tar_file_origin_size
 
