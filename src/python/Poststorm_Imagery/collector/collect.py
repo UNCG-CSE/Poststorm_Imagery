@@ -175,11 +175,10 @@ if OPTIONS.download:
                 try:
                     lock_info_part = helpers.get_lock_info(
                         base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar.part'))
-                    lock_info_full = helpers.get_lock_info(
-                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar'))
 
-                    if OPTIONS.overwrite is False and (lock_info_full['user'] is not None
-                                                       or OPTIONS.user != lock_info_full['user']):
+                    if OPTIONS.overwrite is False and \
+                        helpers.is_locked_by_another_user(base_file=str(tar.tar_file_name) + '.tar',
+                                                          this_user=OPTIONS.user):
 
                         print('Another user has fully downloaded ' + tar.tar_file_name +
                               '.tar!  ... Skipping')
