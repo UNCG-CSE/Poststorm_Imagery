@@ -8,9 +8,9 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
-from collector import helpers, strings
+from collector import h, s
 from collector.ResponseGetter import get_full_content_length
-from collector.helpers import update_file_lock
+from collector.h import update_file_lock
 
 UNKNOWN = 'Unknown'
 
@@ -119,7 +119,7 @@ class TarRef:
             os.makedirs(output_dir)
 
         # Suffix for the file until download is complete
-        tar_file_path_part: str = self.tar_file_path + strings.PART_SUFFIX
+        tar_file_path_part: str = self.tar_file_path + s.PART_SUFFIX
 
         # See how far a file has been downloaded at the specified path if one exists
         with open(tar_file_path_part, 'ab') as f:
@@ -170,9 +170,9 @@ class TarRef:
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
                 if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
-                    helpers.update_file_lock(base_file=tar_file_path_part, user=user,
-                                             part_size_byte=os.path.getsize(tar_file_path_part),
-                                             total_size_byte=full_size_origin)
+                    h.update_file_lock(base_file=tar_file_path_part, user=user,
+                                       part_size_byte=os.path.getsize(tar_file_path_part),
+                                       total_size_byte=full_size_origin)
                 f.write(data)
 
             dl_r.close()
@@ -190,7 +190,7 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         # Remove the lock file
-        os.remove(tar_file_path_part + strings.LOCK_SUFFIX)
+        os.remove(tar_file_path_part + s.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
         update_file_lock(base_file=self.tar_file_path, user=user,
