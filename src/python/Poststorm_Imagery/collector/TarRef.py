@@ -8,7 +8,7 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
-from collector import helpers
+from collector import helpers, strings
 from collector.ResponseGetter import get_full_content_length
 from collector.helpers import update_file_lock
 
@@ -119,7 +119,7 @@ class TarRef:
             os.makedirs(output_dir)
 
         # Suffix for the file until download is complete
-        tar_file_path_part: str = self.tar_file_path + '.part'
+        tar_file_path_part: str = self.tar_file_path + strings.PART_SUFFIX
 
         # See how far a file has been downloaded at the specified path if one exists
         with open(tar_file_path_part, 'ab') as f:
@@ -190,7 +190,7 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         # Remove the lock file
-        os.remove(tar_file_path_part + '.lock')
+        os.remove(tar_file_path_part + strings.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
         update_file_lock(base_file=self.tar_file_path, user=user,
