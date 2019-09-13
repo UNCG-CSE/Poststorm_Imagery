@@ -100,17 +100,7 @@ if OPTIONS.no_status is False:
                 tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
                                              str(tar_file.tar_file_name) + '.tar')
 
-                if os.path.exists(tar_file_path):
-                    exists_str += 'Fully downloaded: ' + \
-                                 helpers.get_byte_size_readable(os.path.getsize(
-                                     tar_file_path))
-
-                    if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
-                        exists_str += '  ... ERROR: Sizes do not match!'
-                    else:
-                        stat_total_tar_downloaded += os.path.getsize(tar_file_path)
-
-                elif os.path.exists(tar_file_path + '.lock'):
+                if os.path.exists(tar_file_path + '.lock'):
 
                     lock_info = helpers.get_lock_info(base_file=tar_file_path)
                     user: str = lock_info['user']
@@ -120,6 +110,15 @@ if OPTIONS.no_status is False:
                                   helpers.get_byte_size_readable(total_size)
 
                     stat_total_tar_downloaded += total_size
+                elif os.path.exists(tar_file_path):
+                    exists_str += 'Fully downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     tar_file_path))
+
+                    if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
+                        exists_str += '  ... ERROR: Sizes do not match!'
+                    else:
+                        stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
                 elif os.path.exists(tar_file_path + '.part'):
                     exists_str += 'Partially downloaded: ' + \
