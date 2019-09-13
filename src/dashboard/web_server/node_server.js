@@ -15,7 +15,7 @@ async function main() {
     })
 
     app_express.listen(PORT_NODE,'0.0.0.0', (err) => {
-        console.log(`> Node server ready on http://${SITE_IP(PORT_NODE)}`)
+        console.log(`> Node server ready on http://${SITE_IP.node}`)
     });
 }
 

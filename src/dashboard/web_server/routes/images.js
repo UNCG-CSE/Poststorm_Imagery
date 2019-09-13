@@ -21,7 +21,7 @@ async function main() {
 
   router.use('/get_image', function (req, res, next) {
     const selected_img=image_list[Math.floor(Math.random()*image_list.length)]
-    const img_url=`http://${SITE_IP}/${SCRIPT_NAME}/${selected_img}`
+    const img_url=`http://${SITE_IP.node}/${SCRIPT_NAME}/${selected_img}`
     res.json(
         {
           url:img_url,
