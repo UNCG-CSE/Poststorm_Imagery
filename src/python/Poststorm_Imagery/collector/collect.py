@@ -110,6 +110,7 @@ if OPTIONS.no_status is False:
                                   helpers.get_byte_size_readable(total_size)
 
                     stat_total_tar_downloaded += total_size
+
                 elif os.path.exists(tar_file_path):
                     exists_str += 'Fully downloaded: ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
@@ -119,13 +120,6 @@ if OPTIONS.no_status is False:
                         exists_str += '  ... ERROR: Sizes do not match!'
                     else:
                         stat_total_tar_downloaded += os.path.getsize(tar_file_path)
-
-                elif os.path.exists(tar_file_path + '.part'):
-                    exists_str += 'Partially downloaded: ' + \
-                                 helpers.get_byte_size_readable(os.path.getsize(
-                                     tar_file_path + '.part'))
-
-                    stat_total_tar_downloaded += os.path.getsize(tar_file_path + '.part')
 
                 elif os.path.exists(tar_file_path + '.part.lock'):
 
@@ -141,6 +135,13 @@ if OPTIONS.no_status is False:
                         exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
                     else:
                         stat_total_tar_downloaded += partial_size
+
+                elif os.path.exists(tar_file_path + '.part'):
+                    exists_str += 'Partially downloaded: ' + \
+                                 helpers.get_byte_size_readable(os.path.getsize(
+                                     tar_file_path + '.part'))
+
+                    stat_total_tar_downloaded += os.path.getsize(tar_file_path + '.part')
 
                 else:
                     exists_str += 'Not downloaded.'
