@@ -58,7 +58,7 @@ OPTIONS: argparse.Namespace = parser.parse_args()
 # Convert string to absolute path for uniformity
 DOWNLOAD_PATH = os.path.abspath(OPTIONS.path)
 
-# Expand out any path keywords or variables
+# Expand out any path keywords or variables for certain operating system
 DOWNLOAD_PATH = os.path.expanduser(os.path.expandvars(DOWNLOAD_PATH))
 
 c = ConnectionHandler()
@@ -76,7 +76,7 @@ if OPTIONS.no_status is False:
     # Print out a report of what is downloaded #
     ############################################
 
-    print('Download Status Report (' + datetime.now().strftime(s.STRFTIME_FORMAT) + ') <-s ' + OPTIONS.storm +
+    print('Download Status Report (' + datetime.now().strftime(s.FORMAT_TIME) + ') <-s ' + OPTIONS.storm +
           ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__ + '\n')
 
     for storm in storms:
@@ -94,14 +94,24 @@ if OPTIONS.no_status is False:
                 tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
                                              str(tar_file.tar_file_name) + '.tar')
 
+                total_size: int = None  # Size of the .tar file in bytes
+
                 # Create an appending string to print statuses next to .tar info
                 exists_str: str = ''
+
+                ###############################################
+                # The fully downloaded file is being uploaded #
+                ###############################################
 
                 if os.path.exists(tar_file_path + s.LOCK_SUFFIX):
 
                     lock_info = h.get_lock_info(base_file=tar_file_path)
                     user: str = lock_info['user']
-                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
+                    total_size = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
+
+                    # Resort to querying the website if the total size cannot be determined locally
+                    if type(total_size) is not int:
+                        total_size = tar_file.get_file_size_origin()
 
                     if user == OPTIONS.user:
                         exists_str += 'Fully downloaded: ' + h.to_readable_bytes(total_size)
@@ -111,49 +121,65 @@ if OPTIONS.no_status is False:
                     if type(total_size) is int:
                         stat_total_tar_downloaded += total_size
 
-                elif os.path.exists(tar_file_path):
-                    exists_str += 'Fully downloaded: ' + \
-                                  h.to_readable_bytes(os.path.getsize(
-                                     tar_file_path))
+                #########################################
+                # The fully downloaded file is uploaded #
+                #########################################
 
-                    if os.path.getsize(tar_file_path) != tar_file.get_file_size_origin():
-                        exists_str += '  ... ERROR: Sizes do not match!'
-                    else:
-                        stat_total_tar_downloaded += os.path.getsize(tar_file_path)
+                elif os.path.exists(tar_file_path):
+                    total_size = os.path.getsize(tar_file_path)
+                    exists_str += 'Fully downloaded: ' + h.to_readable_bytes(total_size)
+
+                    stat_total_tar_downloaded += total_size
+
+                #################################################################
+                # A download for the .tar file has been started by another user #
+                #################################################################
 
                 elif os.path.exists(tar_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX):
 
+                    # Get the status of the file being downloaded elsewhere
                     lock_info = h.get_lock_info(base_file=tar_file_path + s.PART_SUFFIX)
-                    partial_size: int = lock_info[s.LOCK_PART_SIZE_BYTES_FIELD]
-                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
-                    user: str = lock_info['user']
 
-                    exists_str += 'Partially downloaded (' + user + '): ' + \
-                                  h.to_readable_bytes(partial_size) + '  ... Last Update: ' + \
-                                  str(datetime.fromtimestamp(os.path.getmtime(tar_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX))
-                                      .strftime(s.STRFTIME_FORMAT))
+                    last_modified = os.path.getmtime(tar_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX)
+                    partial_size: int = lock_info[s.LOCK_PART_SIZE_BYTES_FIELD]  # The # of bytes downloaded so far
+                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]  # The number of total bytes to download
+                    user: str = lock_info['user']  # The account that started the download (created the lock)
 
-                    if total_size is not None and total_size != tar_file.get_file_size_origin():
-                        exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
-                    else:
+                    """Add information about who initiated the lock, how much is downloaded so far, 
+                    and when the lock information was last updated (does not update immediately)"""
+
+                    exists_str += 'Partially downloaded (' + user + '): ' + h.to_readable_bytes(partial_size) + \
+                                  '  ... Last Update: ' + datetime.fromtimestamp(last_modified).strftime(s.FORMAT_TIME)
+
+                    if type(partial_size) is int:
                         stat_total_tar_downloaded += partial_size
+
+                #################################################
+                # Part file exists without any lock association #
+                #################################################
 
                 elif os.path.exists(tar_file_path + s.PART_SUFFIX):
                     exists_str += 'Partially downloaded: ' + \
-                                  h.to_readable_bytes(os.path.getsize(
-                                     tar_file_path + s.PART_SUFFIX))
+                                  h.to_readable_bytes(os.path.getsize(tar_file_path + s.PART_SUFFIX))
 
                     stat_total_tar_downloaded += os.path.getsize(tar_file_path + s.PART_SUFFIX)
+
+                ###################################################################
+                # No fully or partially downloaded file exists or has a lock file #
+                ###################################################################
 
                 else:
                     exists_str += 'Not downloaded.'
 
-                print('\t' * 2 + '- ' + str(tar_file) +
-                      '  ... ' + h.to_readable_bytes(tar_file.get_file_size_origin()) +
-                      '  ... ' + exists_str)
+                print('\t\t- ', tar_file, '  ... ', h.to_readable_bytes(tar_file.get_file_size_origin()),
+                      '  ... ', exists_str)
 
-                stat_total_tar_size += tar_file.get_file_size_origin()
-                stat_storm_tar_size += tar_file.get_file_size_origin()
+                # Resort to querying the website if the total size cannot be determined locally
+                if type(total_size) is not int:
+                    total_size = tar_file.get_file_size_origin()
+
+                stat_total_tar_size += total_size
+                stat_storm_tar_size += total_size
 
             print('\t' * 2 + 'Total: ' + h.to_readable_bytes(stat_storm_tar_size))
 
@@ -163,7 +189,7 @@ if OPTIONS.no_status is False:
         print()
         storm_number += 1
 
-    print('Total: ' + h.to_readable_bytes(stat_total_tar_downloaded) + ' / ' + h.to_readable_bytes(stat_total_tar_size))
+    print('Total: ', h.to_readable_bytes(stat_total_tar_downloaded), ' / ', h.to_readable_bytes(stat_total_tar_size))
 
 
 #############################################
