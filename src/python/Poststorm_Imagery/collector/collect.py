@@ -196,7 +196,8 @@ if OPTIONS.no_status is False:
         print()
         storm_number += 1
 
-    print('Total:', h.to_readable_bytes(stat_total_tar_downloaded), '/', h.to_readable_bytes(stat_total_tar_size), ' (' + str(floor((stat_total_tar_downloaded / stat_total_tar_size) * 100)) + '%)')
+    print('Total:', h.to_readable_bytes(stat_total_tar_downloaded), '/', h.to_readable_bytes(stat_total_tar_size),
+          ' (' + str(floor((stat_total_tar_downloaded / stat_total_tar_size) * 100)) + '%)')
 
 #############################################
 # Start the actual collection of .tar files #
