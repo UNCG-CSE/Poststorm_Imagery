@@ -14,7 +14,7 @@ from collector.ResponseGetter import get_full_content_length
 UNKNOWN = 'Unknown'
 
 
-def verify_integrity(tar_file_path: str or Union[bytes, str]) -> bool:
+def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
 
     print('Checking the archive\'s integrity...')
     # Check archive integrity by trying to read every file (may take a while)
@@ -36,7 +36,7 @@ def verify_integrity(tar_file_path: str or Union[bytes, str]) -> bool:
     return True
 
 
-def extract_archive(tar_file_path: str or Union[bytes, str]):
+def extract_archive(tar_file_path: Union[bytes, str]):
 
     tf = tarfile.open(tar_file_path)
 
