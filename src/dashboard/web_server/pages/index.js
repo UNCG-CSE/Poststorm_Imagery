@@ -36,28 +36,29 @@ const Index = (props) => (
 )
 
 Index.getInitialProps = async function() {
+    //first get constants
+    const CONSTANTS = await require('../server_constants')
+    const {SITE_IP} = CONSTANTS
     
-    const IP =await public_ip.v4()
-    const API_URL='http://'+IP+':4000/images/get_image'
+    //This enables it so that the serve either uses localhost or the machines ip,all based off if the user gives a cl arg.
+    const API_URL=`http://${SITE_IP.node}/images/get_image`
     //Default data incase Fetch fails. 
-    let data = {
+    let data,default_data = {
         file_url:undefined,
         file_name:undefined,
         api_url:API_URL,
-   
     }
-
-    await fetch(API_URL).then(async function(received_data) {
-        
+    
+    //Now we call the get image api to ,well get the image
+    await fetch(API_URL).then(async function(received_data) { 
         data = await received_data.json()
-        console.log("Image fetched");
-       
+        
     }).catch(function() {
-        console.log("Failed to fetch image");
+        
     });
-      
+
     return {
-        data:data
+        data:data || default_data
     }
 }
 

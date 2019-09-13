@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "noden": "nodemon node_server.js",
-    "webn": "node web_server.js",
+    "node": "nodemon node_server.js",
+    "node-host":"nodemon node_server.js host",
+    "web": "node web_server.js",
+    "web-host": "node web_server.js host",
     "build": "next build",
     "export": "next export",
     "start": "NODE_ENV=production node web_server.js"
