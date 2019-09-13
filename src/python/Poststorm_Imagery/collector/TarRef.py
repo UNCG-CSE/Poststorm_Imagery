@@ -1,13 +1,16 @@
 import os
 import re
 import tarfile
+from datetime import datetime
 from math import ceil
 from typing import Union
 
 import requests
 from tqdm import tqdm
 
-from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
+from collector import helpers
+from collector.ResponseGetter import get_full_content_length
+from collector.helpers import update_file_lock
 
 UNKNOWN = 'Unknown'
 
@@ -92,10 +95,11 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, overwrite: bool = False) -> tarfile.TarFile or None:
+    def download_url(self, output_dir: str, user: str, overwrite: bool = False) -> tarfile.TarFile or None:
         """Download the tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` variable.
 
+        :param user: The user to download as (locking mechanism)
         :param output_dir: The location to save the downloaded tar file to (a path on the local machine)
         :param overwrite: Whether or not to overwrite a file if one already exists by the same name
         :returns: The tar file that was downloaded
@@ -157,14 +161,18 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
-            try:
-                # Write the data and output the progress
-                for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size), desc='Downloading ' + self.tar_file_name + '.tar',
-                                 total=ceil((remaining_size + local_size) / chunk_size),
-                                 initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
-                    f.write(data)
-            except:
-                raise
+            last_lock_update = datetime.now()
+
+            # Write the data and output the progress
+            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
+                             desc='Downloading ' + self.tar_file_name + '.tar',
+                             total=ceil((remaining_size + local_size) / chunk_size),
+                             initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
+                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                    helpers.update_file_lock(base_file=tar_file_path_part, user=user,
+                                             part_size_byte=os.path.getsize(tar_file_path_part),
+                                             total_size_byte=full_size_origin)
+                f.write(data)
 
             dl_r.close()
 
@@ -182,6 +190,17 @@ class TarRef:
 
         # Remove the lock file
         os.remove(tar_file_path_part + '.lock')
+
+        # Tell others that the full file is downloaded
+        update_file_lock(base_file=self.tar_file_path, user=user)
+
+        if verify_integrity(self.tar_file_path) is False:
+            os.remove(self.tar_file_path)
+            Exception('Integrity could not be verified! Deleting it!')
+
+        else:
+            print('Extracting files...')
+            extract_archive(self.tar_file_path)
 
         return tarfile.open(self.tar_file_path)
 
