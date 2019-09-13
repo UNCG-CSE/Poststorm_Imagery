@@ -8,7 +8,7 @@ from typing import List, Union
 
 import requests
 
-from collector import TarRef, helpers
+from collector import helpers
 from collector.ConnectionHandler import ConnectionHandler
 from collector.Storm import Storm
 
@@ -79,6 +79,7 @@ stat_total_tar_size: int = 0
 # Keep a running total of the number of bytes of downloaded already
 stat_total_tar_downloaded: int = 0
 
+# Only display status report if user requests it, otherwise just start downloads
 if OPTIONS.no_status is False:
     print('Download Status Report (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') <-s ' + OPTIONS.storm +
           ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__)
@@ -106,10 +107,15 @@ if OPTIONS.no_status is False:
                     user: str = lock_info['user']
                     total_size: int = lock_info['total_size_bytes']
 
-                    exists_str += 'Fully downloaded (' + user + '): ' + \
-                                  helpers.get_byte_size_readable(total_size)
+                    if user == OPTIONS.user:
+                        exists_str += 'Fully downloaded: ' + \
+                                      helpers.get_byte_size_readable(total_size)
+                    else:
+                        exists_str += 'Fully downloaded (' + user + '): ' + \
+                                      helpers.get_byte_size_readable(total_size)
 
-                    stat_total_tar_downloaded += total_size
+                    if type(total_size) is int:
+                        stat_total_tar_downloaded += total_size
 
                 elif os.path.exists(tar_file_path):
                     exists_str += 'Fully downloaded: ' + \
