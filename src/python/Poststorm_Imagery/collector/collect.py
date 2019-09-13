@@ -16,7 +16,6 @@ from collector.TarRef import TarRef
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
 
-
 ################################################
 # Define command-line parameters and arguments #
 ################################################
@@ -191,7 +190,6 @@ if OPTIONS.no_status is False:
 
     print('Total: ', h.to_readable_bytes(stat_total_tar_downloaded), ' / ', h.to_readable_bytes(stat_total_tar_size))
 
-
 #############################################
 # Start the actual collection of .tar files #
 #############################################
@@ -199,22 +197,21 @@ if OPTIONS.no_status is False:
 if OPTIONS.download:
     for storm in storms:
         for tar in storm.get_tar_list(OPTIONS.tar):
-            download_incomplete: bool = True
+            download_incomplete: bool = True  # Turns to 'False' when the file is downloaded successfully
 
             # Save the tar to a directory based on the storm's ID (normalize the path to avoid errors)
             save_path: Union[bytes, str] = os.path.join(DOWNLOAD_PATH, storm.storm_id.title())
 
+            # Repeatedly try to download the .tar until it completes successfully
             while download_incomplete:
                 try:
                     lock_info_part = h.get_lock_info(
                         base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar' + s.PART_SUFFIX))
 
-                    if OPTIONS.overwrite is False and \
-                        h.is_locked_by_another_user(base_file=str(tar.tar_file_name) + '.tar',
-                                                    this_user=OPTIONS.user):
+                    if OPTIONS.overwrite is False and h.is_locked_by_another_user(
+                            base_file=str(tar.tar_file_name) + '.tar', this_user=OPTIONS.user):
 
-                        print('Another user has fully downloaded ' + tar.tar_file_name +
-                              '.tar!  ... Skipping')
+                        print('Another user has fully downloaded ', tar.tar_file_name, '.tar!  ... Skipping')
                         download_incomplete = False
 
                     elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
@@ -223,8 +220,7 @@ if OPTIONS.download:
                         download_incomplete = False
 
                     else:
-                        print('Another user is in the process of downloading ' + tar.tar_file_name +
-                              '.tar!  ... Skipping')
+                        print('Another user is in the process of downloading ', tar.tar_file_name, '.tar!  ... Skipping')
                         download_incomplete = False
 
                 except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError) as e:
