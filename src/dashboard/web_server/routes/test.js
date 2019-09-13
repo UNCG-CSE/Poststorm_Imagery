@@ -9,7 +9,7 @@ let CONSTANTS=
 
 router.use('/routes', (req, res) => {
     res.json(
-        {routes:app._router}
+        {routes:router.stack}
     )
 })
 
