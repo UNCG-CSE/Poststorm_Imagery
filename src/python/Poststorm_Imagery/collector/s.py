@@ -1,5 +1,5 @@
 
-STRFTIME_FORMAT = '%B %d, %Y at %I:%M %p'
+FORMAT_TIME = '%B %d, %Y at %I:%M %p'
 
 DATA_PATH = '../../data/'
 TAR_CACHE = 'tar_cache/'
