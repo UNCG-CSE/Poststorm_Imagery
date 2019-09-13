@@ -163,19 +163,16 @@ class TarRef:
 
             last_lock_update = datetime.now()
 
-            try:
-                # Write the data and output the progress
-                for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
-                                 desc='Downloading ' + self.tar_file_name + '.tar',
-                                 total=ceil((remaining_size + local_size) / chunk_size),
-                                 initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
-                    if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
-                        helpers.update_file_lock(base_file=tar_file_path_part, user=user,
-                                                 part_size_byte=os.path.getsize(tar_file_path_part),
-                                                 total_size_byte=full_size_origin)
-                    f.write(data)
-            except Exception as e:
-                raise
+            # Write the data and output the progress
+            for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
+                             desc='Downloading ' + self.tar_file_name + '.tar',
+                             total=ceil((remaining_size + local_size) / chunk_size),
+                             initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
+                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                    helpers.update_file_lock(base_file=tar_file_path_part, user=user,
+                                             part_size_byte=os.path.getsize(tar_file_path_part),
+                                             total_size_byte=full_size_origin)
+                f.write(data)
 
             dl_r.close()
 
