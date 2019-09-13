@@ -9,11 +9,6 @@ async function main() {
     const {PORT_NODE,SITE_IP} = CONSTANTS
     
     //For these routes (and sub routes that partical match), use these files for routing.
-    app_express.use('/routes', (req, res) => {
-        res.json(
-            {routes:app_express._router.stack}
-        )
-    })
     app_express.use('/images', require('./routes/images'))
     app_express.use('/test', require('./routes/test'))
 
