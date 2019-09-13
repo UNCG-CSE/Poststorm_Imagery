@@ -13,13 +13,13 @@ from collector.ConnectionHandler import ConnectionHandler
 from collector.Storm import Storm
 from collector.TarRef import TarRef
 
-################################################################
-# Build and document parameters for the command-line arguments #
-################################################################
-
 DATA_PATH: Union[bytes, str] = os.path.abspath(strings.DATA_PATH)
-TAR_PATH_CACHE: Union[bytes, str] = os.path.join(DATA_PATH, strings.TAR_CACHE)
+TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, strings.TAR_CACHE)
 
+
+################################################
+# Define command-line parameters and arguments #
+################################################
 
 parser = argparse.ArgumentParser(prog='collect')
 
@@ -34,7 +34,7 @@ parser.add_argument('--tar', '-t', default='.*',
                          'found as well as the file name (excluding the .tar) and the label (usually "TIF" or '
                          '"RAW JPEG". Defaults to ALL .tar files (%(default)s).')
 
-parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
+parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
 
 parser.add_argument('--user', '-u', default=getpass.getuser(),
@@ -52,7 +52,7 @@ parser.add_argument('--overwrite', '-o', action='store_true',
                     help='If included, the program will overwrite any existing .tar files found in the directory by '
                          'the same name (Default: %(default)s).')
 
-# Add custom OPTIONS to the script when running command line
+# Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
 # Convert string to absolute path for uniformity
@@ -61,36 +61,32 @@ DOWNLOAD_PATH = os.path.abspath(OPTIONS.path)
 # Expand out any path keywords or variables
 DOWNLOAD_PATH = os.path.expanduser(os.path.expandvars(DOWNLOAD_PATH))
 
-
-#######################################
-# Start the actual collection of data #
-#######################################
-
-
 c = ConnectionHandler()
 
 storms: List[Storm] = c.get_storm_list(OPTIONS.storm)
 
-# Present the storm as a number the user can reference quickly
-storm_number: int = 1
-
-# Keep a running total of the number of bytes of the download
-stat_total_tar_size: int = 0
-
-# Keep a running total of the number of bytes of downloaded already
-stat_total_tar_downloaded: int = 0
-
 # Only display status report if user requests it, otherwise just start downloads
 if OPTIONS.no_status is False:
+
+    storm_number: int = 1  # Displayed number associates with storm list
+    stat_total_tar_size: int = 0  # Running total of bytes on website
+    stat_total_tar_downloaded: int = 0  # Running total of bytes downloaded (all local .tar files)
+
+
+    #############################################
+    # Start the actual collection of .tar files #
+    #############################################
+
     print('Download Status Report (' + datetime.now().strftime(strings.STRFTIME_FORMAT) + ') <-s ' + OPTIONS.storm +
           ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__ + '\n')
 
     for storm in storms:
+
+        # Output storm number, name, and year
         print(storm_number, '.  \t', storm)
 
-        stat_storm_tar_size: int = 0
-
-        tar_list: List[TarRef] = storms[storm_number - 1].get_tar_list(OPTIONS.tar)
+        stat_storm_tar_size: int = 0  # Running total of bytes downloaded (by storm)
+        tar_list: List[TarRef] = storm.get_tar_list(OPTIONS.tar)  # All TarRef for the storm
 
         if len(tar_list) > 0:
             for tar_file in tar_list:
@@ -170,6 +166,11 @@ if OPTIONS.no_status is False:
         storm_number += 1
 
     print('Total: ' + helpers.to_readable_bytes(stat_total_tar_downloaded) + ' / ' + helpers.to_readable_bytes(stat_total_tar_size))
+
+
+#############################################
+# Start the actual collection of .tar files #
+#############################################
 
 if OPTIONS.download:
     for storm in storms:
