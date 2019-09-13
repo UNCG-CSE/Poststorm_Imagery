@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from collector import helpers
 from collector.ResponseGetter import get_full_content_length
+from collector.helpers import update_file_lock
 
 UNKNOWN = 'Unknown'
 
@@ -168,7 +169,7 @@ class TarRef:
                                  total=ceil((remaining_size + local_size) / chunk_size),
                                  initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
                     if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
-                        helpers.update_file_lock(part_file=tar_file_path_part, user=user,
+                        helpers.update_file_lock(base_file=tar_file_path_part, user=user,
                                                  part_size_byte=os.path.getsize(tar_file_path_part),
                                                  total_size_byte=full_size_origin)
                     f.write(data)
@@ -190,8 +191,10 @@ class TarRef:
         os.rename(tar_file_path_part, self.tar_file_path)
 
         # Remove the lock file
-        # os.remove(tar_file_path_part + '.lock')
-        # TODO: Implement check for file downloaded, but not fully synced in Google Drive
+        os.remove(tar_file_path_part + '.lock')
+
+        # Tell others that the full file is downloaded
+        update_file_lock(base_file=self.tar_file_path, user=user)
 
         return tarfile.open(self.tar_file_path)
 

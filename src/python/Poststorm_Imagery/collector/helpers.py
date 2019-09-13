@@ -12,9 +12,9 @@ def get_byte_size_readable(byte_count: int) -> str:
         return str(round(byte_count / 2 ** 30, 2)) + ' GiBs'
 
 
-def update_file_lock(part_file: str or Union[bytes, str], user: str, part_size_byte: None or int = None,
+def update_file_lock(base_file: str or Union[bytes, str], user: str, part_size_byte: None or int = None,
                      total_size_byte: None or int = None):
-    lock = open(part_file + '.lock', 'w')
+    lock = open(base_file + '.lock', 'w')
     lock.write('user = ' + user + '\n')
     if part_size_byte is not None:
         lock.writelines('size_bytes = ' + str(part_size_byte) + '\n')
@@ -24,11 +24,11 @@ def update_file_lock(part_file: str or Union[bytes, str], user: str, part_size_b
     lock.close()
 
 
-def get_lock_info(part_file: str or Union[bytes, str]) -> Dict:
-    if os.path.exists(part_file + '.lock') is False:
+def get_lock_info(base_file: str or Union[bytes, str]) -> Dict:
+    if os.path.exists(base_file + '.lock') is False:
         return {'user': None, 'size_bytes': None, 'total_size_bytes': None}
 
-    with open(part_file + '.lock', 'r') as lock:
+    with open(base_file + '.lock', 'r') as lock:
         output = {'user': None, 'size_bytes': None, 'total_size_bytes': None}
         for line in lock.readlines():
             if line.startswith('user = '):
@@ -42,11 +42,11 @@ def get_lock_info(part_file: str or Union[bytes, str]) -> Dict:
         return output
 
 
-def is_locked_by_another_user(part_file: str or Union[bytes, str], this_user: str) -> bool:
-    if os.path.exists(part_file) is False:
+def is_locked_by_another_user(base_file: str or Union[bytes, str], this_user: str) -> bool:
+    if os.path.exists(base_file) is False:
         return False
 
-    with open(part_file + '.lock', 'r') as lock:
+    with open(base_file + '.lock', 'r') as lock:
         for line in lock.readlines():
             if line.startswith('user = '):
                 if line.endswith(this_user):
