@@ -187,6 +187,7 @@ if OPTIONS.download:
                     elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
 
                         tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
+                        download_incomplete = False
 
                     else:
                         print('Another user is in the process of downloading ' + tar.tar_file_name +
