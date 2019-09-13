@@ -7,8 +7,6 @@ from math import floor
 
 from typing import List, Union
 
-import requests
-
 from collector import h, s
 from collector.ConnectionHandler import ConnectionHandler
 from collector.Storm import Storm
@@ -77,7 +75,7 @@ if OPTIONS.no_status is False:
     ############################################
 
     print('Download Status Report (' + datetime.now().strftime(s.FORMAT_TIME) + ') <-s ' + OPTIONS.storm +
-          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__ + '\n')
+          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '>\n')
 
     for storm in storms:
         stat_storm_tar_size: int = 0  # Running total of bytes downloaded (by storm)
