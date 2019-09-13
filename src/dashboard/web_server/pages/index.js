@@ -1,6 +1,6 @@
 import Layout from '../src/components/layout'
 import Fetch from 'isomorphic-unfetch';
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol,MDBContainer } from 'mdbreact';
 import public_ip from 'public-ip'
 
 const SAD_FACE =`
@@ -13,7 +13,7 @@ const Index = (props) => (
         <center>
             <MDBCol className="pt-2">
                 <MDBCard style={{ width: "auto" }} className="stylish-color-dark">
-                    <MDBCardImage className="w-75 img-fluid pt-4 pb-4 px-2" src={props.data.file_url || SAD_FACE} alt="The big sad"waves />
+                    <MDBCardImage className=" img-fluid pt-4 pb-4 px-2" src={props.data.url || SAD_FACE} alt="The big sad" waves width="768"/>
                     <MDBCardBody >
                         <MDBCardTitle className="white-text h3">{props.data.file_name}</MDBCardTitle>
                         <MDBCardText className="white-text">
@@ -22,9 +22,9 @@ const Index = (props) => (
                                     Wowe api call
                                 </u>
                             </b>
-                            <p className='green-text'>
-                            {JSON.stringify(props, null, 4)}
-                            </p>
+                        </MDBCardText>
+                        <MDBCardText className="green-text">       
+                            {JSON.stringify(props, null, 4)}   
                         </MDBCardText>
                         <MDBBtn href="register">I dont do anything yet,sorta</MDBBtn>
                     </MDBCardBody>
@@ -44,10 +44,10 @@ Index.getInitialProps = async function() {
         file_url:undefined,
         file_name:undefined,
         api_url:API_URL,
-        client_ip:IP
+   
     }
 
-    const res = await fetch(API_URL).then(async function(received_data) {
+    await fetch(API_URL).then(async function(received_data) {
         
         data = await received_data.json()
         console.log("Image fetched");
@@ -57,8 +57,7 @@ Index.getInitialProps = async function() {
     });
       
     return {
-        data:data,
-        client_ip:IP
+        data:data
     }
 }
 

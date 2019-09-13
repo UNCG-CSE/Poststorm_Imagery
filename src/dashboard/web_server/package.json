@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
-    "devn": "nodemon server.js",
+    "noden": "nodemon node_server.js",
+    "webn": "nodemon web_server.js",
     "build": "next build",
     "export": "next export",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node web_server.js"
   },
   "keywords": [],
   "author": "",
