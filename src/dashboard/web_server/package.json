@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "noden": "nodemon node_server.js",
-    "webn": "nodemon web_server.js",
+    "webn": "node web_server.js",
     "build": "next build",
     "export": "next export",
     "start": "NODE_ENV=production node web_server.js"
