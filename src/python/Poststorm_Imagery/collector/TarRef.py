@@ -10,7 +10,6 @@ from tqdm import tqdm
 
 from collector import h, s
 from collector.ResponseGetter import get_full_content_length
-from collector.h import update_file_lock
 
 UNKNOWN = 'Unknown'
 
@@ -193,7 +192,7 @@ class TarRef:
         os.remove(tar_file_path_part + s.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
-        update_file_lock(base_file=self.tar_file_path, user=user,
+        h.update_file_lock(base_file=self.tar_file_path, user=user,
                          total_size_byte=full_size_origin, part_size_byte=full_size_origin)
 
         if verify_integrity(self.tar_file_path) is False:
