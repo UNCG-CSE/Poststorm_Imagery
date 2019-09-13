@@ -1,14 +1,16 @@
 import argparse
+import getpass
 import os
 import time
 from datetime import datetime
 
 from typing import List, Union
 
-from src.python.Poststorm_Imagery import __version__
-from src.python.Poststorm_Imagery.collector import TarRef, helpers
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
-from src.python.Poststorm_Imagery.collector.Storm import Storm
+import requests
+
+from collector import TarRef, helpers
+from collector.ConnectionHandler import ConnectionHandler
+from collector.Storm import Storm
 
 ################################################################
 # Build and document parameters for the command-line arguments #
@@ -33,6 +35,9 @@ parser.add_argument('--tar', '-t', default='.*',
 
 parser.add_argument('--path', '-p', default=TAR_PATH_CACHE,
                     help='The path on your system to download the tar files to (Default: %(default)s).')
+
+parser.add_argument('--user', '-u', default=getpass.getuser(),
+                    help='The current user downloading the file (Default: %(default)s).')
 
 parser.add_argument('--download', '-d', action='store_true',
                     help='If included, the program will automatically download all files found, sequentially '
@@ -76,7 +81,7 @@ stat_total_tar_downloaded: int = 0
 
 if OPTIONS.no_status is False:
     print('Download Status Report (' + datetime.now().strftime("%B %d, %Y at %I:%M %p") + ') <-s ' + OPTIONS.storm +
-          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + __version__)
+          ' -t ' + OPTIONS.tar + ' -p ' + OPTIONS.path + '> on v' + requests.__version__)
     print()
 
     for storm in storms:
@@ -95,7 +100,18 @@ if OPTIONS.no_status is False:
                 tar_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
                                              str(tar_file.tar_file_name) + '.tar')
 
-                if os.path.exists(tar_file_path):
+                if os.path.exists(tar_file_path + '.lock'):
+
+                    lock_info = helpers.get_lock_info(base_file=tar_file_path)
+                    user: str = lock_info['user']
+                    total_size: int = lock_info['total_size_bytes']
+
+                    exists_str += 'Fully downloaded (' + user + '): ' + \
+                                  helpers.get_byte_size_readable(total_size)
+
+                    stat_total_tar_downloaded += total_size
+
+                elif os.path.exists(tar_file_path):
                     exists_str += 'Fully downloaded: ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      tar_file_path))
@@ -105,8 +121,25 @@ if OPTIONS.no_status is False:
                     else:
                         stat_total_tar_downloaded += os.path.getsize(tar_file_path)
 
+                elif os.path.exists(tar_file_path + '.part.lock'):
+
+                    lock_info = helpers.get_lock_info(base_file=tar_file_path + '.part')
+                    partial_size: int = lock_info['size_bytes']
+                    total_size: int = lock_info['total_size_bytes']
+                    user: str = lock_info['user']
+
+                    exists_str += 'Partially downloaded (' + user + '): ' + \
+                                  helpers.get_byte_size_readable(partial_size) + '  ... Last Update: ' + \
+                                  str(datetime.fromtimestamp(os.path.getmtime(tar_file_path + '.part.lock'))
+                                      .strftime("%B %d, %Y at %I:%M %p"))
+
+                    if total_size is not None and total_size != tar_file.get_file_size_origin():
+                        exists_str += '  ... ERROR: Total size in lock file does not match the website copy!'
+                    else:
+                        stat_total_tar_downloaded += partial_size
+
                 elif os.path.exists(tar_file_path + '.part'):
-                    exists_str += 'Partially downloaded (local): ' + \
+                    exists_str += 'Partially downloaded: ' + \
                                  helpers.get_byte_size_readable(os.path.getsize(
                                      tar_file_path + '.part'))
 
@@ -142,17 +175,32 @@ if OPTIONS.download:
 
             while download_incomplete:
                 try:
-                    tar.download_url(output_dir=save_path, overwrite=OPTIONS.overwrite)
-                    if TarRef.verify_integrity(tar.tar_file_path) is False:
-                        print('Integrity could not be verified!')
-                        os.remove(tar.tar_file_path)
-                    else:
-                        print('Extracting files...')
-                        TarRef.extract_archive(tar.tar_file_path)
+                    lock_info_part = helpers.get_lock_info(
+                        base_file=os.path.join(save_path, str(tar.tar_file_name) + '.tar.part'))
+
+                    if OPTIONS.overwrite is False and \
+                        helpers.is_locked_by_another_user(base_file=str(tar.tar_file_name) + '.tar',
+                                                          this_user=OPTIONS.user):
+
+                        print('Another user has fully downloaded ' + tar.tar_file_name +
+                              '.tar!  ... Skipping')
                         download_incomplete = False
+
+                    elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
+
+                        tar.download_url(output_dir=save_path, user=OPTIONS.user, overwrite=OPTIONS.overwrite)
+                        download_incomplete = False
+
+                    else:
+                        print('Another user is in the process of downloading ' + tar.tar_file_name +
+                              '.tar!  ... Skipping')
+                        download_incomplete = False
+
+                except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError) as e:
+                    print('The download ran into a connection error: ' + str(e))
+                except ConnectionRefusedError as e:
+                    print('I don\'t think the website likes you right now. Error: ' + str(e))
                 except Exception as e:
-                    if e == KeyboardInterrupt or SystemExit:
-                        raise
                     print('The download encountered an error: ' + str(e))
 
                 if download_incomplete:
