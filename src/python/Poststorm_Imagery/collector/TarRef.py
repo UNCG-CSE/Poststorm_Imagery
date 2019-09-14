@@ -224,6 +224,3 @@ class TarRef:
             return self.tar_file_origin_size
 
         return get_full_content_length(self.tar_url)
-
-
-
