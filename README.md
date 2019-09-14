@@ -57,7 +57,8 @@ This is the main place to submit new code.
 
 ***You will need these in order to run the project.***
 
-Once you have these installed, you can run `python3 setup.py install` to get started.
+Once you have these installed, you can run `python3 setup.py install` from within the 
+outer [`Poststorm_Imagery`](./) directory to get started.
 
 ## Data Source 💾
 
