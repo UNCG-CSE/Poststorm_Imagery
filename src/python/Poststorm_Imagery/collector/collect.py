@@ -7,6 +7,8 @@ from math import floor
 
 from typing import List, Union
 
+from requests.exceptions import RequestException
+
 from src.python.Poststorm_Imagery.collector import h, s
 from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
 from src.python.Poststorm_Imagery.collector.Storm import Storm
@@ -231,9 +233,9 @@ if OPTIONS.download:
                         print('Another user is in the process of downloading ', tar.tar_file_name, '.tar!  ... Skipping')
                         download_incomplete = False
 
-                except (ConnectionError, ConnectionResetError, ConnectionAbortedError, ConnectionResetError) as e:
+                except ConnectionError as e:
                     print('The download ran into a connection error: ' + str(e))
-                except ConnectionRefusedError as e:
+                except RequestException as e:
                     print('I don\'t think the website likes you right now. Error: ' + str(e))
 
                 if download_incomplete:
