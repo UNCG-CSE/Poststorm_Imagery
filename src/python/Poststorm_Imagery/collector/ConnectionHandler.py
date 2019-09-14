@@ -6,12 +6,7 @@ from src.python.Poststorm_Imagery.collector.Storm import Storm
 
 from requests import Response
 
-URL_BASE = 'https://storms.ngs.noaa.gov/'
-URL_STORMS = URL_BASE + 'storms/'
-
-# Matches reference link to each storm (HTML)
-URL_STORMS_REGEX_PATTERN_INDEX = "<a href=\"(.+/storms/([^/]+)/index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>"
-# Groups: <storm_url>, <storm_id>, <storm_title>, <storm_year>
+from src.python.Poststorm_Imagery.collector import s
 
 
 class ConnectionHandler:
@@ -19,17 +14,17 @@ class ConnectionHandler:
     the NOAA website, reachable by HTTP(S)
     """
 
-    r: Response  # Declare variable to hold the HTTP request information
+    html_text: str  # Declare variable to hold the HTML file text
 
     storm_list: List[Storm] = list()
     storm_list_last_pattern: str = None
 
-    def __init__(self):
+    def __init__(self, html_text: str = get_http_response(s.URL_BASE).text):
         """Connect to the website and analyze the content"""
-        self.r = get_http_response(URL_BASE)
+        self.html_text = html_text
         self.generate_storm_list()
 
-    def generate_storm_list(self, search_re: str = '.*'):
+    def generate_storm_list(self, search_re: str = '.*') -> List[Storm]:
         """Generates a list of tracked storms from the HTTP request
 
         :param search_re: A regular expression to search all general storm data for. Search applies to storm name and year.
@@ -45,11 +40,13 @@ class ConnectionHandler:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for storm_url, storm_id, storm_name, storm_year in re.findall(URL_STORMS_REGEX_PATTERN_INDEX, self.r.text):
+        for storm_url, storm_id, storm_name, storm_year in re.findall(s.URL_STORMS_REGEX_PATTERN_INDEX, self.html_text):
 
             # Search for the given pattern
             if re.search(search_re, storm_id) or re.search(search_re, storm_name) or re.search(search_re, storm_year):
                 self.storm_list.append(Storm(storm_url, storm_id, storm_name, storm_year))
+
+        return self.storm_list
 
     def get_storm_list(self, search_re: str = '.*') -> List[Storm]:
         """Retrieve a list of all storms that match a particular regular expression
