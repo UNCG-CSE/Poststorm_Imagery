@@ -52,7 +52,7 @@ specific arguments.
     ![Screenshot of `-t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`](./collector_images/5.png)  
     
     
-### Important Notes
+## Important Notes
 
 The script will automatically download all .tar files listed, sequentially, to the [`--path`](#example-usage)
 specified, or to the default cache folder if [`--path`](#example-usage) is left out of the parameters. 
