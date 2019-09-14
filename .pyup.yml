@@ -26,7 +26,8 @@ search: True
 # default: empty
 # allowed: list
 requirements:
-    -requirements-dev.txt
+    - requirements.txt
+    - requirements-dev.txt
     - Pipfile
     - Pipfile.lock
 
@@ -44,7 +45,7 @@ label_prs: update
 
 # configure the branch prefix the bot is using
 # default: pyup-
-branch_prefix: pyup/
+branch_prefix: pyup-
 
 # set a global prefix for PRs
 # default: empty
