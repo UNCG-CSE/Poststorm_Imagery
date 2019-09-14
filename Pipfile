@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 bumpversion = "*"
+mkdocs-macros-plugin = "*"
+mkdocs-git-revision-date-plugin = "*"
 
 [packages]
 requests = "*"
