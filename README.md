@@ -57,6 +57,8 @@ This is the main place to submit new code.
 
 ***You will need these in order to run the project.***
 
+Once you have these installed, you can run `python3 setup.py install` to get started.
+
 ## Data Source 💾
 
 - NOAA landing page for the post-storm imagery, [**here**]( https://storms.ngs.noaa.gov)
