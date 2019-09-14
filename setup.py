@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-setup_requirements = ['pytest-runner', 'pipenv']
-from pipenv.project import Project
-from pipenv.utils import convert_deps_to_pip
+
 from setuptools import setup
 
 # with open('README.md') as readme_file:
 #     readme = readme_file.read()
 
-pipfile = Project(chdir=False).parsed_pipfile
-requirements = convert_deps_to_pip(pipfile['packages'], r=False)
-test_requirements = convert_deps_to_pip(pipfile['dev-packages'], r=False)
+requirements = []
+
+setup_requirements = ['pytest-runner']
+
+test_requirements = ['pytest']
 
 setup(
     author="Matthew Charles Moretz",
