@@ -8,8 +8,8 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
-from collector import h, s
-from collector.ResponseGetter import get_full_content_length
+from src.python.Poststorm_Imagery.collector import h, s
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
 
 UNKNOWN = 'Unknown'
 
