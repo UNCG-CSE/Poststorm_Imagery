@@ -1,12 +1,12 @@
 # configure updates globally
 # default: all
 # allowed: all, insecure, False
-update: all
+#update: all
 
 # configure dependency pinning globally
 # default: True
 # allowed: True, False
-pin: True
+#pin: True
 
 # set the default branch
 # default: empty, the default branch on GitHub
@@ -20,21 +20,21 @@ schedule: "every day"
 # search for requirement files
 # default: True
 # allowed: True, False
-search: True
+#search: True
 
 # Specify requirement files by hand, default is empty
 # default: empty
 # allowed: list
 requirements:
-    - requirements.txt
-    - requirements-dev.txt
-    - Pipfile
-    - Pipfile.lock
+- requirements.txt
+- requirements-dev.txt
+- Pipfile
+- Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
 # default: empty
-label_prs: update
+#label_prs: update
 
 # assign users to pull requests, default is not set
 # requires private repo permissions, even on public repos
@@ -45,7 +45,7 @@ label_prs: update
 
 # configure the branch prefix the bot is using
 # default: pyup-
-branch_prefix: pyup-
+#branch_prefix: pyup-
 
 # set a global prefix for PRs
 # default: empty
@@ -53,4 +53,4 @@ branch_prefix: pyup-
 
 # allow to close stale PRs
 # default: True
-close_prs: True
+#close_prs: True
