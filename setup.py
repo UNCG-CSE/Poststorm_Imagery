@@ -2,17 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-
+setup_requirements = ['pytest-runner', 'pipenv']
+from pipenv.project import Project
+from pipenv.utils import convert_deps_to_pip
 from setuptools import setup
 
 # with open('README.md') as readme_file:
 #     readme = readme_file.read()
-
-
-from pipenv.project import Project
-from pipenv.utils import convert_deps_to_pip
-
-setup_requirements = ['pytest-runner']
 
 pipfile = Project(chdir=False).parsed_pipfile
 requirements = convert_deps_to_pip(pipfile['packages'], r=False)
