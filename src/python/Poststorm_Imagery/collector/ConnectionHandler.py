@@ -9,10 +9,6 @@ from requests import Response
 from collector import s
 
 
-# Matches reference link to each storm (HTML)
-# Groups: <storm_url>, <storm_id>, <storm_title>, <storm_year>
-
-
 class ConnectionHandler:
     """An object that facilitates the connection between the user's computer and
     the NOAA website, reachable by HTTP(S)
