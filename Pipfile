@@ -4,12 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+bumpversion = "*"
+mkdocs-macros-plugin = "*"
+mkdocs-git-revision-date-plugin = "*"
 
 [packages]
-jupyter = "*"
 requests = "*"
 tqdm = "*"
-pytest = "*"
 
 [requires]
 python_version = "3.6"
