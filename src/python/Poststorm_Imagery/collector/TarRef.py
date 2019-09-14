@@ -121,7 +121,7 @@ class TarRef:
 
             # If the tar file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.tar_file_path):
-                print('File \"' + self.tar_file_path + '\" already exists. (Specify flag \'-o\' to overwrite)')
+                print('File \"' + self.tar_file_path + '\" already exists!  ... Skipping')
                 return tarfile.open(self.tar_file_path)
 
         # Create the directory specified if it does not exist
