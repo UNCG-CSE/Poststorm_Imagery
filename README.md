@@ -52,7 +52,7 @@ This is the main place to submit new code.
 
 ## Project Pre-Requisites 📋
 
-- Python 3.5, 3.6, or 3.7
+- Python 3.6 or 3.7
 - Pipenv
 
 ***You will need these in order to run the project.***
