@@ -12,5 +12,10 @@ nav:
 
 theme: readthedocs
 
+plugins:
+    - search
+    - git-revision-date
+    - macros
+
 extra:
-    version: 0.5.2
+    version: 0.5.4
