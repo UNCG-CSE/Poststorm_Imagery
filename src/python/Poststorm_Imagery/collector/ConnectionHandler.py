@@ -14,7 +14,7 @@ class ConnectionHandler:
     the NOAA website, reachable by HTTP(S)
     """
 
-    html_text: str  # Declare variable to hold the HTML file text
+    html_text: str = None  # Declare variable to hold the HTML file text
 
     storm_list: List[Storm] = list()
     storm_list_last_pattern: str = None
