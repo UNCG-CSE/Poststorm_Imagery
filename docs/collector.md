@@ -1,6 +1,6 @@
 # Collector Script
 
-**Last revision of doc:** v0.5.2
+**Document Updated:** {{ git_revision_date }}
 
 In order to pull data from the NOAA website, [`collect.py`](../src/python/Poststorm_Imagery/collector/collect.py) 
 is provided to automate the process of gathering data. Currently, the script can be called via command-line using 
