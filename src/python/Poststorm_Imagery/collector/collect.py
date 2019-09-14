@@ -7,10 +7,10 @@ from math import floor
 
 from typing import List, Union
 
-from collector import h, s
-from collector.ConnectionHandler import ConnectionHandler
-from collector.Storm import Storm
-from collector.TarRef import TarRef
+from src.python.Poststorm_Imagery.collector import h, s
+from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.Storm import Storm
+from src.python.Poststorm_Imagery.collector.TarRef import TarRef
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)

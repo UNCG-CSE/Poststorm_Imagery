@@ -2,7 +2,7 @@ import os
 import re
 from typing import Union, Dict
 
-from collector import s
+from src.python.Poststorm_Imagery.collector import s
 
 
 def to_readable_bytes(byte_count: int) -> str:
