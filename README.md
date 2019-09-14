@@ -14,7 +14,7 @@ Classification and analysis of post-storm response imagery.
 ## Table of Contents <!-- omit in toc -->
 
 - [Team C-Sick 🤢](#team-c-sick-)
-- [Project Pre-Requisites 📋](#project-pre-requisites-)
+- [Getting the Project Running 📋](#getting-the-project-running-)
 - [Contribution Conventions](#contribution-conventions)
 - [Data Source 💾](#data-source-)
 
@@ -35,7 +35,7 @@ Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contribution Conventions
 
-Before committing to the repository **please** read [CONTRIBUTE.md](docs/CONTRIBUTE.md)
+Before committing to the repository **please** read [**CONTRIBUTE.md**](docs/CONTRIBUTE.md)
 
 ## Beta Branch
 
@@ -50,15 +50,27 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 This is the main place to submit new code.
 
-## Project Pre-Requisites 📋
+## Getting the Project Running 📋
 
-- Python 3.6 or 3.7
-- Pipenv
+### Project Pre-Requisites
+
+1. Python 3.6 or 3.7 [**(Download Here)**](https://www.python.org/downloads/)
+2. Pipenv **(Run `pip install pipenv`)**
 
 ***You will need these in order to run the project.***
 
-Once you have these installed, you can run `python3 setup.py install` from within the 
-outer [`Poststorm_Imagery`](./) directory to get started.
+### Installing Dependencies
+
+1. Change current directory (`cd`) to the root of this project (outer-most [`Poststorm_Imagery`](.))
+2. Run `pipenv install` to install dependencies
+
+### Collecting Data
+
+1. Change current directory (`cd src/python/Poststorm_Imagery/collector/`)
+2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
+
+*The arguments for `collect.py` are listed [**here**](./docs/collector.md)*
+
 
 ## Data Source 💾
 
