@@ -4,3 +4,4 @@ ignore:
 #  - "**/*.py"         # glob accepted
 #  - "[a-z]+/test_.*"  # regexp accepted
   - "src/python/Poststorm_Imagery/collector/collect.py"
+  - "test_*.py"
