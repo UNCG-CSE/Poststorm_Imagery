@@ -37,7 +37,7 @@ setup(
     # packages=find_packages(include=['python']),
     packages=['src/python/Poststorm_Imagery'],
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite='src/python/tests',
     tests_require=test_requirements,
     url='https://github.com/UNCG-CSE/Poststorm_Imagery',
     version='0.5.4',
