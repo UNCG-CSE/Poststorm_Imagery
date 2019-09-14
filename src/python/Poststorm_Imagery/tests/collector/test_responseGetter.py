@@ -2,8 +2,7 @@ from unittest import TestCase
 
 import requests
 
-from src.python.Poststorm_Imagery.collector.ResponseGetter import get_http_response
-from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
+from src.python.Poststorm_Imagery.collector.ResponseGetter import get_http_response, get_full_content_length
 
 
 class TestResponseGetter(TestCase):
