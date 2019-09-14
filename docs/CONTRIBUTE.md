@@ -2,7 +2,7 @@
 
 When committing to the repository, there are a few conventions that should be followed...
 
-## Code Style:
+## Code Style
 
 - Code is clean and commented where needed
 - Any unused code is either removed or commented out
