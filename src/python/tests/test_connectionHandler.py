@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
 
 
 class TestConnectionHandler(TestCase):
