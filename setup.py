@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 requirements: []
 
-with open('./requirements.txt') as reqs:
+with open('requirements.txt') as reqs:
     requirements = reqs.read().splitlines()
 
 setup_requirements = ['pytest-runner']
