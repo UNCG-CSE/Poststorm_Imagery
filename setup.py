@@ -3,16 +3,16 @@
 
 """The setup script."""
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
-with open('README.md') as readme_file:
-    readme = readme_file.read()
+# with open('README.md') as readme_file:
+#     readme = readme_file.read()
 
 requirements = []
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = ['pytest-runner']
 
-test_requirements = ['pytest', ]
+test_requirements = ['pytest']
 
 setup(
     author="Matthew Charles Moretz",
@@ -30,15 +30,16 @@ setup(
     description="Classification and analysis of post-storm response imagery.",
     install_requires=requirements,
     license="MIT license",
-    long_description=readme,
+    # long_description=readme,
     include_package_data=True,
     keywords='python',
     name='python',
-    packages=find_packages(include=['python']),
+    # packages=find_packages(include=['python']),
+    packages=['src/python/Poststorm_Imagery'],
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/Matmorcat/Poststorm_Imagery',
+    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
     version='0.5.4',
     zip_safe=False,
 )
