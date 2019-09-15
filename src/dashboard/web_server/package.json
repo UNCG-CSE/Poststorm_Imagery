@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "node": "nodemon node_server.js",
-    "node-host":"nodemon node_server.js host",
+    "node-host": "nodemon node_server.js host",
     "web": "node web_server.js",
     "web-host": "node web_server.js host",
     "build": "next build",
