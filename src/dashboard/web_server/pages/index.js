@@ -13,6 +13,18 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
+
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+
+
 import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 240;
@@ -21,6 +33,9 @@ https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-101
 `;
 
 const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(3),
+  },
   root_grid: {
     display: "flex",
     flexWrap: "wrap",
@@ -69,8 +84,7 @@ const useStyles = makeStyles(theme => ({
     color: "rgba(255, 255, 255, 0.54)"
   },
   card: {
-    maxWidth: 700,
-    maxHeight:700
+    maxWidth: 700
   },
   
   media: {
@@ -81,9 +95,27 @@ const useStyles = makeStyles(theme => ({
 function Index(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [value, setValue] = React.useState('female');
+
+  function handleChange(event) {
+    setValue(event.target.value);
+  }
   function handleExpandClick() {
     setExpanded(!expanded);
   }
+
+  const [state, setState] = React.useState({
+    Marsh: false,
+    River: false,
+    SandyCoastline: false,
+  });
+
+  const handleChange_checkbox = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+  };
+
+  const { Marsh, River, SandyCoastline } = state;
+  const error = [Marsh, River, SandyCoastline].filter(v => v).length !== 2;
 
   return (
     <Layout>
@@ -109,8 +141,62 @@ function Index(props) {
             <Typography variant="body2" color="textSecondary" component="p">
             {JSON.stringify(props.data, null, 4)}
             </Typography>
+            
           </CardContent>
         </CardActionArea>
+
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend" style={MyTheme.palette.amber500}>Development type</FormLabel>
+          <RadioGroup aria-label="DevType" name="DevType" value={value} onChange={handleChange} row>
+            <FormControlLabel value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
+            <FormControlLabel value="Undevelopd" control={<Radio style={MyTheme.palette.amber500} />} label="Undevelopd" />
+          </RadioGroup>
+        </FormControl>
+
+        <br/>
+
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend" style={MyTheme.palette.purple500}>Land Type</FormLabel>
+          <FormGroup row>
+            <FormControlLabel
+              control={<Checkbox checked={River} onChange={handleChange_checkbox('River')} value="River" style={MyTheme.palette.purple500}/>}
+              label="River" 
+            />
+            <FormControlLabel
+              control={<Checkbox checked={Marsh} onChange={handleChange_checkbox('Marsh')} value="Marsh" style={MyTheme.palette.purple500}/>}
+              label="Marsh" 
+            />
+            <FormControlLabel
+              control={
+                <Checkbox checked={SandyCoastline} onChange={handleChange_checkbox('SandyCoastline')} value="Sandy Coastline" style={MyTheme.palette.purple500}/>
+              }
+              label="Sandy Coastline" 
+            />
+          </FormGroup>
+        </FormControl>
+        
+        <br/>
+
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend" style={MyTheme.palette.blue500}>Washover type</FormLabel>
+          <RadioGroup aria-label="WashoverType" name="WashoverType" value={value} onChange={handleChange} row>
+            <FormControlLabel value="Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="Visable Washover"  />
+            <FormControlLabel value="No Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="No Visable Washover" />
+          </RadioGroup>
+        </FormControl>
+
+        <br/>
+
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend" style={MyTheme.palette.green500}>IDK WHAT TO CALL THIS</FormLabel>
+          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={value} onChange={handleChange} row>
+            <FormControlLabel value="Swash" control={<Radio style={MyTheme.palette.green500} />} label="Swash"  />
+            <FormControlLabel value="Collision" control={<Radio style={MyTheme.palette.green500} />} label="Collision" />
+            <FormControlLabel value="Inundation" control={<Radio style={MyTheme.palette.green500} />} label="Inundation"  />
+            <FormControlLabel value="Overwash" control={<Radio style={MyTheme.palette.green500} />} label="Overwash" />
+          </RadioGroup>
+        </FormControl>
+
         <CardActions style={MyTheme.palette.blue400BG}>
           <Button size="small" color="primary" style={MyTheme.palette.amber500}>
             Skip

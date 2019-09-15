@@ -78,6 +78,9 @@ const theme = createMuiTheme({
     amber500: {
       color: amber[500]
     },
+    amber500BG: {
+      backgroundColor: amber[500]
+    },
 
     //600
     blueBG600: { 
