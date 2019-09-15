@@ -12,7 +12,9 @@ A JavaScript developed and hosted dashboard to tag Post-Storm images.
 
 ## Requirements 📝
 
-The only requirement is **Node.js** which is JavaScript ran by Chrome's V8 JavaScript engine to basicly allow JavaScript to be ran server side. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
+The first requirement is **Node.js** which is JavaScript ran by Chrome's V8 JavaScript engine to basicly allow JavaScript to be ran server side. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
+
+The second requirment is to have `npm-run-all` package installed globally. Run this command anywhere `npm install -g npm-run-all`
 
 ### Steps to Reproduce 🔎
 
