@@ -1,7 +1,7 @@
 const public_ip = require('public-ip');
 //get cl arg,and remove the first two
 const ARGV=process.argv.slice(2)
-const USE_HOST = ARGV[0] == 'host'
+const USE_HOST = ARGV[0] === 'host'
 
 
 module.exports = (async function() {
