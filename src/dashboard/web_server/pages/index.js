@@ -47,6 +47,10 @@ const ColorButton = withStyles(theme => ({
 }))(Button);
 
 const useStyles = makeStyles(theme => ({
+  //https://codesandbox.io/s/material-ui-both-right-and-left-aligned-icons-in-appbar-2e5qr
+  toolbarButtons: {
+    marginLeft: "auto"
+  },
   formControl: {
     margin: theme.spacing(3),
   },
