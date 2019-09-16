@@ -54,6 +54,12 @@ const theme = createMuiTheme({
     blue500: {
       color: blue[500]
     },
+    blue500BG: {
+      backgroundColor: blue[500]
+    },
+    bluePrimaryBG: {
+      backgroundColor: '#556cd6'
+    },
     orange500: {
       color: orange[500]
     },

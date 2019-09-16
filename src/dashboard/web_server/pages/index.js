@@ -3,7 +3,7 @@ import MyTheme from "../src/theme";
 import React from "react";
 import PropTypes from "prop-types";
 import { createMuiTheme,makeStyles, useTheme, withStyles  } from "@material-ui/core/styles";
-import { red, purple } from '@material-ui/core/colors';
+import { red, green } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
 import Fetch from 'isomorphic-unfetch';
 
@@ -36,7 +36,7 @@ const SAD_FACE = `
 https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg
 `;
 
-const ColorButton = withStyles(theme => ({
+const SkipButton = withStyles(theme => ({
   root: {
     color: theme.palette.getContrastText(red[500]),
     backgroundColor: red[500],
@@ -45,6 +45,17 @@ const ColorButton = withStyles(theme => ({
     },
   },
 }))(Button);
+
+const SubmitButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[900],
+    },
+  },
+}))(Button);
+
 
 const useStyles = makeStyles(theme => ({
   //https://codesandbox.io/s/material-ui-both-right-and-left-aligned-icons-in-appbar-2e5qr
@@ -215,17 +226,17 @@ function Index(props) {
           </RadioGroup>
         </FormControl>
 
-        <CardActions style={MyTheme.palette.cyan800BG}>
+        <CardActions style={MyTheme.palette.bluePrimaryBG}>
           {/* <Button size="small" variant="contained" color="inherit" style={MyTheme.palette.red500}>
             Skip
           </Button> */}
        
-          <ColorButton size="small" variant="contained" color="primary" className={classes.margin}>
+          <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
             Skip
-          </ColorButton>
-          <ColorButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons} styles ={{ marginLeft: "auto"}}>
+          </SkipButton>
+          <SubmitButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons}>
             Submit
-          </ColorButton>
+          </SubmitButton>
         </CardActions>
       </Card>
       </Grid>
