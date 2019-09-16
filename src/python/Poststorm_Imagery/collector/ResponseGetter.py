@@ -14,7 +14,7 @@ def get_http_response(url: str) -> Response:
         if r.status_code == requests.codes.ok:
             return r
         else:
-            print('Connection refused! Returned code: ' + r.status_code)
+            print('Connection refused! Returned code: ' + str(r.status_code))
             exit()
 
     except Exception as e:
