@@ -2,8 +2,12 @@ import Layout from "../components/layout";
 import MyTheme from "../src/theme";
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { createMuiTheme,makeStyles, useTheme, withStyles  } from "@material-ui/core/styles";
+import { red, purple } from '@material-ui/core/colors';
+import { ThemeProvider } from '@material-ui/styles';
 import Fetch from 'isomorphic-unfetch';
+
+
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -31,6 +35,16 @@ const drawerWidth = 240;
 const SAD_FACE = `
 https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg
 `;
+
+const ColorButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(red[500]),
+    backgroundColor: red[500],
+    '&:hover': {
+      backgroundColor: red[900],
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -89,33 +103,33 @@ const useStyles = makeStyles(theme => ({
   
   media: {
     display:'fluid'
-  },
+  }
 }));
 
 function Index(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-  const [value, setValue] = React.useState('female');
 
-  function handleChange(event) {
-    setValue(event.target.value);
-  }
-  function handleExpandClick() {
-    setExpanded(!expanded);
-  }
+  const [devTypeValue, setDevTypeValue] = React.useState('');
+  const [washoverValue, setWashoverValue] = React.useState('');
+  const [IDKVALUE, setIDKVALUE] = React.useState('');
 
-  const [state, setState] = React.useState({
+  function handleChange(fnc,event) {
+    fnc(event.target.value);
+  }
+  
+  //check boxes
+  const [checkbox_state, setState_checkbox] = React.useState({
     Marsh: false,
     River: false,
     SandyCoastline: false,
   });
 
   const handleChange_checkbox = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+    setState_checkbox({ ...checkbox_state, [name]: event.target.checked });
   };
 
-  const { Marsh, River, SandyCoastline } = state;
-  const error = [Marsh, River, SandyCoastline].filter(v => v).length !== 2;
+  const { Marsh, River, SandyCoastline } = checkbox_state;
+  
 
   return (
     <Layout>
@@ -147,9 +161,9 @@ function Index(props) {
 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.amber500}>Development type</FormLabel>
-          <RadioGroup aria-label="DevType" name="DevType" value={value} onChange={handleChange} row>
-            <FormControlLabel value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
-            <FormControlLabel value="Undevelopd" control={<Radio style={MyTheme.palette.amber500} />} label="Undevelopd" />
+          <RadioGroup aria-label="DevType" name="DevType" value={devTypeValue} onChange={(e) => handleChange(setDevTypeValue, e)} row>
+            <FormControlLabel  value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
+            <FormControlLabel  value="Undevelopd" control={<Radio style={MyTheme.palette.amber500} />} label="Undevelopd" />
           </RadioGroup>
         </FormControl>
 
@@ -179,7 +193,7 @@ function Index(props) {
 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.blue500}>Washover type</FormLabel>
-          <RadioGroup aria-label="WashoverType" name="WashoverType" value={value} onChange={handleChange} row>
+          <RadioGroup aria-label="WashoverType" name="WashoverType" value={washoverValue} onChange={(e) => handleChange(setWashoverValue, e)} row>
             <FormControlLabel value="Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="Visable Washover"  />
             <FormControlLabel value="No Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="No Visable Washover" />
           </RadioGroup>
@@ -189,7 +203,7 @@ function Index(props) {
 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.green500}>IDK WHAT TO CALL THIS</FormLabel>
-          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={value} onChange={handleChange} row>
+          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={IDKVALUE} onChange={(e) => handleChange(setIDKVALUE, e)} row>
             <FormControlLabel value="Swash" control={<Radio style={MyTheme.palette.green500} />} label="Swash"  />
             <FormControlLabel value="Collision" control={<Radio style={MyTheme.palette.green500} />} label="Collision" />
             <FormControlLabel value="Inundation" control={<Radio style={MyTheme.palette.green500} />} label="Inundation"  />
@@ -197,10 +211,17 @@ function Index(props) {
           </RadioGroup>
         </FormControl>
 
-        <CardActions style={MyTheme.palette.blue400BG}>
-          <Button size="small" color="primary" style={MyTheme.palette.amber500}>
+        <CardActions style={MyTheme.palette.cyan800BG}>
+          {/* <Button size="small" variant="contained" color="inherit" style={MyTheme.palette.red500}>
             Skip
-          </Button>
+          </Button> */}
+       
+          <ColorButton size="small" variant="contained" color="primary" className={classes.margin}>
+            Skip
+          </ColorButton>
+          <ColorButton right size="small" variant="contained" color="primary" className={classes.margin}>
+            Submit
+          </ColorButton>
         </CardActions>
       </Card>
       </Grid>

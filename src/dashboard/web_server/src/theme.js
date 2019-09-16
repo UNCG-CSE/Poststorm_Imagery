@@ -91,6 +91,11 @@ const theme = createMuiTheme({
     yellow700: {
       color: yellow['A200']
     },
+
+    //800
+    cyan800BG: {
+      backgroundColor: cyan['800']
+    }
     
   },
 });
