@@ -223,7 +223,7 @@ function Index(props) {
           <ColorButton size="small" variant="contained" color="primary" className={classes.margin}>
             Skip
           </ColorButton>
-          <ColorButton right size="small" variant="contained" color="primary" className={classes.margin}>
+          <ColorButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons} styles ={{ marginLeft: "auto"}}>
             Submit
           </ColorButton>
         </CardActions>
