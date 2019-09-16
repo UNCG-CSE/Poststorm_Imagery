@@ -6,13 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 bumpversion = "*"
-mkdocs = "*"
-mkdocs-macros-plugin = "*"
-mkdocs-git-revision-date-plugin = "*"
 
 [packages]
 requests = "*"
 tqdm = "*"
-
-[requires]
-python_version = "3.6"
