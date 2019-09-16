@@ -1,12 +1,11 @@
 import Layout from "../components/layout";
+import Checkbox_Form from "../components/form/checkbox";
+import Radiobutton_Form from "../components/form/radiobuttons";
 import MyTheme from "../src/theme";
 import React from "react";
 import PropTypes from "prop-types";
-import { createMuiTheme,makeStyles, useTheme, withStyles  } from "@material-ui/core/styles";
+import { makeStyles, withStyles  } from "@material-ui/core/styles";
 import { red, green } from '@material-ui/core/colors';
-import { ThemeProvider } from '@material-ui/styles';
-import Fetch from 'isomorphic-unfetch';
-
 
 
 import Card from '@material-ui/core/Card';
@@ -16,20 +15,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+
 
 
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-
-
-import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 240;
 const SAD_FACE = `
@@ -121,176 +113,67 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 function Index(props) {
   const classes = useStyles();
-  
-  const [devTypeValue, setDevTypeValue] = React.useState({
-    Developed: false,
-    Undevelopd: false,
-  });
-  const [washoverValue, setWashoverValue] = React.useState({
-    VisableWashover: false,
-    NoVisableWashover: false,
-  });
-  const [IDKVALUE, setIDKVALUE] = React.useState({
-    Swash: false,
-    Collision: false,
-    Inundation: false,
-    Overwash: false,
-  });
 
-  const [radio_box_values,set_radio_values]=React.useState({
-    devType:{
-      Developed: false,
-      Undevelopd: false,
-    },
-    washoverValue:{
-      VisableWashover: false,
-      NoVisableWashover: false,
-    },
-    idkvalue:{
-      Swash: false,
-      Collision: false,
-      Inundation: false,
-      Overwash: false,
-    }
-  });
-
-  function handleChange(fnc,event) {
-    //fnc(event.target.value);
-    set_radio_values({
-      ...radio_box_values,
-      [fnc]:{
-        ...radio_box_values.fnc,
-        [event.target.value]:true
-      }
-    })
-  }
-
-  function showChecked(){
-    //console.log({devTypeValue,washoverValue,IDKVALUE},checkbox_state)
-    console.log(radio_box_values)
-  }
-
-  //check boxes
-  const [checkbox_state, setState_checkbox] = React.useState({
-    Marsh: false,
-    River: false,
-    SandyCoastline: false,
-  });
-
-  const handleChange_checkbox = name => event => {
-    setState_checkbox({ ...checkbox_state, [name]: event.target.checked });
-  };
-
-  const { Marsh, River, SandyCoastline } = checkbox_state;
-  
-  function handleSubmit(event){
+  function onSubmit(event){
     event.preventDefault();
-    showChecked()
+    alert('wowe')
+    //showChecked()
   }
+
+
+  
+  
+ 
+
   return (
     <Layout>
-    <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-      <Card className={classes.card}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            alt="Contemplative Reptile"
-            height="fluid"
-            image={props.data.url || SAD_FACE}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {props.data.file_name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-            {JSON.stringify(props.data, null, 4)}
-            </Typography>
-            
-          </CardContent>
-        </CardActionArea>
-        <form className="commentForm" onSubmit={handleSubmit}>
-  
+      <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+        <Card className={classes.card}>
+          <CardActionArea disabled>
+            <CardMedia component="img" alt="Contemplative Reptile" height="fluid" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {props.data.file_name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {JSON.stringify(props.data, null, 4)}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+
+        
+            <form onSubmit={onSubmit} className="commentForm">
+              <CardActions style={MyTheme.palette.grey700BG}>
+                <div>
+
+                <Checkbox_Form/>
+
+                <Radiobutton_Form/>
+                </div>
+              </CardActions>
+              <CardActions style={MyTheme.palette.bluePrimaryBG}>
+                <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
+                    Skip
+                </SkipButton>
+
+                <SubmitButton id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+                    Submit
+                </SubmitButton>
+              </CardActions>
+            </form>
+          
+
          
-        
-
-
-        <FormControl  component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" style={MyTheme.palette.amber500}>Development type</FormLabel>
-          <RadioGroup aria-label="DevType"  name="DevType" value={Object.keys(radio_box_values.devType)[0]} onChange={(e) => handleChange('devType', e)} row>
-            <FormControlLabel value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
-            <FormControlLabel  value="Undevelopd" control={<Radio style={MyTheme.palette.amber500} />} label="Undevelopd" />
-          </RadioGroup>
-        </FormControl>
-
-        <br/>
-
-        <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" style={MyTheme.palette.purple500}>Land Type</FormLabel>
-          <FormGroup row>
-            <FormControlLabel
-              control={<Checkbox checked={River} onChange={handleChange_checkbox('River')} value="River" style={MyTheme.palette.purple500}/>}
-              label="River" 
-            />
-            <FormControlLabel
-              control={<Checkbox checked={Marsh} onChange={handleChange_checkbox('Marsh')} value="Marsh" style={MyTheme.palette.purple500}/>}
-              label="Marsh" 
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={SandyCoastline} onChange={handleChange_checkbox('SandyCoastline')} value="Sandy Coastline" style={MyTheme.palette.purple500}/>
-              }
-              label="Sandy Coastline" 
-            />
-          </FormGroup>
-        </FormControl>
-        
-        <br/>
-
-        <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" style={MyTheme.palette.blue500}>Washover type</FormLabel>
-          <RadioGroup aria-label="WashoverType" name="WashoverType" value={Object.keys(radio_box_values.washoverValue)[0]} onChange={(e) => handleChange('washoverValue', e)} row>
-            <FormControlLabel value="VisableWashover" control={<Radio style={MyTheme.palette.blue500} />} label="Visable Washover"  />
-            <FormControlLabel value="NoVisableWashover" control={<Radio style={MyTheme.palette.blue500} />} label="No Visable Washover" />
-          </RadioGroup>
-        </FormControl>
-
-        <br/>
-
-        <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" style={MyTheme.palette.green500}>IDK WHAT TO CALL THIS</FormLabel>
-          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={Object.keys(radio_box_values.idkvalue)[0]} onChange={(e) => handleChange('idkvalue', e)} row>
-            <FormControlLabel value="Swash" control={<Radio style={MyTheme.palette.green500} />} label="Swash"  />
-            <FormControlLabel value="Collision" control={<Radio style={MyTheme.palette.green500} />} label="Collision" />
-            <FormControlLabel value="Inundation" control={<Radio style={MyTheme.palette.green500} />} label="Inundation"  />
-            <FormControlLabel value="Overwash" control={<Radio style={MyTheme.palette.green500} />} label="Overwash" />
-          </RadioGroup>
-        </FormControl>
-           
-        <CardActions style={MyTheme.palette.bluePrimaryBG}>
-          {/* <Button size="small" variant="contained" color="inherit" style={MyTheme.palette.red500}>
-            Skip
-          </Button> */}
-       
-          <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
-            Skip
-          </SkipButton>
-          <SubmitButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
-            Submit
-          </SubmitButton>
-          {/* <Button type="submit" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
-            Primary
-          </Button> */}
-        </CardActions>
-        </form>   
-      </Card>
+          
+        </Card>
       </Grid>
     </Layout>
   );
@@ -326,7 +209,7 @@ Index.getInitialProps = async function() {
       data = await received_data.json()
       
   }).catch(function() {
-      
+      //big sad errors
   });
 
   return {

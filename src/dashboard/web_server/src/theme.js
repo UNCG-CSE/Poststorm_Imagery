@@ -7,7 +7,8 @@ import {
   green,
   cyan,
   teal,
-  amber
+  amber,
+  grey,
 } from '@material-ui/core/colors';
 import { createMuiTheme } from '@material-ui/core/styles';
 
@@ -96,6 +97,9 @@ const theme = createMuiTheme({
     //700
     yellow700: {
       color: yellow['A200']
+    },
+    grey700BG: {
+      backgroundColor: grey['700']
     },
 
     //800
