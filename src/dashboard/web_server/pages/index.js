@@ -123,15 +123,55 @@ const useStyles = makeStyles(theme => ({
 
 function Index(props) {
   const classes = useStyles();
+  
+  const [devTypeValue, setDevTypeValue] = React.useState({
+    Developed: false,
+    Undevelopd: false,
+  });
+  const [washoverValue, setWashoverValue] = React.useState({
+    VisableWashover: false,
+    NoVisableWashover: false,
+  });
+  const [IDKVALUE, setIDKVALUE] = React.useState({
+    Swash: false,
+    Collision: false,
+    Inundation: false,
+    Overwash: false,
+  });
 
-  const [devTypeValue, setDevTypeValue] = React.useState('');
-  const [washoverValue, setWashoverValue] = React.useState('');
-  const [IDKVALUE, setIDKVALUE] = React.useState('');
+  const [radio_box_values,set_radio_values]=React.useState({
+    devType:{
+      Developed: false,
+      Undevelopd: false,
+    },
+    washoverValue:{
+      VisableWashover: false,
+      NoVisableWashover: false,
+    },
+    idkvalue:{
+      Swash: false,
+      Collision: false,
+      Inundation: false,
+      Overwash: false,
+    }
+  });
 
   function handleChange(fnc,event) {
-    fnc(event.target.value);
+    //fnc(event.target.value);
+    set_radio_values({
+      ...radio_box_values,
+      [fnc]:{
+        ...radio_box_values.fnc,
+        [event.target.value]:true
+      }
+    })
   }
-  
+
+  function showChecked(){
+    //console.log({devTypeValue,washoverValue,IDKVALUE},checkbox_state)
+    console.log(radio_box_values)
+  }
+
   //check boxes
   const [checkbox_state, setState_checkbox] = React.useState({
     Marsh: false,
@@ -145,7 +185,10 @@ function Index(props) {
 
   const { Marsh, River, SandyCoastline } = checkbox_state;
   
-
+  function handleSubmit(event){
+    event.preventDefault();
+    showChecked()
+  }
   return (
     <Layout>
     <Grid
@@ -173,11 +216,16 @@ function Index(props) {
             
           </CardContent>
         </CardActionArea>
+        <form className="commentForm" onSubmit={handleSubmit}>
+  
+         
+        
 
-        <FormControl component="fieldset" className={classes.formControl}>
+
+        <FormControl  component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.amber500}>Development type</FormLabel>
-          <RadioGroup aria-label="DevType" name="DevType" value={devTypeValue} onChange={(e) => handleChange(setDevTypeValue, e)} row>
-            <FormControlLabel  value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
+          <RadioGroup aria-label="DevType"  name="DevType" value={Object.keys(radio_box_values.devType)[0]} onChange={(e) => handleChange('devType', e)} row>
+            <FormControlLabel value="Developed" control={<Radio style={MyTheme.palette.amber500} />} label="Developed"  />
             <FormControlLabel  value="Undevelopd" control={<Radio style={MyTheme.palette.amber500} />} label="Undevelopd" />
           </RadioGroup>
         </FormControl>
@@ -208,9 +256,9 @@ function Index(props) {
 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.blue500}>Washover type</FormLabel>
-          <RadioGroup aria-label="WashoverType" name="WashoverType" value={washoverValue} onChange={(e) => handleChange(setWashoverValue, e)} row>
-            <FormControlLabel value="Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="Visable Washover"  />
-            <FormControlLabel value="No Visable Washover" control={<Radio style={MyTheme.palette.blue500} />} label="No Visable Washover" />
+          <RadioGroup aria-label="WashoverType" name="WashoverType" value={Object.keys(radio_box_values.washoverValue)[0]} onChange={(e) => handleChange('washoverValue', e)} row>
+            <FormControlLabel value="VisableWashover" control={<Radio style={MyTheme.palette.blue500} />} label="Visable Washover"  />
+            <FormControlLabel value="NoVisableWashover" control={<Radio style={MyTheme.palette.blue500} />} label="No Visable Washover" />
           </RadioGroup>
         </FormControl>
 
@@ -218,14 +266,14 @@ function Index(props) {
 
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend" style={MyTheme.palette.green500}>IDK WHAT TO CALL THIS</FormLabel>
-          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={IDKVALUE} onChange={(e) => handleChange(setIDKVALUE, e)} row>
+          <RadioGroup aria-label="IDKWATTHISIS" name="IDKWATTHISIS" value={Object.keys(radio_box_values.idkvalue)[0]} onChange={(e) => handleChange('idkvalue', e)} row>
             <FormControlLabel value="Swash" control={<Radio style={MyTheme.palette.green500} />} label="Swash"  />
             <FormControlLabel value="Collision" control={<Radio style={MyTheme.palette.green500} />} label="Collision" />
             <FormControlLabel value="Inundation" control={<Radio style={MyTheme.palette.green500} />} label="Inundation"  />
             <FormControlLabel value="Overwash" control={<Radio style={MyTheme.palette.green500} />} label="Overwash" />
           </RadioGroup>
         </FormControl>
-
+           
         <CardActions style={MyTheme.palette.bluePrimaryBG}>
           {/* <Button size="small" variant="contained" color="inherit" style={MyTheme.palette.red500}>
             Skip
@@ -234,10 +282,14 @@ function Index(props) {
           <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
             Skip
           </SkipButton>
-          <SubmitButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons}>
+          <SubmitButton  size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
             Submit
           </SubmitButton>
+          {/* <Button type="submit" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+            Primary
+          </Button> */}
         </CardActions>
+        </form>   
       </Card>
       </Grid>
     </Layout>
