@@ -279,12 +279,17 @@ const StyledTreeItem = withStyles(theme => ({
     '& .close': {
       opacity: 0.3,
     },
+  
   },
   group: {
     marginLeft: 12,
     paddingLeft: 12,
-    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`,
+    borderLeft: `1px dashed ${fade(theme.palette.text.primary, 0.4)}`
   },
+  label:{
+    fontSize:20
+  }
+  
 }))(props => <TreeItem {...props} TransitionComponent={TransitionComponent} />);
 
 export default ResponsiveDrawer;
