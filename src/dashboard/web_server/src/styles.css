@@ -1,0 +1,10 @@
+
+
+input.error {
+  border-color: red !important;
+}
+
+.input-feedback {
+  color: red;
+  margin-top: .25rem;
+}
