@@ -240,8 +240,9 @@ class CheckboxGroup extends React.Component {
 
     return (
       <div >
-        <fieldset>
-          <legend>{label}</legend>
+        
+        <FormLabel component="legend" style={MyTheme.palette.purple500}>{label}</FormLabel>
+          <FormGroup  row>
           {React.Children.map(children, child => {
             return React.cloneElement(child, {
               field: {
@@ -251,8 +252,9 @@ class CheckboxGroup extends React.Component {
               }
             });
           })}
+          </FormGroup>
           {touched && <InputFeedback error={error} />}
-        </fieldset>
+      
       </div>
     );
   }
@@ -305,7 +307,7 @@ function Index(props) {
          
               <CardActions style={MyTheme.palette.grey700BG}>
                 <div>
-                <Formik
+                  <Formik
                     initialValues={{
                       developmentGroup: "",
                       washoverVisibilityGroup: "",
@@ -457,7 +459,6 @@ function Index(props) {
                       </form>
                     )}
                   />
-                
                 </div>
               </CardActions>
               <CardActions style={MyTheme.palette.bluePrimaryBG}>
