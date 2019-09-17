@@ -1,6 +1,7 @@
 import Layout from "../components/layout";
-import Checkbox_Form from "../components/form/checkbox";
-import Radiobutton_Form from "../components/form/radiobuttons";
+import css from "../src/styles.css"
+// import Checkbox_Form from "../components/form/checkbox";
+// import Radiobutton_Form from "../components/form/radiobuttons";
 import MyTheme from "../src/theme";
 import React from "react";
 import PropTypes from "prop-types";
@@ -17,8 +18,16 @@ import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 import Grid from '@material-ui/core/Grid';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
+import Fetch from 'isomorphic-fetch'
 
+import { Formik, Field } from "formik";
+import * as Yup from 'yup'
 
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -113,19 +122,162 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const InputFeedback = ({ error }) =>
+error ? <div style={MyTheme.palette.red500}>{error}</div> : null;
+
+
+// Radio input
+const RadioButton = ({
+  field: { name, value, onChange, onBlur },
+  id,
+  label,
+  className,
+  ...props
+}) => {
+  return (
+    <div>
+      <FormControlLabel
+        value="1"
+        control={<Radio color="primary" />}
+        label={label}
+        onChange={onChange}
+        name={name}
+        id={id}
+        value={id}
+        onBlur={onBlur}
+      />
+     
+    </div>
+  );
+};
+
+// Radio group
+const RadioButtonGroup = ({
+  value,
+  error,
+  touched,
+  id,
+  label,
+  className,
+  children,
+  onChange,
+  style
+}) => {
+  return (
+    <div className={''}>
+ 
+        {/* <legend>{label}</legend> */}
+        <FormLabel component="legend" style={style}>{label}</FormLabel>
+        <RadioGroup id={id} label='' aria-label="position" name="position" value={value} onChange={onChange} row>
+        {children}
+        </RadioGroup>
+        {touched && <InputFeedback error={error} />}
+   
+    </div>
+  );
+};
+
+// Checkbox input
+const CheckboxButton = ({
+  field: { name, value, onChange, onBlur },
+  form: { errors, touched, setFieldValue },
+  id,
+  label,
+  className,
+  ...props
+}) => {
+  return (
+    <div>
+      
+      <FormControlLabel control={
+        <Checkbox
+          name={name}
+          id={id}
+          type="checkbox"
+          checked={value}
+          onChange={onChange}
+          onBlur={onBlur}  
+          value={value}
+          inputProps={{
+            'aria-label': 'primary checkbox',
+          }}
+        />
+      } label={label} />
+    
+      {touched[name] && <InputFeedback error={errors[name]} />}
+    </div>
+  );
+};
+
+// Checkbox group
+class CheckboxGroup extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleChange = event => {
+    const target = event.currentTarget;
+    let valueArray = [...this.props.value] || [];
+
+    if (target.checked) {
+      valueArray.push(target.id);
+    } else {
+      valueArray.splice(valueArray.indexOf(target.id), 1);
+    }
+
+    this.props.onChange(this.props.id, valueArray);
+  };
+
+  handleBlur = () => {
+    // take care of touched
+    this.props.onBlur(this.props.id, true);
+  };
+
+  render() {
+    const { value, error, touched, label, className, children } = this.props;
+
+  
+
+    return (
+      <div >
+        <fieldset>
+          <legend>{label}</legend>
+          {React.Children.map(children, child => {
+            return React.cloneElement(child, {
+              field: {
+                value: value.includes(child.props.id),
+                onChange: this.handleChange,
+                onBlur: this.handleBlur
+              }
+            });
+          })}
+          {touched && <InputFeedback error={error} />}
+        </fieldset>
+      </div>
+    );
+  }
+}
+
+
 
 function Index(props) {
   const classes = useStyles();
+  const [value, setValue] = React.useState(false);
+  const [washOverValue, setValue2] = React.useState(false);
+  const [stormImpactValue, setImapactValue] = React.useState(false);
 
-  function onSubmit(event){
-    event.preventDefault();
-    alert('wowe')
-    //showChecked()
+  function handleChange(event) {
+    setValue(event.target.value);
   }
 
+  function handleChange2(event) {
+    setValue2(event.target.value);
+  }
 
-  
-  
+  function handleStomrImpackChange(event){
+    setImapactValue(event.target.value);
+  }
+
  
 
   return (
@@ -150,13 +302,162 @@ function Index(props) {
           </CardActionArea>
 
         
-            <form onSubmit={onSubmit} className="commentForm">
+         
               <CardActions style={MyTheme.palette.grey700BG}>
                 <div>
+                <Formik
+                    initialValues={{
+                      developmentGroup: "",
+                      washoverVisibilityGroup: "",
+                      impactGroup:"",
+                      terrianGroup:[],
+                    }}
+                    validationSchema={Yup.object().shape({
+                      developmentGroup: Yup.string().required("A radio option is required"),
+                      washoverVisibilityGroup: Yup.string().required("A radio option is required"),
+                      impactGroup: Yup.string().required("A radio option is required"),
+                      terrianGroup: Yup.array().required("At least one checkbox is required"),
+                    })}
+                    onSubmit={(values, actions) => {
+                      setTimeout(() => {
+                        console.log(JSON.stringify(values, null, 2));
+                        actions.setSubmitting(false);
+                      }, 500);
+                    }}
+                    render={({
+                      handleSubmit,
+                      setFieldValue,
+                      setFieldTouched,
+                      values,
+                      errors,
+                      touched,
+                      isSubmitting
+                    }) => (
+                      <form onSubmit={handleSubmit}>
+                        <RadioButtonGroup
+                          id="devVsUndev"
+                          label="Developed vs Undeveloped"
+                          value={values.developmentGroup}
+                          error={errors.developmentGroup}
+                          touched={touched.developmentGroup}
+                          onChange={handleChange}
+                          style={MyTheme.palette.amber500}
+                        >
+           
+                          <Field
+                            component={RadioButton}
+                            name="developmentGroup"
+                            id="DevelopedId"
+                            label="Developed"
+                          />
+                          <Field
+                            component={RadioButton}
+                            name="developmentGroup"
+                            id="UndevelopedId"
+                            label="Undeveloped"
+                          />
+            
+                        </RadioButtonGroup>
 
-                <Checkbox_Form/>
+                        <RadioButtonGroup
+                          id="washoverGroupId"
+                          label="Washover Visibility"
+                          value={values.washoverVisibilityGroup}
+                          error={errors.washoverVisibilityGroup}
+                          touched={touched.washoverVisibilityGroup}
+                          onChange={handleChange2}
+                          style={MyTheme.palette.blue500}
+                        >
+           
+                          <Field
+                            component={RadioButton}
+                            name="washoverVisibilityGroup"
+                            id="VisibleWashoverId"
+                            label="Visible Washover"
+                          />
+                          <Field
+                            component={RadioButton}
+                            name="washoverVisibilityGroup"
+                            id="NoVisibleWashoverId"
+                            label="No Washover"
+                          />
+                        </RadioButtonGroup>
 
-                <Radiobutton_Form/>
+                        <RadioButtonGroup
+                          id="washoverGroupId"
+                          label="Swash"
+                          value={values.impactGroup}
+                          error={errors.impactGroup}
+                          touched={touched.impactGroup}
+                          onChange={handleStomrImpackChange}
+                          style={MyTheme.palette.green500}
+                        >
+           
+                          <Field
+                            component={RadioButton}
+                            name="impactGroup"
+                            id="SwashId"
+                            label="Swash"
+                          />
+                          <Field
+                            component={RadioButton}
+                            name="impactGroup"
+                            id="CollisionId"
+                            label="Collision"
+                          />
+                          <Field
+                            component={RadioButton}
+                            name="impactGroup"
+                            id="OverwashId"
+                            label="Overwash"
+                          />
+                          <Field
+                            component={RadioButton}
+                            name="impactGroup"
+                            id="InundationId"
+                            label="Inundation"
+                          />
+            
+                        </RadioButtonGroup>
+
+          
+                        <CheckboxGroup
+                          id="terrianGroup"
+                          label="Which of these?"
+                          value={values.terrianGroup}
+                          error={errors.terrianGroup}
+                          touched={touched.terrianGroup}
+                          onChange={setFieldValue}
+                          onBlur={setFieldTouched}
+                          style={MyTheme.palette.purple500}
+                        >
+                          <Field
+                            component={CheckboxButton}
+                            name="terrianGroup"
+                            id="River"
+                            label="River"
+                          />
+                          <Field
+                            component={CheckboxButton}
+                            name="terrianGroup"
+                            id="Marsh"
+                            label="Marsh"
+                          />
+                          <Field
+                            component={CheckboxButton}
+                            name="terrianGroup"
+                            id="SandyCoastline"
+                            label="Sandy Coastline"
+                          />
+                        </CheckboxGroup>
+
+                        <button type="submit" disabled={isSubmitting}>
+                          Submit
+                        </button>
+                      </form>
+                    )}
+                  />
+                
                 </div>
               </CardActions>
               <CardActions style={MyTheme.palette.bluePrimaryBG}>
@@ -168,7 +469,7 @@ function Index(props) {
                     Submit
                 </SubmitButton>
               </CardActions>
-            </form>
+           
           
 
          
