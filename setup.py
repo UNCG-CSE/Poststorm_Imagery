@@ -16,7 +16,7 @@ test_requirements = ['pytest']
 
 setup(
     name='Poststorm_Imagery',
-    version='0.5.4',
+    version='1.0.0',
     author="Team C-Sick",
     author_email='mcmoretz@uncg.edu',
     classifiers=[
