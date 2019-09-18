@@ -1,6 +1,11 @@
 //---Modules and Const--- wowe
 const express = require('express')
 const app_express = express();
+const bodyParser =  require("body-parser");
+
+
+app_express.use(bodyParser.urlencoded({ extended: false }));
+app_express.use(bodyParser.json());
 
 //---START---
 async function main() {
@@ -16,6 +21,14 @@ async function main() {
     app_express.get('/', function (req, res) {
         res.send('Hello there 👋')
     })
+
+    // app_express.post('/login',function(req,res){
+    //     res.setHeader('Access-Control-Allow-Origin', '*');
+    //     var user_name=req.body.user;
+    //     var password=req.body.password;
+    //     console.log(req.body,'woweeee');
+    //     res.end("yes");
+    // });
 
     //Notify use that things are ready to go.
     app_express.listen(PORT_NODE,'0.0.0.0', (err) => {
