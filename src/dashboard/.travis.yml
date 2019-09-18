@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+
+before_install:
+  - cd web_server
+install:
+  - npm i
+  - npm install --only=dev
+script:
+  - node_modules/.bin/eslint .
+  - npm test
