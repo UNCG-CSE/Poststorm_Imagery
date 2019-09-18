@@ -8,7 +8,6 @@ class TestConnectionHandler(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        print(os.getcwd())
         cls.c = ConnectionHandler(html_text=open('./Poststorm_Imagery/tests/collector/resources/'
                                                  'Storms_List_Page.html', 'r').read())
 
