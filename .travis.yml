@@ -2,16 +2,14 @@ matrix:
   include:
     - language: python
       python:
-        - "3.6"
-        - "3.7"
+        - 3.6
+        - 3.7
       before_install:
         - cd src/python/
         - pip install -U pip
       install:
         - pip install -r requirements.txt
         - pip install -U tox-travis codecov
-      before_script:
-        - cd Poststorm_Imagery/tests
       script:
         - tox
       after_success:
