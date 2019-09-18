@@ -15,7 +15,7 @@ class TestResponseGetter(TestCase):
 
     def test_generic_response_failed(self):
         with self.assertRaises(SystemExit):
-            get_http_response('http://127.0.0.1/thispagedoesnotexist')
+            get_http_response('http://www.google.com/thispagedoesnotexist')
 
     def test_generic_response_exception(self):
         with self.assertRaises(SystemExit):
