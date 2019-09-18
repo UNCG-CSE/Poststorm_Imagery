@@ -2,8 +2,8 @@ matrix:
   include:
     - language: python
       python:
-        - 3.6
-        - 3.7
+        - "3.7"
+        - "3.6"
       before_install:
         - cd src/python/
         - pip install -U pip
@@ -15,6 +15,7 @@ matrix:
       after_success:
         - codecov
 
+  allow_failures:
     - language: node_js
       node_js: node
       before_install:
