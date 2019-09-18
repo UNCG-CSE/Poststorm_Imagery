@@ -61,12 +61,12 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to the root of this project (outer-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
 
-1. Change current directory (`cd src/python/Poststorm_Imagery/collector/`)
+1. Change current directory to the collector module (`cd collector/`)
 2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
 
 *The arguments for `collect.py` are listed [**here**](./docs/collector.md)*
