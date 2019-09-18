@@ -1,7 +1,8 @@
-import os
+from typing import List
 from unittest import TestCase
 
 from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.Storm import Storm
 
 
 class TestConnectionHandler(TestCase):
@@ -32,10 +33,11 @@ class TestConnectionHandler(TestCase):
         self.assertEqual(len(self.c.generate_storm_list(search_re='no storms will match this')), 0)
 
     def test_get_storm_list(self):
-        pass
-        """
-        storms: List[Storm] = c.get_storm_list(OPTIONS.storm)
 
-        for storm in c.storms
-        self.assertEqual(, 'unfilled')
-        """
+        # Ensure it actually gets the storm list
+        self.assertEqual(self.c.generate_storm_list(), self.c.get_storm_list())
+
+        # Ensure that changing the pattern reloads the cache
+        storms_all: List[Storm] = self.c.get_storm_list()
+        storms_2019: List[Storm] = self.c.get_storm_list(search_re='2019')
+        self.assertNotEqual(storms_all, storms_2019)
