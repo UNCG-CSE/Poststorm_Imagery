@@ -2,8 +2,8 @@
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)
+<!--[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master/graph/badge.svg?token=LWncqYANtK)](
+https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)-->
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=master)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=master)](
@@ -35,14 +35,14 @@ Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contribution Conventions
 
-Before committing to the repository **please** read [**CONTRIBUTE.md**](docs/CONTRIBUTE.md)
+Before committing to the repository **please** read [**CONTRIBUTE.md**](docs/contributing.md)
 
 ## Beta Branch
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)
+<!--[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
+https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)-->
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=beta)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
