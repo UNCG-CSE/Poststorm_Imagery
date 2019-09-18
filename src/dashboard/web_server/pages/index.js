@@ -29,8 +29,6 @@ import axios from 'axios';
 
 import { Formik, Field } from "formik";
 import * as Yup from 'yup'
-import  fs from 'fs'
-import yargs from 'yargs'
 
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -334,7 +332,9 @@ function Index(props) {
                 })}
                 onSubmit={(values, actions) => {
                   setTimeout(() => {
-                    axios.post(`http://localhost:4000/form_submit`, values)
+                    const wowe=JSON.stringify(values, null, 2)
+                    console.log(wowe);
+                    axios.post(`http://localhost:4000/form_submit`, { wowe })
                     .then(res => {
                       console.log(res);
                       console.log(res.data);
@@ -510,26 +510,26 @@ Index.propTypes = {
 
 Index.getInitialProps = async function() {
   //first get constants
-  // const CONSTANTS = await require('../server_constants')
-  // const {SITE_IP} = CONSTANTS
+  const CONSTANTS = await require('../server_constants')
+  const {SITE_IP} = CONSTANTS
   
   //This enables it so that the serve either uses localhost or the machines ip,all based off if the user gives a cl arg.
-  // const API_URL=`http://${SITE_IP.node}/images/get_image`
+  const API_URL=`http://${SITE_IP.node}/images/get_image`
   //Default data incase Fetch fails. 
   let data,default_data = {
       file_url:undefined,
       file_name:'ERROR API CALL FAILED',
       file_desc: 'BIG SAD',
-      api_url:1,
+      api_url:API_URL,
   }
   
   //Now we call the get image api to ,well get the image
-  // await Fetch(API_URL).then(async function(received_data) { 
-  //     data = await received_data.json()
+  await Fetch(API_URL).then(async function(received_data) { 
+      data = await received_data.json()
       
-  // }).catch(function() {
-  //     //big sad errors
-  // });
+  }).catch(function() {
+      //big sad errors
+  });
 
   return {
       data:data || default_data
