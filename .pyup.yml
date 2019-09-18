@@ -26,10 +26,10 @@ schedule: "every week on Wednesday"
 # default: empty
 # allowed: list
 requirements:
-- requirements.txt
-- requirements-dev.txt
-- Pipfile
-- Pipfile.lock
+- src/python/requirements.txt
+- src/python/requirements-dev.txt
+- src/python/Pipfile
+- src/python/Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
