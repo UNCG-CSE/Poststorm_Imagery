@@ -22,7 +22,7 @@ class MyDocument extends Document {
           <script
           src="https://code.jquery.com/jquery-3.4.1.min.js"
           integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-          crossorigin="anonymous"></script>
+          crossOrigin="anonymous"></script>
           <script src="/static/test.js"></script>
       
         </Head>

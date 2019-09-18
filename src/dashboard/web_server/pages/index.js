@@ -1,7 +1,7 @@
 import Layout from "../components/layout";
 import css from "../src/styles.css"
 // import Checkbox_Form from "../components/form/checkbox";
-// import Radiobutton_Form from "../components/form/radiobuttons";
+import Radiobutton_Form from "../components/form/radiobuttons";
 import MyTheme from "../src/theme";
 import React from "react";
 import PropTypes from "prop-types";
@@ -25,6 +25,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import Fetch from 'isomorphic-fetch'
+
 
 import { Formik, Field } from "formik";
 import * as Yup from 'yup'
@@ -132,19 +133,21 @@ const RadioButton = ({
   id,
   label,
   className,
+  style,
   ...props
 }) => {
   return (
     <div>
       <FormControlLabel
         value="1"
-        control={<Radio color="primary" />}
+        control={<Radio style={style} />}
         label={label}
         onChange={onChange}
         name={name}
         id={id}
         value={id}
         onBlur={onBlur}
+        
       />
      
     </div>
@@ -169,7 +172,14 @@ const RadioButtonGroup = ({
         {/* <legend>{label}</legend> */}
         <FormLabel component="legend" style={style}>{label}</FormLabel>
         <RadioGroup id={id} label='' aria-label="position" name="position" value={value} onChange={onChange} row>
-        {children}
+        
+      
+        {React.Children.map(children, child => {
+            
+            return React.cloneElement(child, {
+              style:style
+            });
+          })}
         </RadioGroup>
         {touched && <InputFeedback error={error} />}
    
@@ -179,13 +189,14 @@ const RadioButtonGroup = ({
 
 // Checkbox input
 const CheckboxButton = ({
-  field: { name, value, onChange, onBlur },
+  field: { name, value, onChange, onBlur,style },
   form: { errors, touched, setFieldValue },
   id,
   label,
   className,
   ...props
 }) => {
+ 
   return (
     <div>
       
@@ -198,6 +209,7 @@ const CheckboxButton = ({
           onChange={onChange}
           onBlur={onBlur}  
           value={value}
+          style={style}
           inputProps={{
             'aria-label': 'primary checkbox',
           }}
@@ -234,21 +246,23 @@ class CheckboxGroup extends React.Component {
   };
 
   render() {
-    const { value, error, touched, label, className, children } = this.props;
-
-  
+    const { value, error, touched, label, className, children,style } = this.props;
 
     return (
       <div >
         
-        <FormLabel component="legend" style={MyTheme.palette.purple500}>{label}</FormLabel>
+        <FormLabel component="legend" style={style}>{label}</FormLabel>
+        
           <FormGroup  row>
           {React.Children.map(children, child => {
+            
             return React.cloneElement(child, {
+              
               field: {
                 value: value.includes(child.props.id),
                 onChange: this.handleChange,
-                onBlur: this.handleBlur
+                onBlur: this.handleBlur,
+                style:style
               }
             });
           })}
@@ -303,39 +317,40 @@ function Index(props) {
             </CardContent>
           </CardActionArea>
 
-        
-         
-              <CardActions style={MyTheme.palette.grey700BG}>
-                <div>
-                  <Formik
-                    initialValues={{
-                      developmentGroup: "",
-                      washoverVisibilityGroup: "",
-                      impactGroup:"",
-                      terrianGroup:[],
-                    }}
-                    validationSchema={Yup.object().shape({
-                      developmentGroup: Yup.string().required("A radio option is required"),
-                      washoverVisibilityGroup: Yup.string().required("A radio option is required"),
-                      impactGroup: Yup.string().required("A radio option is required"),
-                      terrianGroup: Yup.array().required("At least one checkbox is required"),
-                    })}
-                    onSubmit={(values, actions) => {
-                      setTimeout(() => {
-                        console.log(JSON.stringify(values, null, 2));
-                        actions.setSubmitting(false);
-                      }, 500);
-                    }}
-                    render={({
-                      handleSubmit,
-                      setFieldValue,
-                      setFieldTouched,
-                      values,
-                      errors,
-                      touched,
-                      isSubmitting
-                    }) => (
-                      <form onSubmit={handleSubmit}>
+              <Formik
+                initialValues={{
+                  developmentGroup: "",
+                  washoverVisibilityGroup: "",
+                  impactGroup:"",
+                  terrianGroup:[],
+                }}
+                validationSchema={Yup.object().shape({
+                  developmentGroup: Yup.string().required("Please select a option"),
+                  washoverVisibilityGroup: Yup.string().required("Please select a option"),
+                  impactGroup: Yup.string().required("Please select a option"),
+                  terrianGroup: Yup.array().required("Please select atleast one option"),
+                })}
+                onSubmit={(values, actions) => {
+                  setTimeout(() => {
+                    const wowe=JSON.stringify(values, null, 2)
+                    console.log(wowe);
+                   
+                    
+                    actions.setSubmitting(false);
+                  }, 500);
+                }}
+                render={({
+                  handleSubmit,
+                  setFieldValue,
+                  setFieldTouched,
+                  values,
+                  errors,
+                  touched,
+                  isSubmitting
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <CardActions style={MyTheme.palette.grey700BG}>
+                      <div>
                         <RadioButtonGroup
                           id="devVsUndev"
                           label="Developed vs Undeveloped"
@@ -361,6 +376,8 @@ function Index(props) {
             
                         </RadioButtonGroup>
 
+                        <br/>
+
                         <RadioButtonGroup
                           id="washoverGroupId"
                           label="Washover Visibility"
@@ -384,6 +401,8 @@ function Index(props) {
                             label="No Washover"
                           />
                         </RadioButtonGroup>
+
+                        <br/>
 
                         <RadioButtonGroup
                           id="washoverGroupId"
@@ -422,7 +441,8 @@ function Index(props) {
             
                         </RadioButtonGroup>
 
-          
+                        <br/>
+
                         <CheckboxGroup
                           id="terrianGroup"
                           label="Which of these?"
@@ -431,7 +451,7 @@ function Index(props) {
                           touched={touched.terrianGroup}
                           onChange={setFieldValue}
                           onBlur={setFieldTouched}
-                          style={MyTheme.palette.purple500}
+                          style={MyTheme.palette.purple800}
                         >
                           <Field
                             component={CheckboxButton}
@@ -453,28 +473,21 @@ function Index(props) {
                           />
                         </CheckboxGroup>
 
-                        <button type="submit" disabled={isSubmitting}>
+                      </div>
+                    </CardActions>
+              
+                    <CardActions style={MyTheme.palette.bluePrimaryBG}>
+                      <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
+                          Skip
+                      </SkipButton>
+
+                      <SubmitButton disabled={isSubmitting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
                           Submit
-                        </button>
-                      </form>
-                    )}
-                  />
-                </div>
-              </CardActions>
-              <CardActions style={MyTheme.palette.bluePrimaryBG}>
-                <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
-                    Skip
-                </SkipButton>
-
-                <SubmitButton id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
-                    Submit
-                </SubmitButton>
-              </CardActions>
-           
-          
-
-         
-          
+                      </SubmitButton>
+                    </CardActions>
+                  </form>
+                )}
+              />    
         </Card>
       </Grid>
     </Layout>
@@ -507,7 +520,7 @@ Index.getInitialProps = async function() {
   }
   
   //Now we call the get image api to ,well get the image
-  await fetch(API_URL).then(async function(received_data) { 
+  await Fetch(API_URL).then(async function(received_data) { 
       data = await received_data.json()
       
   }).catch(function() {
