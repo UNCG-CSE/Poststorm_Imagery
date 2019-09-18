@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "node": "nodemon node_server.js",
-    "node-host": "nodemon node_server.js host",
-    "web": "node web_server.js",
-    "web-host": "node web_server.js host",
-    "local": "run-p node web",
-    "host": "run-p node-host web-host",
+    "node-ip": "nodemon node_server.js",
+    "node-localhost": "nodemon node_server.js localhost",
+
+    "web-ip": "node web_server.js",
+    "web-localhost": "node web_server.js localhost",
+
+    "localhost": "run-p node-localhost web-localhost",
+    "useIP": "run-p node-ip web-ip",
+
     "build": "next build",
     "export": "next export",
     "start": "NODE_ENV=production node web_server.js"
