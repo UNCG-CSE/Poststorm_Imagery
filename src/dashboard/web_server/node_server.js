@@ -13,6 +13,12 @@ async function main() {
     const CONSTANTS = await require('./server_constants')
     const {PORT_NODE,SITE_IP} = CONSTANTS
 
+    app_express.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+
     app_express.use(bodyParser.urlencoded({ extended: false }));
     app_express.use(express.json());
     
@@ -27,6 +33,7 @@ async function main() {
 
 
     app_express.post('/form_submit', function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         console.log(req.body)
         res.send('POST request to homepagex')
     })
