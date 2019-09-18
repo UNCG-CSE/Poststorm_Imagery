@@ -7,7 +7,7 @@ class TestConnectionHandler(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.c = ConnectionHandler(html_text=open('resources/Storms_List_Page.html', 'r').read())
+        cls.c = ConnectionHandler(html_text=open('./resources/Storms_List_Page.html', 'r').read())
 
     def test_generate_storm_list_all(self):
 
