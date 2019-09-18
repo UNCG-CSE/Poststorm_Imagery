@@ -35,7 +35,7 @@ Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contribution Conventions
 
-Before committing to the repository **please** read [**CONTRIBUTE.md**](docs/contributing.md)
+Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
 
 ## Beta Branch
 
