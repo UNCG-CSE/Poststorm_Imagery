@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "node": "nodemon node_server.js",
-    "node-host": "nodemon node_server.js host",
-    "web": "node web_server.js",
-    "web-host": "node web_server.js host",
-    "local": "run-p node web",
-    "host": "run-p node-host web-host",
+    "node-local": "nodemon node_server.js --localhost",
+    "node-ip": "nodemon node_server.js ",
+    "web-local": "node web_server.js --localhost",
+    "web-ip": "node web_server.js ",
+    "localhost": "run-p node-local web-local",
+    "useIP": "run-p node-ip web-ip",
     "build": "next build",
     "export": "next export",
     "start": "NODE_ENV=production node web_server.js"
@@ -45,6 +45,7 @@
     "react-dom": "^16.9.0",
     "react-spring": "^8.0.27",
     "util": "^0.12.1",
+    "yargs": "^14.0.0",
     "yup": "^0.27.0"
   }
 }
