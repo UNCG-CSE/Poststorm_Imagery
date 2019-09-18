@@ -8,8 +8,12 @@ from typing import Union, Dict
 from src.python.Poststorm_Imagery.collector import s
 
 
+def print_error(*args, **kwargs) -> None:
+    """Take string(s) and print them to console as an error (red text) instead of a normal message (white text).
 
-def print_error(*args, **kwargs):
+    :param args: The args passed to the `print` function
+    :param kwargs: The kwargs passed to the `print` function
+    """
     print(*args, file=sys.stderr, **kwargs)
 
 
