@@ -204,4 +204,4 @@ dmypy.json
 
 ### Post-Storm Imagery specific config
 !/.gitignore
-src/python/data/
+./data/
