@@ -1,12 +1,12 @@
 const public_ip = require('public-ip');
 //get cl arg,and remove the first two
 const ARGV=process.argv.slice(2)
-const USE_HOST = ARGV[0] === 'host'
+const USE_LOCALHOST = ARGV[0] === 'localhost'
 
 
 module.exports = (async function() {
     //If we have the cl arg of host,use machines IP, else use localhost
-    const IP = USE_HOST? await public_ip.v4(): 'localhost'
+    const IP = USE_LOCALHOST?  'localhost':await public_ip.v4()
     //Becuase the website and server will have diff ports.
     const PORT_WEB=3000
     const PORT_NODE=4000
