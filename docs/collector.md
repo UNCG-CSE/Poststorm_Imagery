@@ -12,7 +12,7 @@ specific arguments.
 | -------------------: | ----------- | --------------------------------------------------- | ---------------------- |
 |     `--storm`, `-s`  | *\<regex>*  | Search all storms for a specific term or pattern    | `.*`                   |
 |       `--tar`, `-t`  | *\<regex>*  | Search all tar files for a specific term or pattern | `.*`                   |
-|      `--path`, `-p`  | *\<path>*   | The path on your computer to save the files to      | `../../data/tar_cache` |
+|      `--path`, `-p`  | *\<path>*   | The path on your computer to save the files to      | `/data/tar_cache` |
 |  `--no_status`, `-n` |             | Do not print out a report of all files found        | *False*                |
 |  `--download`, `-d`  |             | Download the .tar files as well after listing them  | *False*                |
 | `--overwrite`, `-o`  |             | Overwrite existing .tar files with the same name    | *False*                |

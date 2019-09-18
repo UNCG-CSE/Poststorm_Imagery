@@ -5,3 +5,6 @@ ignore:
 #  - "[a-z]+/test_.*"  # regexp accepted
   - "src/python/Poststorm_Imagery/collector/collect.py"
   - "test_*.py"
+
+codecov:
+  token: 87c8d6f0-226a-4ea4-a98d-eef1a184376c
