@@ -24,8 +24,8 @@ matrix:
       after_success:
         - codecov
       branches:
-        exclude:
-          - beta
+        except:
+        - beta
 
     - language: python
       python: 3.7
