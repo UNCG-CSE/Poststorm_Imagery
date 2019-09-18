@@ -1,7 +1,7 @@
 import os
 import re
 import tarfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import ceil
 from typing import Union
 
@@ -171,7 +171,7 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
-            last_lock_update = datetime.now()
+            last_lock_update = datetime.now() - timedelta(hours=1)
 
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
@@ -180,7 +180,7 @@ class TarRef:
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
                 # Update the lock file every so often so others know it is being downloaded
-                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                if (datetime.now() - last_lock_update).total_seconds() > 180:  # 1800 seconds = 30 minutes
                     h.update_file_lock(base_file=tar_file_path_part, user=user,
                                        part_size_byte=os.path.getsize(tar_file_path_part),
                                        total_size_byte=full_size_origin)
