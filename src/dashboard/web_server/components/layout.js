@@ -1,6 +1,6 @@
 import MuiLink from '@material-ui/core/Link';
-import Link from '../src/Link';
-import MyTheme from '../src/theme';
+import Link from './Link';
+import MyTheme from './theme';
 
 
 import SvgIcon from '@material-ui/core/SvgIcon';

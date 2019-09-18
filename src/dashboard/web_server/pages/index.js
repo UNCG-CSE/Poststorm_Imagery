@@ -1,8 +1,7 @@
 import Layout from "../components/layout";
-import css from "../src/styles.css"
 // import Checkbox_Form from "../components/form/checkbox";
 import Radiobutton_Form from "../components/form/radiobuttons";
-import MyTheme from "../src/theme";
+import MyTheme from "../components/theme";
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, withStyles  } from "@material-ui/core/styles";
