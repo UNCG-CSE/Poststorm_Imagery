@@ -332,9 +332,8 @@ function Index(props) {
                 })}
                 onSubmit={(values, actions) => {
                   setTimeout(() => {
-                    const wowe=JSON.stringify(values, null, 2)
-                    console.log(wowe);
-                    axios.post(`http://localhost:4000/form_submit`, { wowe })
+                    
+                    axios.post(`http://localhost:4000/form_submit`, values)
                     .then(res => {
                       console.log(res);
                       console.log(res.data);
