@@ -25,7 +25,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import Fetch from 'isomorphic-fetch'
-
+import axios from 'axios';
 
 import { Formik, Field } from "formik";
 import * as Yup from 'yup'
@@ -334,7 +334,11 @@ function Index(props) {
                   setTimeout(() => {
                     const wowe=JSON.stringify(values, null, 2)
                     console.log(wowe);
-                   
+                    axios.post(`http://localhost:4000/form_submit`, { wowe })
+                    .then(res => {
+                      console.log(res);
+                      console.log(res.data);
+                    })
                     
                     actions.setSubmitting(false);
                   }, 500);
