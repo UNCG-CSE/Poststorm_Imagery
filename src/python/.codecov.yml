@@ -7,9 +7,6 @@ ignore:
   - "test_*.py"
 
 coverage:
-  range: 50..85
+  range: 40..80
   round: down
   precision: 2
-
-codecov:
-  token: 87c8d6f0-226a-4ea4-a98d-eef1a184376c
