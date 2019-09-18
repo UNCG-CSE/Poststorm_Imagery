@@ -6,5 +6,10 @@ ignore:
   - "src/python/Poststorm_Imagery/collector/collect.py"
   - "test_*.py"
 
+coverage:
+  range: 50..85
+  round: down
+  precision: 2
+
 codecov:
   token: 87c8d6f0-226a-4ea4-a98d-eef1a184376c
