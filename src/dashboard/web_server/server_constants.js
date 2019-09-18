@@ -1,8 +1,15 @@
 const public_ip = require('public-ip');
 //get cl arg,and remove the first two
-const ARGV=process.argv.slice(2)
-const USE_LOCALHOST = ARGV[0] === 'localhost'
+// const ARGV=process.argv.slice(2)
+// const USE_LOCALHOST = ARGV[0] === 'localhost'
 
+const optionDefinitions = [
+    { name: 'localhost', alias: 'l', type: Boolean }
+]
+const commandLineArgs = require('command-line-args')
+const options = commandLineArgs(optionDefinitions)
+
+const USE_LOCALHOST=options.localhost
 
 module.exports = (async function() {
     //If we have the cl arg of host,use machines IP, else use localhost
