@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase
 
 from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
@@ -7,7 +8,9 @@ class TestConnectionHandler(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.c = ConnectionHandler(html_text=open('src/python/Poststorm_Imagery/tests/collector/resources/Storms_List_Page.html', 'r').read())
+        print(os.getcwd())
+        cls.c = ConnectionHandler(html_text=open('./Poststorm_Imagery/tests/collector/resources/'
+                                                 'Storms_List_Page.html', 'r').read())
 
     def test_generate_storm_list_all(self):
 
