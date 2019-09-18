@@ -47,5 +47,9 @@
     "react-spring": "^8.0.27",
     "util": "^0.12.1",
     "yup": "^0.27.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-plugin-react": "^7.14.3"
   }
 }

@@ -7,7 +7,7 @@ site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 nav:
     - Home: index.md
-    - Contribute: CONTRIBUTE.md
+    - Contribute: contributing.md
     - Data Collection: collector.md
 
 theme: readthedocs
@@ -18,4 +18,4 @@ plugins:
     - macros
 
 extra:
-    version: 0.5.4
+    version: 1.0.0
