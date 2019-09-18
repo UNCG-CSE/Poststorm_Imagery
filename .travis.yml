@@ -1,9 +1,18 @@
 matrix:
   include:
     - language: python
-      python:
-        - "3.7"
-        - "3.6"
+      python: 3.6
+      before_install:
+        - cd src/python/
+        - pip install -U pip
+      install:
+        - pip install -r requirements.txt
+        - pip install -U tox-travis codecov
+      script:
+        - tox
+
+    - language: python
+      python: 3.7
       before_install:
         - cd src/python/
         - pip install -U pip
@@ -15,7 +24,6 @@ matrix:
       after_success:
         - codecov
 
-  allow_failures:
     - language: node_js
       node_js: node
       before_install:
@@ -26,3 +34,6 @@ matrix:
       script:
         - node_modules/.bin/eslint .
         - npm test
+
+  allow_failures:
+    - node_js: node
