@@ -203,13 +203,7 @@
       <workItem from="1568521778078" duration="5314000" />
       <workItem from="1568763760801" duration="2170000" />
       <workItem from="1568775508191" duration="202000" />
-    </task>
-    <task id="LOCAL-00009" summary="Modify Storm tar variable declarations">
-      <created>1567608619005</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1567608619005</updated>
+      <workItem from="1568775712455" duration="93000" />
     </task>
     <task id="LOCAL-00010" summary="Created a class from connection code">
       <created>1567612798684</created>
@@ -547,7 +541,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568774888594</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="workspace">
+      <created>1568775738892</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1568775738893</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +654,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Remove bad check (doesn't make sense)" />
     <MESSAGE value="Don't repeatedly unzip files that exist" />
     <MESSAGE value="Check if a file is locked by another" />
     <MESSAGE value="Fix non-existant lock problem" />
@@ -678,7 +678,8 @@
     <MESSAGE value="Update project version to first full release" />
     <MESSAGE value="Move data folder to project root" />
     <MESSAGE value="Change lock update interval to every 3 mins and start immediately" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change lock update interval to every 3 mins and start immediately" />
+    <MESSAGE value="workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
