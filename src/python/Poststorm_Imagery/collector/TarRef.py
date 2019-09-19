@@ -32,9 +32,9 @@ def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
             tf.extractfile(member.name)
 
     except IOError as e:
-        print('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
-        print('It is recommended to delete the archive and restart the download.')
-        print('Error: ' + str(e))
+        h.print_error('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
+        h.print_error('It is recommended to delete the archive and restart the download.')
+        h.print_error('Error: ' + str(e))
 
         return False
 
@@ -161,7 +161,7 @@ class TarRef:
 
             # Ensure that both the program and the website are on the same page
             if full_size_local != full_size_origin:
-                print('Remaining file size does not match with local cache. '
+                h.print_error('Remaining file size does not match with local cache. '
                       'Something went wrong with partial file request!')
                 exit()
 
