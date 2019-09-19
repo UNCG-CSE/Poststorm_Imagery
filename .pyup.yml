@@ -28,7 +28,6 @@ search: False
 requirements:
   - src/python/requirements-test.txt
   - src/python/requirements-docs.txt
-  - src/python/Pipfile
   - src/python/Pipfile.lock
 
 # add a label to pull requests, default is not set
