@@ -5,20 +5,16 @@ matrix:
       before_install:
         - cd src/python/
         - pip install -U pip
-      install:
-        - pip install -r requirements.txt
-        - pip install -U tox-travis codecov
       script:
         - tox
+      after_success:
+        - codecov
 
     - language: python
       python: 3.7
       before_install:
         - cd src/python/
         - pip install -U pip
-      install:
-        - pip install -r requirements.txt
-        - pip install -U tox-travis codecov
       script:
         - tox
       after_success:
