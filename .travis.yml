@@ -6,7 +6,7 @@ matrix:
         - cd src/python/
         - pip install -U pip pipenv
       install:
-        - pipenv install tox tox-travis tox-pipenv
+        - pipenv install tox tox-travis
         - pipenv install
       script:
         - tox
@@ -17,9 +17,9 @@ matrix:
       python: 3.7
       before_install:
         - cd src/python/
-        - pip install -U pipenv
+        - pip install -U pip pipenv
       install:
-        - pipenv install pipenv tox tox-travis tox-pipenv
+        - pipenv install pipenv tox tox-travis
         - pipenv install
       script:
         - tox
