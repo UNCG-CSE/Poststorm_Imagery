@@ -6,7 +6,6 @@ matrix:
         - cd src/python/
         - pip install -U pip
       install:
-        - pip install -r requirements.txt
         - pip install -U tox-travis codecov
       script:
         - tox
@@ -17,7 +16,6 @@ matrix:
         - cd src/python/
         - pip install -U pip
       install:
-        - pip install -r requirements.txt
         - pip install -U tox-travis codecov
       script:
         - tox
