@@ -1,7 +1,7 @@
 import os
 import re
 import tarfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import ceil
 from typing import Union
 
@@ -32,9 +32,9 @@ def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
             tf.extractfile(member.name)
 
     except IOError as e:
-        print('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
-        print('It is recommended to delete the archive and restart the download.')
-        print('Error: ' + str(e))
+        h.print_error('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
+        h.print_error('It is recommended to delete the archive and restart the download.')
+        h.print_error('Error: ' + str(e))
 
         return False
 
@@ -161,7 +161,7 @@ class TarRef:
 
             # Ensure that both the program and the website are on the same page
             if full_size_local != full_size_origin:
-                print('Remaining file size does not match with local cache. '
+                h.print_error('Remaining file size does not match with local cache. '
                       'Something went wrong with partial file request!')
                 exit()
 
@@ -171,7 +171,7 @@ class TarRef:
             # The label of the given chunk size above (1024 * 1024 Bytes = 1 MiB)
             unit = 'MiB'
 
-            last_lock_update = datetime.now()
+            last_lock_update = datetime.now() - timedelta(hours=1)
 
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
@@ -180,7 +180,7 @@ class TarRef:
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
                 # Update the lock file every so often so others know it is being downloaded
-                if (datetime.now() - last_lock_update).total_seconds() > 60:  # 1800 seconds = 30 minutes
+                if (datetime.now() - last_lock_update).total_seconds() > 180:  # 1800 seconds = 30 minutes
                     h.update_file_lock(base_file=tar_file_path_part, user=user,
                                        part_size_byte=os.path.getsize(tar_file_path_part),
                                        total_size_byte=full_size_origin)
