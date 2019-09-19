@@ -4,23 +4,19 @@ matrix:
       python: 3.6
       before_install:
         - cd src/python/
-        - pip install -U pip pipenv
+        - pip install -U pip
       install:
-        - pipenv install tox tox-travis
-        - pipenv install
+        - pip install -U tox-travis codecov
       script:
         - tox
-      after_success:
-        - codecov
 
     - language: python
       python: 3.7
       before_install:
         - cd src/python/
-        - pip install -U pip pipenv
+        - pip install -U pip
       install:
-        - pipenv install pipenv tox tox-travis
-        - pipenv install
+        - pip install -U tox-travis codecov
       script:
         - tox
       after_success:
