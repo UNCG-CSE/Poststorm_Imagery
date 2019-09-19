@@ -2,8 +2,8 @@
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-<!--[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)-->
+[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master/graph/badge.svg?token=LWncqYANtK)](
+https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master)
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=master)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=master)](
@@ -41,8 +41,8 @@ Before committing to the repository **please** read [**contributing.md**](docs/c
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-<!--[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery)-->
+[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
+https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta)
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=beta)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
@@ -61,12 +61,12 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to the root of this project (outer-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
 
-1. Change current directory (`cd src/python/Poststorm_Imagery/collector/`)
+1. Change current directory to the collector module (`cd collector/`)
 2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
 
 *The arguments for `collect.py` are listed [**here**](./docs/collector.md)*
