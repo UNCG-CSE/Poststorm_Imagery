@@ -15,21 +15,21 @@ branch: beta
 # update schedule
 # default: empty
 # allowed: "every day", "every week", ..
-schedule: "every week on Wednesday"
+schedule: "every day"
 
 # search for requirement files
 # default: True
 # allowed: True, False
-#search: True
+search: False
 
 # Specify requirement files by hand, default is empty
 # default: empty
 # allowed: list
 requirements:
-- src/python/requirements.txt
-- src/python/requirements-dev.txt
-- src/python/Pipfile
-- src/python/Pipfile.lock
+  - src/python/requirements-build.txt
+  - src/python/requirements-docs.txt
+  - src/python/Pipfile
+  - src/python/Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
