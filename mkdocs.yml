@@ -7,7 +7,8 @@ site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 nav:
     - Home: index.md
-    - Contribute: contributing.md
+    - Code of Conduct: code_of_conduct.md
+    - Code Conventions: contributing.md
     - Data Collection: collector.md
 
 theme: readthedocs
