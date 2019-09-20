@@ -14,8 +14,11 @@ Classification and analysis of post-storm response imagery.
 ## Table of Contents <!-- omit in toc -->
 
 - [Team C-Sick 🤢](#team-c-sick-)
+- [Contributions](#contributions)
+    - [Code of Conduct](#code-of-conduct)
+    - [Conventions](#conventions)
+    - [Beta Branch](#beta-branch)
 - [Getting the Project Running 📋](#getting-the-project-running-)
-- [Contribution Conventions](#contribution-conventions)
 - [Data Source 💾](#data-source-)
 
 ## Team C-Sick 🤢
@@ -33,11 +36,18 @@ Team Members:
 Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
 Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
-## Contribution Conventions
+## Contributions
+
+### Code of Conduct
+
+We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
+Please read the 
+
+### Conventions
 
 Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
 
-## Beta Branch
+### Beta Branch
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
