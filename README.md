@@ -41,7 +41,7 @@ Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 ### Code of Conduct
 
 We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
-Please read the 
+Please read the full [**Code of Conduct**](docs/code_of_conduct.md)
 
 ### Conventions
 
