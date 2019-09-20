@@ -6,9 +6,9 @@ matrix:
     - cd src/python/
     - pip install -U pip
     install:
-    - pip install -U tox-travis pipenv pipenv_to_requirements
+    - pip install -U tox-travis pipenv_to_requirements
     before_script:
-    - pipenv run pipenv_to_requirements -f
+    - pipenv_to_requirements -f
     script:
     - tox
 
@@ -18,9 +18,9 @@ matrix:
     - cd src/python/
     - pip install -U pip
     install:
-    - pip install -U tox-travis codecov pipenv pipenv_to_requirements
+    - pip install -U tox-travis codecov pipenv_to_requirements
     before_script:
-    - pipenv run pipenv_to_requirements -f
+    - pipenv_to_requirements -f
     script:
     - tox
     after_success:
