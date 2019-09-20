@@ -5,7 +5,7 @@ import os
 #size_300 = (300,300)
 
 
-def search_files(directory='.', extension='G:\Shared drives\C-Sick\RGB'):
+def search_files(directory='.', extension='G:\\Shared drives\\C-Sick\\RGB'):
     extension = extension.lower()
     for dirpath, dirnames, files in os.walk(directory):
         for name in files:
