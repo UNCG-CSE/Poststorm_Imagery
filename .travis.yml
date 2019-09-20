@@ -1,17 +1,37 @@
-# Config file for automatic testing at travis-ci.org
+matrix:
+  include:
+    - language: python
+      python: 3.6
+      before_install:
+        - cd src/python/
+        - pip install -U pip
+      install:
+        - pip install -U tox-travis codecov
+      script:
+        - tox
 
-language: python
-python:
-  - 3.7
-  - 3.6
+    - language: python
+      python: 3.7
+      before_install:
+        - cd src/python/
+        - pip install -U pip
+      install:
+        - pip install -U tox-travis codecov
+      script:
+        - tox
+      after_success:
+        - codecov
 
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis codecov
+    - language: node_js
+      node_js: node
+      before_install:
+        - cd src/dashboard/web_server
+      install:
+        - npm i
+        - npm install --only=dev
+      script:
+        - node_modules/.bin/eslint . --fix
+        - npm test
 
-# Command to run tests, e.g. python setup.py test
-script: tox
-
-# Codecov after success
-after_success: codecov
-
-
+  allow_failures:
+    - node_js: node

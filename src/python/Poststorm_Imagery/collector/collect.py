@@ -234,10 +234,10 @@ if OPTIONS.download:
                         download_incomplete = False
 
                 except ConnectionError as e:
-                    print('The download ran into a connection error: ' + str(e))
+                    h.print_error('The download ran into a connection error: ' + str(e))
                 except RequestException as e:
-                    print('Something went wrong with reading the data transmitted. Error: ' + str(e))
+                    h.print_error('Something went wrong with reading the data transmitted. Error: ' + str(e))
 
                 if download_incomplete:
-                    print('Will retry download in 10 seconds...')
+                    h.print_error('Will retry download in 10 seconds...')
                     time.sleep(10)
