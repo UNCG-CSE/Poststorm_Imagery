@@ -11,6 +11,7 @@ end_of_line = lf
 
 [*.py]
 indent_size = 4
+ij_python_blank_line_at_file_end = true
 
 [*.{yml, json}]
 indent_size = 2
