@@ -2,6 +2,7 @@ matrix:
   include:
   - language: python
     python: 3.6
+    cache: pip
     before_install:
     - cd src/python/
     - pip install -U pip
@@ -14,6 +15,7 @@ matrix:
 
   - language: python
     python: 3.7
+    cache: pip
     before_install:
     - cd src/python/
     - pip install -U pip
