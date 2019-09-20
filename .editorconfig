@@ -14,3 +14,6 @@ indent_size = 4
 
 [*.{yml, json}]
 indent_size = 2
+
+[*.md]
+ij_wrap_on_typing = true
