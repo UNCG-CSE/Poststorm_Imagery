@@ -21,9 +21,9 @@ path = 'G:\\Shared drives\\C-Sick\\data\\'
 files = []
 
 # Loop through the path and find all the jpg files
-# r = root, d = directories, f = files
-for r, d, f in os.walk(path):
-    for file in f:
+# r = root, d = directories, walk_f = files
+for r, d, walk_f in os.walk(path):
+    for file in walk_f:
         filePath = os.path.join(r, file)
         if '.jpg' in file and os.path.getsize(filePath) > 0:
             files.append(filePath)
@@ -75,3 +75,5 @@ for r, d, f in os.walk(path):
             fileName = os.path.basename(f)
             name = fileName
             i.save(path + name)
+
+        files = []
