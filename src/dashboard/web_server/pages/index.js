@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import Layout from "../components/layout";
 // import Checkbox_Form from "../components/form/checkbox";
-import Radiobutton_Form from "../components/form/radiobuttons";
+//import Radiobutton_Form from "../components/form/radiobuttons";
 import MyTheme from "../components/theme";
 import React from "react";
 import PropTypes from "prop-types";
@@ -20,11 +21,13 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+//import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import Fetch from 'isomorphic-fetch'
 import axios from 'axios';
+
+
 
 import { Formik, Field } from "formik";
 import * as Yup from 'yup'
@@ -125,20 +128,22 @@ const useStyles = makeStyles(theme => ({
 const InputFeedback = ({ error }) =>
 error ? <div style={MyTheme.palette.red500}>{error}</div> : null;
 
-
+// InputFeedback.propTypes = {
+//   error: PropTypes.string,
+// };
 // Radio input
 const RadioButton = ({
-  field: { name, value, onChange, onBlur },
+  field: { name, onChange, onBlur },
   id,
   label,
-  className,
+  
   style,
-  ...props
+
 }) => {
   return (
     <div>
       <FormControlLabel
-        value="1"
+
         control={<Radio style={style} />}
         label={label}
         onChange={onChange}
@@ -153,6 +158,15 @@ const RadioButton = ({
   );
 };
 
+// RadioButton.propTypes = {
+//   field: PropTypes.object,
+//   id:PropTypes.string,
+//   label:PropTypes.string,
+//   className:PropTypes.string,
+//   style:PropTypes,
+//   props:PropTypes.object
+// };
+
 // Radio group
 const RadioButtonGroup = ({
   value,
@@ -160,7 +174,7 @@ const RadioButtonGroup = ({
   touched,
   id,
   label,
-  className,
+  
   children,
   onChange,
   style
@@ -189,11 +203,10 @@ const RadioButtonGroup = ({
 // Checkbox input
 const CheckboxButton = ({
   field: { name, value, onChange, onBlur,style },
-  form: { errors, touched, setFieldValue },
+  form: { errors, touched },
   id,
   label,
-  className,
-  ...props
+
 }) => {
  
   return (
@@ -245,7 +258,7 @@ class CheckboxGroup extends React.Component {
   };
 
   render() {
-    const { value, error, touched, label, className, children,style } = this.props;
+    const { value, error, touched, label, children,style } = this.props;
 
     return (
       <div >
@@ -277,24 +290,6 @@ class CheckboxGroup extends React.Component {
 
 function Index(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(false);
-  const [washOverValue, setValue2] = React.useState(false);
-  const [stormImpactValue, setImapactValue] = React.useState(false);
-
-  function handleChange(event) {
-    setValue(event.target.value);
-  }
-
-  function handleChange2(event) {
-    setValue2(event.target.value);
-  }
-
-  function handleStomrImpackChange(event){
-    setImapactValue(event.target.value);
-  }
-
- 
-
   return (
     <Layout>
       <Grid
@@ -332,7 +327,7 @@ function Index(props) {
                 onSubmit={(values, actions) => {
                   setTimeout(() => {
                     
-                    axios.post(`http://localhost:4000/form_submit`, values)
+                    axios.post(`http://localhost:4001/form_submit`, values)
                     .then(res => {
                       console.log(res);
                       console.log(res.data);
@@ -359,7 +354,7 @@ function Index(props) {
                           value={values.developmentGroup}
                           error={errors.developmentGroup}
                           touched={touched.developmentGroup}
-                          onChange={handleChange}
+                          //onChange={handleChange}
                           style={MyTheme.palette.amber500}
                         >
            
@@ -386,7 +381,7 @@ function Index(props) {
                           value={values.washoverVisibilityGroup}
                           error={errors.washoverVisibilityGroup}
                           touched={touched.washoverVisibilityGroup}
-                          onChange={handleChange2}
+                          //onChange={handleChange2}
                           style={MyTheme.palette.blue500}
                         >
            
@@ -412,7 +407,7 @@ function Index(props) {
                           value={values.impactGroup}
                           error={errors.impactGroup}
                           touched={touched.impactGroup}
-                          onChange={handleStomrImpackChange}
+                          //onChange={handleStomrImpackChange}
                           style={MyTheme.palette.green500}
                         >
            
@@ -511,14 +506,14 @@ Index.getInitialProps = async function() {
   const CONSTANTS = await require('../server_constants')
   const {SITE_IP} = CONSTANTS
   
-  //This enables it so that the serve either uses localhost or the machines ip,all based off if the user gives a cl arg.
+  // //This enables it so that the serve either uses localhost or the machines ip,all based off if the user gives a cl arg.
   const API_URL=`http://${SITE_IP.node}/images/get_image`
   //Default data incase Fetch fails. 
   let data,default_data = {
       file_url:undefined,
       file_name:'ERROR API CALL FAILED',
       file_desc: 'BIG SAD',
-      api_url:API_URL,
+      api_url:'',
   }
   
   //Now we call the get image api to ,well get the image

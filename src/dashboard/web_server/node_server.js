@@ -42,7 +42,7 @@ async function main() {
     //console.log(await axios.get('/user?ID=12345'))
     
     //Notify use that things are ready to go.
-    app_express.listen(PORT_NODE,'0.0.0.0', (err) => {
+    app_express.listen(PORT_NODE,'0.0.0.0', () => {
         console.log(`> Node server ready on http://${SITE_IP.node}`)
     });
 

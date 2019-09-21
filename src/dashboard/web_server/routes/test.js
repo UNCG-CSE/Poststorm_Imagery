@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+//const app = express();
 const router = express.Router();
 let CONSTANTS=
 (async () => {
@@ -13,7 +13,7 @@ router.use('/routes', (req, res) => {
     )
 })
 
-router.use('/', function (req, res, next) {
+router.use('/', function (req, res) {
     res.json(
         {
             test_api:'WOWE, test api.',
