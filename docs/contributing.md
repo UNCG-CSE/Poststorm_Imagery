@@ -18,7 +18,7 @@ changes with the original creator
 - All large data files must be excluded from the GitHub repository.  
   *Note: All files except `.gitignore` files are ignored in the [data](../data) folder, so storing data in a sub-directory
   there is a good option! To force Git to commit a directory, but not the files in it, you can copy 
-  [this template](../data/input/.gitignore) into the directory.*
+  [this template](../data/tar_cache/.gitignore) into the directory.*
   
 ## Handling Branches
 
