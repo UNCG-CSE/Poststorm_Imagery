@@ -1,4 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable react/display-name */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import MuiLink from '@material-ui/core/Link';
 import Link from './Link';
 import MyTheme from './theme';
@@ -18,20 +19,20 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {  fade, makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 
 const drawerWidth = 240;
@@ -134,7 +135,7 @@ function ResponsiveDrawer(props) {
       >
         <StyledTreeItem nodeId="1" label="Image Tagging">
           
-          {website_links.map(({text,url_link,icon}, index) => (
+          {website_links.map(({text,url_link}, index) => (
             
             <Link href={url_link} key={text}  style={{ textDecoration: 'none' }}>
               <StyledTreeItem style={link_icon_colors[index % link_icon_colors.length]} nodeId="2" label={text}/> 
@@ -152,7 +153,7 @@ function ResponsiveDrawer(props) {
       >
         <StyledTreeItem nodeId="1" label="Data Sources">
           
-          {external_links.map(({text,url_link,icon}, index) => (
+          {external_links.map(({text,url_link}) => (
             <MuiLink  href={url_link} key={url_link} style={{ textDecoration: 'none' }}>
               <StyledTreeItem style={MyTheme.palette.purple300} nodeId="2" label={text}/> 
           </MuiLink>
@@ -253,6 +254,7 @@ function CloseSquare(props) {
 }
 
 function TransitionComponent(props) {
+
   const style = useSpring({
     from: { opacity: 0, transform: 'translate3d(20px,0,0)' },
     to: { opacity: props.in ? 1 : 0, transform: `translate3d(${props.in ? 0 : 20}px,0,0)` },
@@ -264,6 +266,11 @@ function TransitionComponent(props) {
     </animated.div>
   );
 }
+//https://reactjs.org/docs/typechecking-with-proptypes.html
+// TransitionComponent.propTypes = {
+//   in: PropTypes.bool,
+// };
+
 
 ResponsiveDrawer.propTypes = {
   /**
@@ -271,7 +278,8 @@ ResponsiveDrawer.propTypes = {
   * You won't need it on your project.
   */
   container: PropTypes.instanceOf(typeof Element === 'undefined' ? Object : Element),
-  in: PropTypes.bool,
+  
+  //in: PropTypes.bool,
 };
 
 const StyledTreeItem = withStyles(theme => ({
