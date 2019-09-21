@@ -29,52 +29,49 @@ for r, d, f in os.walk(path):
             files.append(filePath)
 
 # Resize all the jpg files and save it to the appropriate folder
-    index = 0
-    for f in files:
-        index += 1
-        print(f)
-        # Save all the Barry images to the Barry folder
-        if f.startswith('G:\\Shared drives\\C-Sick\\data\\Barry'):
-            i = Image.open(f)
-            fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
-            path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Barry\\'
-            fileName = os.path.basename(f)
-            name = 'Barry' + fileName
-            i.save(path + name)
-        # Save all the Dorian images to the Dorian folder
-        elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Dorian'):
-            i = Image.open(f)
-            fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
-            path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Dorian\\'
-            fileName = os.path.basename(f)
-            name = 'Dorian' + fileName
-            i.save(path + name)
-        # Save all the Florence images to the Florence folder
-        elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Florence'):
-            i = Image.open(f)
-            fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
-            path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Florence\\'
-            fileName = os.path.basename(f)
-            name = 'Florence' + fileName
-            i.save(path + name)
-        # Save all the Gordon images to the Gordon folder
-        elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Gordon'):
-            i = Image.open(f)
-            fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
-            path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Gordon\\'
-            fileName = os.path.basename(f)
-            name = 'Gordon' + fileName
-            i.save(path + name)
-        # Save all the Michael images to the Michael folder
-        elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Michael'):
-            i = Image.open(f)
-            fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
-            path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Michael\\'
-            fileName = os.path.basename(f)
-            name = 'Michael' + fileName
-            i.save(path + name)
+index = 0
+for f in files:
+    index += 1
+    print(f)
+    i = Image.open(f)
+
+    # Save all the Barry images to the Barry folder
+    if f.startswith('G:\\Shared drives\\C-Sick\\data\\Barry'):
+        fn, f_ext = os.path.splitext(f)
+        i = i.resize(size_300, Image.ANTIALIAS)
+        path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Barry\\'
+        fileName = os.path.basename(f)
+        name = fileName
+        i.save(path + name)
+    # Save all the Dorian images to the Dorian folder
+    elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Dorian'):
+        fn, f_ext = os.path.splitext(f)
+        i = i.resize(size_300, Image.ANTIALIAS)
+        path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Dorian\\'
+        fileName = os.path.basename(f)
+        name = fileName
+        i.save(path + name)
+    # Save all the Florence images to the Florence folder
+    elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Florence'):
+        fn, f_ext = os.path.splitext(f)
+        i = i.resize(size_300, Image.ANTIALIAS)
+        path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Florence\\'
+        fileName = os.path.basename(f)
+        name = fileName
+        i.save(path + name)
+    # Save all the Gordon images to the Gordon folder
+    elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Gordon'):
+        fn, f_ext = os.path.splitext(f)
+        i = i.resize(size_300, Image.ANTIALIAS)
+        path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Gordon\\'
+        fileName = os.path.basename(f)
+        name = fileName
+        i.save(path + name)
+    # Save all the Michael images to the Michael folder
+    elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Michael'):
+        fn, f_ext = os.path.splitext(f)
+        i = i.resize(size_300, Image.ANTIALIAS)
+        path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Michael\\'
+        fileName = os.path.basename(f)
+        name = fileName
+        i.save(path + name)
