@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from PIL import Image
 import os
 
@@ -11,8 +13,8 @@ os.makedirs('G:\\Shared drives\\C-Sick\\smallerJPGImage\\Gordon')
 os.makedirs('G:\\Shared drives\\C-Sick\\smallerJPGImage\\Michael')
 """
 
-# Declare the size to convert the image
-size_300 = (300, 300)
+# Declare the scale factor
+SIZE_SCALE = 0.15  # 1 = 100% of original size, 0.15 = 15% of original size, etc.
 
 # Declare the path
 path = 'G:\\Shared drives\\C-Sick\\data\\'
@@ -35,10 +37,16 @@ for r, d, walk_f in os.walk(path):
         print(f)
         i = Image.open(f)
 
+        # Get the original image's width and height
+        w, h = i.size
+
+        # Reduce the size of the original image by a specified multiplier (scale factor)
+        new_size: Tuple = (int(w * SIZE_SCALE), int(h * SIZE_SCALE))
+
         # Save all the Barry images to the Barry folder
         if f.startswith('G:\\Shared drives\\C-Sick\\data\\Barry'):
             fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
+            i = i.resize(new_size, Image.ANTIALIAS)
             path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Barry\\'
             fileName = os.path.basename(f)
             name = fileName
@@ -46,7 +54,7 @@ for r, d, walk_f in os.walk(path):
         # Save all the Dorian images to the Dorian folder
         elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Dorian'):
             fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
+            i = i.resize(new_size, Image.ANTIALIAS)
             path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Dorian\\'
             fileName = os.path.basename(f)
             name = fileName
@@ -54,7 +62,7 @@ for r, d, walk_f in os.walk(path):
         # Save all the Florence images to the Florence folder
         elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Florence'):
             fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
+            i = i.resize(new_size, Image.ANTIALIAS)
             path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Florence\\'
             fileName = os.path.basename(f)
             name = fileName
@@ -62,7 +70,7 @@ for r, d, walk_f in os.walk(path):
         # Save all the Gordon images to the Gordon folder
         elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Gordon'):
             fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
+            i = i.resize(new_size, Image.ANTIALIAS)
             path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Gordon\\'
             fileName = os.path.basename(f)
             name = fileName
@@ -70,7 +78,7 @@ for r, d, walk_f in os.walk(path):
         # Save all the Michael images to the Michael folder
         elif f.startswith('G:\\Shared drives\\C-Sick\\data\\Michael'):
             fn, f_ext = os.path.splitext(f)
-            i = i.resize(size_300, Image.ANTIALIAS)
+            i = i.resize(new_size, Image.ANTIALIAS)
             path = 'G:\\Shared drives\\C-Sick\\smallerJPGImage\\Michael\\'
             fileName = os.path.basename(f)
             name = fileName
