@@ -6,7 +6,7 @@ site_author: 'C-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 nav:
-    - Home: index.md
+    - Home: https://raw.githubusercontent.com/UNCG-CSE/Poststorm_Imagery/master/README.md
     - Code of Conduct: code_of_conduct.md
     - Code Conventions: contributing.md
     - Data Collection: collector.md
