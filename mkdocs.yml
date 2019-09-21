@@ -3,7 +3,7 @@ site_description: 'Classification and analysis of post-storm response imagery.'
 site_author: 'C-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
-repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master'
+repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta'
 
 nav:
     - Home: index.md
