@@ -1,37 +1,43 @@
 matrix:
   include:
-    - language: python
-      python: 3.6
-      before_install:
-        - cd src/python/
-        - pip install -U pip
-      install:
-        - pip install -U tox-travis codecov
-      script:
-        - tox
+  - language: python
+    python: 3.6
+    cache: pip
+    before_install:
+    - cd src/python/
+    - pip install -U pip
+    install:
+    - pip install -U tox-travis pipenv_to_requirements
+    before_script:
+    - pipenv_to_requirements -f
+    script:
+    - tox
 
-    - language: python
-      python: 3.7
-      before_install:
-        - cd src/python/
-        - pip install -U pip
-      install:
-        - pip install -U tox-travis codecov
-      script:
-        - tox
-      after_success:
-        - codecov
+  - language: python
+    python: 3.7
+    cache: pip
+    before_install:
+    - cd src/python/
+    - pip install -U pip
+    install:
+    - pip install -U tox-travis codecov pipenv_to_requirements
+    before_script:
+    - pipenv_to_requirements -f
+    script:
+    - tox
+    after_success:
+    - codecov
 
-    - language: node_js
-      node_js: node
-      before_install:
-        - cd src/dashboard/web_server
-      install:
-        - npm i
-        - npm install --only=dev
-      script:
-        - node_modules/.bin/eslint . --fix
-        - npm test
+  - language: node_js
+    node_js: node
+    before_install:
+    - cd src/dashboard/web_server
+    install:
+    - npm i
+    - npm install --only=dev
+    script:
+    - node_modules/.bin/eslint . --fix
+    - npm test
 
   allow_failures:
-    - node_js: node
+  - node_js: node
