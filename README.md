@@ -1,4 +1,4 @@
-# Post-Storm Imagery 🌪️ <!-- omit in toc -->
+# Post-Storm Imagery 🌪
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -10,16 +10,6 @@ https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
 https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
-
-## Table of Contents <!-- omit in toc -->
-
-- [Team C-Sick 🤢](#team-c-sick-)
-- [Contributions](#contributions)
-    - [Code of Conduct](#code-of-conduct)
-    - [Conventions](#conventions)
-    - [Beta Branch](#beta-branch)
-- [Getting the Project Running 📋](#getting-the-project-running-)
-- [Data Source 💾](#data-source-)
 
 ## Team C-Sick 🤢
 
