@@ -61,7 +61,7 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `src/python/Poststorm_Imagery` (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
