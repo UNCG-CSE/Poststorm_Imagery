@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import Layout from "../components/layout";
-// import Checkbox_Form from "../components/form/checkbox";
-//import Radiobutton_Form from "../components/form/radiobuttons";
 import MyTheme from "../components/theme";
 import React from "react";
 import PropTypes from "prop-types";
@@ -21,19 +19,19 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-//import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import Fetch from 'isomorphic-fetch'
 import axios from 'axios';
-
-
 
 import { Formik, Field } from "formik";
 import * as Yup from 'yup'
 
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import TextField from '@material-ui/core/TextField';
 
 const drawerWidth = 240;
 const SAD_FACE = `
@@ -127,6 +125,8 @@ const useStyles = makeStyles(theme => ({
 
 const InputFeedback = ({ error }) =>
 error ? <div style={MyTheme.palette.red500}>{error}</div> : null;
+
+
 
 // InputFeedback.propTypes = {
 //   error: PropTypes.string,
@@ -317,17 +317,24 @@ function Index(props) {
                   washoverVisibilityGroup: "",
                   impactGroup:"",
                   terrianGroup:[],
+                  additionalNotes:""
                 }}
                 validationSchema={Yup.object().shape({
                   developmentGroup: Yup.string().required("Please select a option"),
                   washoverVisibilityGroup: Yup.string().required("Please select a option"),
                   impactGroup: Yup.string().required("Please select a option"),
                   terrianGroup: Yup.array().required("Please select atleast one option"),
+                  additionalNotes: 'aa'//Yup.string(),
                 })}
                 onSubmit={(values, actions) => {
                   setTimeout(() => {
-                    
-                    axios.post(`http://localhost:4001/form_submit`, values)
+                   
+                  
+                    let form_values= {
+                      ...values,
+                      additional_notes:document.getElementById("outlined-dense-multiline").value
+                    }
+                    axios.post(`http://localhost:4001/form_submit`, form_values)
                     .then(res => {
                       console.log(res);
                       console.log(res.data);
@@ -469,6 +476,32 @@ function Index(props) {
                             label="Sandy Coastline"
                           />
                         </CheckboxGroup>
+
+                        <br/>
+
+                        <TextField
+                          id="outlined-dense-multiline"
+                         
+                          rows="5"
+                          margin="dense"
+                          variant="outlined"
+                          multiline
+                          rowsMax="4"
+                          fullWidth
+                          classstyle={MyTheme.palette.amber500} 
+                        />
+                        {/* <TextField
+                          id="outlined-dense-multiline"
+                          label="Additional Information"
+                          rows="5"
+                          margin="dense"
+                          variant="outlined"
+                          multiline
+                          rowsMax="4"
+                          fullWidth
+                          classstyle={MyTheme.palette.amber500} 
+                        /> */}
+                        {/* <TextareaAutosize aria-label="minimum height" rows={5} placeholder="Minimum 3 rows" classstyle={MyTheme.palette.amber500} /> */}
 
                       </div>
                     </CardActions>
