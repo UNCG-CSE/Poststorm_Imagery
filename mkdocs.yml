@@ -6,17 +6,35 @@ site_author: 'C-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 nav:
-    - Home: https://raw.githubusercontent.com/UNCG-CSE/Poststorm_Imagery/master/README.md
+    - Home: index.md
     - Code of Conduct: code_of_conduct.md
     - Code Conventions: contributing.md
     - Data Collection: collector.md
 
-theme: readthedocs
+theme: material
 
 plugins:
     - search
     - git-revision-date
     - macros
+
+markdown_extensions:
+    - toc
+    - admonition
+    - codehilite
+    - footnotes
+    - pymdownx.details
+    - pymdownx.emoji:
+        emoji_generator: !!python/name:pymdownx.emoji.to_svg
+    - pymdownx.inlinehilite
+    - pymdownx.magiclink
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.tilde
 
 extra:
     version: 1.0.0
