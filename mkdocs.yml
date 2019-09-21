@@ -24,8 +24,7 @@ markdown_extensions:
     - codehilite
     - footnotes
     - pymdownx.details
-    - pymdownx.emoji:
-        emoji_generator: !!python/name:pymdownx.emoji.to_svg
+    - pymdownx.emoji
     - pymdownx.inlinehilite
     - pymdownx.magiclink
     - pymdownx.mark
