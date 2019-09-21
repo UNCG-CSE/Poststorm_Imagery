@@ -11,6 +11,9 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/)
+
 ## Team C-Sick 🤢
 
 We are a team of computer science students studying big data for the purpose of getting a head start in the world of
