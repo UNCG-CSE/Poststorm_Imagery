@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   content: {
-    flexGrow: 1,
+    flexGrow: 11,
     padding: theme.spacing(3),
   },
   paper: {
@@ -222,10 +222,11 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
+        {/* top padding */}
         <div className={classes.toolbar} />
-        {/* <Paper className={classes.paper}> */}
+        
           {props.children}
-        {/* </Paper>     */}
+       
       </main>
     </div>
   );
