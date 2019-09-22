@@ -24,7 +24,7 @@ async function main() {
         })
 
         //Notify user.
-        app_express.listen(PORT_WEB,'0.0.0.0', (err) => {
+        app_express.listen(PORT_WEB,'0.0.0.0', () => {
             console.log(`> Website ready on http://${SITE_IP.web}`)
         });
     })
