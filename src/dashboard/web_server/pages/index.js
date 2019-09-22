@@ -334,7 +334,7 @@ function Index(props) {
                 washoverVisibilityGroup: Yup.string().required("Please select a option"),
                 impactGroup: Yup.string().required("Please select a option"),
                 terrianGroup: Yup.array().required("Please select atleast one option"),
-                additionalNotes: 'aa'//Yup.string(),
+                //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
                 setTimeout(() => {
