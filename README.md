@@ -1,4 +1,4 @@
-# Post-Storm Imagery 🌪️ <!-- omit in toc -->
+# Post-Storm Imagery 🌪
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -11,15 +11,8 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
-## Table of Contents <!-- omit in toc -->
-
-- [Team C-Sick 🤢](#team-c-sick-)
-- [Contributions](#contributions)
-    - [Code of Conduct](#code-of-conduct)
-    - [Conventions](#conventions)
-    - [Beta Branch](#beta-branch)
-- [Getting the Project Running 📋](#getting-the-project-running-)
-- [Data Source 💾](#data-source-)
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/)
 
 ## Team C-Sick 🤢
 
@@ -71,7 +64,7 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `src/python/Poststorm_Imagery` (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
