@@ -1,21 +1,44 @@
 site_name: 'Post-Storm Imagery'
-repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery'
 site_description: 'Classification and analysis of post-storm response imagery.'
 site_author: 'C-Sick Team'
-
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
+
+repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery/'
+edit_uri: 'edit/beta/docs/'
 
 nav:
     - Home: index.md
-    - Contribute: contributing.md
+    - Code of Conduct: code_of_conduct.md
+    - Code Conventions: contributing.md
     - Data Collection: collector.md
 
-theme: readthedocs
+theme:
+  name: 'material'
+  palette:
+    primary: 'light green'
+    accent: 'light green'
 
 plugins:
     - search
     - git-revision-date
     - macros
+
+markdown_extensions:
+    - toc
+    - admonition
+    - codehilite
+    - footnotes
+    - pymdownx.details
+    - pymdownx.emoji
+    - pymdownx.inlinehilite
+    - pymdownx.magiclink
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - pymdownx.tilde
 
 extra:
     version: 1.0.0
