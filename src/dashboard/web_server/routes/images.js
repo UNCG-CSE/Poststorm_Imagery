@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+//const app = express();
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
@@ -11,7 +11,7 @@ const fs = require('fs');
 async function main() {
   const CONSTANTS = await require('../server_constants')
   const {SITE_IP} = CONSTANTS
-  const IMAGE_FOLDER='data'
+  const IMAGE_FOLDER='data/jpg'
   const image_list=await fs.readdirSync(IMAGE_FOLDER)
   const SCRIPT_NAME = path.basename(__filename).split('.').slice(0, -1).join('.');
   
@@ -30,6 +30,7 @@ async function main() {
         }
       
     )
+    next()
   });
   
   router.use('/:image_name', function (req, res, next) {

@@ -1,25 +1,33 @@
 import React from 'react';
-import App, { Container } from 'next/app';
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
+import App from 'next/app';
+import Head from 'next/head';
+import { ThemeProvider } from '@material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import theme from '../components/theme';
 
 export default class MyApp extends App {
-    static async getInitialProps({ Component, ctx }) {
-        let pageProps = {};
-
-        if (Component.getInitialProps) {
-            pageProps = await Component.getInitialProps(ctx)
-        }
-
-        return { pageProps };
-    };
-
-    render() {
-        const { Component, pageProps } = this.props;
-
-        return (
-            <Component {...pageProps} />
-        );
+  componentDidMount() {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentNode.removeChild(jssStyles);
     }
+  }
+
+  render() {
+    const { Component, pageProps } = this.props;
+
+    return (
+      <React.Fragment>
+        <Head>
+          <title>My page</title>
+        </Head>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </React.Fragment>
+    );
+  }
 }
