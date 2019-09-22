@@ -1,4 +1,4 @@
-# Post-Storm Imagery 🌪️ <!-- omit in toc -->
+# Post-Storm Imagery 🌪
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -11,12 +11,8 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
-## Table of Contents <!-- omit in toc -->
-
-- [Team C-Sick 🤢](#team-c-sick-)
-- [Getting the Project Running 📋](#getting-the-project-running-)
-- [Contribution Conventions](#contribution-conventions)
-- [Data Source 💾](#data-source-)
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/)
 
 ## Team C-Sick 🤢
 
@@ -33,11 +29,18 @@ Team Members:
 Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
 Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
-## Contribution Conventions
+## Contributions
+
+### Code of Conduct
+
+We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
+Please read the full [**Code of Conduct**](docs/code_of_conduct.md)
+
+### Conventions
 
 Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
 
-## Beta Branch
+### Beta Branch
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -61,7 +64,7 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `src/python/Poststorm_Imagery` (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
