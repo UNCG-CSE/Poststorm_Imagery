@@ -27,7 +27,7 @@ const pool = mysql.createPool({
 
 //---START---
 async function main() {
-    pool.query("SELECT * FROM `storm`", function(err, rows, fields) {
+    pool.query("SELECT * FROM `storm`", function(err, rows) {
         // Connection is automatically released when query resolves
         console.log(rows)
     })
