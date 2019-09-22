@@ -19,8 +19,8 @@ module.exports = (async function() {
     const IP = USE_LOCALHOST?  'localhost':await public_ip.v4()
 
     //Becuase the website and server will have diff ports.
-    const PORT_WEB=3001
-    const PORT_NODE=4001
+    const PORT_WEB=3000
+    const PORT_NODE=4000
 
     //Following the above comment,we need to generate diff ips with diff ports.
     const SITE_IP = {

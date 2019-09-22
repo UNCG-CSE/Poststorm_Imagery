@@ -101,7 +101,12 @@ const website_links =[
       text:'Home',
       url_link:'/#123',
       icon: <HomeIcon />
-  }
+  },
+  {
+    text:'Documentation',
+    url_link:'https://post-storm-imagery.readthedocs.io/en/latest/',
+    icon: <HomeIcon />
+}
   
 ]
 
@@ -168,7 +173,7 @@ function ResponsiveDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar} >
+      <AppBar position="fixed" className={classes.appBar} style={MyTheme.palette.pukeGreenBG}>
         <Toolbar>
           <IconButton
             color="inherit"
