@@ -73,6 +73,12 @@ const theme = createMuiTheme({
     green500: {
       color: green[500]
     },
+    pukeGreen: {
+      color: '#7db343'
+    },
+    pukeGreenBG: {
+      backgroundColor: '#7db343'
+    },
     cyan500: {
       color: cyan[500]
     },

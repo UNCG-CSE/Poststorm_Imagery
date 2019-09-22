@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import Layout from "../components/layout";
 import MyTheme from "../components/theme";
+import Collapse from '@material-ui/core/Collapse';
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, withStyles  } from "@material-ui/core/styles";
-import { red, green } from '@material-ui/core/colors';
-
+import { red, green,purple } from '@material-ui/core/colors';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -20,7 +20,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import IconButton from '@material-ui/core/IconButton';
 import Fetch from 'isomorphic-fetch'
 import axios from 'axios';
 
@@ -30,7 +30,6 @@ import * as Yup from 'yup'
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
 
 const drawerWidth = 240;
@@ -38,6 +37,7 @@ const SAD_FACE = `
 https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg
 `;
 
+//These are custom colored buttons
 const SkipButton = withStyles(theme => ({
   root: {
     color: theme.palette.getContrastText(red[500]),
@@ -58,6 +58,15 @@ const SubmitButton = withStyles(theme => ({
   },
 }))(Button);
 
+const ToggleImageButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700],
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles(theme => ({
   //https://codesandbox.io/s/material-ui-both-right-and-left-aligned-icons-in-appbar-2e5qr
@@ -107,6 +116,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 0),
     margin: theme.spacing(0, 0)
   },
+  imageCollapseMargin: {
+    margin: theme.spacing(2,1),
+  },
   gridList: {
     width: 500,
     height: 450
@@ -115,7 +127,8 @@ const useStyles = makeStyles(theme => ({
     color: "rgba(255, 255, 255, 0.54)"
   },
   card: {
-    maxWidth: 700
+    maxWidth: 700,
+    width:700
   },
   
   media: {
@@ -126,11 +139,6 @@ const useStyles = makeStyles(theme => ({
 const InputFeedback = ({ error }) =>
 error ? <div style={MyTheme.palette.red500}>{error}</div> : null;
 
-
-
-// InputFeedback.propTypes = {
-//   error: PropTypes.string,
-// };
 // Radio input
 const RadioButton = ({
   field: { name, onChange, onBlur },
@@ -157,15 +165,6 @@ const RadioButton = ({
     </div>
   );
 };
-
-// RadioButton.propTypes = {
-//   field: PropTypes.object,
-//   id:PropTypes.string,
-//   label:PropTypes.string,
-//   className:PropTypes.string,
-//   style:PropTypes,
-//   props:PropTypes.object
-// };
 
 // Radio group
 const RadioButtonGroup = ({
@@ -263,21 +262,20 @@ class CheckboxGroup extends React.Component {
     return (
       <div >
         
-        <FormLabel component="legend" style={style}>{label}</FormLabel>
-        
+        <FormLabel component="legend" style={style}>{label}</FormLabel>    
           <FormGroup  row>
-          {React.Children.map(children, child => {
-            
-            return React.cloneElement(child, {
+            {React.Children.map(children, child => {
               
-              field: {
-                value: value.includes(child.props.id),
-                onChange: this.handleChange,
-                onBlur: this.handleBlur,
-                style:style
-              }
-            });
-          })}
+              return React.cloneElement(child, {
+                
+                field: {
+                  value: value.includes(child.props.id),
+                  onChange: this.handleChange,
+                  onBlur: this.handleBlur,
+                  style:style
+                }
+              });
+            })}
           </FormGroup>
           {touched && <InputFeedback error={error} />}
       
@@ -290,6 +288,11 @@ class CheckboxGroup extends React.Component {
 
 function Index(props) {
   const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
+
+  function handle_image_collapse() {
+    setExpanded(!expanded);
+  }
   return (
     <Layout>
       <Grid
@@ -299,225 +302,227 @@ function Index(props) {
           alignItems="center"
         >
         <Card className={classes.card}>
+      
           <CardActionArea disabled>
-            <CardMedia component="img" alt="Contemplative Reptile" height="fluid" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {props.data.file_name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {JSON.stringify(props.data, null, 4)}
-              </Typography>
-            </CardContent>
+            <Collapse in={!expanded} timeout="auto" unmountOnExit>
+              <CardMedia component="img" alt="Contemplative Reptile" height="fluid" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {props.data.file_name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {JSON.stringify(props.data, null, 4)}
+                </Typography>
+              </CardContent>
+            </Collapse> 
           </CardActionArea>
-
-              <Formik
-                initialValues={{
-                  developmentGroup: "",
-                  washoverVisibilityGroup: "",
-                  impactGroup:"",
-                  terrianGroup:[],
-                  additionalNotes:""
-                }}
-                validationSchema={Yup.object().shape({
-                  developmentGroup: Yup.string().required("Please select a option"),
-                  washoverVisibilityGroup: Yup.string().required("Please select a option"),
-                  impactGroup: Yup.string().required("Please select a option"),
-                  terrianGroup: Yup.array().required("Please select atleast one option"),
-                  additionalNotes: 'aa'//Yup.string(),
-                })}
-                onSubmit={(values, actions) => {
-                  setTimeout(() => {
-                   
+        
+            <ToggleImageButton aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={handle_image_collapse}>
+              {!expanded ? 'Hide Image': 'Show Image'}
+            </ToggleImageButton>
+   
+            <Formik
+              initialValues={{
+                developmentGroup: "",
+                washoverVisibilityGroup: "",
+                impactGroup:"",
+                terrianGroup:[],
+                //additionalNotes:""
+              }}
+              validationSchema={Yup.object().shape({
+                developmentGroup: Yup.string().required("Please select a option"),
+                washoverVisibilityGroup: Yup.string().required("Please select a option"),
+                impactGroup: Yup.string().required("Please select a option"),
+                terrianGroup: Yup.array().required("Please select atleast one option"),
+                additionalNotes: 'aa'//Yup.string(),
+              })}
+              onSubmit={(values, actions) => {
+                setTimeout(() => {
                   
-                    let form_values= {
+                
+                  let form_values= {
+                    form_input:{
                       ...values,
                       additional_notes:document.getElementById("outlined-dense-multiline").value
-                    }
-                    axios.post(`http://localhost:4001/form_submit`, form_values)
-                    .then(res => {
-                      console.log(res);
-                      console.log(res.data);
-                    })
-                    
-                    actions.setSubmitting(false);
-                  }, 500);
-                }}
-                render={({
-                  handleSubmit,
-                  setFieldValue,
-                  setFieldTouched,
-                  values,
-                  errors,
-                  touched,
-                  isSubmitting
-                }) => (
-                  <form onSubmit={handleSubmit}>
-                    <CardActions style={MyTheme.palette.grey700BG}>
-                      <div>
-                        <RadioButtonGroup
-                          id="devVsUndev"
-                          label="Developed vs Undeveloped"
-                          value={values.developmentGroup}
-                          error={errors.developmentGroup}
-                          touched={touched.developmentGroup}
-                          //onChange={handleChange}
-                          style={MyTheme.palette.amber500}
-                        >
-           
-                          <Field
-                            component={RadioButton}
-                            name="developmentGroup"
-                            id="DevelopedId"
-                            label="Developed"
-                          />
-                          <Field
-                            component={RadioButton}
-                            name="developmentGroup"
-                            id="UndevelopedId"
-                            label="Undeveloped"
-                          />
-            
-                        </RadioButtonGroup>
-
-                        <br/>
-
-                        <RadioButtonGroup
-                          id="washoverGroupId"
-                          label="Washover Visibility"
-                          value={values.washoverVisibilityGroup}
-                          error={errors.washoverVisibilityGroup}
-                          touched={touched.washoverVisibilityGroup}
-                          //onChange={handleChange2}
-                          style={MyTheme.palette.blue500}
-                        >
-           
-                          <Field
-                            component={RadioButton}
-                            name="washoverVisibilityGroup"
-                            id="VisibleWashoverId"
-                            label="Visible Washover"
-                          />
-                          <Field
-                            component={RadioButton}
-                            name="washoverVisibilityGroup"
-                            id="NoVisibleWashoverId"
-                            label="No Washover"
-                          />
-                        </RadioButtonGroup>
-
-                        <br/>
-
-                        <RadioButtonGroup
-                          id="washoverGroupId"
-                          label="Swash"
-                          value={values.impactGroup}
-                          error={errors.impactGroup}
-                          touched={touched.impactGroup}
-                          //onChange={handleStomrImpackChange}
-                          style={MyTheme.palette.green500}
-                        >
-           
-                          <Field
-                            component={RadioButton}
-                            name="impactGroup"
-                            id="SwashId"
-                            label="Swash"
-                          />
-                          <Field
-                            component={RadioButton}
-                            name="impactGroup"
-                            id="CollisionId"
-                            label="Collision"
-                          />
-                          <Field
-                            component={RadioButton}
-                            name="impactGroup"
-                            id="OverwashId"
-                            label="Overwash"
-                          />
-                          <Field
-                            component={RadioButton}
-                            name="impactGroup"
-                            id="InundationId"
-                            label="Inundation"
-                          />
-            
-                        </RadioButtonGroup>
-
-                        <br/>
-
-                        <CheckboxGroup
-                          id="terrianGroup"
-                          label="Which of these?"
-                          value={values.terrianGroup}
-                          error={errors.terrianGroup}
-                          touched={touched.terrianGroup}
-                          onChange={setFieldValue}
-                          onBlur={setFieldTouched}
-                          style={MyTheme.palette.purple800}
-                        >
-                          <Field
-                            component={CheckboxButton}
-                            name="terrianGroup"
-                            id="River"
-                            label="River"
-                          />
-                          <Field
-                            component={CheckboxButton}
-                            name="terrianGroup"
-                            id="Marsh"
-                            label="Marsh"
-                          />
-                          <Field
-                            component={CheckboxButton}
-                            name="terrianGroup"
-                            id="SandyCoastline"
-                            label="Sandy Coastline"
-                          />
-                        </CheckboxGroup>
-
-                        <br/>
-
-                        <TextField
-                          id="outlined-dense-multiline"
-                         
-                          rows="5"
-                          margin="dense"
-                          variant="outlined"
-                          multiline
-                          rowsMax="4"
-                          fullWidth
-                          classstyle={MyTheme.palette.amber500} 
+                    } 
+                  }
+                  axios.post(`http://localhost:4000/form_submit`, form_values)
+                  .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                  })
+                  
+                  actions.setSubmitting(false);
+                }, 500);
+              }}
+              render={({
+                handleSubmit,
+                setFieldValue,
+                setFieldTouched,
+                values,
+                errors,
+                touched,
+                isSubmitting
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <CardActions style={MyTheme.palette.grey700BG}>
+                    <div>
+                      <RadioButtonGroup
+                        id="devVsUndev"
+                        label="Developed vs Undeveloped"
+                        value={values.developmentGroup}
+                        error={errors.developmentGroup}
+                        touched={touched.developmentGroup}
+                        //onChange={handleChange}
+                        style={MyTheme.palette.amber500}
+                      >
+          
+                        <Field
+                          component={RadioButton}
+                          name="developmentGroup"
+                          id="DevelopedId"
+                          label="Developed"
                         />
-                        {/* <TextField
-                          id="outlined-dense-multiline"
-                          label="Additional Information"
-                          rows="5"
-                          margin="dense"
-                          variant="outlined"
-                          multiline
-                          rowsMax="4"
-                          fullWidth
-                          classstyle={MyTheme.palette.amber500} 
-                        /> */}
-                        {/* <TextareaAutosize aria-label="minimum height" rows={5} placeholder="Minimum 3 rows" classstyle={MyTheme.palette.amber500} /> */}
+                        <Field
+                          component={RadioButton}
+                          name="developmentGroup"
+                          id="UndevelopedId"
+                          label="Undeveloped"
+                        />
+          
+                      </RadioButtonGroup>
 
-                      </div>
-                    </CardActions>
-              
-                    <CardActions style={MyTheme.palette.bluePrimaryBG}>
-                      <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
-                          Skip
-                      </SkipButton>
+                      <br/>
 
-                      <SubmitButton disabled={isSubmitting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
-                          Submit
-                      </SubmitButton>
-                    </CardActions>
-                  </form>
-                )}
-              />    
+                      <RadioButtonGroup
+                        id="washoverGroupId"
+                        label="Washover Visibility"
+                        value={values.washoverVisibilityGroup}
+                        error={errors.washoverVisibilityGroup}
+                        touched={touched.washoverVisibilityGroup}
+                        //onChange={handleChange2}
+                        style={MyTheme.palette.blue500}
+                      >
+          
+                        <Field
+                          component={RadioButton}
+                          name="washoverVisibilityGroup"
+                          id="VisibleWashoverId"
+                          label="Visible Washover"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="washoverVisibilityGroup"
+                          id="NoVisibleWashoverId"
+                          label="No Washover"
+                        />
+                      </RadioButtonGroup>
+
+                      <br/>
+
+                      <RadioButtonGroup
+                        id="washoverGroupId"
+                        label="Storm Impact"
+                        value={values.impactGroup}
+                        error={errors.impactGroup}
+                        touched={touched.impactGroup}
+                        //onChange={handleStomrImpackChange}
+                        style={MyTheme.palette.green500}
+                      >
+          
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="SwashId"
+                          label="Swash"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="CollisionId"
+                          label="Collision"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="OverwashId"
+                          label="Overwash"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="InundationId"
+                          label="Inundation"
+                        />
+          
+                      </RadioButtonGroup>
+
+                      <br/>
+
+                      <CheckboxGroup
+                        id="terrianGroup"
+                        label="Terrian Type"
+                        value={values.terrianGroup}
+                        error={errors.terrianGroup}
+                        touched={touched.terrianGroup}
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        style={MyTheme.palette.purple800}
+                      >
+                        <Field
+                          component={CheckboxButton}
+                          name="terrianGroup"
+                          id="RiverId"
+                          label="River"
+                        />
+                        <Field
+                          component={CheckboxButton}
+                          name="terrianGroup"
+                          id="MarshId"
+                          label="Marsh"
+                        />
+                        <Field
+                          component={CheckboxButton}
+                          name="terrianGroup"
+                          id="SandyCoastlineId"
+                          label="Sandy Coastline"
+                        />
+                      </CheckboxGroup>
+
+                      <br/>
+
+                      <TextField
+                        id="outlined-dense-multiline"
+                        label="Additional Notes"
+                        rows="5"
+                        margin="dense"
+                        variant="outlined"
+                        multiline
+                        rowsMax="4"
+                        fullWidth
+                        classstyle={MyTheme.palette.amber500} 
+                      />
+        
+                    </div>
+
+                  
+
+                    
+                  
+                  </CardActions>
+            
+                  <CardActions >
+                    <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
+                        Skip
+                    </SkipButton>
+
+                    <SubmitButton disabled={isSubmitting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+                        Submit
+                    </SubmitButton>
+                  </CardActions>
+                </form>
+              )}
+            />    
         </Card>
       </Grid>
     </Layout>
