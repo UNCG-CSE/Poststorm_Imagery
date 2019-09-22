@@ -26,15 +26,7 @@ To run off **IP address** execute the command `npm run useIP`. . Then connect to
 
 ## Resources 💎
 
-Post-Storm image tagging dashboard created using **Next.js** for server side rendering of HTML pages, **React.js** for UI development and **Node.js** for the server side of things.
-
-Links to the resources can be found here.
-[![nextjs-site](https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png)](https://nextjs.org/)
-
-
-[![nextjs-site](https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png)](https://reactjs.org/)
-
-[![nextjs-site](https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png)](https://nodejs.org/)
+Post-Storm image tagging dashboard created using [**Next.js**](https://nextjs.org/) for server side rendering of HTML pages, [**React.js**](https://reactjs.org/) for UI development and [**Node.js**](https://nodejs.org/) for the server side of things. Click the names to follow to their websites.
 
 ## How It Works 🤔
 
