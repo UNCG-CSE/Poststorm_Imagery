@@ -10,7 +10,7 @@
     There were some initial challenges in downloading large scale files. This was later resolved with the help of my 
     teammates. Finally, it was completed in two weeks. Second task was to create a script to compress the large size 
     .jpg image file. I have created an script to compress all the .jpg image file recursively. Due to the large file 
-    size, it takes longer to upload an image on the UI. Smaller size image will be easily uploable to the dashboard. 
+    size, it takes longer to upload an image on the UI. Smaller size image will be easily uploadable to the dashboard. 
     This task took me one week to finish it completely.
     
 -   [**Daniel Foster**](https://github.com/dlfosterbot)  
