@@ -1,0 +1,67 @@
+# Dashboard UI and Server 📊
+
+A dashboard created so that researchers can apply tags to images so that we can train a model to classify future images.
+
+## Requirements 📝
+
+The only requirement is **Node.js** which is a JavaScript runtime built on Chrome's V8 JavaScript engine. Simply go to [here](https://nodejs.org/en/) and download the latest version, *at this time **10.16.3 LTS***.
+
+### Steps to Reproduce
+
+Now that you have Node installed you are going to need to install the packages.
+
+1. Check that `node` and `npm` are installed with `node -v` and `npm -v`
+
+2. Then go inside `Poststorm_Imagery\src\dashboard\web_server` and using your favorite terminal run `npm install` to install all packages.
+
+3. Now you need to determine if you want to run the Node servers with localhost or your machines IP address.
+
+#### Localhost
+
+To run off **localhost** execute the command `npm run localhost`. Then connect to `http://localhost:3000/` for the website or `http://localhost:4000/` to see the node-image server. In the event that port 3000 and 4000 are not used, the terminal will always display the correct URL to follow.
+
+#### IP address
+
+To run off **IP address** execute the command `npm run useIP`. . Then connect to `http://<YOUR IP>:3000/` for website or `http://<YOUR IP>:4000/` for node-image server. In the event that port 3000 and 4000 are not used, the terminal will always display the correct URL to follow.
+
+## Resources 💎
+
+Post-Storm image tagging dashboard created using **Next.js** for server side rendering of HTML pages, **React.js** for UI development and **Node.js** for the server side of things.
+
+Links to the resources can be found here.
+
+<p >
+
+<a href="https://nextjs.org/">
+	<kbd>
+		<img src="https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png" width="64">
+	</kbd>
+</a>
+<a href="https://reactjs.org/">
+	<kbd>
+		<img src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png" width="48">
+	</kbd>
+</a>
+<a href="https://nodejs.org/">
+	<kbd>
+		<img src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.png" width="64">
+	</kbd>
+</a>
+
+
+</p>
+
+
+<p align="center">
+  
+</p>
+
+## How It Works 🤔
+
+### Frontend 📺
+
+**Next.js** is a JavaScript framework that uses **React.js** to create the UI and also enable it to be rendered on the server side.
+
+### Backend 📡
+
+There are two **Node.js** servers. The first one is tasked with rendering the HTML page and sending it down to the client. The second is responsible for interacting with the database and handling submitions from the client. They are seperated out to run on differnt threads and seperate code out.
