@@ -34,7 +34,7 @@ Links to the resources can be found here.
 
 <a href="https://nextjs.org/">
 	<kbd>
-		<img src="https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png" width="64">
+		<img src="https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png" width="64" height="64>
 	</kbd>
 </a>
 <a href="https://reactjs.org/">
