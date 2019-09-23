@@ -46,5 +46,5 @@ server side.
 ### Backend
 
 There are two **Node.js** servers. The first one is tasked with rendering the HTML page and sending it down to the
-client. The second is responsible for interacting with the database and handling submitions from the client. They are
-seperated out to run on differnt threads and seperate code out.
+client. The second is responsible for interacting with the database and handling submissions from the client. They are
+separated out to run on different threads and separate code out.
