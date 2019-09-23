@@ -28,5 +28,5 @@
     
 -   [**John Weber**](https://github.com/JWeb56)  
 
-    <!--Replace this with your task-->
+    My primary task for the data collection portion of our project was to help download the image archives. Given the hundreds of GBs of data and download speeds capped at around 2-3 MiB/s, this meant nearly constant downloading for over a week. In addition to this, I was in charge of researching external tools for tagging images. I found one which was particularly promising, but it didn't seem to allow for the sheer number of images we're dealing with, and so we ultimately decided to use Shah's UI, which he was developing concurrently as a backup plan. Lastly, most recently I "designed" our simple MySQL database which will store the tagged/labeled image data, hosted it via Google Cloud, and am working on hosting our application on a GCloud VM so that our application could ideally be run on the web. This involves purchasing VM and MySQL storage instances on the Google Cloud Platform, and installing and configuring necessary packages such that we can run our application on a VM and have it connected to our SQL server instance as well.
     
