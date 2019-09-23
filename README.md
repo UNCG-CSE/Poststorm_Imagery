@@ -29,7 +29,7 @@ Team Members:
 Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
 Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
-## Contributions
+## Contributions 💪
 
 ### Code of Conduct
 
