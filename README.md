@@ -20,8 +20,8 @@ We are a team of computer science students studying big data for the purpose of 
 analyzing data and finding the meaningful needle in the haystack.
 
 **Team Members:** [**Rinty Chowdhury**](https://github.com/rintychy),
- [**Daniel Foster**](https://github.com/dlfosterbot),
- [**Matthew Moretz**](https://github.com/Matmorcat),  
+ [**Daniel Foster**](https://github.com/dlfosterbot), 
+ [**Matthew Moretz**](https://github.com/Matmorcat),
  [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique),
  [**John Weber**](https://github.com/JWeb56).
 
