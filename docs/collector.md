@@ -2,17 +2,16 @@
 
 **Document Updated:** {{ git_revision_date }}
 
-In order to pull data from the NOAA website, [`collect.py`](../src/python/Poststorm_Imagery/collector/collect.py) 
-is provided to automate the process of gathering data. Currently, the script can be called via command-line using 
-specific arguments.
+In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data. 
+Currently, the script can be called via command-line using specific arguments.
 
 ## Command-Line Quick Reference
 
 |            Parameter | Argument(s) | Function                                            | Default Value          |
 | -------------------: | ----------- | --------------------------------------------------- | ---------------------- |
-|     `--storm`, `-s`  | *\<regex>*  | Search all storms for a specific term or pattern    | `.*`                   |
-|       `--tar`, `-t`  | *\<regex>*  | Search all tar files for a specific term or pattern | `.*`                   |
-|      `--path`, `-p`  | *\<path>*   | The path on your computer to save the files to      | `/data/tar_cache` |
+|     `--storm`, `-s`  | *\<regex\>* | Search all storms for a specific term or pattern    | `.*`                   |
+|       `--tar`, `-t`  | *\<regex\>* | Search all tar files for a specific term or pattern | `.*`                   |
+|      `--path`, `-p`  | *\<path\>*  | The path on your computer to save the files to      | `/data/tar_cache`      |
 |  `--no_status`, `-n` |             | Do not print out a report of all files found        | *False*                |
 |  `--download`, `-d`  |             | Download the .tar files as well after listing them  | *False*                |
 | `--overwrite`, `-o`  |             | Overwrite existing .tar files with the same name    | *False*                |
@@ -22,7 +21,7 @@ specific arguments.
 
 -   To list all .tar files for *Hurricane Dorian*,
     `collect.py -s Dorian`
-    will output something like
+    will output something like  
     ![Screenshot of `-s Dorian`](./collector_images/1.png)  
     
     
@@ -56,8 +55,8 @@ specific arguments.
 
 The script will automatically download all .tar files listed, sequentially, to the [`--path`](#example-usage)
 specified, or to the default cache folder if [`--path`](#example-usage) is left out of the parameters. 
-Members of the C-Sick team, would run the command with `-p "D:\Shared drives\C-Sick\data"` 
-if your *Google Drive File Stream* is your `D:` drive (*Windows*).
+Members of the C-Sick team, would run the command with `-p "G:\Shared drives\C-Sick\data"` 
+if your *Google Drive File Stream* is your `G:` drive (*Windows*).
     
 If the command doesn't understand one of your parameters, try 
 again, but with quotes around any argument. Command-line treats anything separated by a space as two separate 
