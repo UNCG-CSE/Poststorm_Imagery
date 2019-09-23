@@ -4,6 +4,7 @@ Before drafting a release, you want to make sure that all of the version fields 
 python's `__init__.py`, MkDoc's version flag, and more are updated with the new version.
 
 This can be done by command-line:
+
 1.  Setup the project by following the instructions found [**here**](./index.md)
 
 2.  Navigate to the python root directory (`cd src/python`) if not already there
