@@ -20,7 +20,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import IconButton from '@material-ui/core/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 import Fetch from 'isomorphic-fetch'
 import axios from 'axios';
 
@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     maxWidth: 700,
-    width:700
+   
   },
   
   media: {
@@ -305,7 +305,7 @@ function Index(props) {
       
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Contemplative Reptile" height="fluid" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Contemplative Reptile" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {props.data.file_name}
@@ -334,7 +334,7 @@ function Index(props) {
                 washoverVisibilityGroup: Yup.string().required("Please select a option"),
                 impactGroup: Yup.string().required("Please select a option"),
                 terrianGroup: Yup.array().required("Please select atleast one option"),
-                additionalNotes: 'aa'//Yup.string(),
+                //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
                 setTimeout(() => {
