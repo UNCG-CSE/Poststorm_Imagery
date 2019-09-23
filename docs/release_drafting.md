@@ -1,5 +1,8 @@
 # Drafting New Releases
 
+
+## Updating Version Fields in Source
+
 Before drafting a release, you want to make sure that all of the version fields for the project including those found
 python's `__init__.py`, MkDoc's version flag, and more are updated with the new version.
 
@@ -39,17 +42,19 @@ of the version number)
 The nitty-gritty of this versioning scheme can be found in the 
 [**Semantic Versioning Specifications**](https://semver.org/)
 
-6.  Finally, update the `CHANGELOG.md` with the new version and all the major changes that have been done since the 
+## Documenting the Release
+
+1.  Finally, update the `CHANGELOG.md` with the new version and all the major changes that have been done since the 
     last release. Small tweaks are not necessary, it's mainly just the big changes the user will notice!
     
-7.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
+2.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
     `draft new release`. 
     
-8.  Paste the latest entry from the `CHANGELOG.md` if it is not auto-filled and add the tag for 
+3.  Paste the latest entry from the `CHANGELOG.md` if it is not auto-filled and add the tag for 
     the version as it is in the source and `CHANGELOG.md`.
     
-9.  Get someone to review it for errors as this is a public snapshot of progress.
+4.  Get someone to review it for errors as this is a public snapshot of progress.
 
-10. Publish the release with an appropriate title after it has been reviewed.
+5. Publish the release with an appropriate title after it has been reviewed.
     
     
