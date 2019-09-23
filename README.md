@@ -19,15 +19,16 @@ https://post-storm-imagery.readthedocs.io/)
 We are a team of computer science students studying big data for the purpose of getting a head start in the world of
 analyzing data and finding the meaningful needle in the haystack.
 
-Team Members: 
- [**Rinty Chowdhury**](https://github.com/rintychy), 
- [**Daniel Foster**](https://github.com/dlfosterbot),  
- [**Matthew Moretz**](https://github.com/Matmorcat), 
- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and 
+Team Members:
+ [**Rinty Chowdhury**](https://github.com/rintychy),
+ [**Daniel Foster**](https://github.com/dlfosterbot),
+ [**Matthew Moretz**](https://github.com/Matmorcat),
+ [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and
  [**John Weber**](https://github.com/JWeb56).
 
-Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
-Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
+Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
+Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
+
 
 ## Contributions 💪
 
