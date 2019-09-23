@@ -19,16 +19,17 @@ https://post-storm-imagery.readthedocs.io/)
 We are a team of computer science students studying big data for the purpose of getting a head start in the world of
 analyzing data and finding the meaningful needle in the haystack.
 
-Team Members:
+### Team Members
+
  [**Rinty Chowdhury**](https://github.com/rintychy),
  [**Daniel Foster**](https://github.com/dlfosterbot),
  [**Matthew Moretz**](https://github.com/Matmorcat),
- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and
+ [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique),
  [**John Weber**](https://github.com/JWeb56).
+
 
 Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
 Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
-
 
 ## Contributions 💪
 
@@ -39,7 +40,7 @@ Please read the full [**Code of Conduct**](docs/code_of_conduct.md)
 
 ### Conventions
 
-Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
+Before committing to the repository **please** read [**contributing.md**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/)
 
 ### Beta Branch
 
