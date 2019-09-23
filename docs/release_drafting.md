@@ -48,13 +48,15 @@ The nitty-gritty of this versioning scheme can be found in the
     last release. Small tweaks are not necessary, it's mainly just the big changes the user will notice!
     
 2.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
-    `draft new release`. 
+    the `releases` tab on the GitHub homepage (See image below).
     
-3.  Paste the latest entry from the `CHANGELOG.md` if it is not auto-filled and add the tag for 
-    the version as it is in the source and `CHANGELOG.md`.
+    ![Release Tab Pointer](release_drafting_images/1.png)
+    
+3.  Paste the latest entry from the `CHANGELOG.md` and add the tag for the version as it is in the source and 
+    `CHANGELOG.md`.
     
 4.  Get someone to review it for errors as this is a public snapshot of progress.
 
-5. Publish the release with an appropriate title after it has been reviewed.
+5.  Publish the release with an appropriate title after it has been reviewed.
     
     
