@@ -35,9 +35,10 @@ This will update the version number like so...
 | Minor       | Changes that won't break previous releases, but add significant new content                           |
 | Patch       | Fixes and improvements for existing code with very little new functionality added                     |
 
-*Example:* If I add a new system for tagging images that has a lot of new code for a new part of a project for 
-example, I would run `bumpversion minor`. This will update the minor version (The second decimal-separated number 
-of the version number)
+!!! example
+    If I add a new system for tagging images that has a lot of new code for a new part of a project for 
+    example, I would run `bumpversion minor`. This will update the minor version (The second decimal-separated number 
+    of the version number)
 
 The nitty-gritty of this versioning scheme can be found in the 
 [**Semantic Versioning Specifications**](https://semver.org/)
