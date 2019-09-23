@@ -12,6 +12,7 @@ nav:
     - Code Conventions: contributing.md
     - Data Collection: collector.md
     - Dashboard: dashboard.md
+    - Release Drafting: release_drafting.md
 
 theme:
   name: 'material'
