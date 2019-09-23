@@ -20,7 +20,17 @@
 
 -   [**Matthew Moretz**](https://github.com/Matmorcat)  
 
-    <!--Replace this with your task-->
+    Since the beginning of our project, I have been working to get a download script that could handle downloading 
+    images sequentially, and without a lot of hassle. We learned fairly early on that obtaining the data was infeasible 
+    and required repeatedly starting the download every so often, and doing this for dozens of archives spread across 
+    multiple web-pages. I wrote a very complex command-line script that handles many of the challenges we had 
+    downloading the data, with the help of John and Daniel testing it and reporting back bugs they found. We also 
+    decided that it was out intent to publish our work as an open-source project to a number of places, including 
+    pyOpenSci for use by others who want to build off of it or use our tools, so my second goal was to organize the 
+    repository, make sure the beginnings of documentation and code quality checks were built, and go through the 
+    tedious task of configuring continuous integration to work with our project. This required learning new frameworks 
+    such as code coverage, unit tests in python, and documentation building, as well as testing with virtual machines 
+    to ensure the code can compile (via Tox running flake8 and pytest).
     
 -   [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
