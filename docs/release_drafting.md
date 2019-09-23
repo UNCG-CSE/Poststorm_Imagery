@@ -5,12 +5,16 @@ python's `__init__.py`, MkDoc's version flag, and more are updated with the new 
 
 This can be done by command-line:
 1.  Setup the project by following the instructions found [**here**](./index.md)
+
 2.  Navigate to the python root directory (`cd src/python`) if not already there
+
 3.  Run `pipenv shell` to open a shell for the virtual environment
+
 4.  Install the BumpVersion plugin (`pip install bumpversion`)
+
 5.  Once installed run `bumpversion <change_type>`
 
-This will update the version number (e.g. )
+This will update the version number like so...
 
 | Change Type | Examples (Before -> After)     |
 | ----------- | ------------------------------ |
