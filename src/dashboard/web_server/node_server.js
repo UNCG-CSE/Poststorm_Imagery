@@ -2,6 +2,24 @@
 const express = require('express')
 const app_express = express();
 const bodyParser = require('body-parser');
+const mysql = require('mysql2');
+
+// const connection  = mysql.createConnection({
+//     host: '35.190.139.244',
+//     user: 'root',
+//     password: 'root',
+//     database: 'poststorm'
+// });
+
+const pool = mysql.createPool({
+    host: '35.190.139.244',
+    user: 'root',
+    password: 'root',
+    database: 'poststorm',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 
 // app_express.use(bodyParser.urlencoded({ extended: false }));
@@ -9,10 +27,14 @@ const bodyParser = require('body-parser');
 
 //---START---
 async function main() {
+    pool.query("SELECT * FROM `storm`", function(err, rows) {
+        // Connection is automatically released when query resolves
+        console.log(rows)
+    })
     //First lets get the global constants.
     const CONSTANTS = await require('./server_constants')
     const {PORT_NODE,SITE_IP} = CONSTANTS
-
+  
     app_express.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

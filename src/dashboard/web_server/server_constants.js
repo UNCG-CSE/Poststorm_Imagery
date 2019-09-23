@@ -9,7 +9,7 @@ const commandLineArgs = require('command-line-args')
 const options = commandLineArgs(optionDefinitions)
 
 //Get the command line args,and default to true of undef.
-const USE_LOCALHOST=options.localhost || true
+const USE_LOCALHOST=options.localhost || false
 
 //export out variables
 module.exports = (async function() {

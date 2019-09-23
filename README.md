@@ -19,17 +19,19 @@ https://post-storm-imagery.readthedocs.io/)
 We are a team of computer science students studying big data for the purpose of getting a head start in the world of
 analyzing data and finding the meaningful needle in the haystack.
 
-Team Members: 
- [**Rinty Chowdhury**](https://github.com/rintychy), 
- [**Daniel Foster**](https://github.com/dlfosterbot),  
- [**Matthew Moretz**](https://github.com/Matmorcat), 
- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and 
- [**John Weber**](https://github.com/JWeb56).
+### Team Members
 
-Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
-Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
+- [**Rinty Chowdhury**](https://github.com/rintychy)  
+- [**Daniel Foster**](https://github.com/dlfosterbot)  
+- [**Matthew Moretz**](https://github.com/Matmorcat)  
+- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
+- [**John Weber**](https://github.com/JWeb56)  
 
-## Contributions
+
+**Adviser:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
+**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
+
+## Contributions 🤝
 
 ### Code of Conduct
 
@@ -38,7 +40,7 @@ Please read the full [**Code of Conduct**](docs/code_of_conduct.md)
 
 ### Conventions
 
-Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
+Before committing to the repository **please** read [**contributing.md**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/)
 
 ### Beta Branch
 
@@ -51,9 +53,9 @@ https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
 https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
-This is the main place to submit new code.
+Beta branch is the main place to submit new code.
 
-## Getting the Project Running 📋
+## Getting the Project Running 🏃‍
 
 ### Project Pre-Requisites
 
