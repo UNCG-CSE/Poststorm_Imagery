@@ -20,14 +20,14 @@ This can be done by command-line:
 
 This will update the version number like so...
 
-| Change Type | Examples (Before -> After)     |
+| Change Type | Examples (Before --> After)     |
 | ----------- | ------------------------------ |
-| Major       | v1.0.0 -> v2.0.0               |
-|             | v1.3.5 -> v2.0.0               |
-| Minor       | v1.0.0 -> v1.1.0               |
-|             | v1.3.5 -> v1.4.0               |
-| Patch       | v1.0.0 -> v1.0.1               |
-|             | v1.3.5 -> v1.3.6               |
+| Major       | v1.0.0 --> v2.0.0               |
+|             | v1.3.5 --> v2.0.0               |
+| Minor       | v1.0.0 --> v1.1.0               |
+|             | v1.3.5 --> v1.4.0               |
+| Patch       | v1.0.0 --> v1.0.1               |
+|             | v1.3.5 --> v1.3.6               |
 
 | Change Type | Description                                                                                           |
 | ----------- | ----------------------------------------------------------------------------------------------------- |
