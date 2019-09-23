@@ -39,7 +39,7 @@
 -   [**John Weber**](https://github.com/JWeb56)  
 
     My primary task for the data collection portion of our project was to help download the image archives. Given the 
-    hundreds of GBs of data and download speeds capped at around 2-3 MiB/s, and that connections to the NOAA site 
+    hundreds of GiBs of data and download speeds capped at around 2-3 MiBs/s, and that connections to the NOAA site 
     generally timed out after a few hours, this meant near constant downloading and process monitoring for over a week. 
     In addition to this, I was in charge of researching external tools for tagging images. I found one which was 
     particularly promising, but it didn't seem to allow for the sheer number of images we're dealing with, and so we 
