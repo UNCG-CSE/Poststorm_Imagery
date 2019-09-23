@@ -54,7 +54,7 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 This is the main place to submit new code.
 
-## Getting the Project Running 📋
+## Getting the Project Running 🏃‍
 
 ### Project Pre-Requisites
 
