@@ -51,7 +51,7 @@ The nitty-gritty of this versioning scheme can be found in the
 2.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
     the `releases` tab on the GitHub homepage.
     
-    !!!+ hint "Location in GitHub"
+    ??? hint "Location in GitHub"
         ![Release Tab Pointer](./release_drafting_images/1.png)
     
 3.  Paste the latest entry from the `CHANGELOG.md` and add the tag for the version as it is in the source and 
