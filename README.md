@@ -21,17 +21,17 @@ analyzing data and finding the meaningful needle in the haystack.
 
 ### Team Members
 
-[**Rinty Chowdhury**](https://github.com/rintychy)  
-[**Daniel Foster**](https://github.com/dlfosterbot)  
-[**Matthew Moretz**](https://github.com/Matmorcat)  
-[**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
-[**John Weber**](https://github.com/JWeb56)  
+- [**Rinty Chowdhury**](https://github.com/rintychy)  
+- [**Daniel Foster**](https://github.com/dlfosterbot)  
+- [**Matthew Moretz**](https://github.com/Matmorcat)  
+- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
+- [**John Weber**](https://github.com/JWeb56)  
 
 
 **Adviser:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
 **Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 
-## Contributions 💪
+## Contributions 🤝
 
 ### Code of Conduct
 
@@ -53,7 +53,7 @@ https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
 https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
-This is the main place to submit new code.
+Beta branch is the main place to submit new code.
 
 ## Getting the Project Running 🏃‍
 
