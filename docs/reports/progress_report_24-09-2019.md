@@ -14,9 +14,13 @@ size, it takes longer to upload an image on the UI. Smaller size image will be e
 This task took me one week to finish it. Currently I am working on improving the code and making it more efficient
 and generic. 
 
+------------------------------------------------------------------  
+
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
 <!--Replace this with your task-->
+
+------------------------------------------------------------------  
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)  
 
@@ -31,6 +35,8 @@ repository, make sure the beginnings of documentation and code quality checks we
 tedious task of configuring continuous integration to work with our project. This required learning new frameworks 
 such as code coverage, unit tests in python, and documentation building, as well as testing with virtual machines 
 to ensure the code can compile (via Tox running flake8 and pytest).
+
+------------------------------------------------------------------  
 
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
@@ -52,6 +58,8 @@ solve these issues my next short term goals are to error check client input, err
 authentication with Passport.js, because we dont want anyone to be able to tag images, we want trusted individuals to tag
 images. My long-term goal is to help John figure out how we can start using the full data-set, instead of a
 small test amount of images like we do now.
+
+------------------------------------------------------------------  
 
 ### [**John Weber**](https://github.com/JWeb56)  
 
