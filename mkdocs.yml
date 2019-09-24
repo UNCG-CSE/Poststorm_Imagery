@@ -1,4 +1,4 @@
-site_name: 'Post-Storm Imagery 🌪'
+site_name: 'Post-Storm Imagery'
 site_description: 'Classification and analysis of post-storm response imagery.'
 site_author: 'C-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
@@ -13,7 +13,8 @@ nav:
     - Data Collection: collector.md
     - Dashboard: dashboard.md
     - Release Drafting: release_drafting.md
-    - Latest Reports: reports/progress_report_24-09-2019.md
+    - Reports: 
+        - Latest Reports: reports/progress_report_24-09-2019.md
 
 theme:
   name: 'material'
