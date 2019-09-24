@@ -28,6 +28,7 @@ changes with the original creator
 | Beta      | Bug fixes & general addition                                      |
 | Others *  | New distinct features that are incomplete / not functional yet    |
 
-*\* Create new branches with beta as the base, as needed, making sure to name them appropriately to the feature you are
- trying to make. Make sure that you occasionally pull new commits from beta to minimize merging conflicts if / when the 
- feature is pulled into beta!*
+!!! note "Other Branches"
+    Create new branches with beta as the base, as needed, making sure to name them appropriately to the feature you are
+    trying to make. Make sure that you occasionally pull new commits from beta to minimize merging conflicts if / when the 
+    feature is pulled into beta!
