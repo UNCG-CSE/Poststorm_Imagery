@@ -4,7 +4,7 @@
 
 ## Member Tasks
 
-- [**Rinty Chowdhury**](https://github.com/rintychy)  
+### [**Rinty Chowdhury**](https://github.com/rintychy)  
 
 I was assigned to do two tasks. First task was to download the post-storm images from the NOAA.gov website. 
 There were some initial challenges in downloading large scale files. This was later resolved with the help of my 
@@ -14,11 +14,11 @@ size, it takes longer to upload an image on the UI. Smaller size image will be e
 This task took me one week to finish it. Currently I am working on improving the code and making it more efficient
 and generic. 
 
-- [**Daniel Foster**](https://github.com/dlfosterbot)  
+### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
 <!--Replace this with your task-->
 
-- [**Matthew Moretz**](https://github.com/Matmorcat)  
+### [**Matthew Moretz**](https://github.com/Matmorcat)  
 
 Since the beginning of our project, I have been working to get a download script that could handle downloading 
 images sequentially, and without a lot of hassle. We learned fairly early on that obtaining the data was infeasible 
@@ -32,7 +32,7 @@ tedious task of configuring continuous integration to work with our project. Thi
 such as code coverage, unit tests in python, and documentation building, as well as testing with virtual machines 
 to ensure the code can compile (via Tox running flake8 and pytest).
 
-- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
+### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
 One of the goals that our mentor mentioned was to have a UI to allow researchers that are on the project to help tag the
 storm images. Given that my internship was something similar and that over the summer I learned about Node.js went ahead
@@ -53,7 +53,7 @@ authentication with Passport.js because we dont want anyone to be able to tag im
 images. My long term goal is to help with John and figure out how we can start using the full data set, instead of a
 small test amount of images like we do now.
 
-- [**John Weber**](https://github.com/JWeb56)  
+### [**John Weber**](https://github.com/JWeb56)  
 
 My primary task for the data collection portion of our project was to help download the image archives. Given the 
 hundreds of GiBs of data and download speeds capped at around 2-3 MiBs/s, and that connections to the NOAA site 
