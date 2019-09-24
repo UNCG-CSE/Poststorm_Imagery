@@ -42,12 +42,14 @@ to ensure the code can compile (via Tox running flake8 and pytest).
 
 One of the goals that our mentor mentioned was to have a UI to allow researchers that are on the project to help tag the
 storm images. Given that my internship was something similar and that over the summer I learned more about Node.js, I
-decided to go ahead and start on it. Initialy there was no difficulties as I just had to set up a Node server and have
-it serve HTML which was something I had done numerous times before. The problematic areas where form vaildation and
-making sure that the client submits all the required information, error checking on the Node server it self and figuring
-out how we could display the image on the HTML page in a timely manner. For the last issue Rinty decided to make a image
+decided to go ahead and start on it. Initially there was no difficulties as I just had to set up a Node server, have it
+render the HTML server side and then send it to the client, which was something I had done numerous times before. The
+problematic areas where form validation and making sure that the client submits all the required information, error
+checking on the Node server itself and figuring out how we could display the image on the HTML page in a timely manner
+as currently it takes about 8-10 seconds to fully display one image. For the last issue Rinty decided to make an image
 compression script that we could then run whenever the client requests for an image so that we instead send a smaller
-image.
+image. That’s about it for now, I plan to either help create an interface for the MySQL server, or perhaps get working
+on user authentication as we want only trusted users to tag the images.
 
 ---
 
