@@ -18,6 +18,9 @@ nav:
 
 theme:
   name: 'material'
+  font:
+    text: 'Ubuntu'
+    code: 'Ubuntu Mono'
   palette:
     primary: 'light green'
     accent: 'light green'
