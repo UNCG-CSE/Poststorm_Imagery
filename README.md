@@ -28,7 +28,7 @@ analyzing data and finding the meaningful needle in the haystack.
 - [**John Weber**](https://github.com/JWeb56)  
 
 
-**Adviser:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
+**Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
 **Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 
 ## Contributions 🤝
