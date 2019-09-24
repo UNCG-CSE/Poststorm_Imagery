@@ -1,6 +1,15 @@
 # Project Introduction
 
-<!--Replace this with an introduction of project (2-3 paragraphs)-->
+Research scientists studying the effects of storms on land in the path of travel have for a long time needed a tool 
+to help make sense of images taken and analyze them for meaningful characteristics. In order for researchers to analyze 
+photos of storm-related imagery, we are trying to build a program that can collect data, serve images to research teams 
+in order to tag data, build classifiers for labelling whether the image contains non-coastal, coastal, or just all 
+water, then from that, taking the coastal images and analyzing them further to determine whether or not there is 
+wash-over, the land is developed and other characteristics important to understanding the images.
+
+This will likely involve a long process of tagging the data and building a model that can at least get started with 
+segmentation or classification. For the first part of the project, we have been dealing with the collection and 
+preparation of the images for our goals.
 
 ## Member Tasks
 
@@ -18,7 +27,15 @@ and generic.
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
-Downloading the images has been the primary challenge for the group and initially I helped test Matt's download utility. Once the utility became stable, I began researching the meta deta that accompanies the images. I wrote a script to extract the gps coordinates from each image and build a pandas dataframe. This will be useful because the annotation phase is focused on the coastal photos and we can use the visualization from the gps metadata to prioritize which images are served first. I also developed a simple method for iterating through each of the directories and return a count of the number of images per storm. My short term goal is to cleanup and combine the code for these two projects, retrieve the metadata for the remaining images, and compile a list of images to prioritize for the annotation phase. As tagged images are delivered, I'll being work on wrangling and parsing through the new data using the methods we learn in class.
+Downloading the images has been the primary challenge for the group and initially I helped test Matt's download 
+utility. Once the utility became stable, I began researching the metadata that accompanies the images. I wrote a 
+script to extract the gps coordinates from each image and build a pandas dataframe. This will be useful because the 
+annotation phase is focused on the coastal photos and we can use the visualization from the gps metadata to prioritize 
+which images are served first. I also developed a simple method for iterating through each of the directories and 
+return a count of the number of images per storm. My short term goal is to cleanup and combine the code for these two 
+projects, retrieve the metadata for the remaining images, and compile a list of images to prioritize for the annotation 
+phase. As tagged images are delivered, I'll being work on wrangling and parsing through the new data using the methods 
+we learn in class.
 
 ---  
 
