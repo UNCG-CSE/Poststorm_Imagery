@@ -24,8 +24,38 @@ Currently, the script can be called via command-line using specific arguments.
 
 -   To list all .tar files for *Hurricane Dorian*,
     `collect.py -s Dorian`
-    will output something like  
-    ![Screenshot of `-s Dorian`](./collector_images/1.png)  
+    !!! quote "Example Result"
+        Download Status Report (September 24, 2019 at 02:20 AM) <-s Dorian -t .* -p C:\Projects\Python\Poststorm_Imagery\data\tar_cache/>
+
+        1.  	Hurricane Dorian (2019)
+                - 20190904a_RGB.tar  ... 525.74 MiBs  ... Not downloaded.
+                - 20190904a_jpgs.tar  ... 1.73 GiBs  ... Not downloaded.
+                - 20190905a_RGB.tar  ... 18.32 GiBs  ... Not downloaded.
+                - 20190905a_jpgs.tar  ... 18.12 GiBs  ... Not downloaded.
+                - 20190905b_RGB.tar  ... 9.9 GiBs  ... Not downloaded.
+                - 20190905b_jpgs.tar  ... 4.64 GiBs  ... Not downloaded.
+                - 20190906a_RGB.tar  ... 8.4 GiBs  ... Not downloaded.
+                - 20190906a_jpgs.tar  ... 9.14 GiBs  ... Not downloaded.
+                - 20190906b_RGB.tar  ... 15.97 GiBs  ... Not downloaded.
+                - 20190906b_jpgs.tar  ... 16.89 GiBs  ... Not downloaded.
+                - 20190907a_RGB.tar  ... 7.86 GiBs  ... Not downloaded.
+                - 20190907a_jpgs.tar  ... 7.79 GiBs  ... Not downloaded.
+                - 20190907b_RGB.tar  ... 7.63 GiBs  ... Not downloaded.
+                - 20190907b_jpgs.tar  ... 6.55 GiBs  ... Not downloaded.
+                - 20190917a_RGB.tar  ... 11.88 GiBs  ... Not downloaded.
+                - 20190917a_jpgs.tar  ... 21.31 GiBs  ... Not downloaded.
+                - 20190917b_RGB.tar  ... 11.26 GiBs  ... Not downloaded.
+                - 20190917b_jpgs.tar  ... 19.95 GiBs  ... Not downloaded.
+                - 20190918a_RGB.tar  ... 5.68 GiBs  ... Not downloaded.
+                - 20190918b_RGB.tar  ... 4.59 GiBs  ... Not downloaded.
+                - 20190918b_jpgs.tar  ... 8.42 GiBs  ... Not downloaded.
+                - 20190919a_RGB.tar  ... 12.27 GiBs  ... Not downloaded.
+                - 20190919a_jpgs.tar  ... 15.26 GiBs  ... Not downloaded.
+                - 20190920a_RGB.tar  ... 4.49 GiBs  ... Not downloaded.
+                - 20190920a_jpgs.tar  ... 5.1 GiBs  ... Not downloaded.
+                Total: 0.0 KiBs / 253.66 GiBs  (0%)
+        
+        Total: 0.0 KiBs / 253.66 GiBs  (0%)
     
     
 -   To list all .tar files for *Hurricane Dorian* that contain **jpg** in the file name,  
