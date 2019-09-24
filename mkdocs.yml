@@ -11,11 +11,16 @@ nav:
     - Code of Conduct: code_of_conduct.md
     - Code Conventions: contributing.md
     - Data Collection: collector.md
-    - Dashboard: dashboard.md
+    - Dashboard UI: dashboard.md
     - Release Drafting: release_drafting.md
+    - Reports: 
+        - September 24th, 2019: reports/progress_report_24-09-2019.md
 
 theme:
   name: 'material'
+  font:
+    text: 'Ubuntu'
+    code: 'Ubuntu Mono'
   palette:
     primary: 'light green'
     accent: 'light green'

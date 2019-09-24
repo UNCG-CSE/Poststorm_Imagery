@@ -1,5 +1,8 @@
 # Drafting New Releases
 
+
+## Updating Version Fields in Source
+
 Before drafting a release, you want to make sure that all of the version fields for the project including those found
 python's `__init__.py`, MkDoc's version flag, and more are updated with the new version.
 
@@ -17,14 +20,14 @@ This can be done by command-line:
 
 This will update the version number like so...
 
-| Change Type | Examples (Before -> After)     |
+| Change Type | Examples (Before --> After)     |
 | ----------- | ------------------------------ |
-| Major       | v1.0.0 -> v2.0.0               |
-|             | v1.3.5 -> v2.0.0               |
-| Minor       | v1.0.0 -> v1.1.0               |
-|             | v1.3.5 -> v1.4.0               |
-| Patch       | v1.0.0 -> v1.0.1               |
-|             | v1.3.5 -> v1.3.6               |
+| Major       | v1.0.0 --> v2.0.0               |
+|             | v1.3.5 --> v2.0.0               |
+| Minor       | v1.0.0 --> v1.1.0               |
+|             | v1.3.5 --> v1.4.0               |
+| Patch       | v1.0.0 --> v1.0.1               |
+|             | v1.3.5 --> v1.3.6               |
 
 | Change Type | Description                                                                                           |
 | ----------- | ----------------------------------------------------------------------------------------------------- |
@@ -32,24 +35,30 @@ This will update the version number like so...
 | Minor       | Changes that won't break previous releases, but add significant new content                           |
 | Patch       | Fixes and improvements for existing code with very little new functionality added                     |
 
-*Example:* If I add a new system for tagging images that has a lot of new code for a new part of a project for 
-example, I would run `bumpversion minor`. This will update the minor version (The second decimal-separated number 
-of the version number)
+!!! example
+    If I add a new system for tagging images that has a lot of new code for a new part of a project for 
+    example, I would run `bumpversion minor`. This will update the minor version (The second decimal-separated number 
+    of the version number)
 
 The nitty-gritty of this versioning scheme can be found in the 
 [**Semantic Versioning Specifications**](https://semver.org/)
 
-6.  Finally, update the `CHANGELOG.md` with the new version and all the major changes that have been done since the 
+## Documenting the Release
+
+1.  Finally, update the `CHANGELOG.md` with the new version and all the major changes that have been done since the 
     last release. Small tweaks are not necessary, it's mainly just the big changes the user will notice!
     
-7.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
-    `draft new release`. 
+2.  Commit and push all changes to `origin/beta`, then pull the changes into `origin/master` and select 
+    the `releases` tab on the GitHub homepage.
     
-8.  Paste the latest entry from the `CHANGELOG.md` if it is not auto-filled and add the tag for 
-    the version as it is in the source and `CHANGELOG.md`.
+    ??? hint "Location in GitHub"
+        ![Release Tab Pointer](./release_drafting_images/1.png)
     
-9.  Get someone to review it for errors as this is a public snapshot of progress.
+3.  Paste the latest entry from the `CHANGELOG.md` and add the tag for the version as it is in the source and 
+    `CHANGELOG.md`.
+    
+4.  Get someone to review it for errors as this is a public snapshot of progress.
 
-10. Publish the release with an appropriate title after it has been reviewed.
+5.  Publish the release with an appropriate title after it has been reviewed.
     
     
