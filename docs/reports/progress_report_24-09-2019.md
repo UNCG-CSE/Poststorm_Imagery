@@ -1,6 +1,15 @@
 # Project Introduction
 
-<!--Replace this with an introduction of project (2-3 paragraphs)-->
+Research scientists studying the effects of storms on land in the path of travel have for a long time needed a tool 
+to help make sense of images taken and analyze them for meaningful characteristics. In order for researchers to analyze 
+photos of storm-related imagery, we are trying to build a program that can collect data, serve images to research teams 
+in order to tag data, build classifiers for labelling whether the image contains non-coastal, coastal, or just all 
+water, then from that, taking the coastal images and analyzing them further to determine whether or not there is 
+wash-over, the land is developed and other characteristics important to understanding the images.
+
+This will likely involve a long process of tagging the data and building a model that can at least get started with 
+segmentation or classification. For the first part of the project, we have been dealing with the collection and 
+preparation of the images for our goals.
 
 ## Member Tasks
 
@@ -12,11 +21,23 @@ teammates. Finally, it was completed in two weeks. Second task was to create a s
 .jpg image file. I have created an script to compress all the .jpg image file recursively. Due to the large file 
 size, it takes longer to upload an image on the UI. Smaller size image will be easily uploadable to the dashboard. 
 This task took me one week to finish it. Currently I am working on improving the code and making it more efficient
-and generic. 
+and generic.
+
+---
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
-<!--Replace this with your task-->
+Downloading the images has been the primary challenge for the group and initially I helped test Matt's download 
+utility. Once the utility became stable, I began researching the metadata that accompanies the images. I wrote a 
+script to extract the gps coordinates from each image and build a pandas dataframe. This will be useful because the 
+annotation phase is focused on the coastal photos and we can use the visualization from the gps metadata to prioritize 
+which images are served first. I also developed a simple method for iterating through each of the directories and 
+return a count of the number of images per storm. My short term goal is to cleanup and combine the code for these two 
+projects, retrieve the metadata for the remaining images, and compile a list of images to prioritize for the annotation 
+phase. As tagged images are delivered, I'll being work on wrangling and parsing through the new data using the methods 
+we learn in class.
+
+---  
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)  
 
@@ -32,26 +53,22 @@ tedious task of configuring continuous integration to work with our project. Thi
 such as code coverage, unit tests in python, and documentation building, as well as testing with virtual machines 
 to ensure the code can compile (via Tox running flake8 and pytest).
 
+---
+
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
 One of the goals that our mentor mentioned was to have a UI to allow researchers that are on the project to help tag the
-storm images. Given that my internship was something similar and that, over the summer, I learned about Node.js, I went 
-ahead and assigned this task to myself, telling the other members and our mentors. My goals with the Dashboard
-were to have it rendered server-side to minimize API calls from the client, have it look nice and use as much
-JavaScript as possible for both front-end and back-end to keep the code and code principles uniform. The tools I used
-were React.js for the development of the UI, since React allows me to build the page in components, Material-UI which is
-a React implementation of Google's Material Design principles. Next.js which is a site generator framework that uses
-React and also allows the HTML pages to be rendered server side, Node.js for serving the HTML page and handling back-end
-related task such has hosting images on a URL, handling the clients responses, and interacting with the database. Now
-of course there where issues. The first was error handling for the Node server such as invalid URL's or what if the
-server could not fetch the initial data to populate the page. The next issue was a design issue, how can I make the
-web-page look nice and form validation which is quite hard with React. The final issue, which I have yet to solve now, is
-how can I make my code modular. Right now most for code for the website is in one or two JSX files which isn't very
-modular and our mentor would like the code to be usable for future project,so making the code modular helps. After I
-solve these issues my next short term goals are to error check client input, error check with the database, and add user
-authentication with Passport.js, because we dont want anyone to be able to tag images, we want trusted individuals to tag
-images. My long-term goal is to help John figure out how we can start using the full data-set, instead of a
-small test amount of images like we do now.
+storm images. Given that my internship was something similar and that over the summer I learned more about Node.js, I
+decided to go ahead and start on it. Initially there was no difficulties as I just had to set up a Node server, have it
+render the HTML server side and then send it to the client, which was something I had done numerous times before. The
+problematic areas where form validation and making sure that the client submits all the required information, error
+checking on the Node server itself and figuring out how we could display the image on the HTML page in a timely manner
+as currently it takes about 8-10 seconds to fully display one image. For the last issue Rinty decided to make an image
+compression script that we could then run whenever the client requests for an image so that we instead send a smaller
+image. That’s about it for now, I plan to either help create an interface for the MySQL server, or perhaps get working
+on user authentication as we want only trusted users to tag the images.
+
+---
 
 ### [**John Weber**](https://github.com/JWeb56)  
 

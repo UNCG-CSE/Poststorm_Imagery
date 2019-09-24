@@ -1,5 +1,7 @@
 # Dashboard UI and Server 📊
 
+**Document Updated:** {{ git_revision_date }}
+
 A dashboard created so that researchers can apply tags to images so that we can train a model to classify future images.
 
 ## Requirements 📝
