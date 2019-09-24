@@ -30,6 +30,10 @@ def get_full_content_length(url: str) -> int:
     # Ask the server for head
     head = requests.head(url, stream=True)
 
+    if head.status_code != requests.codes.ok and head.status_code != requests.codes.partial_content:
+        h.print_error('The website returned back response code ' + str(head.status_code) + ' for ' + url)
+        return 0
+
     # Ask the server how big its' package is
     full_length = int(head.headers.get('Content-Length'))
 
