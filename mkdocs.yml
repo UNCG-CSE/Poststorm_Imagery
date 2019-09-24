@@ -13,8 +13,10 @@ nav:
     - Data Collection: collector.md
     - Dashboard UI: dashboard.md
     - Release Drafting: release_drafting.md
-    - Reports: 
+    - Reports:
         - September 24th, 2019: reports/progress_report_24-09-2019.md
+    - Slides:
+        - September 24th, 2019: https://docs.google.com/presentation/d/1dLTfdUjqpIh-sr0QH6XXqJRppK400PCauQl_qsmUHqk/edit?usp=sharing
 
 theme:
   name: 'material'
