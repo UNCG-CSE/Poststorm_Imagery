@@ -14,7 +14,7 @@ nav:
     - Dashboard: dashboard.md
     - Release Drafting: release_drafting.md
     - Reports: 
-        - Latest Reports: reports/progress_report_24-09-2019.md
+        - September 24th, 2019: reports/progress_report_24-09-2019.md
 
 theme:
   name: 'material'
