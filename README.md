@@ -36,12 +36,12 @@ analyzing data and finding the meaningful needle in the haystack.
 ### Code of Conduct
 
 We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
-Please read the full [**Code of Conduct**](https://post-storm-imagery.readthedocs.io/en/latest/code_of_conduct/)
+Make sure you understand our [**Code of Conduct**](https://post-storm-imagery.readthedocs.io/en/latest/code_of_conduct/).
 
-### Conventions
+### Code Conventions
 
-Before committing to the repository **please** read 
-[**contributing.md**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/)
+Before committing to the repository **please** read the project 
+[**Code Conventions**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/).
 
 ### Beta Branch
 
