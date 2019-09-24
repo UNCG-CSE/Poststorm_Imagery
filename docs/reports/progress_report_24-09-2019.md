@@ -35,22 +35,22 @@ to ensure the code can compile (via Tox running flake8 and pytest).
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
 One of the goals that our mentor mentioned was to have a UI to allow researchers that are on the project to help tag the
-storm images. Given that my internship was something similar and that over the summer I learned about Node.js went ahead
-and assigned this task to my self, with ofcourse telling the other members and our mentors. My goals with the Dashboard
-where to have it rendered server side to minimize API calls from the client, have it look nice and use as much
-JavaScript as possible for both front end and back end to keep the code and code principles uniform. The tools I used
-where React.js for the development of the UI since React allows me to build the page in components, Material-UI which is
-a React implimentation of Googles Matieral Design principles. Next.js which is a site generator framework that uses
-React and also allows the HTML pages to be rendered server side, Node.js for serving the HTML page and handling backend
-related task such has hosting images on a URL, handling the clients responses and interacting with the database. Now
-ofcourse there where issues. The first was error handling for the Node server such as invalid URL's or what if the
+storm images. Given that my internship was something similar and that, over the summer, I learned about Node.js, I went 
+ahead and assigned this task to myself, telling the other members and our mentors. My goals with the Dashboard
+were to have it rendered server-side to minimize API calls from the client, have it look nice and use as much
+JavaScript as possible for both front-end and back-end to keep the code and code principles uniform. The tools I used
+were React.js for the development of the UI, since React allows me to build the page in components, Material-UI which is
+a React implementation of Google's Material Design principles. Next.js which is a site generator framework that uses
+React and also allows the HTML pages to be rendered server side, Node.js for serving the HTML page and handling back-end
+related task such has hosting images on a URL, handling the clients responses, and interacting with the database. Now
+of course there where issues. The first was error handling for the Node server such as invalid URL's or what if the
 server could not fetch the initial data to populate the page. The next issue was a design issue, how can I make the
-webpage look nice and form validation which is quite hard with React. The final issue, which I have yet to solve now, is
-how can I make my code modular. Right now most for code for the website is in one or two JSX files which isnt very
-modular and our mentor would like the code to be useable for future project,so making the code modular helps. After I
-solve these issues my next short term goals are to error check client input, error check with the database and add user
-authentication with Passport.js because we dont want anyone to be able to tag images, we wnat trusted individuals to tag
-images. My long term goal is to help with John and figure out how we can start using the full data set, instead of a
+web-page look nice and form validation which is quite hard with React. The final issue, which I have yet to solve now, is
+how can I make my code modular. Right now most for code for the website is in one or two JSX files which isn't very
+modular and our mentor would like the code to be usable for future project,so making the code modular helps. After I
+solve these issues my next short term goals are to error check client input, error check with the database, and add user
+authentication with Passport.js, because we dont want anyone to be able to tag images, we want trusted individuals to tag
+images. My long-term goal is to help John figure out how we can start using the full data-set, instead of a
 small test amount of images like we do now.
 
 ### [**John Weber**](https://github.com/JWeb56)  

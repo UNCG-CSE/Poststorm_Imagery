@@ -5,6 +5,9 @@
 In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data. 
 Currently, the script can be called via command-line using specific arguments.
 
+!!! warning "Collector Caveat"
+    The script currently only recognizes Storms 
+
 ## Command-Line Quick Reference
 
 |            Parameter | Argument(s) | Function                                            | Default Value          |

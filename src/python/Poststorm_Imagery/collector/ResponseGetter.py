@@ -28,9 +28,9 @@ def get_http_response(url: str) -> Response:
 def get_full_content_length(url: str) -> int:
 
     # Ask the server for head
-    head = requests.head(url, stream=True)
+    head = requests.head(url, stream=True, allow_redirects=True)
 
-    if head.status_code != requests.codes.ok and head.status_code != requests.codes.partial_content:
+    if head.headers.get('Content-Length') is None:
         h.print_error('The website returned back response code ' + str(head.status_code) + ' for ' + url)
         return 0
 
