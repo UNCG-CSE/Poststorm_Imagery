@@ -18,7 +18,7 @@ and generic.
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
-<!--Replace this with your task-->
+Downloading the images has been the primary challenge for the group and initially I helped test Matt's download utility. Once the utility became stable, I began researching the meta deta that accompanies the images. I wrote a script to extract the gps coordinates from each image and build a pandas dataframe. This will be useful because the annotation phase is focused on the coastal photos and we can use the visualization from the gps metadata to prioritize which images are served first. I also developed a simple method for iterating through each of the directories and return a count of the number of images per storm. My short term goal is to cleanup and combine the code for these two projects, retrieve the metadata for the remaining images, and compile a list of images to prioritize for the annotation phase. As tagged images are delivered, I'll being work on wrangling and parsing through the new data using the methods we learn in class.
 
 ------------------------------------------------------------------  
 
