@@ -36,11 +36,12 @@ analyzing data and finding the meaningful needle in the haystack.
 ### Code of Conduct
 
 We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
-Please read the full [**Code of Conduct**](docs/code_of_conduct.md)
+Please read the full [**Code of Conduct**](https://post-storm-imagery.readthedocs.io/en/latest/code_of_conduct/)
 
 ### Conventions
 
-Before committing to the repository **please** read [**contributing.md**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/)
+Before committing to the repository **please** read 
+[**contributing.md**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/)
 
 ### Beta Branch
 
@@ -74,7 +75,7 @@ Beta branch is the main place to submit new code.
 1. Change current directory to the collector module (`cd collector/`)
 2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
 
-*The arguments for `collect.py` are listed [**here**](./docs/collector.md)*
+*The arguments for `collect.py` are listed [**here**](https://post-storm-imagery.readthedocs.io/en/latest/collector/)*
 
 
 ## Data Source 💾
