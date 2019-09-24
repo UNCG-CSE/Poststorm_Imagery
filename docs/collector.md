@@ -6,7 +6,7 @@ In order to pull data from the NOAA website, `collect.py` is provided to automat
 Currently, the script can be called via command-line using specific arguments.
 
 !!! warning "Collector Caveat"
-    The script currently only recognizes Storms 
+    The script currently only recognizes Storms after Arthur (2015 and later) currently!
 
 ## Command-Line Quick Reference
 
