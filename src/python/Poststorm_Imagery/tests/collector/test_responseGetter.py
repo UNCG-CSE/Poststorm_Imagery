@@ -1,3 +1,6 @@
+import contextlib
+import io
+import sys
 from unittest import TestCase
 
 import requests
@@ -12,8 +15,13 @@ class TestResponseGetter(TestCase):
 
     def test_generic_response_failed(self):
         with self.assertRaises(SystemExit):
-            get_http_response('http://google.com/thispagedoesnotexist')
+            get_http_response('http://www.google.com/thispagedoesnotexist')
+
+    def test_generic_response_exception(self):
+        with self.assertRaises(SystemExit):
+            get_http_response('http:///')
 
     def test_get_full_content_length_correct(self):
         self.assertEqual(11397775360, get_full_content_length(
             'https://ngsstormviewer.blob.core.windows.net/downloads/20180915a_jpgs.tar'))
+
