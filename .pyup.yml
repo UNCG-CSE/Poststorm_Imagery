@@ -20,16 +20,15 @@ schedule: "every day"
 # search for requirement files
 # default: True
 # allowed: True, False
-#search: True
+search: False
 
 # Specify requirement files by hand, default is empty
 # default: empty
 # allowed: list
 requirements:
-- requirements.txt
-- requirements-dev.txt
-- Pipfile
-- Pipfile.lock
+  - src/python/requirements-test.txt
+  - src/python/requirements-docs.txt
+  - src/python/Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
