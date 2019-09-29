@@ -43,7 +43,7 @@ Post-Storm image tagging dashboard created using
 [**Node.js**](https://nodejs.org/) for the server side of things. Click the
 names to follow to their websites.
 
-## How It Works 🤔
+## How It Works? 🤔
 
 ### Frontend 📺
 
