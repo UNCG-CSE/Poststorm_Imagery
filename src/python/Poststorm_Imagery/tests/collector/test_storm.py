@@ -13,3 +13,4 @@ class TestStorm(TestCase):
 
     def test_valid_string(self):
         self.assertIn("Hurricane Michael", str(self.storm))
+        self.assertIn("(2018)", str(self.storm))
