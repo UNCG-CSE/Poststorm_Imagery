@@ -25,3 +25,5 @@ class TestResponseGetter(TestCase):
         self.assertEqual(11397775360, get_full_content_length(
             'https://ngsstormviewer.blob.core.windows.net/downloads/20180915a_jpgs.tar'))
 
+    def test_get_full_content_length_empty(self):
+        self.assertEqual(0, get_full_content_length('https://httpbin.org/status/404'))
