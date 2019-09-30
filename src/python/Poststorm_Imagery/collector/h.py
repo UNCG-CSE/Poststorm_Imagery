@@ -10,7 +10,7 @@ import pytest
 from src.python.Poststorm_Imagery.collector import s
 
 
-@pytest.skip
+@pytest.mark.skip
 def print_error(*args, **kwargs) -> None:
     """Take string(s) and print them to console as an error (red text) instead of a normal message (white text).
 
