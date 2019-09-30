@@ -10,9 +10,9 @@ from typing import List, Union
 from requests.exceptions import RequestException
 
 from src.python.Poststorm_Imagery.collector import h, s
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
-from src.python.Poststorm_Imagery.collector.Storm import Storm
-from src.python.Poststorm_Imagery.collector.TarRef import TarRef
+from src.python.Poststorm_Imagery.collector.connection_handler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.storm import Storm
+from src.python.Poststorm_Imagery.collector.tar_ref import TarRef
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)

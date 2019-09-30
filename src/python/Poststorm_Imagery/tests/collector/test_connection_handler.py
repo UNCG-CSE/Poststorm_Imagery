@@ -1,8 +1,8 @@
 from typing import List
 from unittest import TestCase
 
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
-from src.python.Poststorm_Imagery.collector.Storm import Storm
+from src.python.Poststorm_Imagery.collector.connection_handler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.storm import Storm
 
 
 class TestConnectionHandler(TestCase):
