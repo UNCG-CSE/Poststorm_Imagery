@@ -106,3 +106,22 @@ def is_locked_by_another_user(base_file: Union[bytes, str], this_user: str) -> b
 
         lock.close()
         return False
+
+
+def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
+    """
+    Validates a path-like object to make sure that it is a possible path (not that it exists, though) then converts
+    it to an absolute path (if it is not already) for the system and expands out common variables like $USER to the
+    current machine the script is running on.
+
+    :param path: The path to validate and expand variables for
+    :returns: The absolute
+    """
+
+    # Convert string to absolute path for uniformity
+    new_path = os.path.abspath(path)
+
+    # Expand out any path keywords or variables for certain operating system
+    new_path = os.path.expanduser(os.path.expandvars(new_path))
+
+    return new_path
