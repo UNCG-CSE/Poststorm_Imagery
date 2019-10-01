@@ -1,4 +1,4 @@
-# Post-Storm Imagery 🌪️ <!-- omit in toc -->
+# Post-Storm Imagery 🌪
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -11,33 +11,39 @@ https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
-## Table of Contents <!-- omit in toc -->
-
-- [Team C-Sick 🤢](#team-c-sick-)
-- [Getting the Project Running 📋](#getting-the-project-running-)
-- [Contribution Conventions](#contribution-conventions)
-- [Data Source 💾](#data-source-)
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/)
 
 ## Team C-Sick 🤢
 
 We are a team of computer science students studying big data for the purpose of getting a head start in the world of
 analyzing data and finding the meaningful needle in the haystack.
 
-Team Members: 
- [**Rinty Chowdhury**](https://github.com/rintychy), 
- [**Daniel Foster**](https://github.com/dlfosterbot),  
- [**Matthew Moretz**](https://github.com/Matmorcat), 
- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique), and 
- [**John Weber**](https://github.com/JWeb56).
+### Team Members
 
-Instructor: [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
-Adviser: [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
+- [**Rinty Chowdhury**](https://github.com/rintychy)  
+- [**Daniel Foster**](https://github.com/dlfosterbot)  
+- [**Matthew Moretz**](https://github.com/Matmorcat)  
+- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
+- [**John Weber**](https://github.com/JWeb56)  
 
-## Contribution Conventions
 
-Before committing to the repository **please** read [**contributing.md**](docs/contributing.md)
+**Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
+**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 
-## Beta Branch
+## Contributions 🤝
+
+### Code of Conduct
+
+We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
+Make sure you understand our [**Code of Conduct**](https://post-storm-imagery.readthedocs.io/en/latest/code_of_conduct/).
+
+### Code Conventions
+
+Before committing to the repository **please** read the project 
+[**Code Conventions**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/).
+
+### Beta Branch
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -48,9 +54,9 @@ https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
 [![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
 https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
-This is the main place to submit new code.
+Beta branch is the main place to submit new code.
 
-## Getting the Project Running 📋
+## Getting the Project Running 🏃‍
 
 ### Project Pre-Requisites
 
@@ -61,7 +67,7 @@ This is the main place to submit new code.
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to [`src/python/Poststorm_Imagery`](./src/python/Poststorm_Imagery) (inner-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `src/python/Poststorm_Imagery` (inner-most `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
@@ -69,7 +75,7 @@ This is the main place to submit new code.
 1. Change current directory to the collector module (`cd collector/`)
 2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
 
-*The arguments for `collect.py` are listed [**here**](./docs/collector.md)*
+*The arguments for `collect.py` are listed [**here**](https://post-storm-imagery.readthedocs.io/en/latest/collector/)*
 
 
 ## Data Source 💾
