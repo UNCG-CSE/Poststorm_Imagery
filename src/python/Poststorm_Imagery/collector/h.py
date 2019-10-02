@@ -3,7 +3,7 @@ from __future__ import print_function
 import os
 import sys
 import re
-from typing import Union, Dict, Pattern, Generator
+from typing import Union, Dict, Pattern, Generator, List
 
 import pytest
 
@@ -128,7 +128,7 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
 
 
 def all_files_recursively(root_path: Union[bytes, str], file_extension: str or None = None, file_search_re:
-                          Pattern = '.*') -> Generator:
+                          Pattern = '.*') -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
@@ -141,9 +141,16 @@ def all_files_recursively(root_path: Union[bytes, str], file_extension: str or N
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)
 
+    files = list()
+
     for (dir_path, dir_names, file_names) in os.walk(top=root_path, followlinks=True, topdown=False):
         if file_extension is None:
-            return (os.path.join(dir_path, f) for f in file_names if re.search(file_search_re, f))
+            for f in file_names:
+                if re.search(file_search_re, f):
+                    files.append(str(os.path.join(dir_path, f)))
         else:
-            return (os.path.join(dir_path, f) for f in file_names if f.endswith('.' + file_extension) and re.search(
-                file_search_re, f))
+            for f in file_names:
+                if f.endswith('.' + file_extension) and re.search(file_search_re, f):
+                    files.append(str(os.path.join(dir_path, f)))
+
+    return files
