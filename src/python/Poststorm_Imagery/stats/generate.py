@@ -22,13 +22,16 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     # Get a list of all files starting at the path specified
     files: List[str] = h.all_files_recursively(scope_path, **kwargs)
 
-    if debug and False:
+    if debug:
         file_list_number = 1
+
+        print()
         print('Files in "' + str(scope_path) + ':"')
 
         for f in files:
             print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
             file_list_number += 1
+
 
     """
     if '\\' in files[0]:
@@ -42,6 +45,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     file_stats['Time'] = file_stats['File'].apply(lambda row: os.path.getmtime(os.path.join(scope_path, row)))
 
     if debug:
+        print()
         print(file_stats)
 
 
