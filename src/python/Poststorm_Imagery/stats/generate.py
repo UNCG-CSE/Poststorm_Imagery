@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Union, List
 
 import pandas as pd
@@ -29,10 +30,15 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
             print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
             file_list_number += 1
 
+    """
+    if '\\' in files[0]:
+        for i in range(len(files)):
+            files[i] = files[i].replace('\\', '/')
+    """
+
     file_stats = pd.DataFrame(data=files, columns=['File'])
 
-    for index, data in file_stats.iterrows():
-        file_stats.iloc[index]['Size (Bytes)'] = os.path.getsize(os.path.join(scope_path, data['File']))
+    file_stats['Size'] = file_stats['File'].apply(lambda row: os.path.getsize(os.path.join(scope_path, row)))
 
     if debug:
         print(file_stats)
