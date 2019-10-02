@@ -23,6 +23,7 @@ https://post-storm-imagery.readthedocs.io/)
 - [**John Weber**](https://github.com/JWeb56)  
 
 **Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
+
 **Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contributions 🤝
