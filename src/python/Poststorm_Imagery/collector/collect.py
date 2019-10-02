@@ -10,9 +10,9 @@ from typing import List, Union
 from requests.exceptions import RequestException
 
 from src.python.Poststorm_Imagery.collector import h, s
-from src.python.Poststorm_Imagery.collector.ConnectionHandler import ConnectionHandler
-from src.python.Poststorm_Imagery.collector.Storm import Storm
-from src.python.Poststorm_Imagery.collector.TarRef import TarRef
+from src.python.Poststorm_Imagery.collector.connection_handler import ConnectionHandler
+from src.python.Poststorm_Imagery.collector.storm import Storm
+from src.python.Poststorm_Imagery.collector.tar_ref import TarRef
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -55,11 +55,8 @@ parser.add_argument('--overwrite', '-o', action='store_true',
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
-# Convert string to absolute path for uniformity
-DOWNLOAD_PATH = os.path.abspath(OPTIONS.path)
-
-# Expand out any path keywords or variables for certain operating system
-DOWNLOAD_PATH = os.path.expanduser(os.path.expandvars(DOWNLOAD_PATH))
+# Clean up path input and validate it
+DOWNLOAD_PATH = h.validate_and_expand_path(OPTIONS.path)
 
 c = ConnectionHandler()
 
