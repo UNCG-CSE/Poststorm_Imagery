@@ -14,11 +14,11 @@ TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
 
 parser = argparse.ArgumentParser(prog='stats')
 
-parser.add_argument('--extension', '-e', default=None,
-                    help='')
-
 parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
+
+parser.add_argument('--extension', '-e', default=None,
+                    help='The file extension to restrict the search to.')
 
 parser.add_argument('--debug', '-d', action='store_true',
                     help='If included, the program will print info throughout the process (Default: %(default)s).')
