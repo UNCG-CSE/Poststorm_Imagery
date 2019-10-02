@@ -39,6 +39,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     file_stats = pd.DataFrame(data=files, columns=['File'])
 
     file_stats['Size'] = file_stats['File'].apply(lambda row: os.path.getsize(os.path.join(scope_path, row)))
+    file_stats['Time'] = file_stats['File'].apply(lambda row: os.path.getmtime(os.path.join(scope_path, row)))
 
     if debug:
         print(file_stats)
