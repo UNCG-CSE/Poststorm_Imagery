@@ -24,7 +24,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
 
     if debug:
         print()
-        print('Files in "' + str(scope_path) + '"')
+        print('Files in "' + str(scope_path) + '"\n')
 
         if len(files) > 10:
             # Print only the first five and last five elements (similar to pandas's DataFrames)
@@ -53,7 +53,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
 
     if debug:
         print()
-        print('Generating DataFrame and calculating statistics...')
+        print('Generating DataFrame and calculating statistics...\n')
 
     file_stats = pd.DataFrame(data=files, columns=['File'])
 
