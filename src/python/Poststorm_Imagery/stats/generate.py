@@ -29,16 +29,20 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
         if len(files) > 10:
             # Print only the first five and last five elements (similar to pandas's DataFrames)
             for i in (list(range(1, 6)) + list(range(len(files) - 4, len(files) + 1))):
-                print(str(i) + '. ' + ' ' * (6 - len(str(i))) + files[i - 1])
+
+                # Right-align the file numbers, because why not
+                print(('{:>' + str(len(str(len(files) + 1))) + '}').format(i) + '  ' + files[i - 1])
                 if i is 5:
-                    print('...')
+                    print(('{:>' + str(len(str(len(files) + 1))) + '}').format('...'))
 
         else:
             file_list_number = 1
 
             # Print all elements if there are 10 or less
             for f in files:
-                print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
+
+                # Right-align the file numbers, because why not
+                print(('{:>' + str(len(str(len(files) + 1))) + '}').format(file_list_number) + '  ' + f)
                 file_list_number += 1
 
     """
