@@ -23,15 +23,23 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     files: List[str] = h.all_files_recursively(scope_path, **kwargs)
 
     if debug:
-        file_list_number = 1
-
         print()
-        print('Files in "' + str(scope_path) + ':"')
+        print('Files in "' + str(scope_path) + '"')
 
-        for f in files:
-            print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
-            file_list_number += 1
+        if len(files) > 10:
+            # Print only the first five and last five elements (similar to pandas's DataFrames)
+            for i in (list(range(1, 6)) + list(range(len(files) - 4, len(files) + 1))):
+                print(str(i) + '. ' + ' ' * (6 - len(str(i))) + files[i - 1])
+                if i is 5:
+                    print('...')
 
+        else:
+            file_list_number = 1
+
+            # Print all elements if there are 10 or less
+            for f in files:
+                print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
+                file_list_number += 1
 
     """
     if '\\' in files[0]:
@@ -39,13 +47,16 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
             files[i] = files[i].replace('\\', '/')
     """
 
+    if debug:
+        print()
+        print('Generating DataFrame and calculating statistics...')
+
     file_stats = pd.DataFrame(data=files, columns=['File'])
 
     file_stats['Size'] = file_stats['File'].apply(lambda row: os.path.getsize(os.path.join(scope_path, row)))
     file_stats['Time'] = file_stats['File'].apply(lambda row: os.path.getmtime(os.path.join(scope_path, row)))
 
     if debug:
-        print()
         print(file_stats)
 
 
