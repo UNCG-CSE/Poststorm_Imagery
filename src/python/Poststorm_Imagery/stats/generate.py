@@ -1,4 +1,7 @@
+import os
 from typing import Union, List
+
+import pandas as pd
 
 from src.python.Poststorm_Imagery.collector import s, h
 
@@ -18,7 +21,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     # Get a list of all files starting at the path specified
     files: List[str] = h.all_files_recursively(scope_path, **kwargs)
 
-    if debug:
+    if debug and False:
         file_list_number = 1
         print('Files in "' + str(scope_path) + ':"')
 
@@ -26,7 +29,14 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
             print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
             file_list_number += 1
 
+    file_stats = pd.DataFrame(data=files, columns=['File'])
+
+    for index, data in file_stats.iterrows():
+        file_stats.iloc[index]['Size (Bytes)'] = os.path.getsize(os.path.join(scope_path, data['File']))
+
+    if debug:
+        print(file_stats)
+
 
 # Temporary debug statement for testing
-generate_index_from_scope(debug=True, scope_path='/mnt/Secondary/mcmoretz@uncg.edu/C-Sick/data/Barry',
-                          file_extension='jpg')
+generate_index_from_scope(debug=True, scope_path='F:\\Shared drives\\C-Sick\\data\\Barry', file_extension='jpg')
