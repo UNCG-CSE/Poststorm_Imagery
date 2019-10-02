@@ -147,10 +147,10 @@ def all_files_recursively(root_path: Union[bytes, str], file_extension: str or N
         if file_extension is None:
             for f in file_names:
                 if re.search(file_search_re, f):
-                    files.append(str(os.path.join(dir_path, f)))
+                    files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
         else:
             for f in file_names:
                 if f.endswith('.' + file_extension) and re.search(file_search_re, f):
-                    files.append(str(os.path.join(dir_path, f)))
+                    files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
 
     return files
