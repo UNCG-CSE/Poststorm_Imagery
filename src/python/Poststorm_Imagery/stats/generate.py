@@ -19,9 +19,12 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
     files: List[str] = h.all_files_recursively(scope_path, **kwargs)
 
     if debug:
-        print('Files in "scope_path:"')
+        file_list_number = 1
+        print('Files in "' + str(scope_path) + ':"')
+
         for f in files:
-            print('\t-', f)
+            print(str(file_list_number) + '. ' + ' ' * (6 - len(str(file_list_number))) + f)
+            file_list_number += 1
 
 
 # Temporary debug statement for testing
