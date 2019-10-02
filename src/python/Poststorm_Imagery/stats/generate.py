@@ -1,5 +1,4 @@
 import os
-import sys
 from typing import Union, List
 
 import pandas as pd
@@ -62,7 +61,3 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, debug
 
     if debug:
         print(file_stats)
-
-
-# Temporary debug statement for testing
-generate_index_from_scope(debug=True, scope_path='F:\\Shared drives\\C-Sick\\data\\Barry', file_extension='jpg')
