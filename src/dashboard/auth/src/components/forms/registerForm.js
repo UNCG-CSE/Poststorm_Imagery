@@ -109,7 +109,7 @@ export default function loginRegisterLayout(props) {
 
             <Grid justify="space-between" container>
                 <Grid item>
-                  <Link href="/">
+                  <Link href="/login">
                       <Button   disabled={props.isSubmitting} color="secondary" className={classes.button} style={{ backgroundColor: 'transparent',textDecoration:'none' }}>
                       Login
                       </Button>

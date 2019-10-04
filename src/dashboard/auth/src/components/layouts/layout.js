@@ -91,7 +91,7 @@ const external_links =[
 const website_links =[
   {
       text:'Home',
-      url_link:'/#123',
+      url_link:'/',
       icon: <HomeIcon />
   },
   // {

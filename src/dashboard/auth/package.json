@@ -9,6 +9,7 @@
     "@material-ui/styles": "latest",
     "bcrypt": "^3.0.6",
     "clsx": "latest",
+    "command-line-args": "^5.1.1",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
     "express-session": "^1.16.2",
@@ -21,13 +22,15 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "prop-types": "latest",
+    "public-ip": "^3.2.0",
     "react": "latest",
     "react-dom": "latest",
     "react-spring": "^8.0.27",
     "yup": "^0.27.0"
   },
   "scripts": {
-    "dev": "node web_server",
+    "web": "node server_web --localhost",
+    "node": "node server_node --localhost",
     "build": "next build",
     "start": "next start"
   }
