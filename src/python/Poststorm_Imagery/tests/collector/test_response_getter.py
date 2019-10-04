@@ -1,11 +1,8 @@
-import contextlib
-import io
-import sys
 from unittest import TestCase
 
 import requests
 
-from src.python.Poststorm_Imagery.collector.ResponseGetter import get_http_response, get_full_content_length
+from src.python.Poststorm_Imagery.collector.response_getter import get_http_response, get_full_content_length
 
 
 class TestResponseGetter(TestCase):
@@ -25,3 +22,5 @@ class TestResponseGetter(TestCase):
         self.assertEqual(11397775360, get_full_content_length(
             'https://ngsstormviewer.blob.core.windows.net/downloads/20180915a_jpgs.tar'))
 
+    def test_get_full_content_length_empty(self):
+        self.assertEqual(0, get_full_content_length('https://httpbin.org/status/404'))
