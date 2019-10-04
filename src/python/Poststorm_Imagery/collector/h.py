@@ -133,10 +133,10 @@ def all_files_recursively(root_path: Union[bytes, str], file_extension: str or N
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
 
-    :param root_path: 
-    :param file_extension: 
-    :param file_search_re: 
-    :return: 
+    :param root_path: The path to begin searching recursively for matching files in
+    :param file_extension: The file extension required to be included in the returned list
+    :param file_search_re: The file name (including the extension) to be searched for as a regular expression
+    :return: A list of files with their relative path 
     """
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)
