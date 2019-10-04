@@ -65,9 +65,9 @@ async function main() {
         app_express.use('/api',require('./routes/api'))
 
         //For all pages use next.js
-        app_express.get('*', (req, res) => {
-            return handle(req, res)
-        })
+        // app_express.get('*', (req, res) => {
+        //     return handle(req, res)
+        // })
 
         //Notify that the web server is up,and where.
         app_express.listen(PORT_WEB,'0.0.0.0', () => {
