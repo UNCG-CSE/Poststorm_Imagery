@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Union, List
+from typing import Union, List, Dict
 
 import pandas as pd
 
@@ -14,7 +14,6 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, **kwa
     that can be looped through with a for-loop or similar.
 
     :param scope_path: The root path to start indexing files from
-    :param debug: Whether to print out what's happening
     """
     debug = (kwargs['debug'] if 'debug' in kwargs else False)
 
@@ -53,22 +52,29 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, **kwa
     """
 
     if debug:
-        print()
-        print('Generating DataFrame and calculating statistics...\n')
+        print('\nGenerating DataFrame and calculating statistics...\n')
 
     file_stats = pd.DataFrame(data=files, columns=['file'])
 
     # file_stats['size'] = file_stats['file'].apply(lambda row: os.path.getsize(os.path.join(scope_path, row)))
     # file_stats['time'] = file_stats['file'].apply(lambda row: os.path.getmtime(os.path.join(scope_path, row)))
     file_stats['ll_lat'] = file_stats['file'].apply(
-        lambda row: get_geom_field(field_id='ll_lat', file_path=os.path.join(scope_path, row), **kwargs))
+        lambda row: get_geom_fields(field_id_list='ll_lat', file_path=os.path.join(scope_path, row), **kwargs))
 
     if debug:
         print(file_stats)
 
 
-def get_geom_field(field_id: str, file_path: Union[bytes, str], **kwargs) -> str or None:
+def get_geom_fields(field_id_list: List[str] or str, file_path: Union[bytes, str], **kwargs) \
+        -> Union[Dict[str, str], str, None]:
     debug = (kwargs['debug'] if 'debug' in kwargs else False)
+
+    is_single_input = False
+
+    # If only one id is entered (a single string), convert to a list of 1 element
+    if type(field_id_list) is str:
+        field_id_list: List[str] = [field_id_list]
+        is_single_input = True
 
     # Get the .geom file that corresponds to this file (substitute existing extension for ".geom")
     geom_path = h.validate_and_expand_path(re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(file_path)))
@@ -77,16 +83,30 @@ def get_geom_field(field_id: str, file_path: Union[bytes, str], **kwargs) -> str
         h.print_error('Could not find .geom file for "' + file_path + '": "' + geom_path + '"')
         return None
 
+    result: Dict[str] = dict()
+
     with open(geom_path, 'r') as f:
         for line in f.readlines():
-            value = re.findall(field_id + ':\\s+(.*)', line)
-            if len(value) > 0:
 
+            # If there are no more fields to find, close the file and return the resulting dictionary or string
+            if len(field_id_list) is 0:
                 f.close()
-                if debug:
-                    print('Found value "' + field_id + '" as ' + str(value[0]) + ' in ' + geom_path)
-                return value[0]
+
+                if is_single_input and len(result) is 1:
+                    # Return the first (and only value) as a single string
+                    return str(list(result.values())[0])
+
+                return result
+
+            for field_id in field_id_list:
+                value = re.findall(field_id + ':\\s+(.*)', line)
+                if len(value) is 1:
+                    result[field_id] = str(value[0])
+                    field_id_list.remove(field_id)
+
+                    if debug:
+                        print('Found value "' + field_id + '" as ' + result[field_id] + ' in ' + geom_path)
 
         f.close()
-        h.print_error('Could not find field "' + field_id + '" in "' + geom_path + '"')
+        h.print_error('Could not find any values for fields in "' + field_id_list + '" within "' + geom_path + '"')
         return None
