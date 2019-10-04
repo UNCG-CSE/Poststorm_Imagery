@@ -69,7 +69,7 @@ export default function loginRegisterLayout(props) {
           axios.post(`http://localhost:3000/api/login`, form_values)
               .then(res => {
                 
-               
+               //alert(res.data)
               Router.push('/api/protec')
           }).catch(res =>{
             Router.push('/register')

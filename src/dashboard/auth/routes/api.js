@@ -61,10 +61,15 @@ async function main() {
         failureRedirect: '/login',
         failureFlash: true
     }))
-    // router.post('/login',  async (req,res) => {
-    //    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    //    res.send('logged in')
+
+    // router.post("/login",async (req,res) => {
+    //     //res.redirect('/')
+
+    //     res.send({
+    //         goaway:'/'
+    //     })
     // })
+
 
     router.post("/register",async (req,res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -113,9 +118,10 @@ main()
 function checkAuthenticated(req, res, next) {
     //if authed, then continue
     if (req.isAuthenticated()) {
+
       return next()
     }
-    
+
     //if not auth,get yeeted
     res.redirect('/login')
 }
@@ -123,8 +129,11 @@ function checkAuthenticated(req, res, next) {
 //if someone is logged in, move em to the first logged in page
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
+        
       return res.redirect('/')
+      
     }
+    
     next()
 }
 
