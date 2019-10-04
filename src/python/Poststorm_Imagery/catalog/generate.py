@@ -67,7 +67,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                 file_list_number += 1
 
     if debug:
-        print('\nGenerating DataFrame and calculating statistics...\n')
+        print('\nGenerating DataFrame and calculating statistics ... \n')
 
     catalog: pd.DataFrame or None = None
     all_fields_needed: Set = {'file', 'size', 'time',
@@ -84,13 +84,13 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
         if 'size' in current_fields_needed:
             if debug:
-                print('Calculating sizes of files...')
+                print('Calculating sizes of files ... ')
             catalog['size'] = catalog['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
             current_fields_needed.remove('size')
             flag_unsaved_changes = True
         if 'time' in current_fields_needed:
             if debug:
-                print('Calculating modify time of files...')
+                print('Calculating modify time of files ... ')
             catalog['time'] = catalog['file'].apply(lambda x: os.path.getmtime(os.path.join(scope_path, x)))
             current_fields_needed.remove('time')
             flag_unsaved_changes = True
@@ -104,7 +104,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         current_fields_needed -= {'file', 'size', 'time'}
 
     if debug:
-        print('Basic data is complete! Moving on to .geom specific data...')
+        print('Basic data is complete! Moving on to .geom specific data ... ')
 
     for field in current_fields_needed:
 
@@ -121,7 +121,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         formatted_counter = '{:.2f}'.format(float((i / len(files)) * 100))
 
         print('\rProcessing file ' + str(i + 1) + ' of ' + str(len(files)) +
-              ' (' + formatted_counter + '%) ' + '.' * (math.floor(((i + 1) % 9) / 3) + 1), end='')
+              ' (' + formatted_counter + '%) ' + '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
 
         row_fields_needed = current_fields_needed.copy()
 
@@ -152,7 +152,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         if save_interval > 0 and stat_files_accessed % save_interval is 0:
 
             print('\nSaving partially completed catalog to disk (' + str(stat_files_accessed) +
-                  ' .geom files accessed)...')
+                  ' .geom files accessed) ... ')
             force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
     if debug:
@@ -178,7 +178,7 @@ def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
             flag_save_incomplete = False
         except PermissionError as e:
             h.print_error(str(e) + '\nTry closing the file if it is open in another program!\nWill attempt '
-                                   'to save again in 10 seconds...\n')
+                                   'to save again in 10 seconds ... \n')
             time.sleep(10)
 
     print('Saved catalog to disk!\n')
@@ -235,5 +235,5 @@ def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str],
                     field_id_set.remove(field_id)
 
         f.close()
-        h.print_error('Could not find any values for fields in "' + str(field_id_set))
+        h.print_error('\nCould not find any values for fields ' + str(field_id_set) + ' in ' + geom_path)
         return None
