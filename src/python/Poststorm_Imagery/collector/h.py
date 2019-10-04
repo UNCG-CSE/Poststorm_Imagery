@@ -154,7 +154,7 @@ def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, 
             for f in file_names:
                 if debug:
                     print('- ' + os.path.join(dir_path, f) + ' ... ', end='')
-                if re.search(file_search_re, f):
+                if re.search(file_search_re, f) and re.search(' \\(\\d\\)\\.', f):
                     if debug:
                         print('matches pattern!')
                     if unix_sep:
@@ -166,7 +166,9 @@ def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, 
                     print('does not match!')
         else:
             for f in file_names:
-                if f.endswith('.' + file_extension) and re.search(file_search_re, f):
+                if f.endswith('.' + file_extension) and re.search(file_search_re, f) \
+                        and not re.search(' \\(\\d\\)\\.', f):
+
                     if unix_sep:
                         files.append(str(os.path.relpath(os.path.join(dir_path, f),
                                                          start=root_path)).replace('\\', '/'))
