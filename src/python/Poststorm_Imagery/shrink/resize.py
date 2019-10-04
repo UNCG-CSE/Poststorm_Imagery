@@ -46,5 +46,5 @@ for r, d, walk_f in os.walk(path):
             os.makedirs(directory)
             mine = os.path.dirname(directory)
             i.save(mine + name)
-
-    file = []
+            #os.path.join(mine, name)
+            file = []
