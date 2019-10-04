@@ -19,6 +19,12 @@ import Grid from '@material-ui/core/Grid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
+//for post request
+import axios from 'axios';
+
+//to redirect after post
+import Router from 'next/router'
+
 //Styles of our page
 const useStyles = makeStyles(theme => ({
   link:{
@@ -55,10 +61,21 @@ export default function loginRegisterLayout(props) {
           passwordValue: Yup.string().required("Please enter your password"),
       })}
       onSubmit={(values, actions) => {
-          setTimeout(() => {
-          alert(values.emailValue+'-'+values.passwordValue);
+        const form_values={
+          email:values.emailValue,
+          password:values.passwordValue
+        }
+        setTimeout(() => {
+          axios.post(`http://localhost:3000/api/login`, form_values)
+              .then(res => {
+                
+               
+              Router.push('/api/protec')
+          }).catch(res =>{
+            Router.push('/register')
+          })
           actions.setSubmitting(false);
-          }, 1000);
+        }, 1000);
       }}
       render={props => (
         <form className={classes.form} onSubmit={props.handleSubmit} noValidate>

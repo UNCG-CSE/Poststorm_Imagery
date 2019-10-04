@@ -3,12 +3,39 @@ const app_express = express()
 const router = express.Router();
 const config = require('../server_config')
 const bodyParser = require('body-parser');
+const NextRouter = require ('next/router')
 
 
 const users=[]
+
+//auth
 const bcrypt= require('bcrypt')
+const flash = require('express-flash')
+const session = require('express-session')
+const initializePassport = require('../passport-config')
+const passport =  require('passport')
+const methodOverride = require('method-override')
+
+initializePassport(passport,
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
+)
+
 async function main() {
     const {IP} = await config
+
+    //App setttings
+    router.use(express.urlencoded({extended: false}))
+    router.use(flash())
+    //enc all information,wowe
+    router.use(session({
+        secret: 'ahhhhhhhh',
+        resave: false,
+        saveUninitialized: false
+    }))
+    router.use(passport.initialize())
+    router.use(passport.session())
+    router.use(methodOverride('_method'))
     
     //router.use(express.json());
     router.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +55,16 @@ async function main() {
             }
         )
     });
+
+    router.post('/login',  checkNotAuthenticated,passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    }))
+    // router.post('/login',  async (req,res) => {
+    //    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    //    res.send('logged in')
+    // })
 
     router.post("/register",async (req,res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -50,7 +87,7 @@ async function main() {
             })
             
             res.send('User created :)')
-            //res.redirect('/login')
+            
         } catch (err){
             //res.redirect('/register')
             console.log(err.message)
@@ -59,8 +96,37 @@ async function main() {
         console.log(users)
         console.log('\n\n')
     })
+
+    //protected path
+    router.get("/protec",checkAuthenticated, (req,res) => {
+        res.send({isProtec:'yes :)'})
+    })
+
+    //unprotected path
+    router.get("/unprotec",(req,res) => {
+        res.send({isProtec:'no :('})
+    })
+
 }
 main()
+
+function checkAuthenticated(req, res, next) {
+    //if authed, then continue
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    
+    //if not auth,get yeeted
+    res.redirect('/login')
+}
+
+//if someone is logged in, move em to the first logged in page
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return res.redirect('/')
+    }
+    next()
+}
 
 //used below becuase https://stackoverflow.com/questions/27465850/typeerror-router-use-requires-middleware-function-but-got-a-object
 module.exports = router ;

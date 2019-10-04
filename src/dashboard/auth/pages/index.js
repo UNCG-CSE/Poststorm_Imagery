@@ -42,7 +42,7 @@ export default function Index() {
             Login?
           </Button>   
         </Link>
-        <Link href="/login">
+        <Link href="/register">
           <Button color="primary" className={classes.button}>
             Register?
           </Button>   
