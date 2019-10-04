@@ -8,7 +8,7 @@ import pandas as pd
 
 from src.python.Poststorm_Imagery.collector import s, h
 
-MANIFEST_FILE = s.MANIFEST_FILE_NAME + '.csv'
+CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
 DEFAULT_FIELDS = {'file', 'size', 'time',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
@@ -25,7 +25,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     that can be looped through with a for-loop or similar.
 
     :param scope_path: The root path to start indexing files from
-    :param fields_needed: The fields to include in the manifest (gathered from the local file system)
+    :param fields_needed: The fields to include in the catalog (gathered from the local file system)
     :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
     measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
     """
@@ -38,7 +38,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     global flag_unsaved_changes  # Include the global variable defined at top of this script
 
     scope_path = h.validate_and_expand_path(path=scope_path)
-    manifest_path = os.path.join(scope_path, MANIFEST_FILE)
+    catalog_path = os.path.join(scope_path, CATALOG_FILE)
 
     # Get a list of all files starting at the path specified
     files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, **kwargs)
@@ -69,7 +69,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     if debug:
         print('\nGenerating DataFrame and calculating statistics...\n')
 
-    manifest: pd.DataFrame or None = None
+    catalog: pd.DataFrame or None = None
     all_fields_needed: Set = {'file', 'size', 'time',
                                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
@@ -77,28 +77,28 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     current_fields_needed: Set = all_fields_needed.copy()
     flag_unsaved_changes = False
 
-    if os.path.exists(manifest_path) is False:
-        # If the manifest file doesn't exist, create a new one with the basic file info
-        manifest = pd.DataFrame(data=files, columns=['file'])
+    if os.path.exists(catalog_path) is False:
+        # If the catalog file doesn't exist, create a new one with the basic file info
+        catalog = pd.DataFrame(data=files, columns=['file'])
         current_fields_needed.remove('file')
 
         if 'size' in current_fields_needed:
             if debug:
                 print('Calculating sizes of files...')
-            manifest['size'] = manifest['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
+            catalog['size'] = catalog['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
             current_fields_needed.remove('size')
             flag_unsaved_changes = True
         if 'time' in current_fields_needed:
             if debug:
                 print('Calculating modify time of files...')
-            manifest['time'] = manifest['file'].apply(lambda x: os.path.getmtime(os.path.join(scope_path, x)))
+            catalog['time'] = catalog['file'].apply(lambda x: os.path.getmtime(os.path.join(scope_path, x)))
             current_fields_needed.remove('time')
             flag_unsaved_changes = True
 
         # Create the file in the scope directory
-        force_save_manifest(manifest=manifest, manifest_path=manifest_path)
+        force_save_catalog(catalog=catalog, catalog_path=catalog_path)
     else:
-        manifest = pd.read_csv(manifest_path, usecols=lambda col_label: col_label in current_fields_needed)
+        catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
         # Remove the size and time from the sets as they should already exist in the CSV file
         current_fields_needed -= {'file', 'size', 'time'}
@@ -109,14 +109,14 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     for field in current_fields_needed:
 
         # If a column for each field does not exist, create one for each field with all the values as empty strings
-        if field not in manifest:
-            manifest[field] = ''
+        if field not in catalog:
+            catalog[field] = ''
             flag_unsaved_changes = True
 
     stat_files_accessed: int = 0
 
     # For any remaining fields needed (i.e. ll_lat), look for them in the .geom files
-    for i, row in manifest.iterrows():
+    for i, row in catalog.iterrows():
 
         formatted_counter = '{:.2f}'.format(float((i / len(files)) * 100))
 
@@ -125,7 +125,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
         row_fields_needed = current_fields_needed.copy()
 
-        # Remove redundant queries to .geom file if the data is already present in the manifest
+        # Remove redundant queries to .geom file if the data is already present in the catalog
         for field in current_fields_needed:
             if (type(row[field]) is str and len(row[field]) > 0) \
                     or (type(row[field]) is not str and str(row[field]) is "nan"):
@@ -144,25 +144,25 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
             if geom_data is not None:
 
-                # Store the values in the manifest's respective column by field name, in memory
+                # Store the values in the catalog's respective column by field name, in memory
                 for key, value in geom_data.items():
-                    manifest.at[i, key] = value
+                    catalog.at[i, key] = value
                     flag_unsaved_changes = True
 
         if save_interval > 0 and stat_files_accessed % save_interval is 0:
 
-            print('\nSaving partially completed manifest to disk (' + str(stat_files_accessed) +
+            print('\nSaving partially completed catalog to disk (' + str(stat_files_accessed) +
                   ' .geom files accessed)...')
-            force_save_manifest(manifest=manifest, manifest_path=manifest_path)
+            force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
     if debug:
-        print(manifest)
+        print(catalog)
 
     # Do a final save of the file
-    force_save_manifest(manifest=manifest, manifest_path=manifest_path)
+    force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
 
-def force_save_manifest(manifest: pd.DataFrame, manifest_path: str):
+def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
     global flag_unsaved_changes  # Include the global variable defined at top of this script
 
     if flag_unsaved_changes is False:
@@ -173,7 +173,7 @@ def force_save_manifest(manifest: pd.DataFrame, manifest_path: str):
     while flag_save_incomplete:
         try:
             # Periodically save the file based on the save_interval parameter
-            manifest.to_csv(manifest_path)
+            catalog.to_csv(catalog_path)
             flag_unsaved_changes = False
             flag_save_incomplete = False
         except PermissionError as e:
@@ -181,7 +181,7 @@ def force_save_manifest(manifest: pd.DataFrame, manifest_path: str):
                                    'to save again in 10 seconds...\n')
             time.sleep(10)
 
-    print('Saved manifest to disk!\n')
+    print('Saved catalog to disk!\n')
     flag_unsaved_changes = False
 
 

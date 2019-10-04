@@ -3,7 +3,7 @@ import os
 from typing import Union
 
 from src.python.Poststorm_Imagery.collector import s
-from src.python.Poststorm_Imagery.stats import generate
+from src.python.Poststorm_Imagery.catalog import generate
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -12,7 +12,7 @@ TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
 # Define command-line parameters and arguments #
 ################################################
 
-parser = argparse.ArgumentParser(prog='stats')
+parser = argparse.ArgumentParser(prog='catalog')
 
 parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')

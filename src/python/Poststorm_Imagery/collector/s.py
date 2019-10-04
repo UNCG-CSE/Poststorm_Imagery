@@ -18,4 +18,4 @@ URL_STORMS = URL_BASE + 'storms/'
 # Groups: <storm_url>, <storm_id>, <storm_title>, <storm_year>
 URL_STORMS_REGEX_PATTERN_INDEX = '<a href=\"(.+/storms/([^/]+)/.*?index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>'
 
-MANIFEST_FILE_NAME = 'manifest'
+CATALOG_FILE_NAME = 'catalog'
