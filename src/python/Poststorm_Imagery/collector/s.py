@@ -17,3 +17,5 @@ URL_STORMS = URL_BASE + 'storms/'
 # Matches reference link to each storm (HTML)
 # Groups: <storm_url>, <storm_id>, <storm_title>, <storm_year>
 URL_STORMS_REGEX_PATTERN_INDEX = '<a href=\"(.+/storms/([^/]+)/.*?index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>'
+
+MANIFEST_FILE_NAME = 'manifest'
