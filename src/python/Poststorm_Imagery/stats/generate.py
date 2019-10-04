@@ -14,6 +14,8 @@ DEFAULT_FIELDS = {'file', 'size', 'time',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
 
+flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
+
 
 def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = None,
                               save_interval: int = 1000, **kwargs) -> None:
@@ -33,6 +35,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         fields_needed = DEFAULT_FIELDS.copy()
 
     debug = (kwargs['debug'] if 'debug' in kwargs else False)
+    global flag_unsaved_changes  # Include the global variable defined at top of this script
 
     scope_path = h.validate_and_expand_path(path=scope_path)
     manifest_path = os.path.join(scope_path, MANIFEST_FILE)
@@ -72,7 +75,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
 
     current_fields_needed: Set = all_fields_needed.copy()
-    flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
+    flag_unsaved_changes = False
 
     if os.path.exists(manifest_path) is False:
         # If the manifest file doesn't exist, create a new one with the basic file info
@@ -93,10 +96,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
             flag_unsaved_changes = True
 
         # Create the file in the scope directory
-        manifest.to_csv(manifest_path)
-        flag_unsaved_changes = False
-        if debug:
-            print('Saved manifest to disk!\n')
+        force_save_manifest(manifest=manifest, manifest_path=manifest_path)
     else:
         manifest = pd.read_csv(manifest_path, usecols=lambda col_label: col_label in current_fields_needed)
 
@@ -117,13 +117,20 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
     # For any remaining fields needed (i.e. ll_lat), look for them in the .geom files
     for i, row in manifest.iterrows():
+
+        formatted_counter = '{:.2f}'.format(float((i / len(files)) * 100))
+
+        print('\rProcessing file ' + str(i + 1) + ' of ' + str(len(files)) +
+              ' (' + formatted_counter + '%) ' + '.' * (math.floor(((i + 1) % 9) / 3) + 1), end='')
+
         row_fields_needed = current_fields_needed.copy()
 
         # Remove redundant queries to .geom file if the data is already present in the manifest
         for field in current_fields_needed:
             if (type(row[field]) is str and len(row[field]) > 0) \
-                    or (type(row[field]) is not str and math.isnan(row[field]) is False):
-                print('field: ' + field + '  row[field]: "' + row[field] + '" type(row[field])' + str(type(row[field])))
+                    or (type(row[field]) is not str and str(row[field]) is "nan"):
+                print('field: ' + field + '  row[field]: "' + str(row[field]) + '" type(row[field])' + str(type(row[
+                                                                                                                field])))
                 row_fields_needed.remove(field)
 
         # Only query the .geom file if there are fields still unfilled
@@ -131,40 +138,51 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
             # Look up the fields that are needed and still missing data
             geom_data: Dict[str, str] or None = get_geom_fields(
-                field_id_set=row_fields_needed, file_path=os.path.join(scope_path, row['file']), **kwargs)
+                field_id_set=row_fields_needed, file_path=os.path.join(
+                    scope_path, os.path.normpath(row['file'])), **kwargs)
             stat_files_accessed += 1
 
-            # Store the values in the manifest's respective column by field name, in memory
-            for key, value in geom_data.items():
-                manifest.at[i, key] = value
-                flag_unsaved_changes = True
+            if geom_data is not None:
 
-        if flag_unsaved_changes and save_interval > 0 and stat_files_accessed % save_interval is 0:
+                # Store the values in the manifest's respective column by field name, in memory
+                for key, value in geom_data.items():
+                    manifest.at[i, key] = value
+                    flag_unsaved_changes = True
 
-            if debug:
-                print('\nSaving partially completed manifest to disk (' + str(stat_files_accessed) + ' .geom files '
-                                                                                              'accessed)...')
-            flag_save_incomplete = True
-            while flag_save_incomplete:
-                try:
-                    # Periodically save the file based on the save_interval parameter
-                    manifest.to_csv(manifest_path)
-                    flag_unsaved_changes = False
-                    flag_save_incomplete = False
-                except PermissionError as e:
-                    h.print_error(str(e) + '\nTry closing the file if it is open in another program!\nWill attempt '
-                                           'to save again in 10 seconds...\n')
-                    time.sleep(10)
+        if save_interval > 0 and stat_files_accessed % save_interval is 0:
 
-            if debug:
-                print('Saved manifest to disk!\n')
+            print('\nSaving partially completed manifest to disk (' + str(stat_files_accessed) +
+                  ' .geom files accessed)...')
+            force_save_manifest(manifest=manifest, manifest_path=manifest_path)
 
     if debug:
         print(manifest)
-        print('Saved manifest to disk!\n')
 
     # Do a final save of the file
-    manifest.to_csv(manifest_path)
+    force_save_manifest(manifest=manifest, manifest_path=manifest_path)
+
+
+def force_save_manifest(manifest: pd.DataFrame, manifest_path: str):
+    global flag_unsaved_changes  # Include the global variable defined at top of this script
+
+    if flag_unsaved_changes is False:
+        return
+
+    flag_save_incomplete = True
+
+    while flag_save_incomplete:
+        try:
+            # Periodically save the file based on the save_interval parameter
+            manifest.to_csv(manifest_path)
+            flag_unsaved_changes = False
+            flag_save_incomplete = False
+        except PermissionError as e:
+            h.print_error(str(e) + '\nTry closing the file if it is open in another program!\nWill attempt '
+                                   'to save again in 10 seconds...\n')
+            time.sleep(10)
+
+    print('Saved manifest to disk!\n')
+    flag_unsaved_changes = False
 
 
 def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
@@ -185,6 +203,12 @@ def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str],
         h.print_error('\nCould not find .geom file for "' + file_path + '": "' + geom_path + '"')
         return None
 
+    if os.path.getsize(geom_path) is 0:
+        h.print_error('\nThe .geom file for "' + file_path + '": "' + geom_path + '" is 0 KiBs.\n'
+                      'Bad file access may have caused this, so check the archive to see if the image and the .geom '
+                      'files in the archive are the same as the unzipped versions!\n')
+        return None
+
     result: Dict[str] = dict()
 
     with open(geom_path, 'r') as f:
@@ -194,8 +218,8 @@ def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str],
             if len(field_id_set) is 0:
                 f.close()
 
-                if debug:
-                    print('Found value(s) ' + str(result) + ' in ' + geom_path)
+                # if debug:
+                #     print('\rFound ' + str(len(result)) + ' value(s) in ' + geom_path, end='')
 
                 if is_single_input and len(result) is 1:
                     # Return the first (and only value) as a single string
