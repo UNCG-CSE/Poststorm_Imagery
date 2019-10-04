@@ -127,13 +127,15 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
     return new_path
 
 
-def all_files_recursively(root_path: Union[bytes, str], file_extension: str or None = None, file_search_re:
+def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, file_extension: str or None = None,
+                          file_search_re:
                           Pattern = '.*', **kwargs) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
 
     :param root_path: The path to begin searching recursively for matching files in
+    :param unix_sep: Whether to replace all '\' with a '/' in the file paths on Windows
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
     :return: A list of files with their relative path 
@@ -155,12 +157,20 @@ def all_files_recursively(root_path: Union[bytes, str], file_extension: str or N
                 if re.search(file_search_re, f):
                     if debug:
                         print('matches pattern!')
-                    files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
+                    if unix_sep:
+                        files.append(str(os.path.relpath(path=os.path.join(dir_path, f),
+                                                         start=root_path)).replace('\\', '/'))
+                    else:
+                        files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
                 elif debug:
                     print('does not match!')
         else:
             for f in file_names:
                 if f.endswith('.' + file_extension) and re.search(file_search_re, f):
-                    files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
+                    if unix_sep:
+                        files.append(str(os.path.relpath(os.path.join(dir_path, f),
+                                                         start=root_path)).replace('\\', '/'))
+                    else:
+                        files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
 
     return files
