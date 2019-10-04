@@ -34,11 +34,11 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
     debug = (kwargs['debug'] if 'debug' in kwargs else False)
 
-    scope_path = h.validate_and_expand_path(scope_path)
+    scope_path = h.validate_and_expand_path(path=scope_path)
     manifest_path = os.path.join(scope_path, MANIFEST_FILE)
 
     # Get a list of all files starting at the path specified
-    files: List[str] = h.all_files_recursively(scope_path, **kwargs)
+    files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, **kwargs)
 
     if debug:
         print()
@@ -63,12 +63,6 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                 print(('{:>' + str(len(str(len(files) + 1))) + '}').format(file_list_number) + '  ' + f)
                 file_list_number += 1
 
-    """
-    if '\\' in files[0]:
-        for i in range(len(files)):
-            files[i] = files[i].replace('\\', '/')
-    """
-
     if debug:
         print('\nGenerating DataFrame and calculating statistics...\n')
 
@@ -86,11 +80,15 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         current_fields_needed.remove('file')
 
         if 'size' in current_fields_needed:
-            manifest['size'] = manifest['file'].apply(lambda row: os.path.getsize(os.path.join(scope_path, row)))
+            if debug:
+                print('Calculating sizes of files...')
+            manifest['size'] = manifest['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
             current_fields_needed.remove('size')
             flag_unsaved_changes = True
         if 'time' in current_fields_needed:
-            manifest['time'] = manifest['file'].apply(lambda row: os.path.getmtime(os.path.join(scope_path, row)))
+            if debug:
+                print('Calculating modify time of files...')
+            manifest['time'] = manifest['file'].apply(lambda x: os.path.getmtime(os.path.join(scope_path, x)))
             current_fields_needed.remove('time')
             flag_unsaved_changes = True
 
@@ -105,19 +103,15 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         # Remove the size and time from the sets as they should already exist in the CSV file
         current_fields_needed -= {'file', 'size', 'time'}
 
+    if debug:
+        print('Basic data is complete! Moving on to .geom specific data...')
+
     for field in current_fields_needed:
 
         # If a column for each field does not exist, create one for each field with all the values as empty strings
         if field not in manifest:
             manifest[field] = ''
             flag_unsaved_changes = True
-
-    # TODO: Rewrite as an efficient operation with a resume option
-    """ DISABLED: Not viable for time intensive operations as there is no way to resume if stopped
-    manifest['ll_lat'], manifest['ll_lon'] = manifest['file'].apply(
-        lambda row: get_geom_fields(field_id_set={'ll_lat', 'll_lon'},
-                                    file_path=os.path.join(scope_path, row), **kwargs))
-    """
 
     stat_files_accessed: int = 0
 
@@ -127,8 +121,9 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
         # Remove redundant queries to .geom file if the data is already present in the manifest
         for field in current_fields_needed:
-            if type(row[field]) in {str, int} or math.isnan(row[field]) is False:
-                print(row[field])
+            if (type(row[field]) is str and len(row[field]) > 0) \
+                    or (type(row[field]) is not str and math.isnan(row[field]) is False):
+                print('field: ' + field + '  row[field]: "' + row[field] + '" type(row[field])' + str(type(row[field])))
                 row_fields_needed.remove(field)
 
         # Only query the .geom file if there are fields still unfilled
