@@ -1,9 +1,9 @@
 from __future__ import print_function
 
 import os
-import sys
 import re
-from typing import Union, Dict, Pattern, Generator, List
+import sys
+from typing import Union, Dict, Pattern, List
 
 import pytest
 
@@ -128,7 +128,7 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
 
 
 def all_files_recursively(root_path: Union[bytes, str], file_extension: str or None = None, file_search_re:
-                          Pattern = '.*') -> List[str]:
+                          Pattern = '.*', **kwargs) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
@@ -138,16 +138,26 @@ def all_files_recursively(root_path: Union[bytes, str], file_extension: str or N
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
     :return: A list of files with their relative path 
     """
+    debug = (kwargs['debug'] if 'debug' in kwargs else False)
+
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)
 
     files = list()
 
+    if debug:
+        print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re) + '"...\n')
     for (dir_path, dir_names, file_names) in os.walk(top=root_path, followlinks=True, topdown=False):
         if file_extension is None:
             for f in file_names:
+                if debug:
+                    print('- ' + os.path.join(dir_path, f) + ' ... ', end='')
                 if re.search(file_search_re, f):
-                    files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
+                    if debug:
+                        print('matches pattern!')
+                    files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
+                elif debug:
+                    print('does not match!')
         else:
             for f in file_names:
                 if f.endswith('.' + file_extension) and re.search(file_search_re, f):
