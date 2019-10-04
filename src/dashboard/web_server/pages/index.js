@@ -346,7 +346,7 @@ function Index(props) {
                       additional_notes:document.getElementById("outlined-dense-multiline").value
                     } 
                   }
-                  axios.post(`http://localhost:4000/form_submit`, form_values)
+                  axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
                   .then(res => {
                     console.log(res);
                     console.log(res.data);

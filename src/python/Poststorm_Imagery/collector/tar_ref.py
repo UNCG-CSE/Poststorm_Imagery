@@ -9,7 +9,7 @@ import requests
 from tqdm import tqdm
 
 from src.python.Poststorm_Imagery.collector import h, s
-from src.python.Poststorm_Imagery.collector.ResponseGetter import get_full_content_length
+from src.python.Poststorm_Imagery.collector.response_getter import get_full_content_length
 
 UNKNOWN = 'Unknown'
 
