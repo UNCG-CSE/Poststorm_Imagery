@@ -58,7 +58,6 @@ def extract_archive(tar_file_path: Union[bytes, str]):
     notify_skip_files = False
 
     for member in tf.getmembers():
-        # TODO: Fix not skipping over files in a sub-directory
         if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
             print('Creating \t' + member.name + '...')
             tf.extract(member, extract_dir_path)
