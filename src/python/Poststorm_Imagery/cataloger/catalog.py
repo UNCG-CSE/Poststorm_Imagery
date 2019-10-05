@@ -3,7 +3,7 @@ import os
 from typing import Union
 
 from src.python.Poststorm_Imagery.collector import s
-from src.python.Poststorm_Imagery.catalog import generate
+from src.python.Poststorm_Imagery.cataloger import generate
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
