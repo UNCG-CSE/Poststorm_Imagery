@@ -146,7 +146,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
             # Look up the fields that are needed and still missing data
             geom_data: Dict[str, str] or None = get_geom_fields(
                 field_id_set=row_fields_needed, file_path=os.path.join(
-                    scope_path, os.path.normpath(row['file'])))
+                    scope_path, os.path.normpath(row['file'])), **kwargs)
             stat_files_accessed += 1
 
             if geom_data is not None:
@@ -229,8 +229,14 @@ def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
     flag_unsaved_changes = False
 
 
-def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]) \
+def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
         -> Union[Dict[str, str], str, None]:
+
+    # Enable debugging flag (True = output debug statements, False = don't output debug statements)
+    debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+
+    # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
+    verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
     is_single_input = False
 
@@ -261,8 +267,11 @@ def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str])
             if len(field_id_set) is 0:
                 f.close()
 
-                # if flag_debug:
-                #     print('\rFound ' + str(len(result)) + ' value(s) in ' + geom_path, end='')
+                if debug and verbosity >= 2:
+                    print('\rFound ' + str(len(result)) + ' value(s) in ' + geom_path, end='')
+
+                    if verbosity >= 3:
+                        print()  # RIP your console if you get here
 
                 if is_single_input and len(result) is 1:
                     # Return the first (and only value) as a single string
