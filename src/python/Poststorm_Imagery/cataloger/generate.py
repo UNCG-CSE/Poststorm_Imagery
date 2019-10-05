@@ -98,12 +98,12 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
             if debug:
                 print('Calculating modify time of files ... ')
             catalog['date'] = catalog['file'].apply(
-                lambda x: get_best_date(os.path.join(scope_path, x)))
+                lambda x: _get_best_date(os.path.join(scope_path, x)))
             current_fields_needed.remove('date')
             flag_unsaved_changes = True
 
         # Create the file in the scope directory
-        force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+        _force_save_catalog(catalog=catalog, catalog_path=catalog_path)
     else:
         catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
@@ -144,7 +144,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         if len(row_fields_needed) > 0:
 
             # Look up the fields that are needed and still missing data
-            geom_data: Dict[str, str] or None = get_geom_fields(
+            geom_data: Dict[str, str] or None = _get_geom_fields(
                 field_id_set=row_fields_needed, file_path=os.path.join(
                     scope_path, os.path.normpath(row['file'])), **kwargs)
             stat_files_accessed += 1
@@ -160,17 +160,17 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
             print('\rSaving catalog to disk (' + str(stat_files_accessed) +
                   ' .geom files accessed) ... ', end='')
-            force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+            _force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
     if debug and verbosity >= 1:
         print()
         print(catalog)
 
     # Do a final save of the file
-    force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+    _force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
 
-def get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
+def _get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
 
     # Enable debugging flag (True = output debug statements, False = don't output debug statements)
     debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
@@ -198,15 +198,15 @@ def get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
     # If no date can be parsed from file path or file name, then fallback to timestamp (sometimes off by a day)
     else:
         h.print_error('Could not find any date in ' + file_path + ' ... resorting to file modify time!')
-        return timestamp_to_utc(os.path.getmtime(file_path))
+        return _timestamp_to_utc(os.path.getmtime(file_path))
 
 
-def timestamp_to_utc(timestamp: str or int) -> str:
+def _timestamp_to_utc(timestamp: str or int) -> str:
     timestamp = datetime.utcfromtimestamp(timestamp)
     return timestamp.strftime("%Y/%m/%d")
 
 
-def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
+def _force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
     global flag_unsaved_changes  # Include the global variable defined at top of this script
 
     if flag_unsaved_changes is False:
@@ -229,7 +229,7 @@ def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
     flag_unsaved_changes = False
 
 
-def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
+def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
         -> Union[Dict[str, str], str, None]:
 
     # Enable debugging flag (True = output debug statements, False = don't output debug statements)
