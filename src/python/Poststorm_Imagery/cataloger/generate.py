@@ -11,7 +11,7 @@ from src.python.Poststorm_Imagery import s, h
 
 CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
-DEFAULT_FIELDS = {'file', 'size', 'time',
+DEFAULT_FIELDS = {'file', 'size', 'date',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
 
@@ -76,11 +76,8 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         print('\nGenerating DataFrame and calculating statistics ... \n')
 
     catalog: pd.DataFrame or None
-    all_fields_needed: Set = {'file', 'size', 'date',
-                                  'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
-                                  'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
 
-    current_fields_needed: Set = all_fields_needed.copy()
+    current_fields_needed: Set = fields_needed.copy()
     flag_unsaved_changes = False
 
     if os.path.exists(catalog_path) is False:
