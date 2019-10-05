@@ -7,7 +7,7 @@ from typing import Union, Dict, Pattern, List
 
 import pytest
 
-from src.python.Poststorm_Imagery.collector import s
+from src.python.Poststorm_Imagery import s
 
 
 @pytest.mark.skip
