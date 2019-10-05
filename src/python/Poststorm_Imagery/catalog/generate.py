@@ -41,7 +41,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     catalog_path = os.path.join(scope_path, CATALOG_FILE)
 
     # Get a list of all files starting at the path specified
-    files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, **kwargs)
+    files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
 
     if debug:
         print()
