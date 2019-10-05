@@ -12,7 +12,6 @@ import Typography from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
 
 import axios from 'axios';
-import Router from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -50,14 +49,11 @@ export default function Index() {
       password:values.password
 
     }
-    axios.post(`http://localhost:3000/loginUser`, form_values)
+    axios.post(`http://localhost:3000/registerUser`, form_values)
     .then(res => {
-      if(res.data.redirect){
-        Router.push(res.data.redirect)
-      }
-    }).catch(res => {
-      alert('Wrong username or password')
-    })        
+      
+      console.log(res.data);
+    })    
   }
   return (
 
@@ -65,13 +61,13 @@ export default function Index() {
 
         <CssBaseline />
         <Typography component="h1" variant="h5" className={classes.headerLabel}>
-          Sign In
+          Register
         </Typography>
         <div>
         <form className={classes.container} noValidate autoComplete="off">
           <TextField
             id="standard-name"
-            label="username"
+            label="Name"
             className={classes.textField}
             value={values.username}
             onChange={handleChange('username')}
@@ -100,9 +96,9 @@ export default function Index() {
             Unprotected
           </Button>   
         </Link>
-        <Link href="/register">
+        <Link href="/login">
           <Button color="primary" className={classes.button}>
-            Register
+            Login
           </Button>   
         </Link>
         

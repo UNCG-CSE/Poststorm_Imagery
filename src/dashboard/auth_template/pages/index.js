@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Index() {
+export default function Index(props) {
   const classes = useStyles();
   return (
 
@@ -51,19 +51,30 @@ export default function Index() {
         </div>
 
         <div>
-        <Link href="/login">
-          <Button color="primary" className={classes.button}>
-            Login
-          </Button>   
-        </Link>
-        <Link href="/register">
-          <Button color="primary" className={classes.button}>
-            Register
-          </Button>   
-        </Link>
+          <Link href="/login">
+            <Button color="primary" className={classes.button}>
+              Login
+            </Button>   
+          </Link>
+          <Link href="/register">
+            <Button color="primary" className={classes.button}>
+              Register
+            </Button>   
+          </Link>
+        </div>
+
+        <div>
+          {JSON.stringify(props)}
         </div>
         
       </Container>     
   
   );
+}
+
+Index.getInitialProps = async function() {
+  return {
+      wowe:'init data'
+  }
+
 }
