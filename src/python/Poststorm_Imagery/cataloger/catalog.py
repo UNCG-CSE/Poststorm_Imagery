@@ -17,8 +17,8 @@ parser = argparse.ArgumentParser(prog='catalog')
 parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
-parser.add_argument('--extension', '-e', default=None,
-                    help='The file extension to restrict the search to.')
+parser.add_argument('--extension', '-e', default='jpg',
+                    help='The file extension to restrict the search to (Default: %(default)s).')
 
 parser.add_argument('--debug', '-d', action='store_true',
                     help='If included, the program will print info throughout the process (Default: %(default)s).')

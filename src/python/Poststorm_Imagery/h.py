@@ -130,9 +130,9 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
 def all_files_recursively(root_path: Union[bytes, str],
                           unix_sep: bool = False,
                           require_geom: bool = True,
-                          file_extension: str or None = None,
-                          file_search_re:
-                          Pattern = '.*', **kwargs) -> List[str]:
+                          file_extension: str = 'jpg',
+                          file_search_re: Pattern = '.*',
+                          debug_level: int = 0) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
@@ -142,55 +142,77 @@ def all_files_recursively(root_path: Union[bytes, str],
     :param require_geom: Whether or not to return only files with a .geom file associated with them
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
+    :param debug_level: The level at which to output the status (0 = only errors, 1 = low, 2 = medium, 3 = high)
     :return: A list of files with their relative path 
     """
-    debug = (kwargs['debug'] if 'debug' in kwargs else False)
 
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)
 
     files = list()
 
-    if debug:
-        print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re) + '"...\n')
+    if debug_level >= 1:
+        print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re.pattern) + '"...\n')
+
     for (dir_path, dir_names, file_names) in os.walk(top=root_path, followlinks=True, topdown=False):
-        if file_extension is None:
-            for f in file_names:
-                if debug:
-                    print('- ' + os.path.join(dir_path, f) + ' ... ', end='')
+        for f in file_names:
+            abs_file_path = os.path.join(dir_path, f)
+
+            # Check file extensions only if the file_extension parameter is defined
+            if f.endswith('.' + file_extension):
+                if debug_level >= 1:
+                    print('\r' + abs_file_path + ' ... ', end='')
 
                 # Find the path for the related .geom file
                 geom_path = validate_and_expand_path(
-                    re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(os.path.join(dir_path, f))))
+                    re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(abs_file_path)))
 
-                if (require_geom and os.path.exists(geom_path)) or not require_geom:
+                # Find if the file name ends with a '(#)' meaning that it is a duplicated file and compare to original
+                # file's size to see if there are truly duplicates (same size and original is not removed)
+                if re.search(' \\(\\d\\)\\.', f) \
+                        and os.path.exists(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) \
+                            and os.path.getsize(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) is not \
+                                os.path.getsize(abs_file_path):
+                    if debug_level >= 1:
+                        # In-line progress (no spam when debug_level is 1)
+                        print('duplicate file!', end='')
 
-                    if re.search(file_search_re, f) and re.search(' \\(\\d\\)\\.', f):
-                        if debug:
-                            print('matches pattern!')
-                        if unix_sep:
-                            files.append(str(os.path.relpath(path=os.path.join(dir_path, f),
-                                                             start=root_path)).replace('\\', '/'))
-                        else:
-                            files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
-                    elif debug:
-                        print('does not match!')
-        else:
-            for f in file_names:
+                        if debug_level >= 2:
+                            # Multi-line output of progress (may be quite verbose)
+                            print()
 
-                # Find the path for the related .geom file
-                geom_path = validate_and_expand_path(
-                    re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(os.path.join(dir_path, f))))
+                # If the .geom file is required, make sure it exists
+                elif require_geom and not os.path.exists(geom_path):
+                    if debug_level >= 1:
+                        # In-line progress (no spam when debug_level is 1)
+                        print('does not have required .geom file!', end='')
 
-                if (require_geom and os.path.exists(geom_path)) or not require_geom:
+                        if debug_level >= 2:
+                            # Multi-line output of progress (may be quite verbose)
+                            print()
 
-                    if f.endswith('.' + file_extension) and re.search(file_search_re, f) \
-                            and not re.search(' \\(\\d\\)\\.', f):
+                # If the file's path matches the regular expression pattern
+                elif re.search(file_search_re, f):
+                    if debug_level >= 1:
+                        # In-line progress (no spam when debug_level is 1)
+                        print('matches pattern!', end='')
 
-                        if unix_sep:
-                            files.append(str(os.path.relpath(os.path.join(dir_path, f),
-                                                             start=root_path)).replace('\\', '/'))
-                        else:
-                            files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
+                        if debug_level >= 2:
+                            # Multi-line output of progress (may be quite verbose)
+                            print()
+                    if unix_sep:
+                        files.append(str(os.path.relpath(path=abs_file_path,
+                                                         start=root_path)).replace('\\', '/'))
+                    else:
+                        files.append(str(os.path.relpath(path=abs_file_path, start=root_path)))
+
+                # The file just doesn't match the pattern, so output so if in debug
+                elif debug_level >= 1:
+                    # In-line progress (no spam when debug_level is 1)
+                    print('does not match pattern!', end='')
+
+                    if debug_level >= 2:
+                        # Multi-line output of progress (may be quite verbose)
+                        print()
 
     return files
