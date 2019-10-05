@@ -49,11 +49,11 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     # Get a list of all files starting at the path specified
     files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
 
-    if debug:
+    if debug and verbosity >= 2:
         print()
-        print('Files in "' + str(scope_path) + '"\n')
+        print('Matching files in "' + str(scope_path) + '"\n')
 
-        if len(files) > 10:
+        if verbosity < 3 and len(files) > 10:
             # Print only the first five and last five elements (similar to pandas's DataFrames)
             for i in (list(range(1, 6)) + list(range(len(files) - 4, len(files) + 1))):
 
