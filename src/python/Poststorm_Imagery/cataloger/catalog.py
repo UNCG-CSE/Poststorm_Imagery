@@ -23,7 +23,7 @@ parser.add_argument('--extension', '-e', default='jpg',
 parser.add_argument('--debug', '-d', action='store_true',
                     help='If included, the program will print info throughout the process (Default: %(default)s).')
 
-parser.add_argument('--verbosity', '-v', default=1,
+parser.add_argument('--verbosity', '-v', type=int, default=1,
                     help='Changes the log / debug message verbosity. Not all functions may be affected by this '
                          'value! Possible values are ... '
                          '0 = only errors, '
