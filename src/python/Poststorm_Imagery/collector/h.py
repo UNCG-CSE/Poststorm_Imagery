@@ -127,7 +127,10 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
     return new_path
 
 
-def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, file_extension: str or None = None,
+def all_files_recursively(root_path: Union[bytes, str],
+                          unix_sep: bool = False,
+                          require_geom: bool = True,
+                          file_extension: str or None = None,
                           file_search_re:
                           Pattern = '.*', **kwargs) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
@@ -136,6 +139,7 @@ def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, 
 
     :param root_path: The path to begin searching recursively for matching files in
     :param unix_sep: Whether to replace all '\' with a '/' in the file paths on Windows
+    :param require_geom: Whether or not to return only files with a .geom file associated with them
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
     :return: A list of files with their relative path 
@@ -154,25 +158,39 @@ def all_files_recursively(root_path: Union[bytes, str], unix_sep: bool = False, 
             for f in file_names:
                 if debug:
                     print('- ' + os.path.join(dir_path, f) + ' ... ', end='')
-                if re.search(file_search_re, f) and re.search(' \\(\\d\\)\\.', f):
-                    if debug:
-                        print('matches pattern!')
-                    if unix_sep:
-                        files.append(str(os.path.relpath(path=os.path.join(dir_path, f),
-                                                         start=root_path)).replace('\\', '/'))
-                    else:
-                        files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
-                elif debug:
-                    print('does not match!')
+
+                # Find the path for the related .geom file
+                geom_path = validate_and_expand_path(
+                    re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(os.path.join(dir_path, f))))
+
+                if (require_geom and os.path.exists(geom_path)) or not require_geom:
+
+                    if re.search(file_search_re, f) and re.search(' \\(\\d\\)\\.', f):
+                        if debug:
+                            print('matches pattern!')
+                        if unix_sep:
+                            files.append(str(os.path.relpath(path=os.path.join(dir_path, f),
+                                                             start=root_path)).replace('\\', '/'))
+                        else:
+                            files.append(str(os.path.relpath(path=os.path.join(dir_path, f), start=root_path)))
+                    elif debug:
+                        print('does not match!')
         else:
             for f in file_names:
-                if f.endswith('.' + file_extension) and re.search(file_search_re, f) \
-                        and not re.search(' \\(\\d\\)\\.', f):
 
-                    if unix_sep:
-                        files.append(str(os.path.relpath(os.path.join(dir_path, f),
-                                                         start=root_path)).replace('\\', '/'))
-                    else:
-                        files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
+                # Find the path for the related .geom file
+                geom_path = validate_and_expand_path(
+                    re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(os.path.join(dir_path, f))))
+
+                if (require_geom and os.path.exists(geom_path)) or not require_geom:
+
+                    if f.endswith('.' + file_extension) and re.search(file_search_re, f) \
+                            and not re.search(' \\(\\d\\)\\.', f):
+
+                        if unix_sep:
+                            files.append(str(os.path.relpath(os.path.join(dir_path, f),
+                                                             start=root_path)).replace('\\', '/'))
+                        else:
+                            files.append(str(os.path.relpath(os.path.join(dir_path, f), start=root_path)))
 
     return files
