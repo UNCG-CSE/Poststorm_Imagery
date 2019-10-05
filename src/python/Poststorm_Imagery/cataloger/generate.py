@@ -156,6 +156,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
             force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
     if debug:
+        print()
         print(catalog)
 
     # Do a final save of the file
