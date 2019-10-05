@@ -132,7 +132,7 @@ def all_files_recursively(root_path: Union[bytes, str],
                           require_geom: bool = True,
                           file_extension: str = 'jpg',
                           file_search_re: Pattern = '.*',
-                          debug_level: int = 0) -> List[str]:
+                          **kwargs) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in 
     order. This method also accepts an optional regular expression to match file names to and/or a specific file 
     extension for the purpose of only getting specific file types.
@@ -142,16 +142,21 @@ def all_files_recursively(root_path: Union[bytes, str],
     :param require_geom: Whether or not to return only files with a .geom file associated with them
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
-    :param debug_level: The level at which to output the status (0 = only errors, 1 = low, 2 = medium, 3 = high)
     :return: A list of files with their relative path 
     """
+
+    # Enable debugging flag (True = output debug statements, False = don't output debug statements)
+    debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+
+    # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
+    verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)
 
     files = list()
 
-    if debug_level >= 1:
+    if debug and verbosity >= 1:
         print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re.pattern) + '"...\n')
 
     for (dir_path, dir_names, file_names) in os.walk(top=root_path, followlinks=True, topdown=False):
@@ -160,7 +165,7 @@ def all_files_recursively(root_path: Union[bytes, str],
 
             # Check file extensions only if the file_extension parameter is defined
             if f.endswith('.' + file_extension):
-                if debug_level >= 1:
+                if debug and verbosity >= 1:
                     print('\r' + abs_file_path + ' ... ', end='')
 
                 # Find the path for the related .geom file
@@ -173,31 +178,31 @@ def all_files_recursively(root_path: Union[bytes, str],
                         and os.path.exists(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) \
                             and os.path.getsize(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) is not \
                                 os.path.getsize(abs_file_path):
-                    if debug_level >= 1:
-                        # In-line progress (no spam when debug_level is 1)
+                    if debug and verbosity >= 1:
+                        # In-line progress (no spam when verbosity is 1)
                         print('duplicate file!', end='')
 
-                        if debug_level >= 2:
+                        if verbosity >= 2:
                             # Multi-line output of progress (may be quite verbose)
                             print()
 
                 # If the .geom file is required, make sure it exists
                 elif require_geom and not os.path.exists(geom_path):
-                    if debug_level >= 1:
-                        # In-line progress (no spam when debug_level is 1)
+                    if debug and verbosity >= 1:
+                        # In-line progress (no spam when verbosity is 1)
                         print('does not have required .geom file!', end='')
 
-                        if debug_level >= 2:
+                        if verbosity >= 2:
                             # Multi-line output of progress (may be quite verbose)
                             print()
 
                 # If the file's path matches the regular expression pattern
                 elif re.search(file_search_re, f):
-                    if debug_level >= 1:
-                        # In-line progress (no spam when debug_level is 1)
+                    if debug and verbosity >= 1:
+                        # In-line progress (no spam when verbosity is 1)
                         print('matches pattern!', end='')
 
-                        if debug_level >= 2:
+                        if verbosity >= 2:
                             # Multi-line output of progress (may be quite verbose)
                             print()
                     if unix_sep:
@@ -207,11 +212,11 @@ def all_files_recursively(root_path: Union[bytes, str],
                         files.append(str(os.path.relpath(path=abs_file_path, start=root_path)))
 
                 # The file just doesn't match the pattern, so output so if in debug
-                elif debug_level >= 1:
-                    # In-line progress (no spam when debug_level is 1)
+                elif debug and verbosity >= 1:
+                    # In-line progress (no spam when verbosity is 1)
                     print('does not match pattern!', end='')
 
-                    if debug_level >= 2:
+                    if verbosity >= 2:
                         # Multi-line output of progress (may be quite verbose)
                         print()
 

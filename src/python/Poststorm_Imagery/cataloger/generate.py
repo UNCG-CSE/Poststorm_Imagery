@@ -16,11 +16,10 @@ DEFAULT_FIELDS = {'file', 'size', 'time',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
 
 flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
-flag_debug = False  # Whether or not to print out extra statements to follow the program
 
 
 def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = None,
-                              save_interval: int = 1000, debug: bool = False, **kwargs) -> None:
+                              save_interval: int = 1000, **kwargs) -> None:
     """
     A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
     allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
@@ -30,7 +29,6 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     :param fields_needed: The fields to include in the catalog (gathered from the local file system)
     :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
     measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
-    :param debug: Whether or not to print out extra statements to understand what steps are being taken
     """
 
     # If left empty, set to the default list of fields (sets are mutable)
@@ -38,19 +36,20 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         fields_needed = DEFAULT_FIELDS.copy()
 
     global flag_unsaved_changes  # Include the global variable defined at top of this script
-    global flag_debug  # Whether or not to print out extra statements to follow the program
 
-    # Enable debugging throughout this file
-    flag_debug = debug
+    # Enable debugging flag (True = output debug statements, False = don't output debug statements)
+    debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+
+    # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
+    verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
     scope_path = h.validate_and_expand_path(path=scope_path)
     catalog_path = os.path.join(scope_path, CATALOG_FILE)
 
     # Get a list of all files starting at the path specified
-    files: List[str] = h.all_files_recursively(scope_path, unix_sep=True,
-                                               require_geom=True, debug_level=1 if flag_debug else 0, **kwargs)
+    files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
 
-    if flag_debug:
+    if debug:
         print()
         print('Files in "' + str(scope_path) + '"\n')
 
@@ -73,7 +72,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                 print(('{:>' + str(len(str(len(files) + 1))) + '}').format(file_list_number) + '  ' + f)
                 file_list_number += 1
 
-    if flag_debug:
+    if debug:
         print('\nGenerating DataFrame and calculating statistics ... \n')
 
     catalog: pd.DataFrame or None
@@ -90,13 +89,13 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         current_fields_needed.remove('file')
 
         if 'size' in current_fields_needed:
-            if flag_debug:
+            if debug:
                 print('Calculating sizes of files ... ')
             catalog['size'] = catalog['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
             current_fields_needed.remove('size')
             flag_unsaved_changes = True
         if 'date' in current_fields_needed:
-            if flag_debug:
+            if debug:
                 print('Calculating modify time of files ... ')
             catalog['date'] = catalog['file'].apply(
                 lambda x: get_best_date(os.path.join(scope_path, x)))
@@ -111,7 +110,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         # Remove the size and time from the sets as they should already exist in the CSV file
         current_fields_needed -= {'file', 'size', 'date'}
 
-    if flag_debug:
+    if debug and verbosity >= 1:
         print('Basic data is complete! Moving on to .geom specific data ... ')
 
     for field in current_fields_needed:
@@ -147,7 +146,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
             # Look up the fields that are needed and still missing data
             geom_data: Dict[str, str] or None = get_geom_fields(
                 field_id_set=row_fields_needed, file_path=os.path.join(
-                    scope_path, os.path.normpath(row['file'])), **kwargs)
+                    scope_path, os.path.normpath(row['file'])))
             stat_files_accessed += 1
 
             if geom_data is not None:
@@ -163,7 +162,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                   ' .geom files accessed) ... ', end='')
             force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
-    if flag_debug:
+    if debug and verbosity >= 1:
         print()
         print(catalog)
 
@@ -171,7 +170,13 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
 
-def get_best_date(file_path: Union[bytes, str]) -> str:
+def get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
+
+    # Enable debugging flag (True = output debug statements, False = don't output debug statements)
+    debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+
+    # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
+    verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
     # Assume years can only be 2000 to 2099 (current unix time ends at 2038 anyways)
     pattern: Pattern = re.compile('[\\D]*(20\\d{2})(\\d{2})(\\d{2})\\D')
@@ -179,8 +184,15 @@ def get_best_date(file_path: Union[bytes, str]) -> str:
     # Search the entire path for a matching date format, take the last occurrence
     if re.search(pattern, file_path):
         year, month, day = re.search(pattern, file_path).groups()
-        if flag_debug:
+
+        if debug and verbosity >= 1:
+            # In-line progress (no spam when verbosity is 1)
             print('\rFound year: %s, month: %s, day: %s in PATH: %s' % (year, month, day, file_path), end='')
+
+            if verbosity >= 2:
+                # Multi-line output of progress (may be quite verbose)
+                print()
+
         return year + '/' + month + '/' + day
 
     # If no date can be parsed from file path or file name, then fallback to timestamp (sometimes off by a day)
@@ -217,7 +229,7 @@ def force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
     flag_unsaved_changes = False
 
 
-def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
+def get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]) \
         -> Union[Dict[str, str], str, None]:
 
     is_single_input = False
