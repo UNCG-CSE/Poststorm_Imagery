@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3032ef6ccadca899e4f98f6ad714dbfc91be31f3086f0f67974c2b25f5ea9992"
+            "sha256": "25c8f1379bdfd4593994d745fa0f44f0df765da3a7723a3a167e7114023d10ad"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -123,10 +123,10 @@
         },
         "jinja2": {
             "hashes": [
-                "sha256:065c4f02ebe7f7cf559e49ee5a95fb800a9e4528727aec6f24402a5374c65013",
-                "sha256:14dd6caf1527abb21f08f86c784eac40853ba93edb79552aa1e4b8aef1b61c7b"
+                "sha256:74320bb91f31270f9551d46522e33af46a80c3d619f4a4bf42b3164d30b5911f",
+                "sha256:9fe95f19286cfefaa917656583d020be14e7859c6b0252588391e47db34527de"
             ],
-            "version": "==2.10.1"
+            "version": "==2.10.3"
         },
         "jsonschema": {
             "hashes": [
@@ -391,7 +391,7 @@
                 "sha256:dcd45912e2fe2e6f72cee997a4da6ed1ad2056165a277ce5ec7f7ac98dcdf667",
                 "sha256:f2bcdd9a2ffd8b223752a971b3d377fb7bfed85f140ec9710f1218d760f2ccb7"
             ],
-            "index": "pypi",
+            "markers": "os_name == 'nt'",
             "version": "==0.5.5"
         },
         "pyzmq": {
@@ -492,7 +492,6 @@
                 "sha256:70b4c6a1d9019d7b4f6846832288f86998aa3b9207c6821f3578a6a6a467fe44",
                 "sha256:d023ee369ddd2763310e4c3eae1ff649689440d4ae59d7485eb4cfbbe3e359f7"
             ],
-            "index": "pypi",
             "version": "==4.3.3"
         },
         "urllib3": {
@@ -645,11 +644,11 @@
         },
         "pytest-cov": {
             "hashes": [
-                "sha256:2b097cde81a302e1047331b48cadacf23577e431b61e9c6f49a1170bbe3d3da6",
-                "sha256:e00ea4fdde970725482f1f35630d12f074e121a23801aabf2ae154ec6bdd343a"
+                "sha256:9b64b54d21bd0fd77f7eb6ccb38638b8daba8d98ab5a51d67c93a133ec8c5ba4",
+                "sha256:a42cb9af7a429b6cd7c97be307cbb4cefca1d50c5b3018711558341979946851"
             ],
             "index": "pypi",
-            "version": "==2.7.1"
+            "version": "==2.8.0"
         },
         "six": {
             "hashes": [
