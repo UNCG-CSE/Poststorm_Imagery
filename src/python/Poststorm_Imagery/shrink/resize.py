@@ -1,12 +1,16 @@
-from typing import Tuple
+from typing import Tuple, Union
 from PIL import Image
 import os
+from src.python.Poststorm_Imagery.collector import s
 
 # Declare the scale factor
 SIZE_SCALE = 0.15  # 1 = 100% of original size, 0.15 = 15% of original size, etc.
 
 # Declare the path
-path = 'G:\\Shared drives\\C-Sick\\data\\'
+# path = 'G:\\Shared drives\\C-Sick\\data\\'
+DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
+TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
+path = TAR_CACHE_PATH
 
 # Empty file to store all the jpg files
 files = []
@@ -37,9 +41,10 @@ for r, d, walk_f in os.walk(path):
         newName = f.replace("data", "smallerJPG")
         print(newName)
         directory = os.path.dirname(newName)
+        # make directory for each file if it doesn't exist
         if not os.path.exists(directory):
             os.makedirs(directory)
             mine = os.path.dirname(directory)
             i.save(mine + name)
-
-    file = []
+            #os.path.join(mine, name)
+            file = []

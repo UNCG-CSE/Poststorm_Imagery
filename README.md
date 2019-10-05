@@ -1,4 +1,4 @@
-# Post-Storm Imagery 🌪
+# Post-Storm Imagery Classification
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -14,12 +14,7 @@ Classification and analysis of post-storm response imagery.
 [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
 https://post-storm-imagery.readthedocs.io/)
 
-## Team C-Sick 🤢
-
-We are a team of computer science students studying big data for the purpose of getting a head start in the world of
-analyzing data and finding the meaningful needle in the haystack.
-
-### Team Members
+## Team Members
 
 - [**Rinty Chowdhury**](https://github.com/rintychy)  
 - [**Daniel Foster**](https://github.com/dlfosterbot)  
@@ -27,9 +22,8 @@ analyzing data and finding the meaningful needle in the haystack.
 - [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 - [**John Weber**](https://github.com/JWeb56)  
 
-
-**Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)  
-**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
+**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
+**Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contributions 🤝
 
