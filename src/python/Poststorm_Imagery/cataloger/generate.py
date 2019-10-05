@@ -46,6 +46,10 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     scope_path = h.validate_and_expand_path(path=scope_path)
     catalog_path = os.path.join(scope_path, CATALOG_FILE)
 
+    ##########################################
+    # Collect matching files from filesystem #
+    ##########################################
+
     # Get a list of all files starting at the path specified
     files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
 
@@ -71,6 +75,11 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                 # Right-align the file numbers, because why not
                 print(('{:>' + str(len(str(len(files) + 1))) + '}').format(file_list_number) + '  ' + f)
                 file_list_number += 1
+
+    ####################################################################
+    # Load / generate the table (DataFrame) if it doesn't exist        #
+    # and populate with file path, file size, and date image was taken #
+    ####################################################################
 
     if debug:
         print('\nGenerating DataFrame and calculating statistics ... \n')
@@ -106,6 +115,10 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
         # Remove the size and time from the sets as they should already exist in the CSV file
         current_fields_needed -= {'file', 'size', 'date'}
+
+    ##########################################################################################
+    # Collect information from the .geom files about latitude and longitude of image corners #
+    ##########################################################################################
 
     if debug and verbosity >= 1:
         print('Basic data is complete! Moving on to .geom specific data ... ')
@@ -166,6 +179,10 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     # Do a final save of the file
     _force_save_catalog(catalog=catalog, catalog_path=catalog_path)
 
+
+#####################################
+# Catalog-Specific Helper Functions #
+#####################################
 
 def _get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
 
