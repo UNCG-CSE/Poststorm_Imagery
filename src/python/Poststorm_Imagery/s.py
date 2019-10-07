@@ -21,3 +21,5 @@ URL_STORMS = URL_BASE + 'storms/'
 URL_STORMS_REGEX_PATTERN_INDEX = '<a href=\"(.+/storms/([^/]+)/.*?index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>'
 
 CATALOG_FILE_NAME = 'catalog'
+
+RESIZE_SUB_FOLDER = '/small/'
