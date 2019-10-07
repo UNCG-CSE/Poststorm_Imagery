@@ -1,7 +1,8 @@
 from typing import Tuple, Union
 from PIL import Image
-from src.python.Poststorm_Imagery.collector import s
 import os
+
+from src.python.Poststorm_Imagery import s
 
 # Declare the scale factor
 SIZE_SCALE = 0.15  # 1 = 100% of original size, 0.15 = 15% of original size, etc.
