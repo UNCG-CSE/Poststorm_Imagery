@@ -32,7 +32,7 @@ def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale:
 
             if debug:
                 done_ratio = i / len(files)
-                print('\rResizing file %d of %d (%.2f%%): %s' % (i, len(files), done_ratio * 100, file), end='')
+                print('\rResizing file %d of %d (%.2f%%): %s ... ' % (i, len(files), done_ratio * 100, file), end='')
 
             # Open file as an image
             original_image = Image.open(original_abs_path)

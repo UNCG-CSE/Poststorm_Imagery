@@ -157,7 +157,7 @@ def all_files_recursively(root_path: Union[bytes, str],
     files = list()
 
     if debug and verbosity >= 1:
-        print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re.pattern) + '"...\n')
+        print('\nSearching through ' + root_path + ' for the pattern "' + str(file_search_re.pattern) + '" ...\n')
 
     for (dir_path, dir_names, file_names) in os.walk(top=root_path, followlinks=True, topdown=False):
         for f in file_names:
