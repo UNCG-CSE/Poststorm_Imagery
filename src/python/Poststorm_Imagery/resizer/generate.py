@@ -3,7 +3,7 @@ from typing import Tuple, Union, List
 
 from PIL import Image
 
-from src.python.Poststorm_Imagery import s
+from src.python.Poststorm_Imagery import s, h
 
 
 def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale: float, **kwargs):
@@ -38,20 +38,25 @@ def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale:
             original_image = Image.open(original_abs_path)
 
             # Get the original image's width and height
-            w, h = original_image.size
+            width, height = original_image.size
 
             # Reduce the size of the original image by a specified multiplier (scale factor)
-            new_size: Tuple = (int(w * scale), int(h * scale))
+            new_size: Tuple = (int(width * scale), int(height * scale))
 
             # Resize the image based on given scale factor
-            new_image = original_image.resize(new_size, Image.ANTIALIAS)
+            try:
+                new_image = original_image.resize(new_size, Image.ANTIALIAS)
 
-            # Get the path for the new (smaller) image without the file's name & extension in it
-            new_abs_dir = os.path.split(new_abs_path)[0]
+                # Get the path for the new (smaller) image without the file's name & extension in it
+                new_abs_dir = os.path.split(new_abs_path)[0]
 
-            # Check to make sure that the appropriate directories exist
-            if not os.path.exists(new_abs_dir):
-                os.makedirs(new_abs_dir)
+                # Check to make sure that the appropriate directories exist
+                if not os.path.exists(new_abs_dir):
+                    os.makedirs(new_abs_dir)
 
-            # Save the new image to the specified directory
-            new_image.save(new_abs_path)
+                # Save the new image to the specified directory
+                new_image.save(new_abs_path)
+
+            except OSError:
+                h.print_error('\nThere was an OS error with resizing the image. File may be open or corrupted ... '
+                              'skipping!')
