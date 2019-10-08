@@ -20,17 +20,12 @@ nav:
 
 theme:
   name: 'material'
-  custom_dir: 'theme'
   font:
     text: 'Ubuntu'
     code: 'Ubuntu Mono'
   palette:
     primary: 'light green'
     accent: 'light green'
-
-extra_css:
-  - stylesheets/dark_theme.css
-  - stylesheets/codehilite.css
 
 plugins:
     - search
