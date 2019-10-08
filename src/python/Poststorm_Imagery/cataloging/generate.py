@@ -11,14 +11,10 @@ from src.python.Poststorm_Imagery import s, h
 
 CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
-DEFAULT_FIELDS = {'file', 'size', 'date',
-                  'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
-                  'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
-
 flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
 
 
-def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = None,
+def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                               save_interval: int = 1000, **kwargs) -> None:
     """
     A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
@@ -30,10 +26,6 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
     :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
     measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
     """
-
-    # If left empty, set to the default list of fields (sets are mutable)
-    if fields_needed is None:
-        fields_needed = DEFAULT_FIELDS.copy()
 
     global flag_unsaved_changes  # Include the global variable defined at top of this script
 

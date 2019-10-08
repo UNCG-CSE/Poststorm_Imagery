@@ -22,4 +22,9 @@ URL_STORMS_REGEX_PATTERN_INDEX = '<a href=\"(.+/storms/([^/]+)/.*?index\\.html)\
 
 CATALOG_FILE_NAME = 'catalog'
 
+# The fields to grab from the .geom file of images when assembling a catalog
+DEFAULT_FIELDS = {'file', 'size', 'date',
+                  'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
+                  'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
+
 RESIZE_SUB_FOLDER = '/small/'

@@ -1,9 +1,9 @@
 import argparse
 import os
-from typing import Union
+from typing import Union, Set
 
 from src.python.Poststorm_Imagery import s
-from src.python.Poststorm_Imagery.cataloger import generate
+from src.python.Poststorm_Imagery.cataloging import generate
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -19,6 +19,11 @@ parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
 
 parser.add_argument('--extension', '-e', default='jpg',
                     help='The file extension to restrict the search to (Default: %(default)s).')
+
+parser.add_argument('--fields', '-f', type=Set, default=s.DEFAULT_FIELDS.copy(),
+                    help='The various fields listed within a python set to grab from the .geom file as well as '
+                         'optional fields "size" and "date" for the size of the image and the date taken respectively '
+                         '(Default: %(default)s).')
 
 parser.add_argument('--debug', '-d', action='store_true',
                     help='If included, the program will print info throughout the process (Default: %(default)s).')
@@ -37,5 +42,6 @@ OPTIONS: argparse.Namespace = parser.parse_args()
 
 generate.generate_index_from_scope(scope_path=OPTIONS.path,
                                    file_extension=OPTIONS.extension,
+                                   fields_needed=OPTIONS.fields,
                                    debug=OPTIONS.debug,
                                    verbosity=OPTIONS.verbosity)
