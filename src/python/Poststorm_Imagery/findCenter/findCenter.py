@@ -15,17 +15,17 @@ def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, 
     :param lr_lon: lower right longitude
     :return: center of the shape as tuple
     """
-    # mid point of upper latitude using mid_point method
+    # Mid point of upper latitude using mid_point method
     mp1 = mid_point(ul_lat, ul_lon, ur_lat, ur_lon)
-    # mid point of lower latitude using mid_point method
+    # Mid point of lower latitude using mid_point method
     mp2 = mid_point(ll_lat, ll_lon, lr_lat, lr_lon)
-    # mid point of left longitude using mid_point method
+    # Mid point of left longitude using mid_point method
     mp3 = mid_point(ul_lat, ul_lon, ll_lat, ll_lon)
-    # mid point of right longitude using mid_point method
+    # Mid point of right longitude using mid_point method
     mp4 = mid_point(ur_lat, ur_lon, lr_lat, lr_lon)
-    # calculate the center of the shape using find_intersection method
+    # Calculate the center of the shape using find_intersection method
     center = find_intersection(mp1[0], mp1[1], mp2[0], mp2[1], mp3[0], mp3[1], mp4[0], mp4[1])
-    # return center
+    # Return center
     return center
 
 
@@ -39,9 +39,9 @@ def mid_point(x1, y1, x2, y2):
     :param y2: y-coordinate of right vertex
     :return: mid point of the line as tuple
     """
-    # find the midpoint of given x, y coordinates
+    # Find the midpoint of given x, y coordinates
     midpoint = ((x1 + x2) / 2, (y1 + y2) / 2)
-    # return mid point as tuple
+    # Return mid point as tuple
     return midpoint
 
 
@@ -59,9 +59,9 @@ def find_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
     :param y4: y-coordinate of vertex 2 in line 4
     :return: intersection point of two line segments as tuple
     """
-    # find the x-coordinate of the center
+    # Find the x-coordinate of the center
     px = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4))
-    # find the y-coordinate of the center
+    # Find the y-coordinate of the center
     py = ((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)) / ((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4))
-    # return the center as tuple
+    # Return the center as tuple
     return [px, py]
