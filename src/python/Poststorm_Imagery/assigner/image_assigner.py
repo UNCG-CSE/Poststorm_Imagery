@@ -2,7 +2,7 @@ import os
 from random import random
 
 import pandas as pd
-from queue import LifoQueue
+from queue import Queue, LifoQueue
 from typing import List, Dict, Union
 
 from Poststorm_Imagery import h, s
@@ -28,7 +28,7 @@ class ImageAssigner:
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str, None]  # The path to the resized image scope path
 
-    pending_images_queue: LifoQueue[Image] = LifoQueue()  # The queue that stores all images left to tag by their ID
+    pending_images_queue: Queue[Image] = Queue()  # The queue that stores all images left to tag by their ID
     finished_tagged_queue: LifoQueue[Image] = LifoQueue()  # The queue to store images that have been tagged already
     max_skipped_queue: LifoQueue[Image] = LifoQueue()  # The queue of images that have passed the threshold for max skips
 
@@ -95,8 +95,16 @@ class ImageAssigner:
         return self.current_image[user_id]
 
     def get_next_image(self, user_id: str) -> Image:
-        self.current_image[user_id] = self.pending_images_queue.get()
-        self.pending_images_queue.task_done()
+        next_image: Image = self.pending_images_queue.get()
+
+        if user_id not in (next_image.skippers and next_image.taggers):
+            self.current_image[user_id] = next_image
+            self.pending_images_queue.task_done()
+        else:
+            next_next_image = self.get_next_image(user_id=user_id)
+            self.pending_images_queue.put(next_image)
+
+            return next_next_image
 
         return self.current_image[user_id]
 
