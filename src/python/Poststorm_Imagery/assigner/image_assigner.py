@@ -1,13 +1,18 @@
 import os
+from random import random
 
 import pandas as pd
-from queue import Queue
+from queue import LifoQueue
 from typing import List, Dict, Union
 
 from Poststorm_Imagery import h, s
 from Poststorm_Imagery.assigner.image_ref import Image
 
+# The maximum amount of times an image can be skipped before it is added to the max skipped queue
 MAX_SKIP_THRESHOLD: int = 2
+
+# Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
+RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
 
 class ImageAssigner:
@@ -15,15 +20,17 @@ class ImageAssigner:
     # For this class, use queues instead of lists for the sake of implementing into an asynchronous environment due to
     # the Queue object's ability to enforce blocking.
 
+    random.seed(a=RANDOM_SEED)
+
     storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
     archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str, None]  # The path to the resized image scope path
 
-    pending_images_queue: Queue[Image] = Queue()  # The queue that stores all images left to tag by their ID
-    finished_tagged_queue: Queue[Image] = Queue()  # The queue to store images that have been tagged already
-    max_skipped_queue: Queue[Image] = Queue()  # The queue of images that have passed the threshold for max skips
+    pending_images_queue: LifoQueue[Image] = LifoQueue()  # The queue that stores all images left to tag by their ID
+    finished_tagged_queue: LifoQueue[Image] = LifoQueue()  # The queue to store images that have been tagged already
+    max_skipped_queue: LifoQueue[Image] = LifoQueue()  # The queue of images that have passed the threshold for max skips
 
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
@@ -61,7 +68,7 @@ class ImageAssigner:
         with pd.read_csv(self.catalog_path, usecols=lambda col_label: col_label in {'file'}) as f:
             image_list.append(Image(original_size_path=f['file'], small_size_path=self.small_path))
 
-        return image_list
+        return random.shuffle(image_list)
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         if full_size:
@@ -80,7 +87,7 @@ class ImageAssigner:
 
     def get_current_image(self, user_id: str, skip: bool = False) -> Image:
 
-        if (not skip) and len(self.current_image[user_id].tags[user_id]) > 0:
+        if (not skip) and len(self.current_image[user_id].taggers[user_id]) > 0:
             self.user_done_tagging_current_image(user_id=user_id)
         else:
             self.user_skip_tagging_current_image(user_id=user_id)
@@ -93,8 +100,8 @@ class ImageAssigner:
 
         return self.current_image[user_id]
 
-    def add_tag(self, user_id: str, **kwargs):
-        self.current_image[user_id].add_tag(user_id=user_id, **kwargs)
+    def add_tag(self, user_id: str, tag: str, content: str):
+        self.current_image[user_id].add_tag(user_id=user_id, tag=tag, content=content)
 
     def user_done_tagging_current_image(self, user_id: str):
         self.finished_tagged_queue.put(self.current_image[user_id])
@@ -103,9 +110,8 @@ class ImageAssigner:
     def user_skip_tagging_current_image(self, user_id: str):
 
         self.current_image[user_id].skippers.append(user_id)
-        self.current_image[user_id].skip_count += 1
 
-        if self.current_image[user_id].skip_count > MAX_SKIP_THRESHOLD:
+        if len(self.current_image[user_id].skippers) > MAX_SKIP_THRESHOLD:
             self.max_skipped_queue.put(self.current_image[user_id])
             self.max_skipped_queue.task_done()
         else:
