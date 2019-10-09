@@ -1,5 +1,5 @@
 import os
-from random import random
+import random
 
 import pandas as pd
 from queue import Queue, LifoQueue
@@ -22,28 +22,27 @@ class ImageAssigner:
 
     random.seed(a=RANDOM_SEED)
 
-    storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
-    archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
+    assigner_cache: str
+
+    # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
+    # archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str, None]  # The path to the resized image scope path
 
-    pending_images_queue: Queue[Image] = Queue()  # The queue that stores all images left to tag by their ID
-    finished_tagged_queue: LifoQueue[Image] = LifoQueue()  # The queue to store images that have been tagged already
-    max_skipped_queue: LifoQueue[Image] = LifoQueue()  # The queue of images that have passed the threshold for max skips
+    pending_images_queue: Queue = Queue()  # The queue that stores all images left to tag by their ID
+    finished_tagged_queue: LifoQueue = LifoQueue()  # The queue to store images that have been tagged already
+    max_skipped_queue: LifoQueue = LifoQueue()  # The queue of images that have passed the threshold for max skips
 
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
 
-    def __init__(self, storm_id: str, archive_id: str,
-                 scope_path: Union[bytes, str],
+    def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str, None] = None):
 
-        self.storm_id = storm_id
-        self.archive_id = archive_id
         self.scope_path = h.validate_and_expand_path(scope_path)
 
-        self.catalog_path = os.path.join(self.scope_path, s.CATALOG_FILE_NAME)
+        self.catalog_path = os.path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
 
         if os.path.exists(self.catalog_path) is False:
             raise CatalogNotFoundException
@@ -65,10 +64,14 @@ class ImageAssigner:
 
         image_list: List[Image] = []
 
-        with pd.read_csv(self.catalog_path, usecols=lambda col_label: col_label in {'file'}) as f:
-            image_list.append(Image(original_size_path=f['file'], small_size_path=self.small_path))
+        rel_file_paths: list = pd.read_csv(self.catalog_path, usecols=lambda col_label: col_label in {
+            'file'}).values.tolist()
 
-        return random.shuffle(image_list)
+        for f in rel_file_paths:
+            image_list.append(Image(original_size_path=os.path.join(self.scope_path, f[0]),
+                                    small_size_path=self.small_path))
+
+        return random.sample(image_list, k=len(image_list))
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         if full_size:
