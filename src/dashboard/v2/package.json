@@ -13,6 +13,7 @@
     "dotenv-webpack": "^1.7.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "formik": "^1.5.8",
     "isomorphic-fetch": "^2.2.1",
     "next": "latest",
     "passport": "^0.4.0",
@@ -22,7 +23,8 @@
     "react-dom": "^16.10.2",
     "react-spring": "^8.0.27",
     "styled-components": "^4.4.0",
-    "uid-safe": "^2.1.5"
+    "uid-safe": "^2.1.5",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "dev": "node ./src/server",

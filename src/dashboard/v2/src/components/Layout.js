@@ -84,7 +84,7 @@ function ResponsiveDrawer(props) {
           {JSON.stringify(props.user)}
           {'Is logged in?: '+hasUser}
         </Typography> */}
-      
+        {console.log((props.user))}
       </main>
     </div>
   );

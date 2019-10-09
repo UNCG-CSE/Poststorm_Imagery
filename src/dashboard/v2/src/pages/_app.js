@@ -51,7 +51,7 @@ export default class MyApp extends App {
     )[0]
 
     const pageName = pageInfo===undefined ? 'Welcome Page':pageInfo.name
-    console.log(pageName)
+   
     return (
       <React.Fragment>
         <Head>
@@ -61,7 +61,7 @@ export default class MyApp extends App {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Layout user={this.state.user} pageName={pageName}>
-          <Component {...pageProps} />
+          <Component user={this.state.user} {...pageProps} />
           </Layout>
           
         </ThemeProvider>

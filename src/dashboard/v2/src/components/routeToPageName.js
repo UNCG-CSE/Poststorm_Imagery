@@ -9,6 +9,10 @@ module.exports = (function() {
         {
           route:"/unprotected",
           name:"Test Name"
+        },
+        {
+          route:"/stormPicker",
+          name:"Storm Tagging Selection"
         }
       ]
     };

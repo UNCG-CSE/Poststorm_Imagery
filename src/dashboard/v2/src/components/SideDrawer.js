@@ -46,7 +46,11 @@ export default function SideDrawer(props) {
     if(hasUser){
       return (
         <Link href="/logout">
-          <StyledTreeItem bgColor={MyTheme.palette.red500.color}nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
+          <StyledTreeItem 
+          bgColor={MyTheme.palette.red500.color} 
+          //textColor={MyTheme.palette.red500.color} 
+          color='#FFFFFF'
+          nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
         </Link>
       )
     }
@@ -57,11 +61,13 @@ export default function SideDrawer(props) {
     }
   }
 
+  const username= hasUser ? ','+props.user.nickname: '' 
+
   return (
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <Tab label="Welcome" disableRipple/>
+      <Tab label={"Welcome"+username} disableRipple/>
       <Divider />
       <TreeView
         className={classes.rootTree}

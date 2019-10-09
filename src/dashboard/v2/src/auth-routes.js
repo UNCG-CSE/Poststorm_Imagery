@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/login", passport.authenticate("auth0", {
   scope: "openid email profile"
-}), (req, res) => res.redirect("/"));
+}), (req, res) => res.redirect("/"));//? on fail?
 
 router.get("/callback", (req, res, next) => {
   passport.authenticate("auth0",  (err, user) => {
@@ -13,7 +13,7 @@ router.get("/callback", (req, res, next) => {
     if (!user) return res.redirect("/login");
     req.logIn(user, (err) => {
       if (err) return next(err);
-      res.redirect("/");
+      res.redirect("/stormPicker");//on successful login
     });
   })(req, res, next);
 });

@@ -65,14 +65,18 @@ StyledTreeItem.propTypes = {
 
 function StyledTreeItem(props) {
     const classes = useTreeItemStyles();
-    const { labelText, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other } = props;
+    const { labelText,textColor, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other } = props;
   
     return (
       <TreeItem
         label={
           <div className={classes.labelRoot}>
             <LabelIcon color="inherit" className={classes.labelIcon} />
-            <Typography variant="body2" className={classes.labelText}>
+            <Typography variant="body2" className={classes.labelText}
+              style={{
+                'color':textColor
+              }}
+            >
               {labelText}
             </Typography>
             <Typography variant="caption" color="inherit">

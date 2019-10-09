@@ -10,6 +10,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import CenterGrid from '../components/CenterGrid'
 
 import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
@@ -21,8 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Index(props) {
+function Index(props) {
   const classes = useStyles();
+  const hasUser=props.user !==undefined
   const max_stage=5;
   const [stage, setStage] = useState(0);
   
@@ -36,33 +38,48 @@ export default function Index(props) {
     setStage((x % n + n) % n)
   }
 
+  function showShouldLogin(){
+    if(!hasUser){
+      return (
+        <Typography className={classes.title} color="textSecondary" gutterBottom>       
+          <Link href="/login"> 
+            <Button color="primary">
+            Please Login to continue
+            </Button>
+          </Link>
+        </Typography>
+      )
+    }
+    else {
+      return (
+        <></>
+      )
+    }
+  }
+
   return (
     <div> 
-      <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-      >
+      <CenterGrid>
         <Card className={classes.card}>
           <CardContent>
             <Typography variant="h5" component="h2" className={classes.title} color="textSecondary" gutterBottom>
               Welcome to Post Storm Image Classification Tagging Dashboard
             </Typography>
-
-            <Typography className={classes.title} color="textSecondary" gutterBottom>       
-              <Link href="/login"> 
-                <Button >
-                Please Login to continue
-                </Button>
-              </Link>
-            </Typography>
-
+            {showShouldLogin()}
           </CardContent>
-         
+          
         </Card>
-      </Grid>
+      </CenterGrid>
      
     </div>
   );
 }
+
+Index.getInitialProps = async function() {
+  return {
+    initProps:'initPropValue'
+  }
+}
+
+
+export default Index;
