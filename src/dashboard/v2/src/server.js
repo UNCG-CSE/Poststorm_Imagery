@@ -64,6 +64,7 @@ app.prepare().then(() => {
   };
 
   server.use("/protected", restrictAccess);
+  server.use("/tagImage", restrictAccess);
   
 
   // handling everything else with Next.js

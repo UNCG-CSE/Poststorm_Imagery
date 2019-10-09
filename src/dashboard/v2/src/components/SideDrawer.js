@@ -16,6 +16,9 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 //signin icon
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockIcon from '@material-ui/icons/Lock';
+import ImageIcon from '@material-ui/icons/Image';
+
+
 
 import Label from '@material-ui/icons/Label';
 
@@ -45,13 +48,22 @@ export default function SideDrawer(props) {
   function show_logout(){
     if(hasUser){
       return (
-        <Link href="/logout">
-          <StyledTreeItem 
-          bgColor={MyTheme.palette.red500.color} 
-          //textColor={MyTheme.palette.red500.color} 
-          color='#FFFFFF'
-          nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
-        </Link>
+        <>
+          <Link href="/tagImage">
+            <StyledTreeItem 
+            bgColor={MyTheme.palette.blue500.color} 
+            //textColor={MyTheme.palette.red500.color} 
+            color='#FFFFFF'
+            nodeId="1" labelText="Tag Image" labelIcon={ImageIcon} />
+          </Link>
+          <Link href="/logout">
+            <StyledTreeItem 
+            bgColor={MyTheme.palette.red500.color} 
+            //textColor={MyTheme.palette.red500.color} 
+            color='#FFFFFF'
+            nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
+          </Link>
+        </>
       )
     }
     else {
@@ -78,18 +90,7 @@ export default function SideDrawer(props) {
       >
         {show_login()}
         {show_logout()}
-        {/* {
-          (!props.user) && 
-          (<Link href="/login">
-            <StyledTreeItem nodeId="1" labelText="Signin" labelIcon={LockIcon} />
-          </Link>)
-        }
-        {
-          (props.user) && 
-          (<Link href="/logout">
-            <StyledTreeItem nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
-          </Link>)
-        } */}
+       
         {/* <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
           <StyledTreeItem
             nodeId="5"
