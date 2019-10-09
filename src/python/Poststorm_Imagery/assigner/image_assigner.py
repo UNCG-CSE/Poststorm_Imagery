@@ -63,14 +63,54 @@ class ImageAssigner:
 
         return image_list
 
-    def get_current_image(self, user_id: str, full_size: bool = False) -> Image:
+    def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
+        if full_size:
+            return self.current_image[user_id].original_size_path
+        else:
+            return self.current_image[user_id].small_size_path
+
+    def get_next_image_path(self, user_id: str, full_size: bool = False) -> str:
+        self.current_image[user_id] = self.pending_images_queue.get()
+        self.pending_images_queue.task_done()
+
+        if full_size:
+            return self.current_image[user_id].original_size_path
+        else:
+            return self.current_image[user_id].small_size_path
+
+    def get_current_image(self, user_id: str, skip: bool = False) -> Image:
+
+        if (not skip) and len(self.current_image[user_id].tags[user_id]) > 0:
+            self.user_done_tagging_current_image(user_id=user_id)
+        else:
+            self.user_skip_tagging_current_image(user_id=user_id)
+
         return self.current_image[user_id]
 
-    def get_next_image(self, user_id: str, full_size: bool = False) -> Image:
+    def get_next_image(self, user_id: str) -> Image:
         self.current_image[user_id] = self.pending_images_queue.get()
         self.pending_images_queue.task_done()
 
         return self.current_image[user_id]
+
+    def add_tag(self, user_id: str, **kwargs):
+        self.current_image[user_id].add_tag(user_id=user_id, **kwargs)
+
+    def user_done_tagging_current_image(self, user_id: str):
+        self.finished_tagged_queue.put(self.current_image[user_id])
+        self.finished_tagged_queue.task_done()
+
+    def user_skip_tagging_current_image(self, user_id: str):
+
+        self.current_image[user_id].skippers.append(user_id)
+        self.current_image[user_id].skip_count += 1
+
+        if self.current_image[user_id].skip_count > MAX_SKIP_THRESHOLD:
+            self.max_skipped_queue.put(self.current_image[user_id])
+            self.max_skipped_queue.task_done()
+        else:
+            self.pending_images_queue.put(self.current_image[user_id])
+            self.pending_images_queue.task_done()
 
 
 class CatalogNotFoundException(IOError):
