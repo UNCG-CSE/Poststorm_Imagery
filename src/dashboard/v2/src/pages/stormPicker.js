@@ -10,7 +10,7 @@ import CenterGrid from '../components/CenterGrid'
 import Button from '@material-ui/core/Button';
 
 //form validation
-import { Formik, Field } from "formik";
+import { Formik, Field, Form } from "formik";
 import * as Yup from 'yup'
 
 //for dropdown select
@@ -40,18 +40,28 @@ const useStyles = makeStyles(theme => ({
 function Index(props) {
   const classes = useStyles();
   const hasUser=props.user !==undefined
-  const [values, setValues] = React.useState({
-    storm: ''
+  const [stormValue, setValues] = React.useState({
+    stormId: 0
   });
 
   
   const handleChange = event => {
+    
     setValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value,
+      stormId:event.target.value
     }));
+
   };
- 
+
+  const handleSubmit = () => {
+    // axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
+    // .then(res => {
+    //   console.log(res);
+    //   console.log(res.data);
+    // })
+  }
+  
+
 
   return (
     <div> 
@@ -61,21 +71,28 @@ function Index(props) {
             <Typography variant="h5" component="h2" className={classes.title} color="textSecondary" gutterBottom>
               Please select a storm to start tagging on.
             </Typography>
-            <FormControl variant="filled" className={classes.formControl} fullWidth>
-              <InputLabel htmlFor="filled-age-simple">Storm</InputLabel>
-              <Select
-                value={values.storm}
-                onChange={handleChange}
-                inputProps={{
-                  name: 'storm',
-                  id: 'idPickedStorm',
-                }}
-              >
-                <MenuItem value={10}>Te2n</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+            
+            <form onSubmit={handleSubmit}>
+              <FormControl variant="filled" className={classes.formControl} fullWidth>
+                <InputLabel htmlFor="filled-age-simple">Storm</InputLabel>
+                <Select
+                  value={stormValue.stormId}
+                  onChange={handleChange}
+                  inputProps={{
+                    name: 'storm',
+                    id: 'idPickedStorm',
+                  }}
+                >
+                  <MenuItem value={0}>Storm 1</MenuItem>
+                  <MenuItem value={1}>Storm 2</MenuItem>
+                  <MenuItem value={2}>Storm 3</MenuItem>
+                </Select>
+              </FormControl>
+          
+              <Button id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+                  Submit
+              </Button>
+            </form>
             
 
           </CardContent>
