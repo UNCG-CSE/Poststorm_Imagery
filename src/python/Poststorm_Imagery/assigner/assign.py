@@ -38,9 +38,46 @@ p.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
                          '3 = high '
                          '(Default: %(default)s).')
 
-subparsers = p.add_subparsers()
 
-pt = subparsers.add_parser(name='tag', help='tagging help')
+p_subparsers = p.add_subparsers()
+
+
+p_current = p_subparsers.add_parser(name='current', help='The current image return help')
+
+p_current.add_argument('--user', '-u', type=str,
+                       help='The user to get the current image of.')
+
+
+p_tag = p_subparsers.add_parser(name='tag', help='The tagging sub-command help')
+
+p_tag_subparsers = p_tag.add_subparsers()
+
+
+p_tag_add = p_tag_subparsers.add_parser(name='add')
+
+p_tag_add.add_argument('--user', '-u', type=str,
+                       help='The user that the command will be run in the context of.')
+
+p_tag_add.add_argument('--tag', '-t', type=str,
+                       help='The tag to add to the user\'s current image.')
+
+p_tag_add.add_argument('--content', '-c', type=str,
+                       help='The content of the tag to add to the user\'s current image.')
+
+
+p_tag_remove = p_tag_subparsers.add_parser(name='remove')
+
+p_tag_remove.add_argument('--user', '-u', type=str,
+                          help='The user that the command will be run in the context of.')
+
+p_tag_remove.add_argument('--tag', '-t', type=str,
+                          help='The tag to add to the user\'s current image.')
+
+
+p_tag_skip = p_tag_subparsers.add_parser(name='skip')
+
+p_tag_skip.add_argument('--user', '-u', type=str,
+                        help='The user that the command will be run in the context of.')
 
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = p.parse_args()
