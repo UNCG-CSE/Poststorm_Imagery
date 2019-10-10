@@ -1,10 +1,11 @@
 import argparse
 import os
-import jsonpickle
-from typing import Union, Set
+from typing import Union
 
-from Poststorm_Imagery.assigner.image_assigner import ImageAssigner
+import jsonpickle
+
 from src.python.Poststorm_Imagery import s
+from src.python.Poststorm_Imagery.assigner.image_assigner import ImageAssigner
 
 ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 
@@ -41,19 +42,21 @@ parent.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY, 
 
 # Define the root command
 p = argparse.ArgumentParser(prog='assign', parents=[parent], add_help=False)
-p_subparsers = p.add_subparsers(title='operations')
+p_subparsers = p.add_subparsers(title='operations', dest='command')
 
 
 # Define the command to get the current image for a specific user (-u <user>)
-p_current = p_subparsers.add_parser(name='current', help='The current image return help', parents=[parent], add_help=False)
+p_current = p_subparsers.add_parser(name='current', parents=[parent], add_help=False,
+                                    help='The current image return help')
 
 p_current.add_argument('--user', '-u', type=str, dest='user', required=True,
                        help='The user to get the current image of.')
 
 
 # Define the command to modify tags of the user's (-u <user>) current image in the context of that user
-p_tag = p_subparsers.add_parser(name='tag', help='The tagging sub-command help', parents=[parent], add_help=False)
-p_tag_subparsers = p_tag.add_subparsers()
+p_tag = p_subparsers.add_parser(name='tag', parents=[parent], add_help=False,
+                                help='The tagging sub-command help')
+p_tag_subparsers = p_tag.add_subparsers(title='tagging operations', dest='tag_operation')
 
 
 # Define the sub-command for adding tags to an image
@@ -113,6 +116,7 @@ with open(assigner_cache, 'r') as f:
         print('Using assigner object at ' + OPTIONS.path + ' ... ')
 
     # Modification of object here
+
 
 cache_data = jsonpickle.encode(assigner.save())
 with open(assigner_cache, 'w') as f:
