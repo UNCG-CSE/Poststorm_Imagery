@@ -21,16 +21,16 @@ SMALL_TAR_CACHE_PATH: Union[bytes, str] = os.path.join(SMALL_PATH, s.TAR_CACHE)
 # Define a set of arguments that should always be included in all commands and sub-commands of the assign.py command
 parent = argparse.ArgumentParser(description='The default arguments for all commands and sub-commands')
 
-parent.add_argument('--path', '-p', default=TAR_CACHE_PATH,
+parent.add_argument('--path', '-p', default=TAR_CACHE_PATH, dest='path',
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
-parent.add_argument('--small_path', '-s', default=SMALL_TAR_CACHE_PATH,
+parent.add_argument('--small_path', '-s', default=SMALL_TAR_CACHE_PATH, dest='small_path',
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
-parent.add_argument('--debug', '-d', action='store_true', default=s.DEFAULT_DEBUG,
+parent.add_argument('--debug', '-d', action='store_true', default=s.DEFAULT_DEBUG, dest='debug',
                     help='If included, the program will print info throughout the process (Default: %(default)s).')
 
-parent.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
+parent.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY, dest='verbosity',
                     help='Changes the log / debug message verbosity. Not all functions may be affected by this '
                          'value! Possible values are ... '
                          '0 = only errors, '
@@ -47,7 +47,7 @@ p_subparsers = p.add_subparsers(title='operations')
 # Define the command to get the current image for a specific user (-u <user>)
 p_current = p_subparsers.add_parser(name='current', help='The current image return help', parents=[parent], add_help=False)
 
-p_current.add_argument('--user', '-u', type=str,
+p_current.add_argument('--user', '-u', type=str, dest='user',
                        help='The user to get the current image of.')
 
 
@@ -59,30 +59,30 @@ p_tag_subparsers = p_tag.add_subparsers()
 # Define the sub-command for adding tags to an image
 p_tag_add = p_tag_subparsers.add_parser(name='add', parents=[parent], add_help=False)
 
-p_tag_add.add_argument('--user', '-u', type=str,
+p_tag_add.add_argument('--user', '-u', type=str, dest='user',
                        help='The user that the command will be run in the context of.')
 
-p_tag_add.add_argument('--tag', '-t', type=str,
+p_tag_add.add_argument('--tag', '-t', type=str, dest='tag',
                        help='The tag to add to the user\'s current image.')
 
-p_tag_add.add_argument('--content', '-c', type=str,
+p_tag_add.add_argument('--content', '-c', type=str, dest='content',
                        help='The content of the tag to add to the user\'s current image.')
 
 
 # Define the sub-command for removing tags from an image
 p_tag_remove = p_tag_subparsers.add_parser(name='remove', parents=[parent], add_help=False)
 
-p_tag_remove.add_argument('--user', '-u', type=str,
+p_tag_remove.add_argument('--user', '-u', type=str, dest='user',
                           help='The user that the command will be run in the context of.')
 
-p_tag_remove.add_argument('--tag', '-t', type=str,
+p_tag_remove.add_argument('--tag', '-t', type=str, dest='tag',
                           help='The tag to add to the user\'s current image.')
 
 
 # Define the sub-command for skipping an image and moving onto the next image
 p_tag_skip = p_tag_subparsers.add_parser(name='skip', parents=[parent], add_help=False)
 
-p_tag_skip.add_argument('--user', '-u', type=str,
+p_tag_skip.add_argument('--user', '-u', type=str, dest='user',
                         help='The user that the command will be run in the context of.')
 
 # Add custom OPTIONS to the script when running command-line
