@@ -47,7 +47,7 @@ p_subparsers = p.add_subparsers(title='operations')
 # Define the command to get the current image for a specific user (-u <user>)
 p_current = p_subparsers.add_parser(name='current', help='The current image return help', parents=[parent], add_help=False)
 
-p_current.add_argument('--user', '-u', type=str, dest='user',
+p_current.add_argument('--user', '-u', type=str, dest='user', required=True,
                        help='The user to get the current image of.')
 
 
@@ -59,30 +59,30 @@ p_tag_subparsers = p_tag.add_subparsers()
 # Define the sub-command for adding tags to an image
 p_tag_add = p_tag_subparsers.add_parser(name='add', parents=[parent], add_help=False)
 
-p_tag_add.add_argument('--user', '-u', type=str, dest='user',
+p_tag_add.add_argument('--user', '-u', type=str, dest='user', required=True,
                        help='The user that the command will be run in the context of.')
 
-p_tag_add.add_argument('--tag', '-t', type=str, dest='tag',
+p_tag_add.add_argument('--tag', '-t', type=str, dest='tag', required=True,
                        help='The tag to add to the user\'s current image.')
 
-p_tag_add.add_argument('--content', '-c', type=str, dest='content',
+p_tag_add.add_argument('--content', '-c', type=str, dest='content', required=True,
                        help='The content of the tag to add to the user\'s current image.')
 
 
 # Define the sub-command for removing tags from an image
 p_tag_remove = p_tag_subparsers.add_parser(name='remove', parents=[parent], add_help=False)
 
-p_tag_remove.add_argument('--user', '-u', type=str, dest='user',
+p_tag_remove.add_argument('--user', '-u', type=str, dest='user', required=True,
                           help='The user that the command will be run in the context of.')
 
-p_tag_remove.add_argument('--tag', '-t', type=str, dest='tag',
+p_tag_remove.add_argument('--tag', '-t', type=str, dest='tag', required=True,
                           help='The tag to add to the user\'s current image.')
 
 
 # Define the sub-command for skipping an image and moving onto the next image
 p_tag_skip = p_tag_subparsers.add_parser(name='skip', parents=[parent], add_help=False)
 
-p_tag_skip.add_argument('--user', '-u', type=str, dest='user',
+p_tag_skip.add_argument('--user', '-u', type=str, dest='user', required=True,
                         help='The user that the command will be run in the context of.')
 
 # Add custom OPTIONS to the script when running command-line
