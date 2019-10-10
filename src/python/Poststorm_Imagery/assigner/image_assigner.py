@@ -104,9 +104,11 @@ class ImageAssigner:
         else:
             self.user_skip_tagging_current_image(user_id=user_id)
 
+        self.assign_next_image(user_id=user_id)
+
         return self.current_image[user_id]
 
-    def get_next_image(self, user_id: str) -> Image:
+    def assign_next_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
         if user_id not in (next_image.skippers and next_image.taggers):
