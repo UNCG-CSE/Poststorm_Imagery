@@ -81,7 +81,7 @@ class ImageAssigner:
 
         for f in rel_file_paths:
             image_list.append(Image(original_size_path=os.path.join(self.scope_path, f[0]),
-                                    small_size_path=self.small_path))
+                                    small_size_path=os.path.join(self.small_path, f[0])))
 
         return random.sample(image_list, k=len(image_list))
 
@@ -91,15 +91,13 @@ class ImageAssigner:
         else:
             return self.current_image[user_id].small_size_path
 
-    def get_next_image_path(self, user_id: str, full_size: bool = False) -> str:
-        self.current_image[user_id] = self.pending_images_queue.pop()
-
+    def get_next_image_path(self, user_id: str, full_size: bool = False, skip: bool = False) -> str:
         if full_size:
-            return self.current_image[user_id].original_size_path
+            return self.get_next_image(user_id=user_id, skip=skip).original_size_path
         else:
-            return self.current_image[user_id].small_size_path
+            return self.get_next_image(user_id=user_id, skip=skip).small_size_path
 
-    def get_current_image(self, user_id: str, skip: bool = False) -> Image:
+    def get_next_image(self, user_id: str, skip: bool = False) -> Image:
 
         if (not skip) and len(self.current_image[user_id].taggers[user_id]) > 0:
             self.user_done_tagging_current_image(user_id=user_id)
@@ -120,9 +118,6 @@ class ImageAssigner:
             return next_next_image
 
         return self.current_image[user_id]
-
-    def add_tag(self, user_id: str, tag: str, content: str):
-        self.current_image[user_id].add_tag(user_id=user_id, tag=tag, content=content)
 
     def user_done_tagging_current_image(self, user_id: str):
         self.finished_tagged_queue.append(self.current_image[user_id])
