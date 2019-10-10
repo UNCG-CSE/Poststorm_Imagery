@@ -30,9 +30,11 @@ class ImageAssigner:
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str, None]  # The path to the resized image scope path
 
-    pending_images_queue: List[Image] = []  # The queue that stores all images left to tag by their ID
-    finished_tagged_queue: List[Image] = []  # The queue to store images that have been tagged already
-    max_skipped_queue: List[Image] = []  # The queue of images that have passed the threshold for max skips
+    pending_images_queue: List[Image] or None = list()  # The queue that stores all images left to tag by their ID
+
+    finished_tagged_queue: List[Image] or None = list()  # The queue to store images that have been tagged already
+
+    max_skipped_queue: List[Image] or None = list()  # The queue of images that have passed the threshold for max skips
 
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
@@ -50,7 +52,7 @@ class ImageAssigner:
 
         self.catalog_path = os.path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
 
-        if os.path.exists(self.catalog_path) is False:
+        if os.path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
 
         try:
@@ -64,7 +66,7 @@ class ImageAssigner:
         # Add each image into the queue
         for image in self.image_list_from_csv():
             self.pending_images_queue.append(image)
-            if debug and verbosity >= 1:
+            if debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
 
         if debug and verbosity >= 1:
@@ -133,6 +135,17 @@ class ImageAssigner:
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
             self.pending_images_queue.append(self.current_image[user_id])
+
+    def save(self):
+
+        # Save a copy of the queues when creating a pickle (without this, the queues will not save in the pickle)
+        self.pending_images_queue = self.pending_images_queue.copy()
+        self.finished_tagged_queue = self.finished_tagged_queue.copy()
+        self.max_skipped_queue = self.max_skipped_queue.copy()
+        return self
+
+    def load(self):
+        return self
 
 
 class CatalogNotFoundException(IOError):

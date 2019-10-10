@@ -6,7 +6,7 @@ from typing import Union, Set
 from Poststorm_Imagery.assigner.image_assigner import ImageAssigner
 from src.python.Poststorm_Imagery import s
 
-ASSIGNER_FILE_NAME: str = 'assigner_cache.bin'
+ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -57,17 +57,17 @@ if os.path.exists(assigner_cache) is False:
                              debug=OPTIONS.debug,
                              verbosity=OPTIONS.verbosity)
 
-    cache_data = jsonpickle.encode(assigner)
+    cache_data = jsonpickle.encode(assigner.save())
     with open(assigner_cache, 'w') as f:
         f.write(cache_data)
 
 with open(assigner_cache, 'r') as f:
-    assigner = jsonpickle.decode(f.read())
+    assigner = jsonpickle.decode(f.read()).load()
     if OPTIONS.debug:
         print('Using assigner object at ' + OPTIONS.path + ' ... ')
 
-# Modification of object here
+    # Modification of object here
 
-cache_data = jsonpickle.encode(assigner)
+cache_data = jsonpickle.encode(assigner.save())
 with open(assigner_cache, 'w') as f:
     f.write(cache_data)
