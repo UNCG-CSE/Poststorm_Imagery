@@ -90,6 +90,12 @@ class ImageAssigner:
         else:
             return self.current_image[user_id].small_size_path
 
+    def get_current_image(self, user_id: str, full_size: bool = False) -> Image:
+        if full_size:
+            return self.current_image[user_id]
+        else:
+            return self.current_image[user_id]
+
     def get_next_image_path(self, user_id: str, full_size: bool = False, skip: bool = False) -> str:
         if full_size:
             return self.get_next_image(user_id=user_id, skip=skip).original_size_path
