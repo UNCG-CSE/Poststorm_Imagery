@@ -117,11 +117,13 @@ class ImageAssigner:
             return h.validate_and_expand_path(
                 path.join(self.scope_path, self.current_image[user_id].small_size_path))
 
-    def get_current_image(self, user_id: str) -> Image:
+    def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
         Get the Image object that contains information about the specified user's current image.
 
         :param user_id: The user to get the current image of
+        :param expanded: Whether (True) or not (False) to return a *copy* of the current image with the path
+        variables converted from relative to absolute
         :return: The user's current image as an object
         """
 
@@ -129,7 +131,10 @@ class ImageAssigner:
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
-        return self.current_image[user_id]
+        if expanded:
+            return self.current_image[user_id].expanded(self.scope_path)
+        else:
+            return self.current_image[user_id]
 
     def get_next_image_path(self, user_id: str, full_size: bool = False, skip: bool = False) -> str:
         """
@@ -153,7 +158,7 @@ class ImageAssigner:
             return h.validate_and_expand_path(
                 path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
 
-    def get_next_image(self, user_id: str, skip: bool = False) -> Image:
+    def get_next_image(self, user_id: str, expanded: bool = False, skip: bool = False) -> Image:
         """
         Get the Image object that contains information about the specified user's next suitable image in the pending
         queue. This function will essentially take the next element from the pending queue and assign it to the
@@ -161,6 +166,8 @@ class ImageAssigner:
         the pending queue) or it is tagged and multiple people are required to tag each image.
 
         :param user_id: The user to get the next suitable image of
+        :param expanded: Whether (True) or not (False) to return a *copy* of the current image with the path
+        variables converted from relative to absolute
         :param skip: Whether (True) or not (False) to flag the user's previous image (current image before execution) as
         being skipped by that user. This will happen automatically if the user doesn't apply any flags to the image.
         :return: The user's next suitable image as an object
@@ -179,7 +186,10 @@ class ImageAssigner:
 
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
-        return self.current_image[user_id]
+        if expanded:
+            return self.current_image[user_id].expanded(self.scope_path)
+        else:
+            return self.current_image[user_id]
 
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
