@@ -116,7 +116,7 @@ try:
             f.write(cache_data)
 
     with open(assigner_cache, 'r') as f:
-        assigner = jsonpickle.decode(f.read()).load()
+        assigner = jsonpickle.decode(f.read())
         if OPTIONS.debug:
             print('Using assigner object at ' + OPTIONS.path + ' ... ')
 
@@ -126,25 +126,30 @@ try:
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .add_tag(user_id=OPTIONS.user, tag=OPTIONS.tag, content=OPTIONS.content)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
+                                                                                expanded=True)).json())
             elif OPTIONS.tag_operation == 'remove':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .remove_tag(user_id=OPTIONS.user, tag=OPTIONS.tag)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
+                                                                                expanded=True)).json())
             elif OPTIONS.tag_operation == 'next':
-                print(JSONResponse(status=0, content=assigner.get_next_image(user_id=OPTIONS.user).expanded()).json())
+                print(JSONResponse(status=0, content=assigner.get_next_image(user_id=OPTIONS.user,
+                                                                             expanded=True)).json())
                 flag_pickle_changed = True
             elif OPTIONS.tag_operation == 'skip':
                 print(JSONResponse(status=0, content=assigner.get_next_image(user_id=OPTIONS.user,
-                                                                                  skip=True).expanded()).json())
+                                                                             skip=True,
+                                                                             expanded=True)).json())
                 flag_pickle_changed = True
             else:
                 print(JSONResponse(status=1, error_message='This tagging operation is not implemented yet!').json())
 
         # Get the user's current image
         elif OPTIONS.command == 'current':
-            print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
+            print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
+                                                                            expanded=True)).json())
 
 except CatalogNotFoundException as e:
     print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed!').json())
