@@ -7,8 +7,8 @@ import pandas as pd
 from src.python.Poststorm_Imagery import h, s
 from src.python.Poststorm_Imagery.assigner.image_ref import Image
 
-# The maximum amount of times an image can be skipped before it is added to the max skipped queue
-MAX_SKIP_THRESHOLD: int = 2
+# The maximum amount of times an image can be skipped and remain in the pending queue
+MAX_ALLOWED_SKIPS: int = 1
 
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
@@ -23,6 +23,7 @@ class ImageAssigner:
 
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
     # archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
+    debug: bool = False
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str, None]  # The path to the resized image scope path
@@ -40,7 +41,7 @@ class ImageAssigner:
                  small_path: Union[bytes, str, None] = None, **kwargs):
 
         # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+        self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
 
         # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
         verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
@@ -63,10 +64,10 @@ class ImageAssigner:
         # Add each image into the queue
         for image in self.image_list_from_csv():
             self.pending_images_queue.append(image)
-            if debug and verbosity >= 2:
+            if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
 
-        if debug and verbosity >= 1:
+        if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
     def image_list_from_csv(self) -> List[Image]:
@@ -141,7 +142,7 @@ class ImageAssigner:
 
         self.current_image[user_id].skippers.add(user_id)
 
-        if len(self.current_image[user_id].skippers) > MAX_SKIP_THRESHOLD:
+        if len(self.current_image[user_id].skippers) > MAX_ALLOWED_SKIPS:
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
             self.pending_images_queue.append(self.current_image[user_id])
