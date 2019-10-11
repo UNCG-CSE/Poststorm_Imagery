@@ -11,4 +11,6 @@ pytest-cov = "*"
 [packages]
 requests = "*"
 tqdm = "*"
-pillow = "*"
+jupyter = "*"
+pandas = "*"
+Pillow = "*"

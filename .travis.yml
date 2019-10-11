@@ -39,5 +39,5 @@ matrix:
     - node_modules/.bin/eslint . --fix
     - npm test
 
-  allow_failures:
-  - node_js: node
+#  allow_failures:
+#  - node_js: node
