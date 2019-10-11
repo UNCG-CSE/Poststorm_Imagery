@@ -209,6 +209,12 @@ class ImageAssigner:
             self.pending_images_queue.append(self.current_image[user_id])
 
     def save(self):
+        """
+        Force inclusion of important objects regardless of copy depth of pickle function. This should only be used
+        when the object won't be modified anymore and is about to be saved as a pickle.
+
+        :return: The object with copies of un-included objects that are normally excluded when creating a shallow copy
+        """
 
         # Ensure that data for each image is saved
         for i in range(len(self.pending_images_queue)):
