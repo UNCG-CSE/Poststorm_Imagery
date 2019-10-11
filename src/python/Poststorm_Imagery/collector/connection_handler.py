@@ -4,9 +4,7 @@ from typing import List
 from src.python.Poststorm_Imagery.collector.response_getter import get_http_response
 from src.python.Poststorm_Imagery.collector.storm import Storm
 
-from requests import Response
-
-from src.python.Poststorm_Imagery.collector import s
+from src.python.Poststorm_Imagery import s
 
 
 class ConnectionHandler:

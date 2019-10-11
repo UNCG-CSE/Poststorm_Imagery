@@ -9,7 +9,7 @@ from typing import List, Union
 
 from requests.exceptions import RequestException
 
-from src.python.Poststorm_Imagery.collector import h, s
+from src.python.Poststorm_Imagery import s, h
 from src.python.Poststorm_Imagery.collector.connection_handler import ConnectionHandler
 from src.python.Poststorm_Imagery.collector.storm import Storm
 from src.python.Poststorm_Imagery.collector.tar_ref import TarRef
