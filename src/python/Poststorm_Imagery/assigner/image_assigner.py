@@ -78,22 +78,24 @@ class ImageAssigner:
             'file'}).values.tolist()
 
         for f in rel_file_paths:
-            image_list.append(Image(original_size_path=os.path.join(self.scope_path, f[0]),
-                                    small_size_path=os.path.join(self.small_path, f[0])))
+            image_list.append(Image(original_size_path=f[0],
+                                    small_size_path=f[0]))
 
         return random.sample(image_list, k=len(image_list))
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         if full_size:
-            return self.current_image[user_id].original_size_path
+            return h.validate_and_expand_path(
+                os.path.join(self.scope_path, self.current_image[user_id].original_size_path))
         else:
-            return self.current_image[user_id].small_size_path
+            return h.validate_and_expand_path(
+                os.path.join(self.scope_path, self.current_image[user_id].small_size_path))
 
     def get_current_image(self, user_id: str, full_size: bool = False) -> Image:
 
         # If the user has no current image, assign them one from the pending queue
         if user_id not in self.current_image.keys():
-            self.assign_next_image(user_id=user_id)
+            self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
 
         if full_size:
             return self.current_image[user_id]
@@ -102,15 +104,18 @@ class ImageAssigner:
 
     def get_next_image_path(self, user_id: str, full_size: bool = False, skip: bool = False) -> str:
         if full_size:
-            return self.get_next_image(user_id=user_id, skip=skip).original_size_path
+            return h.validate_and_expand_path(
+                os.path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
         else:
-            return self.get_next_image(user_id=user_id, skip=skip).small_size_path
+            return h.validate_and_expand_path(
+                os.path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
 
     def get_next_image(self, user_id: str, skip: bool = False) -> Image:
 
-        # If the user has no current image, assign them one from the pending queue
+        # If the user has no current image, assign them one from the pending queue and finish
         if user_id not in self.current_image.keys():
-            self.assign_next_image(user_id=user_id)
+            self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
+            return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].taggers.keys()) \
                 and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
@@ -118,22 +123,24 @@ class ImageAssigner:
         else:
             self.user_skip_tagging_current_image(user_id=user_id)
 
-        self.assign_next_image(user_id=user_id)
+        self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
 
         return self.current_image[user_id]
 
-    def assign_next_image(self, user_id: str) -> Image:
+    def get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id not in (next_image.skippers and next_image.taggers):
-            self.current_image[user_id] = next_image
-        else:
-            next_next_image = self.get_next_image(user_id=user_id)
-            self.pending_images_queue.insert(0, next_image)
+        if user_id in (next_image.skippers or next_image.taggers.keys()):
+            if self.debug:
+                print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
+
+            # Recursively search until an image that has not been tagged or skipped by this user is found
+            next_next_image = self.get_next_suitable_image(user_id=user_id)
+            self.pending_images_queue.append(next_image)
 
             return next_next_image
-
-        return self.current_image[user_id]
+        else:
+            return next_image
 
     def user_done_tagging_current_image(self, user_id: str):
         self.finished_tagged_queue.append(self.current_image[user_id])
@@ -148,6 +155,10 @@ class ImageAssigner:
             self.pending_images_queue.append(self.current_image[user_id])
 
     def save(self):
+
+        # Ensure that data for each image is saved
+        for i in range(len(self.pending_images_queue)):
+            self.pending_images_queue[i] = self.pending_images_queue[i].save()
 
         # Save a copy of the queues when creating a pickle (without this, the queues will not save in the pickle)
         self.pending_images_queue = self.pending_images_queue.copy()
