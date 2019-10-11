@@ -25,3 +25,13 @@ class Image:
 
     def update_tag(self, user_id: str, tag: str, content: str):
         self.add_tag(user_id=user_id, tag=tag, content=content)
+
+    def save(self):
+
+        # Save a copy of the dictionaries when creating a pickle (without this, the dicts will not save in the pickle)
+        self.skippers = self.skippers.copy()
+        self.taggers = self.taggers.copy()
+        return self
+
+    def load(self):
+        return self
