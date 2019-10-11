@@ -21,8 +21,6 @@ class ImageAssigner:
 
     random.seed(a=RANDOM_SEED)
 
-    assigner_cache: str
-
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
     # archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
@@ -153,6 +151,7 @@ class ImageAssigner:
         self.pending_images_queue = self.pending_images_queue.copy()
         self.finished_tagged_queue = self.finished_tagged_queue.copy()
         self.max_skipped_queue = self.max_skipped_queue.copy()
+        self.current_image = self.current_image.copy()
         return self
 
     def load(self):
