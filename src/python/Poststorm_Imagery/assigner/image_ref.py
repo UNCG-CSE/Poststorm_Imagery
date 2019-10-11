@@ -1,4 +1,4 @@
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Set
 
 
 class Image:
@@ -6,8 +6,8 @@ class Image:
     original_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the full size image
     small_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the resized version of the image
 
-    skippers: List[str] = list()  # The number of times this image has been skipped
-    taggers: Dict[str, Dict] = list()  # People who have tagged this image and their tags: taggers[user_id] = {'tag_id',
+    skippers: Set[str] = set()  # The number of times this image has been skipped
+    taggers: Dict[str, Dict] = dict()  # People who have tagged this image and their tags: taggers[user_id] = {'tag_id',
     # 'value'}
 
     def __init__(self, original_size_path: Union[bytes, str], small_size_path: Union[bytes, str]):
