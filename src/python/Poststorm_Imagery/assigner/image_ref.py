@@ -23,7 +23,11 @@ class Image:
         if user_id not in self.taggers.keys():
             self.taggers[user_id] = dict()
 
-        self.taggers[user_id][tag] = content
+        # Check if the response matches a boolean's text (must be explicit to prevent coercion of ints like '1' -> True)
+        if content.lower() == ('true' or 'false'):
+            content = bool(content)
+
+        self.taggers[user_id][tag]: str or bool = content
 
     def remove_tag(self, user_id: str, tag: str):
         self.taggers[user_id][tag] = None
