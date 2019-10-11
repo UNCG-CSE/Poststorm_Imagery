@@ -111,7 +111,8 @@ class ImageAssigner:
         if user_id not in self.current_image.keys():
             self.assign_next_image(user_id=user_id)
 
-        if (not skip) and len(self.current_image[user_id].taggers[user_id]) > 0:
+        if (not skip) and (user_id in self.current_image[user_id].taggers.keys()) \
+                and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
             self.user_done_tagging_current_image(user_id=user_id)
         else:
             self.user_skip_tagging_current_image(user_id=user_id)
@@ -138,7 +139,7 @@ class ImageAssigner:
 
     def user_skip_tagging_current_image(self, user_id: str):
 
-        self.current_image[user_id].skippers.append(user_id)
+        self.current_image[user_id].skippers.add(user_id)
 
         if len(self.current_image[user_id].skippers) > MAX_SKIP_THRESHOLD:
             self.max_skipped_queue.append(self.current_image[user_id])
