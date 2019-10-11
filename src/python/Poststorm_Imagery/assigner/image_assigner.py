@@ -91,6 +91,11 @@ class ImageAssigner:
             return self.current_image[user_id].small_size_path
 
     def get_current_image(self, user_id: str, full_size: bool = False) -> Image:
+
+        # If the user has no current image, assign them one from the pending queue
+        if user_id not in self.current_image.keys():
+            self.assign_next_image(user_id=user_id)
+
         if full_size:
             return self.current_image[user_id]
         else:
@@ -103,6 +108,10 @@ class ImageAssigner:
             return self.get_next_image(user_id=user_id, skip=skip).small_size_path
 
     def get_next_image(self, user_id: str, skip: bool = False) -> Image:
+
+        # If the user has no current image, assign them one from the pending queue
+        if user_id not in self.current_image.keys():
+            self.assign_next_image(user_id=user_id)
 
         if (not skip) and len(self.current_image[user_id].taggers[user_id]) > 0:
             self.user_done_tagging_current_image(user_id=user_id)
