@@ -1,5 +1,5 @@
-import os
 import random
+from os import path
 from typing import List, Dict, Union
 
 import pandas as pd
@@ -15,6 +15,16 @@ RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
 
 class ImageAssigner:
+    """
+    Creating an instance of the ImageAssigner class allows for storing all the relevant information related to
+    tagging images and processing their data. This class is mainly meant to be used in conjunction with a web-server
+    that has validation techniques built in. It is **not** designed to be run client-side as there is no validation of
+    identity (user ID is passed as a parameter in most functions).
+
+    This class assumes that there exists a CSV file called `catalog.csv` at the specified scope_path and that the CSV
+    file contains a column with a header named `file` that contains the relative paths of each image to be queued for
+    tagging (in the scope of the directory containing the catalog.csv).
+    """
 
     # For this class, use queues instead of lists for the sake of implementing into an asynchronous environment due to
     # the Queue object's ability to enforce blocking.
@@ -48,13 +58,13 @@ class ImageAssigner:
 
         self.scope_path = h.validate_and_expand_path(scope_path)
 
-        self.catalog_path = os.path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
+        self.catalog_path = path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
 
-        if os.path.isfile(self.catalog_path) is False:
+        if path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
 
         try:
-            if small_path is not None and os.path.exists(h.validate_and_expand_path(small_path)):
+            if small_path is not None and path.exists(h.validate_and_expand_path(small_path)):
                 self.small_path = h.validate_and_expand_path(small_path)
             else:
                 self.small_path = None
@@ -71,6 +81,11 @@ class ImageAssigner:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
     def image_list_from_csv(self) -> List[Image]:
+        """
+        Grab all image information from the catalog and save it to a list. This list is then shuffled before return.
+
+        :return: A shuffled list of all images in the scope of this object.
+        """
 
         image_list: List[Image] = []
 
@@ -81,36 +96,75 @@ class ImageAssigner:
             image_list.append(Image(original_size_path=f[0],
                                     small_size_path=f[0]))
 
+        # TODO: Should probably ensure that each image exists and has a smaller version and possibly create a smaller
+        #  image if it doesn't exist.
         return random.sample(image_list, k=len(image_list))
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
+        """
+        Simply get the absolute path of the specified user's current image. Returns as just the full path with no
+        decorations and no extra characters.
+
+        :param user_id: The user to get the current image path of
+        :param full_size: Whether or not to return the path to the full size image (True) or the reduced size image (
+        False)
+        :return: The absolute path to the image requested
+        """
         if full_size:
             return h.validate_and_expand_path(
-                os.path.join(self.scope_path, self.current_image[user_id].original_size_path))
+                path.join(self.scope_path, self.current_image[user_id].original_size_path))
         else:
             return h.validate_and_expand_path(
-                os.path.join(self.scope_path, self.current_image[user_id].small_size_path))
+                path.join(self.scope_path, self.current_image[user_id].small_size_path))
 
-    def get_current_image(self, user_id: str, full_size: bool = False) -> Image:
+    def get_current_image(self, user_id: str) -> Image:
+        """
+        Get the Image object that contains information about the specified user's current image.
+
+        :param user_id: The user to get the current image of
+        :return: The user's current image as an object
+        """
 
         # If the user has no current image, assign them one from the pending queue
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
 
-        if full_size:
-            return self.current_image[user_id]
-        else:
-            return self.current_image[user_id]
+        return self.current_image[user_id]
 
     def get_next_image_path(self, user_id: str, full_size: bool = False, skip: bool = False) -> str:
+        """
+        Simply get the absolute path of the specified user's next suitable image in the pending queue. Returns as just
+        the full path with no decorations and no extra characters. This function will essentially take the next
+        element from the pending queue and assign it to the specified user. No other users will be able to tag the
+        image until this person either skips it (and is sent to the pending queue) or it is tagged and multiple
+        people are required to tag each image.
+
+        :param user_id: The user to get the next suitable image's path of
+        :param full_size: Whether or not to return the path to the full size image (True) or the reduced size image (
+        False)
+        :param skip: Whether (True) or not (False) to flag the user's previous image (current image before execution) as
+        being skipped by that user. This will happen automatically if the user doesn't apply any flags to the image.
+        :return: The absolute path to the image requested
+        """
         if full_size:
             return h.validate_and_expand_path(
-                os.path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
+                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
         else:
             return h.validate_and_expand_path(
-                os.path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
+                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
 
     def get_next_image(self, user_id: str, skip: bool = False) -> Image:
+        """
+        Get the Image object that contains information about the specified user's next suitable image in the pending
+        queue. This function will essentially take the next element from the pending queue and assign it to the
+        specified user. No other users will be able to tag the image until this person either skips it (and is sent to
+        the pending queue) or it is tagged and multiple people are required to tag each image.
+
+        :param user_id: The user to get the next suitable image of
+        :param skip: Whether (True) or not (False) to flag the user's previous image (current image before execution) as
+        being skipped by that user. This will happen automatically if the user doesn't apply any flags to the image.
+        :return: The user's next suitable image as an object
+        """
 
         # If the user has no current image, assign them one from the pending queue and finish
         if user_id not in self.current_image.keys():

@@ -1,5 +1,5 @@
 import argparse
-import os
+from os import path
 from typing import Union
 
 import jsonpickle
@@ -10,11 +10,11 @@ from src.python.Poststorm_Imagery.assigner.json_response import JSONResponse
 
 ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 
-DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
+DATA_PATH: Union[bytes, str] = path.abspath(s.DATA_PATH)
+TAR_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.TAR_CACHE)
 
-SMALL_PATH: Union[bytes, str] = os.path.abspath(s.SMALL_PATH)
-SMALL_TAR_CACHE_PATH: Union[bytes, str] = os.path.join(SMALL_PATH, s.TAR_CACHE)
+SMALL_PATH: Union[bytes, str] = path.abspath(s.SMALL_PATH)
+SMALL_TAR_CACHE_PATH: Union[bytes, str] = path.join(SMALL_PATH, s.TAR_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #
@@ -99,11 +99,11 @@ if OPTIONS.debug:
 assigner: ImageAssigner
 flag_pickle_changed: bool = False
 
-assigner_cache = os.path.join(OPTIONS.path, ASSIGNER_FILE_NAME)
+assigner_cache = path.join(OPTIONS.path, ASSIGNER_FILE_NAME)
 
 try:
 
-    if os.path.exists(assigner_cache) is False:
+    if path.exists(assigner_cache) is False:
         if OPTIONS.debug:
             print('Creating new assigner object at ' + OPTIONS.path + ' ... ')
         assigner = ImageAssigner(scope_path=OPTIONS.path,
@@ -126,32 +126,35 @@ try:
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .add_tag(user_id=OPTIONS.user, tag=OPTIONS.tag, content=OPTIONS.content)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, content='Tag added successfully!').json())
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
             elif OPTIONS.tag_operation == 'remove':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .remove_tag(user_id=OPTIONS.user, tag=OPTIONS.tag)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, content='Tag removed successfully!').json())
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
             elif OPTIONS.tag_operation == 'next':
-                print(JSONResponse(status=0, content=assigner.get_next_image_path(user_id=OPTIONS.user)).json())
+                print(JSONResponse(status=0, content=assigner.get_next_image(user_id=OPTIONS.user).expanded()).json())
                 flag_pickle_changed = True
             elif OPTIONS.tag_operation == 'skip':
-                print(JSONResponse(status=0, content=assigner.get_next_image_path(user_id=OPTIONS.user,
-                                                                                  skip=True)).json())
+                print(JSONResponse(status=0, content=assigner.get_next_image(user_id=OPTIONS.user,
+                                                                                  skip=True).expanded()).json())
                 flag_pickle_changed = True
             else:
                 print(JSONResponse(status=1, error_message='This tagging operation is not implemented yet!').json())
 
         # Get the user's current image
         elif OPTIONS.command == 'current':
-            print(JSONResponse(status=0, content=assigner.get_current_image_path(user_id=OPTIONS.user)).json())
+            print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user).expanded()).json())
 
 except CatalogNotFoundException as e:
     print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed!').json())
-except IOError as e:
+except Exception as e:
     print(JSONResponse(status=1, error_message=str(e)).json())
 
-if flag_pickle_changed:
-    cache_data = jsonpickle.encode(assigner.save())
-    with open(assigner_cache, 'w') as f:
-        f.write(cache_data)
+try:
+    if flag_pickle_changed:
+        cache_data = jsonpickle.encode(assigner.save())
+        with open(assigner_cache, 'w') as f:
+            f.write(cache_data)
+except Exception as e:
+    print(JSONResponse(status=1, error_message=str(e)).json())
