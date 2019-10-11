@@ -72,7 +72,7 @@ class ImageAssigner:
             self.small_path = None
 
         # Add each image into the queue
-        for image in self.image_list_from_csv():
+        for image in self._image_list_from_csv():
             self.pending_images_queue.append(image)
             if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
@@ -80,7 +80,7 @@ class ImageAssigner:
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
-    def image_list_from_csv(self) -> List[Image]:
+    def _image_list_from_csv(self) -> List[Image]:
         """
         Grab all image information from the catalog and save it to a list. This list is then shuffled before return.
 
@@ -127,7 +127,7 @@ class ImageAssigner:
 
         # If the user has no current image, assign them one from the pending queue
         if user_id not in self.current_image.keys():
-            self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
+            self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         return self.current_image[user_id]
 
@@ -168,20 +168,20 @@ class ImageAssigner:
 
         # If the user has no current image, assign them one from the pending queue and finish
         if user_id not in self.current_image.keys():
-            self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
+            self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
             return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].taggers.keys()) \
                 and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
-            self.user_done_tagging_current_image(user_id=user_id)
+            self._user_done_tagging_current_image(user_id=user_id)
         else:
-            self.user_skip_tagging_current_image(user_id=user_id)
+            self._user_skip_tagging_current_image(user_id=user_id)
 
-        self.current_image[user_id] = self.get_next_suitable_image(user_id=user_id)
+        self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         return self.current_image[user_id]
 
-    def get_next_suitable_image(self, user_id: str) -> Image:
+    def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
         if user_id in (next_image.skippers or next_image.taggers.keys()):
@@ -189,17 +189,17 @@ class ImageAssigner:
                 print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
 
             # Recursively search until an image that has not been tagged or skipped by this user is found
-            next_next_image = self.get_next_suitable_image(user_id=user_id)
+            next_next_image = self._get_next_suitable_image(user_id=user_id)
             self.pending_images_queue.append(next_image)
 
             return next_next_image
         else:
             return next_image
 
-    def user_done_tagging_current_image(self, user_id: str):
+    def _user_done_tagging_current_image(self, user_id: str):
         self.finished_tagged_queue.append(self.current_image[user_id])
 
-    def user_skip_tagging_current_image(self, user_id: str):
+    def _user_skip_tagging_current_image(self, user_id: str):
 
         self.current_image[user_id].skippers.add(user_id)
 
@@ -219,9 +219,6 @@ class ImageAssigner:
         self.finished_tagged_queue = self.finished_tagged_queue.copy()
         self.max_skipped_queue = self.max_skipped_queue.copy()
         self.current_image = self.current_image.copy()
-        return self
-
-    def load(self):
         return self
 
 
