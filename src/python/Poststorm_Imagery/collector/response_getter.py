@@ -1,7 +1,7 @@
 import requests
 from requests import Response
 
-from src.python.Poststorm_Imagery.collector import h
+from src.python.Poststorm_Imagery import h
 
 
 def get_http_response(url: str) -> Response:
