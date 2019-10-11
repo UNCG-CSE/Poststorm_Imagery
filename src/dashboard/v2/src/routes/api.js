@@ -2,22 +2,12 @@ const express = require('express');
 //const app = express();
 const router = express.Router();
 let CONSTANTS=
-(async () => {
-    CONSTANTS= await require('../server_constants')
-    Object.freeze(CONSTANTS)
-})();
-
-router.use('/routes', (req, res) => {
-    res.json(
-        {routes:router.stack}
-    )
-})
 
 router.use('/', function (req, res) {
     res.json(
         {
             test_api:'WOWE, test api.',
-            test_IP:CONSTANTS.IP,
+            test_IP:5,
             test_rng:Math.random(),
             test_api_ver:'1.0'
         }

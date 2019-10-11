@@ -67,6 +67,8 @@ app.prepare().then(() => {
   // For these routes,restrict access :)
   server.use("/protected", restrictAccess);
   server.use("/tagImage", restrictAccess);
+
+  server.use("/api",restrictAccess, apiRoutes);
   
 
   // handling everything else with Next.js

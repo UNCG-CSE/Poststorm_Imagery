@@ -47,7 +47,7 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const hasUser=props.user !==undefined
 
-  // console.log((props.user))
+  console.log((props.user))
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
