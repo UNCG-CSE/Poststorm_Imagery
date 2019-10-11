@@ -1,7 +1,6 @@
-import os
 from unittest import TestCase
 
-from src.python.Poststorm_Imagery.collector import s
+from src.python.Poststorm_Imagery import s
 from src.python.Poststorm_Imagery.collector.storm import Storm
 
 
