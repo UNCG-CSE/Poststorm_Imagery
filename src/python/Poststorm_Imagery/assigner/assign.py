@@ -126,12 +126,12 @@ try:
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .add_tag(user_id=OPTIONS.user, tag=OPTIONS.tag, content=OPTIONS.content)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, error_message='Tag added successfully!!').json())
+                print(JSONResponse(status=0, content='Tag added successfully!').json())
             elif OPTIONS.tag_operation == 'remove':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .remove_tag(user_id=OPTIONS.user, tag=OPTIONS.tag)
                 flag_pickle_changed = True
-                print(JSONResponse(status=0, error_message='Tag removed successfully!!').json())
+                print(JSONResponse(status=0, content='Tag removed successfully!').json())
             elif OPTIONS.tag_operation == 'next':
                 print(JSONResponse(status=0, content=assigner.get_next_image_path(user_id=OPTIONS.user)).json())
                 flag_pickle_changed = True
