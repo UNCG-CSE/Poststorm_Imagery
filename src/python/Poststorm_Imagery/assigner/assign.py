@@ -121,21 +121,21 @@ try:
             print('Using assigner object at ' + OPTIONS.path + ' ... ')
 
         # Modifying the tags of a user's current image
-        if OPTIONS.command is 'tag':
-            if OPTIONS.tag_operation is 'add':
+        if OPTIONS.command == 'tag':
+            if OPTIONS.tag_operation == 'add':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .add_tag(user_id=OPTIONS.user, tag=OPTIONS.tag, content=OPTIONS.content)
                 flag_pickle_changed = True
                 print(JSONResponse(status=0, error_message='Tag added successfully!!').json())
-            elif OPTIONS.tag_operation is 'remove':
+            elif OPTIONS.tag_operation == 'remove':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .remove_tag(user_id=OPTIONS.user, tag=OPTIONS.tag)
                 flag_pickle_changed = True
                 print(JSONResponse(status=0, error_message='Tag removed successfully!!').json())
-            elif OPTIONS.tag_operation is 'next':
+            elif OPTIONS.tag_operation == 'next':
                 print(JSONResponse(status=0, content=assigner.get_next_image_path(user_id=OPTIONS.user)).json())
                 flag_pickle_changed = True
-            elif OPTIONS.tag_operation is 'skip':
+            elif OPTIONS.tag_operation == 'skip':
                 print(JSONResponse(status=0, content=assigner.get_next_image_path(user_id=OPTIONS.user,
                                                                                   skip=True)).json())
                 flag_pickle_changed = True
@@ -143,7 +143,7 @@ try:
                 print(JSONResponse(status=1, error_message='This tagging operation is not implemented yet!').json())
 
         # Get the user's current image
-        elif OPTIONS.command is 'current':
+        elif OPTIONS.command == 'current':
             print(JSONResponse(status=0, content=assigner.get_current_image_path(user_id=OPTIONS.user)).json())
 
 except CatalogNotFoundException as e:
