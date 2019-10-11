@@ -11,7 +11,7 @@ import CenterGrid from '../components/CenterGrid'
 import Button from '@material-ui/core/Button';
 
 //form validation
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { TextField } from "material-ui-formik-components/TextField";
 import { Select } from "material-ui-formik-components/Select";
 import * as Yup from 'yup'
@@ -22,6 +22,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
+import MyTheme from '../components/theme';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -30,8 +32,8 @@ function TabPanel(props) {
       component="div"
       role="tabpanel"
       hidden={value !== index}
-      id={`wrapped-tabpanel-${index}`}
-      aria-labelledby={`wrapped-tab-${index}`}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
       <Box p={3}>{children}</Box>
@@ -54,19 +56,8 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
+    flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-  },
-  input: {
-    display: 'none',
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
   },
 }));
 
@@ -74,84 +65,73 @@ function Index(props) {
   const classes = useStyles();
   const hasUser=props.user !==undefined
   
-  const [value, setValue] = React.useState('one');
+  const [value, setValue] = React.useState(0);
 
-  const handleChange = ( newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
 
   return (
     <div> 
       <CenterGrid>
         <div className={classes.root}>
           <AppBar position="static">
-            <Tabs value={value}  aria-label="wrapped label tabs example">
-              <Tab
-                value="one"
-                label="Select a Storm"
-                wrapped
-                {...a11yProps('one')}
-              />
-              <Tab value="two" label="Tag an image" {...a11yProps('two')} />
+            <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+              <Tab label="Pick a storm" {...a11yProps(0)} />
+              <Tab label="Tag Image" {...a11yProps(1)} />
              
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index="one">
-      
-              <CardContent>
-                <Typography variant="h5" component="h2" className={classes.title} color="textSecondary" gutterBottom>
-                  Please select a storm to start tagging on.
-                </Typography>
-              
-                <Formik
-                  initialValues={{
-                    stormId: -1
-                  }}
-                  validationSchema={Yup.object().shape({
-                    stormId: Yup.number().positive().required("Please select a option"),
-                    //additionalNotes: Yup.string(),
-                  })}
-                  onSubmit={values => {
-                    //alert(`Gender: ${values.stormId}`);
-                    handleChange('two')
-                    // axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
-                    // .then(res => {
-                    //   console.log(res);
-                    //   console.log(res.data);
-                    // })
-                  }}
-                  render={props => (
-                    <Form>
+          <TabPanel value={value} index={0}>
+            <Formik
+                initialValues={{
+                  stormId: -1
+                }}
+                validationSchema={Yup.object().shape({
+                  stormId: Yup.number().positive('Please select a option').required("Please select a option"),
+                })}
+                onSubmit={(values )=> {
+                  console.log(values)
+                  //handleChange('two')
+                  // axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
+                  // .then(res => {
+                  //   console.log(res);
+                  //   console.log(res.data);
+                  // })
+                }}
+                render={propsFormik => (
+                  <Form>
+                  
+                    <Field
+                      required
+                      name="stormId"
+                      label="Storm"
+                      options={[
+                        ...props.initProps.storms
+                      ]}
+                      component={Select}
+                      error={propsFormik.errors.stormId !== undefined}
+                    />
+                    { propsFormik.errors.stormId &&
+                      (<div style={MyTheme.palette.red500}>
+                        {propsFormik.errors.stormId}
+                      </div>)
+                    }
+                    <button
+                      type="submit"
+                      disabled={propsFormik.values.stormId==-1}
+                    >
+                      Submit
+                    </button>
                     
-                      <Field
-                        required
-                        name="stormId"
-                        label="Storm"
-                        options={[
-                          { value: 1, label: "Storm 1" },
-                          { value: 2, label: "Storm 2" },
-                          { value: 3, label: "Storm 3" }
-                        ]}
-                        component={Select}
-                      />
-                      {console.log(props.errors)}
-                      <button
-                        type="submit"
-                        disabled={props.values.stormId==-1}
-                      >
-                        Submit
-                      </button>
-                    </Form>
-                  )}
-                />
-              </CardContent>
+                  </Form>
+                )}
+              />
           </TabPanel>
-          <TabPanel value={value} index="two">
+          <TabPanel value={value} index={1}>
             Item Two
           </TabPanel>
         </div>
-        
       </CenterGrid>
      
     </div>
@@ -160,7 +140,13 @@ function Index(props) {
 
 Index.getInitialProps = async function() {
   return {
-    initProps:'initPropValue'
+    initProps:{
+      storms:[
+        {label:"Storm #1",value:1},
+        {label:"Storm Dos",value:420},
+        {label: "Storm III",value:1337}
+      ]
+    }
   }
 }
 

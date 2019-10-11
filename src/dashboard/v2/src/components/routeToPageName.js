@@ -11,7 +11,7 @@ module.exports = (function() {
           name:"Test Name"
         },
         {
-          route:"/stormPicker",
+          route:"/tagImage",
           name:"Storm Tagging Selection"
         }
       ]

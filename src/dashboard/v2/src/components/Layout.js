@@ -24,6 +24,7 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const hasUser=props.user !==undefined
+  // console.log((props.user))
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -84,7 +85,7 @@ function ResponsiveDrawer(props) {
           {JSON.stringify(props.user)}
           {'Is logged in?: '+hasUser}
         </Typography> */}
-        {console.log((props.user))}
+       
       </main>
     </div>
   );
