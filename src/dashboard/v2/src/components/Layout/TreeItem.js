@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-import MyTheme from './theme';
+import MyTheme from '../theme';
 
 const useTreeItemStyles = makeStyles(theme => ({
     root: {
@@ -17,10 +17,6 @@ const useTreeItemStyles = makeStyles(theme => ({
     },
     content: {
       color: theme.palette.text.secondary,
-      // borderTopRightRadius: theme.spacing(2),
-      // borderBottomRightRadius: theme.spacing(2),
-      
-
       paddingRight: theme.spacing(1),
       fontWeight: theme.typography.fontWeightMedium,
       '$expanded > &': {

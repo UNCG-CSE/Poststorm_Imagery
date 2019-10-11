@@ -6,12 +6,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import MyTheme from './theme';
+import MyTheme from '../theme';
 
-import Styles from './Styles'
+import Styles from '../Styles'
 
 // const useStyles = Styles.useStyles;
-const drawerWidth = 240;
+const drawerWidth = Styles.drawerWidth;
 
 const useStyles = makeStyles(theme => ({
     appBar: {

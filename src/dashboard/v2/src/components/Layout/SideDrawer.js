@@ -4,7 +4,7 @@ import Divider from '@material-ui/core/Divider';
 import TreeView from '@material-ui/lab/TreeView';
 import StyledTreeItem from './TreeItem'
 import Link from "next/link";
-import MyTheme from './theme';
+import MyTheme from '../theme';
 //icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -22,9 +22,23 @@ import ImageIcon from '@material-ui/icons/Image';
 
 import Label from '@material-ui/icons/Label';
 
-import Styles from './Styles'
+import Styles from '../Styles'
 import Tab from '@material-ui/core/Tab';
-const useStyles = Styles.useStyles;
+
+
+const useStyles = makeStyles(theme => ({
+  rootTree: {
+    height: 264,
+    flexGrow: 1,
+   
+    maxWidth: 400,
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: Styles.drawerWidth,
+    
+  },
+}));
 
 export default function SideDrawer(props) {
   const classes = useStyles();

@@ -43,7 +43,7 @@ function Index(props) {
       return (
         <Typography className={classes.title} color="textSecondary" gutterBottom>       
           <Link href="/login"> 
-            <Button color="primary">
+            <Button color="primary" variant="outlined">
             Please Login to continue
             </Button>
           </Link>

@@ -7,15 +7,37 @@ import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import MyTheme from './theme';
+import MyTheme from '../theme';
 import SideDrawer from './SideDrawer'
 import AppBar from './MyAppBar'
 
 import Link from "next/link";
 
-import Styles from './Styles'
+import Styles from '../Styles'
 
-const useStyles = Styles.useStyles
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: Styles.drawerWidth,
+      flexShrink: 0,
+    },
+    
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: Styles.drawerWidth,
+    
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    
+  },
+}));
 
 function ResponsiveDrawer(props) {
 
@@ -24,6 +46,9 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const hasUser=props.user !==undefined
+
+  // console.log((props.user))
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -43,7 +68,7 @@ function ResponsiveDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar handleToggle={handleDrawerToggle} pageName={props.pageName}/>
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav className={classes.drawer} aria-label="mailbox folders">      
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
@@ -84,7 +109,7 @@ function ResponsiveDrawer(props) {
           {JSON.stringify(props.user)}
           {'Is logged in?: '+hasUser}
         </Typography> */}
-        {console.log((props.user))}
+      
       </main>
     </div>
   );
