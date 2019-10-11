@@ -18,6 +18,11 @@ class Image:
         return self.original_size_path
 
     def add_tag(self, user_id: str, tag: str, content: str):
+
+        # Make sure this key exists before attempting to access it
+        if user_id not in self.taggers.keys():
+            self.taggers[user_id] = dict()
+
         self.taggers[user_id][tag] = content
 
     def remove_tag(self, user_id: str, tag: str):
