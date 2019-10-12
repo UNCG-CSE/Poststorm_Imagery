@@ -11,7 +11,7 @@ class TestConnectionHandler(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         self_path = path.dirname(path.abspath(__file__))
-        cls.c = ConnectionHandler(html_text=open(path.join(self_path, '/collector/resources/'
+        cls.c = ConnectionHandler(html_text=open(path.join(self_path, 'resources/'
                                                  'Storms_List_Page.html'), 'r').read())
 
     def test_generate_storm_list_all(self):
