@@ -88,12 +88,13 @@ export default function SideDrawer(props) {
   }
 
   const username= hasUser ? ','+props.user.nickname: '' 
+  const role= hasUser ? ','+props.user.userRole.data[0].name: '' 
 
   return (
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <Tab label={"Welcome"+username} disableRipple/>
+      <Tab label={"Welcome"+username+role} disableRipple/>
       <Divider />
       <TreeView
         className={classes.rootTree}
