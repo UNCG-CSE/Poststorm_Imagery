@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from src.python.Poststorm_Imagery import h
+from src.python.psic import h
 
 
 class TestHelper(TestCase):

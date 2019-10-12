@@ -2,8 +2,8 @@ import argparse
 import os
 from typing import Union
 
-from src.python.Poststorm_Imagery import s
-from src.python.Poststorm_Imagery.resizer import generate
+from src.python.psic import s
+from src.python.psic.resizer import generate
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 

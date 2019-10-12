@@ -7,7 +7,7 @@ from typing import Union, List, Dict, Set, Pattern
 
 import pandas as pd
 
-from src.python.Poststorm_Imagery import s, h
+from src.python.psic import s, h
 
 CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
