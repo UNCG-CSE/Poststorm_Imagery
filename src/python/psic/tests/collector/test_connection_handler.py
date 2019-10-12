@@ -1,8 +1,8 @@
 from typing import List
 from unittest import TestCase
 
-from src.python.psic.collector.connection_handler import ConnectionHandler
-from src.python.psic.collector.storm import Storm
+from psic.collector.connection_handler import ConnectionHandler
+from psic.collector.storm import Storm
 
 
 class TestConnectionHandler(TestCase):

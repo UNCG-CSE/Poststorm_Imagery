@@ -1,10 +1,10 @@
 import re
 from typing import List
 
-from src.python.psic.collector.response_getter import get_http_response
-from src.python.psic.collector.storm import Storm
+from psic.collector.response_getter import get_http_response
+from psic.collector.storm import Storm
 
-from src.python.psic import s
+from psic import s
 
 
 class ConnectionHandler:

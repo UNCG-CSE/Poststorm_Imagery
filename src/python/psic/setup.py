@@ -4,12 +4,14 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+"""
 from pipenv.project import Project
 from pipenv.utils import convert_deps_to_pip
 
-pip_file = Project(chdir=False).parsed_pipfile
+pip_file = Project().parsed_pipfile
 requirements = convert_deps_to_pip(pip_file['packages'], r=False)
 test_requirements = convert_deps_to_pip(pip_file['dev-packages'], r=False)
+"""
 
 setup(
     name='psic',
@@ -41,10 +43,10 @@ setup(
     ],
     keywords='python',
     license='MIT license',
-    install_requires=requirements,
+    install_requires='requirements.txt',
     include_package_data=True,
     packages=find_packages(),
     test_suite='tests',
-    tests_require=test_requirements,
+    tests_require='requirements-dev.txt',
     zip_safe=False,
 )
