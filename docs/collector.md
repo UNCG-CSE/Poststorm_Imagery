@@ -49,8 +49,8 @@ Currently, the script can be called via command-line using specific arguments.
 !!! note "Important Note"
 
     The script will automatically download all .tar files listed, sequentially, to the `--path` specified, or to the 
-    default cache folder if `--path` is left out of the parameters. Members of the C-Sick team would run the command 
-    with `#!text -p "G:\Shared drives\C-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:` 
+    default cache folder if `--path` is left out of the parameters. Members of the P-Sick team would run the command 
+    with `#!text -p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:` 
     drive (*Windows*).
 
 
