@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="495954e7-c7b6-4a57-b411-01b8642d68b3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/GPS/gps_read.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/find_point.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GPS/florence_archive.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/GPS/florence_archive.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GPS/gps_plot.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/GPS/gps_plot.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/count/storm_count.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/count/storm_count.ipynb" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="187451128">
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="ipynb" value="3" />
+          <entry key="py" value="11" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="IPNB" value="3" />
+          <entry key="Python" value="11" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.compare" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="2253" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Python" value="2253" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.23" value="1" />
+          <entry key="project.open.time.27" value="1" />
+          <entry key="project.opened" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/count/storm_count.ipynb">
+          <provider selected="true" editor-type-id="ipnb-editor">
+            <state>
+              <selected id="0" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/catalog.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-171">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GPS/gps_plot.ipynb">
+          <provider selected="true" editor-type-id="ipnb-editor">
+            <state>
+              <selected id="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/find_point.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="193">
+              <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <marker date="1570819772633" expanded="true" signature="369:711" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/GPS/gps_plot.ipynb" />
+        <option value="$PROJECT_DIR$/src/GPS/gps_read.py" />
+        <option value="$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/find_point.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="52" />
+    <option name="y" value="127" />
+    <option name="width" value="1400" />
+    <option name="height" value="820" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="count" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="python" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="python" type="462c0819:PsiDirectoryNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="python" type="462c0819:PsiDirectoryNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="cataloging" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Poststorm_Imagery" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="python" type="462c0819:PsiDirectoryNode" />
+              <item name="Poststorm_Imagery" type="462c0819:PsiDirectoryNode" />
+              <item name="find_point" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/.travis.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/docs/collector.md</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/mkdocs.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Pipfile</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Pipfile.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/collect.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/connection_handler.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/response_getter.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/tar_ref.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/tests/collector/test_h.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/tests/collector/test_storm.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/requirements-test.txt</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/docs/cataloging.md</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/__init__.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/catalog.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/generate.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/find_center/find_center.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/h.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/resizer/generate.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/resizer/resize.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/s.py</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/h.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/s.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/src/python/Poststorm_Imagery/shrink/resize.py</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.find_point">
+    <configuration name="Poststorm_Imagery" type="JupiterNotebook" factoryName="Jupyter Notebook">
+      <module name="Poststorm_Imagery" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="additionalOptions" value="" />
+      <option name="ipnbHost" value="127.0.0.1" />
+      <option name="ipnbPort" value="8888" />
+      <method v="2" />
+    </configuration>
+    <configuration name="find_point" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Poststorm_Imagery" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/find_point.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="gps_read" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Poststorm_Imagery" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/GPS" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/GPS/gps_read.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Jupyter Notebook.Poststorm_Imagery" />
+      <item itemvalue="Python.gps_read" />
+      <item itemvalue="Python.find_point" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.find_point" />
+        <item itemvalue="Python.gps_read" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="495954e7-c7b6-4a57-b411-01b8642d68b3" name="Default Changelist" comment="" />
+      <created>1567785033342</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567785033342</updated>
+    </task>
+    <task id="LOCAL-00001" summary="iterates through image directory and adds gps metadata to dictionary&#10;work in progress">
+      <created>1568433627082</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1568433627082</updated>
+    </task>
+    <task id="LOCAL-00002" summary="writes to csv">
+      <created>1568434882272</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1568434882272</updated>
+    </task>
+    <task id="LOCAL-00003" summary="writes to csv">
+      <created>1568497074986</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1568497074987</updated>
+    </task>
+    <task id="LOCAL-00004" summary="writes to csv">
+      <created>1568502110901</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1568502110901</updated>
+    </task>
+    <task id="LOCAL-00005" summary="writes to csv">
+      <created>1568503063643</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1568503063643</updated>
+    </task>
+    <task id="LOCAL-00006" summary="writes to csv">
+      <created>1568871174463</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1568871174463</updated>
+    </task>
+    <task id="LOCAL-00007" summary="writes to csv">
+      <created>1568871785845</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1568871785845</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13624841" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.63434726" visible="true" weight="0.2987887" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39973083" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49936628" weight="0.32974428" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49619773" weight="0.30417228" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32974428" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3656527" side_tool="true" visible="true" weight="0.2987887" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="iterates through image directory and adds gps metadata to dictionary&#10;work in progress" />
+    <MESSAGE value="writes to csv" />
+    <option name="LAST_COMMIT_MESSAGE" value="writes to csv" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/collector/helpers.py" />
+    <entry file="file://$PROJECT_DIR$/src/collector/Tar.py" />
+    <entry file="file://$PROJECT_DIR$/src/collector/Storm.py" />
+    <entry file="file://$PROJECT_DIR$/src/collector/ConnectionHandler.py" />
+    <entry file="file://$PROJECT_DIR$/src/collector/collect.py" />
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/helpers.py" />
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/TarRef.py" />
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/ConnectionHandler.py" />
+    <entry file="file://$PROJECT_DIR$/src/count/storm_images_count.ipynb" />
+    <entry file="file://$PROJECT_DIR$/src/count/count-test.py" />
+    <entry file="file://$PROJECT_DIR$/src/GPS/plot_coord.py" />
+    <entry file="file://$PROJECT_DIR$/src/count/storm_images_count.py" />
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/s.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/storm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1680" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/collector/collect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="27" column="51" selection-start-line="27" selection-start-column="51" selection-end-line="27" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/generate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3416">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/cataloging/catalog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-171">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GPS/gps_read.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+            <marker date="1570812761013" expanded="true" signature="1234:1235" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/count/storm_count.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GPS/gps_plot.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/python/Poststorm_Imagery/find_point/find_point.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1570819772633" expanded="true" signature="369:711" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
