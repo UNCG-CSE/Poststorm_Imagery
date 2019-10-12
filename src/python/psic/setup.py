@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
+import os
 
 from setuptools import setup, find_packages
 """
@@ -43,10 +44,10 @@ setup(
     ],
     keywords='python',
     license='MIT license',
-    install_requires='requirements.txt',
+    install_requires=['jupyter', 'pandas', 'pillow', 'requests', 'tqdm'],
     include_package_data=True,
     packages=find_packages(),
     test_suite='tests',
-    tests_require='requirements-dev.txt',
+    tests_require=['bumpversion', 'flake8', 'pytest', 'pytest-cov', 'pytest-runner'],
     zip_safe=False,
 )
