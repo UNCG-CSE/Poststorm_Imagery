@@ -4,8 +4,8 @@ from typing import List
 from requests import Response
 
 # Matches .tar files for a given storm (Florence and newer)
-from src.python.psic.collector.connection_handler import get_http_response
-from src.python.psic.collector.tar_ref import TarRef
+from psic.collector.connection_handler import get_http_response
+from psic.collector.tar_ref import TarRef
 
 # Matches .tar files for most (if not all) formats
 URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "\"\\s*(http[^\"]+\\.tar)\\s*\""
@@ -82,13 +82,13 @@ class Storm:
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
                 self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
-                
+
         for tar_url, tar_date, tar_label in re.findall(URL_STORMS_REGEX_PATTERN_TAR_2, self.r.text):
-    
+
             # Search for the given pattern
             if re.search(search_re, tar_date) or re.search(search_re, tar_url) or re.search(search_re, tar_label):
                 self.tar_list.append(TarRef(tar_url, tar_date, tar_label))
-    
+
         if len(self.tar_list) == 0:
             for tar_url in re.findall(URL_STORMS_REGEX_PATTERN_TAR_FINAL, self.r.text):
                 self.tar_list.append(TarRef(tar_url=tar_url))

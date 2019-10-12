@@ -3,7 +3,7 @@ from typing import Tuple, Union, List
 
 from PIL import Image
 
-from src.python.psic import s, h
+from psic import s
 
 
 def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale: float, **kwargs):
@@ -11,7 +11,7 @@ def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale:
     # Enable debugging flag (True = output debug statements, False = don't output debug statements)
     debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
 
-    from src.python.psic import h
+    from psic import h
 
     # Get all jpg files
     files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', **kwargs)

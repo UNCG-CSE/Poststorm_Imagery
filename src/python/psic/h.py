@@ -7,7 +7,7 @@ from typing import Union, Dict, Pattern, List
 
 import pytest
 
-from src.python.psic import s
+from psic import s
 
 
 @pytest.mark.skip
@@ -133,8 +133,8 @@ def all_files_recursively(root_path: Union[bytes, str],
                           file_extension: str = 'jpg',
                           file_search_re: Pattern = '.*',
                           **kwargs) -> List[str]:
-    """A method to allow for recursively finding all files (including their absolute path on the local machine in 
-    order. This method also accepts an optional regular expression to match file names to and/or a specific file 
+    """A method to allow for recursively finding all files (including their absolute path on the local machine in
+    order. This method also accepts an optional regular expression to match file names to and/or a specific file
     extension for the purpose of only getting specific file types.
 
     :param root_path: The path to begin searching recursively for matching files in
@@ -142,7 +142,7 @@ def all_files_recursively(root_path: Union[bytes, str],
     :param require_geom: Whether or not to return only files with a .geom file associated with them
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
-    :return: A list of files with their relative path 
+    :return: A list of files with their relative path
     """
 
     # Enable debugging flag (True = output debug statements, False = don't output debug statements)
@@ -176,8 +176,8 @@ def all_files_recursively(root_path: Union[bytes, str],
                 # file's size to see if there are truly duplicates (same size and original is not removed)
                 if re.search(' \\(\\d\\)\\.', f) \
                         and os.path.exists(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) \
-                            and os.path.getsize(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) is not \
-                                os.path.getsize(abs_file_path):
+                        and os.path.getsize(os.path.join(dir_path, re.sub(' \\(\\d\\)\\.', '.', f))) is not \
+                        os.path.getsize(abs_file_path):
                     if debug and verbosity >= 1:
                         # In-line progress (no spam when verbosity is 1)
                         print('duplicate file!', end='')

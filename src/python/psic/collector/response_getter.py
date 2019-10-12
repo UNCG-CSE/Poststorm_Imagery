@@ -1,7 +1,7 @@
 import requests
 from requests import Response
 
-from src.python.psic import h
+from psic import h
 
 
 def get_http_response(url: str) -> Response:

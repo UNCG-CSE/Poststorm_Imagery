@@ -8,8 +8,8 @@ from typing import Union
 import requests
 from tqdm import tqdm
 
-from src.python.psic import s, h
-from src.python.psic.collector.response_getter import get_full_content_length
+from psic import s, h
+from psic.collector.response_getter import get_full_content_length
 
 UNKNOWN = 'Unknown'
 
@@ -161,7 +161,7 @@ class TarRef:
             # Ensure that both the program and the website are on the same page
             if full_size_local != full_size_origin:
                 h.print_error('Remaining file size does not match with local cache. '
-                      'Something went wrong with partial file request!')
+                              'Something went wrong with partial file request!')
                 exit()
 
             # How many bytes to load into memory before saving to the file

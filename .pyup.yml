@@ -26,7 +26,7 @@ search: False
 # default: empty
 # allowed: list
 requirements:
-  - src/python/requirements-test.txt
+  - src/python/requirements-dev.txt
   - src/python/requirements-docs.txt
   - src/python/Pipfile.lock
 

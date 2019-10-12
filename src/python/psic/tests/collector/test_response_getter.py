@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import requests
 
-from src.python.psic.collector.response_getter import get_http_response, get_full_content_length
+from psic.collector.response_getter import get_http_response, get_full_content_length
 
 
 class TestResponseGetter(TestCase):

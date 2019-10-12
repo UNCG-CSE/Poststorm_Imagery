@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.python.psic import s
-from src.python.psic.collector.storm import Storm
+from psic import s
+from psic.collector.storm import Storm
 
 
 class TestStorm(TestCase):

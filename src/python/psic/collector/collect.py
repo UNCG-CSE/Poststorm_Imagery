@@ -9,10 +9,10 @@ from typing import List, Union
 
 from requests.exceptions import RequestException
 
-from src.python.psic import s, h
-from src.python.psic.collector.connection_handler import ConnectionHandler
-from src.python.psic.collector.storm import Storm
-from src.python.psic.collector.tar_ref import TarRef
+from psic import s, h
+from psic.collector.connection_handler import ConnectionHandler
+from psic.collector.storm import Storm
+from psic.collector.tar_ref import TarRef
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -145,7 +145,7 @@ if OPTIONS.no_status is False:
                     total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]  # The number of total bytes to download
                     user: str = lock_info['user']  # The account that started the download (created the lock)
 
-                    """Add information about who initiated the lock, how much is downloaded so far, 
+                    """Add information about who initiated the lock, how much is downloaded so far,
                     and when the lock information was last updated (does not update immediately)"""
 
                     exists_str += 'Partially downloaded (' + user + '): ' + h.to_readable_bytes(partial_size) + \
