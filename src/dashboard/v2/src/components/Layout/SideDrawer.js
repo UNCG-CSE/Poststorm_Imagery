@@ -63,7 +63,14 @@ export default function SideDrawer(props) {
     if(hasUser){
       return (
         <>
-          <Link href="/tagImage">
+          <Link href="/auth/dashboardHome">
+            <StyledTreeItem 
+            bgColor={MyTheme.palette.blue500.color} 
+            //textColor={MyTheme.palette.red500.color} 
+            color='#FFFFFF'
+            nodeId="1" labelText="Home" labelIcon={ImageIcon} />
+          </Link>
+          <Link href="/auth/tagImage">
             <StyledTreeItem 
             bgColor={MyTheme.palette.blue500.color} 
             //textColor={MyTheme.palette.red500.color} 

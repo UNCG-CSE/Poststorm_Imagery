@@ -104,11 +104,6 @@ function ResponsiveDrawer(props) {
           {props.children}
           
         </div>
-        {/* <Typography paragraph>
-          {JSON.stringify(props.user)}
-          {'Is logged in?: '+hasUser}
-        </Typography> */}
-      
       </main>
     </div>
   );
