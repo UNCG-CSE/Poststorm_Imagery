@@ -7,7 +7,8 @@ from typing import Union, List, Dict, Set, Pattern
 
 import pandas as pd
 
-from src.python.Poststorm_Imagery import s, h
+from psic import s
+from psic import h
 
 CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
@@ -55,7 +56,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
 
                 # Right-align the file numbers, because why not
                 print(('{:>' + str(len(str(len(files) + 1))) + '}').format(i) + '  ' + files[i - 1])
-                if i is 5:
+                if i == 5:
                     print(('{:>' + str(len(str(len(files) + 1))) + '}').format('...'))
 
         else:
@@ -137,9 +138,9 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
         # Remove redundant queries to .geom file if the data is already present in the catalog
         for field in current_fields_needed:
             if (type(row[field]) is str and len(row[field]) > 0) \
-                    or (type(row[field]) is not str and str(row[field]) is "nan"):
-                print('field: ' + field + '  row[field]: "' + str(row[field]) + '" type(row[field])' + str(type(row[
-                                                                                                                field])))
+                    or (type(row[field]) is not str and str(row[field]) == "nan"):
+                print('field: ' + field + '  row[field]: "' + str(row[field]) +
+                      '" type(row[field])' + str(type(row[field])))
                 row_fields_needed.remove(field)
 
         # Only query the .geom file if there are fields still unfilled
@@ -158,7 +159,7 @@ def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, field
                     catalog.at[i, key] = value
                     flag_unsaved_changes = True
 
-        if save_interval > 0 and stat_files_accessed % save_interval is 0:
+        if save_interval > 0 and stat_files_accessed % save_interval == 0:
 
             print('\rSaving catalog to disk (' + str(stat_files_accessed) +
                   ' .geom files accessed) ... ', end='')
@@ -258,7 +259,7 @@ def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]
         h.print_error('\n\nCould not find .geom file for "' + file_path + '": "' + geom_path + '"')
         return None
 
-    if os.path.getsize(geom_path) is 0:
+    if os.path.getsize(geom_path) == 0:
         h.print_error('\n\nThe .geom file for "' + file_path + '": "' + geom_path + '" is 0 KiBs.\n'
                       'Bad file access may have caused this, so check the archive to see if the image and the .geom '
                       'files in the archive are the same as the unzipped versions!\n')
@@ -270,7 +271,7 @@ def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]
         for line in f.readlines():
 
             # If there are no more fields to find, close the file and return the resulting dictionary or string
-            if len(field_id_set) is 0:
+            if len(field_id_set) == 0:
                 f.close()
 
                 if debug and verbosity >= 2:
@@ -279,7 +280,7 @@ def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]
                     if verbosity >= 3:
                         print()  # RIP your console if you get here
 
-                if is_single_input and len(result) is 1:
+                if is_single_input and len(result) == 1:
                     # Return the first (and only value) as a single string
                     return str(list(result.values())[0])
 
@@ -288,7 +289,7 @@ def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str]
             field_id_set_full = field_id_set.copy()
             for field_id in field_id_set_full:
                 value = re.findall(field_id + ':\\s+(.*)', line)
-                if len(value) is 1:
+                if len(value) == 1:
                     result[field_id] = str(value[0])
                     field_id_set.remove(field_id)
 
