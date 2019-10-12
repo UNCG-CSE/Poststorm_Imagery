@@ -4,9 +4,9 @@ from typing import Union
 
 import jsonpickle
 
-from src.python.Poststorm_Imagery import s
-from src.python.Poststorm_Imagery.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
-from src.python.Poststorm_Imagery.assigner.json_response import JSONResponse
+from psic import s
+from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
+from psic.assigner.json_response import JSONResponse
 
 ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 

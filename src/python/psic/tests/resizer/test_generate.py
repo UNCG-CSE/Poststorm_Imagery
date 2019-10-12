@@ -2,7 +2,7 @@
 from os import path
 from unittest import TestCase
 
-from src.python.Poststorm_Imagery.resizer.generate import resize_image
+from psic.resizer.generate import resize_image
 
 
 class TestGenerate(TestCase):
