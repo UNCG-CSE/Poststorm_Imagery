@@ -4,39 +4,47 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+from pipenv.project import Project
+from pipenv.utils import convert_deps_to_pip
 
-# with open('README.md') as readme_file:
-#     readme = readme_file.read()
-
-requirements = []
-
-setup_requirements = ['pytest-runner']
-
-test_requirements = ['pytest']
+pip_file = Project(chdir=False).parsed_pipfile
+requirements = convert_deps_to_pip(pip_file['packages'], r=False)
+test_requirements = convert_deps_to_pip(pip_file['dev-packages'], r=False)
 
 setup(
     name='psic',
     version='1.1.0',
-    author="Team P-Sick",
+    author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
+    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
+    description='Classification and analysis of post-storm response imagery.',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Environment :: Web Environment',
+        'Framework :: Flake8',
+        'Framework :: Pytest',
+        'Framework :: tox',
         'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Other',
+        'Programming Language :: Other Scripting Engines',
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Image Recognition',
+        'Topic :: Scientific/Engineering :: Atmospheric Science',
     ],
-    description="Classification and analysis of post-storm response imagery.",
-    install_requires=requirements,
-    license="MIT license",
-    include_package_data=True,
     keywords='python',
+    license='MIT license',
+    install_requires=requirements,
+    include_package_data=True,
     packages=find_packages(),
-    setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
     zip_safe=False,
 )
