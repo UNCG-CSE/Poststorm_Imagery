@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 from os import path
 from typing import Dict, Union, Set
@@ -40,7 +41,11 @@ class Image:
         if content.lower() == ('true' or 'false'):
             content = bool(content)
 
-        self.taggers[user_id][tag]: str or bool = content
+        # Check if the response is an integer and only an integer (explicitly define match to avoid type coercion)
+        elif re.fullmatch('\\d+', content):
+            content = int(content)
+
+        self.taggers[user_id][tag]: Union[str, bool, int] = content
 
     def remove_tag(self, user_id: str, tag: str) -> None:
         """
