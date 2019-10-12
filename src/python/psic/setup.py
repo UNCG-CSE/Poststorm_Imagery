@@ -15,9 +15,9 @@ setup_requirements = ['pytest-runner']
 test_requirements = ['pytest']
 
 setup(
-    name='Poststorm_Imagery',
+    name='psic',
     version='1.1.0',
-    author="Team C-Sick",
+    author="Team P-Sick",
     author_email='mcmoretz@uncg.edu',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from src.python.Poststorm_Imagery import s
-from src.python.Poststorm_Imagery.collector.storm import Storm
+from src.python.psic import s
+from src.python.psic.collector.storm import Storm
 
 
 class TestStorm(TestCase):
