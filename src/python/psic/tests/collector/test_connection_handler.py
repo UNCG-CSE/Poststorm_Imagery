@@ -11,6 +11,7 @@ class TestConnectionHandler(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         self_path = path.dirname(path.abspath(__file__))
+        print(self_path)
         cls.c = ConnectionHandler(html_text=open(path.join(self_path, 'resources/'
                                                  'Storms_List_Page.html'), 'r').read())
 
