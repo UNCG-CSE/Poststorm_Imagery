@@ -1,3 +1,4 @@
+from os import path
 from typing import List
 from unittest import TestCase
 
@@ -9,8 +10,9 @@ class TestConnectionHandler(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.c = ConnectionHandler(html_text=open('./psic/tests/collector/resources/'
-                                                 'Storms_List_Page.html', 'r').read())
+        self_path = path.dirname(path.abspath(__file__))
+        cls.c = ConnectionHandler(html_text=open(path.join(self_path, '/collector/resources/'
+                                                 'Storms_List_Page.html'), 'r').read())
 
     def test_generate_storm_list_all(self):
 
