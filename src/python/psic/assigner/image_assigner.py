@@ -4,8 +4,8 @@ from typing import List, Dict, Union
 
 import pandas as pd
 
-from src.python.Poststorm_Imagery import h, s
-from src.python.Poststorm_Imagery.assigner.image_ref import Image
+from psic import h, s
+from psic.assigner.image_ref import Image
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
 MAX_ALLOWED_SKIPS: int = 1
