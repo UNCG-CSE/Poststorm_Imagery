@@ -10,6 +10,8 @@ from src.python.Poststorm_Imagery.assigner.image_ref import Image
 # The maximum amount of times an image can be skipped and remain in the pending queue
 MAX_ALLOWED_SKIPS: int = 1
 
+MINIMUM_TAGGERS_NEEDED: int = 2
+
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
@@ -128,6 +130,7 @@ class ImageAssigner:
         """
 
         # If the user has no current image, assign them one from the pending queue
+
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
@@ -174,6 +177,7 @@ class ImageAssigner:
         """
 
         # If the user has no current image, assign them one from the pending queue and finish
+
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
             return self.current_image[user_id]
@@ -207,15 +211,30 @@ class ImageAssigner:
             return next_image
 
     def _user_done_tagging_current_image(self, user_id: str):
-        self.finished_tagged_queue.append(self.current_image[user_id])
+        if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED:
+            # If enough people have tagged this image
+
+            final_tags = self.current_image[user_id].get_best_tags()
+
+            if final_tags is None:
+                # There is no consensus between users on what the accurate tags are
+                self.pending_images_queue.append(self.current_image[user_id])
+            else:
+                # Majority of users agree on a tag for this image
+                self.finished_tagged_queue.append(self.current_image[user_id])
+        else:
+            # If image needs more people to tag it
+            self.pending_images_queue.append(self.current_image[user_id])
 
     def _user_skip_tagging_current_image(self, user_id: str):
 
         self.current_image[user_id].skippers.add(user_id)
 
         if len(self.current_image[user_id].skippers) > MAX_ALLOWED_SKIPS:
+            # If the image has exceeded the allowed number of skips
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
+            # If the image can be skipped by at least one more unique user before being moved to the max skipped queue
             self.pending_images_queue.append(self.current_image[user_id])
 
     def save(self):
@@ -226,8 +245,8 @@ class ImageAssigner:
         :return: The object with copies of un-included objects that are normally excluded when creating a shallow copy
         """
 
-        # Ensure that data for each image is saved
         for i in range(len(self.pending_images_queue)):
+            # Ensure that data for each image is saved
             self.pending_images_queue[i] = self.pending_images_queue[i].save()
 
         # Save a copy of the queues when creating a pickle (without this, the queues will not save in the pickle)
