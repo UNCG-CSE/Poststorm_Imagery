@@ -178,7 +178,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
             return self.current_image[user_id]
 
-        if (not skip) and (user_id in self.current_image[user_id].taggers.keys()) \
+        if (not skip) and (user_id in self.current_image[user_id].get_taggers()) \
                 and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
             self._user_done_tagging_current_image(user_id=user_id)
         else:
@@ -194,7 +194,7 @@ class ImageAssigner:
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id in (next_image.skippers or next_image.taggers.keys()):
+        if user_id in (next_image.skippers or next_image.get_taggers()):
             if self.debug:
                 print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
 
