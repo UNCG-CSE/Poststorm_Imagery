@@ -5,7 +5,9 @@ verify_ssl = true
 
 [dev-packages]
 bumpversion = "*"
+flake8 = "*"
 pytest = "*"
+pytest-runner = "*"
 pytest-cov = "*"
 
 [packages]
