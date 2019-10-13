@@ -2,16 +2,15 @@ import os
 from typing import Tuple, Union, List
 
 from PIL import Image
+import auger
 
-from psic import s
+from psic import s, h
 
 
-def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale: float, **kwargs):
+def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str], scale: float, **kwargs):
 
     # Enable debugging flag (True = output debug statements, False = don't output debug statements)
     debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-    from psic import h
 
     # Get all jpg files
     files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', **kwargs)
@@ -37,15 +36,8 @@ def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale:
             # Open file as an image
             original_image = Image.open(original_abs_path)
 
-            # Get the original image's width and height
-            width, height = original_image.size
-
-            # Reduce the size of the original image by a specified multiplier (scale factor)
-            new_size: Tuple = (int(width * scale), int(height * scale))
-
             # Resize the image based on given scale factor
             try:
-                new_image = original_image.resize(new_size, Image.ANTIALIAS)
 
                 # Get the path for the new (smaller) image without the file's name & extension in it
                 new_abs_dir = os.path.split(new_abs_path)[0]
@@ -55,8 +47,31 @@ def resize_image(path: Union[bytes, str], output_path: Union[bytes, str], scale:
                     os.makedirs(new_abs_dir)
 
                 # Save the new image to the specified directory
-                new_image.save(new_abs_path)
+                resize_image(original_image=original_image, scale=scale).save(new_abs_path)
 
-            except OSError:
-                h.print_error('\nThere was an OS error with resizing the image. File may be open or corrupted ... '
-                              'skipping!')
+            except Exception as e:
+                h.print_error('\n' + str(e) + '\nThere was an OS error with resizing the image. File may be open or '
+                              'corrupted ... skipping!')
+
+
+def resize_image(original_image: Image, scale: float) -> Image:
+
+    # Get the original image's width and height
+    width, height = original_image.size
+
+    # Reduce the size of the original image by a specified multiplier (scale factor)
+    new_size: Tuple = (int(width * scale), int(height * scale))
+
+    try:
+        return original_image.resize(new_size, Image.ANTIALIAS)
+
+    except Exception as e:
+        h.print_error(e)
+
+
+if __name__ == "__main__":
+    with auger.magic([]):
+        resize_all_images('src/python/psic/tests/resize/input',
+                          'src/python/psic/tests/resize/output',
+                          scale=0.15,
+                          debug=True)

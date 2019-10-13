@@ -9,6 +9,7 @@ flake8 = "*"
 pytest = "*"
 pytest-runner = "*"
 pytest-cov = "*"
+auger-python = "*"
 
 [packages]
 requests = "*"
