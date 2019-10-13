@@ -12,11 +12,13 @@ matrix:
     - pipenv_to_requirements -f
     script:
     - tox
-    after_success:
-    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-    - chmod +x send.sh
-    - ./send.sh success $WEBHOOK_URL
+#    after_success:
+#    # POST successes on the main branch to Discord
+#    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+#    - chmod +x send.sh
+#    - ./send.sh success $WEBHOOK_URL
     after_failure:
+    # POST all failures on the main and beta branch to Discord
     - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
     - chmod +x send.sh
     - ./send.sh failure $WEBHOOK_URL
