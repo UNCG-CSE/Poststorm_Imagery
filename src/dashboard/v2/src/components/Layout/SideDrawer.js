@@ -24,6 +24,7 @@ import Label from '@material-ui/icons/Label';
 
 import Styles from '../Styles'
 import Tab from '@material-ui/core/Tab';
+import { func } from 'prop-types';
 
 
 const useStyles = makeStyles(theme => ({
@@ -95,7 +96,8 @@ export default function SideDrawer(props) {
   }
 
   const username= hasUser ? ','+props.user.nickname: '' 
-  const role= hasUser ? ','+props.user.userRole.data[0].name: '' 
+  const role= hasUser ? ',': '' //props.user.userRole.data[0].name
+
 
   return (
     <div>
