@@ -7,11 +7,19 @@ matrix:
     - cd src/python/
     - pip install -U pip
     install:
-    - pip install -U tox-travis #pipenv_to_requirements
-#     before_script:
-#     - pipenv_to_requirements -f
+    - pip install -U tox-travis pipenv_to_requirements
+    before_script:
+    - pipenv_to_requirements -f
     script:
     - tox
+    after_success:
+    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+    - chmod +x send.sh
+    - ./send.sh success $WEBHOOK_URL
+    after_failure:
+    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+    - chmod +x send.sh
+    - ./send.sh failure $WEBHOOK_URL
 
   - language: python
     python: 3.7
@@ -20,9 +28,9 @@ matrix:
     - cd src/python/
     - pip install -U pip
     install:
-    - pip install -U tox-travis codecov #pipenv_to_requirements
-#    before_script:
-#    - pipenv_to_requirements -f
+    - pip install -U tox-travis codecov pipenv_to_requirements
+    before_script:
+    - pipenv_to_requirements -f
     script:
     - tox
     after_success:
@@ -39,5 +47,5 @@ matrix:
     - node_modules/.bin/eslint . --fix
     - npm test
 
-#  allow_failures:
-#  - node_js: node
+  allow_failures:
+  - node_js: node
