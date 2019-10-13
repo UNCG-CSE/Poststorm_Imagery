@@ -29,7 +29,7 @@ parser.add_argument('--debug', '-d', action='store_true',
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
-generate.resize_image(path=OPTIONS.path,
-                      output_path=OPTIONS.output_path,
-                      scale=OPTIONS.scale,
-                      debug=OPTIONS.debug)
+generate.resize_all_images(path=OPTIONS.path,
+                           output_path=OPTIONS.output_path,
+                           scale=OPTIONS.scale,
+                           debug=OPTIONS.debug)
