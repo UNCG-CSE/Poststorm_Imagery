@@ -8,10 +8,20 @@ matrix:
     - pip install -U pip
     install:
     - pip install -U tox-travis #pipenv_to_requirements
-#     before_script:
-#     - pipenv_to_requirements -f
+#    before_script:
+#    - pipenv_to_requirements -f
     script:
     - tox
+#    after_success:
+#    # POST successes on the main branch to Discord
+#    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+#    - chmod +x send.sh
+#    - ./send.sh success $WEBHOOK_URL
+    after_failure:
+    # POST all failures on the main and beta branch to Discord
+    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+    - chmod +x send.sh
+    - ./send.sh failure $WEBHOOK_URL
 
   - language: python
     python: 3.7
