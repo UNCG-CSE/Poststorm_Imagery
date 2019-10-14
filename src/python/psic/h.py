@@ -17,7 +17,7 @@ def print_error(*args, **kwargs) -> None:  # pragma: no cover
     print(*args, file=sys.stderr, **kwargs)
 
 
-def to_readable_bytes(byte_count: int) -> str:
+def to_readable_bytes(byte_count: int or None) -> str:
     """Take in a number of bytes (integer) and write it out in a human readable format (for printing). This
     method will output a number like "23.52 GiBs", "1.3 MiBs", or "324.45 KiBs" for the corresponding byte count.
     1 GiB = 1024 MiBs, 1 MiB = 1024 KiBs, and 1 KiB = 1024 Bytes.
