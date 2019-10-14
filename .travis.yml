@@ -27,7 +27,7 @@ matrix:
     script:
     - tox
     after_success:
-    - echo cd
+    - tree
     - codecov
 
   - language: node_js
