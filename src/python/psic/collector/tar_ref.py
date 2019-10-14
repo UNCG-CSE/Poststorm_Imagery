@@ -215,8 +215,6 @@ class TarRef:
         if not os.path.exists(extract_dir_path):
             os.makedirs(extract_dir_path)
 
-        notify_skip_files = False
-
         for member in tf.getmembers():
             if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
                 print('\rCreating \t' + member.name + ' ... ', end='')
