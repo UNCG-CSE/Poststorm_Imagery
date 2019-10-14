@@ -17,9 +17,9 @@ class TestStorm(TestCase):
     def test_generate_tar_list_full(self):
         self.storm.generate_tar_list()
         self.assertGreaterEqual(len(self.storm.tar_list), 10)
-        self.assertEquals(str(self.storm.tar_list_last_pattern), '.*')
+        self.assertEqual(str(self.storm.tar_list_last_pattern), '.*')
 
     def test_generate_tar_list_rgb(self):
         self.storm.generate_tar_list(search_re="RGB")
         self.assertGreaterEqual(len(self.storm.tar_list), 5)
-        self.assertEquals(str(self.storm.tar_list_last_pattern), 'RGB')
+        self.assertEqual(str(self.storm.tar_list_last_pattern), 'RGB')

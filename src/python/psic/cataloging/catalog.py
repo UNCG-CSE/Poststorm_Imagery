@@ -25,10 +25,10 @@ parser.add_argument('--fields', '-f', type=Set, default=s.DEFAULT_FIELDS.copy(),
                          'optional fields "size" and "date" for the size of the image and the date taken respectively '
                          '(Default: %(default)s).')
 
-parser.add_argument('--debug', '-d', action='store_true',
+parser.add_argument('--debug', '-d', action='store_true', default=s.DEFAULT_DEBUG,
                     help='If included, the program will print info throughout the process (Default: %(default)s).')
 
-parser.add_argument('--verbosity', '-v', type=int, default=1,
+parser.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
                     help='Changes the log / debug message verbosity. Not all functions may be affected by this '
                          'value! Possible values are ... '
                          '0 = only errors, '
