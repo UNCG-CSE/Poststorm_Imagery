@@ -16,7 +16,8 @@ class TestResizeImages(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        shutil.rmtree(OUTPUT_PATH)
+        if os.path.exists(OUTPUT_PATH):
+            shutil.rmtree(OUTPUT_PATH)
 
     # Allow for capturing console output for comparison using pytest fixtures
     @pytest.fixture(autouse=True)
@@ -44,4 +45,5 @@ class TestResizeImages(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        shutil.rmtree(OUTPUT_PATH)
+        if os.path.exists(OUTPUT_PATH):
+            shutil.rmtree(OUTPUT_PATH)
