@@ -1,11 +1,14 @@
-from os import path
+import os
 from typing import List
 from unittest import TestCase
 
 from psic.collector.connection_handler import ConnectionHandler
 from psic.collector.storm import Storm
 
-SELF_PATH = path.dirname(path.abspath(__file__))
+SELF_PATH = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SELF_PATH, 'data')
+INPUT_PATH = os.path.join(DATA_PATH, 'input')
+TEST_FILE_PATH = os.path.join(INPUT_PATH, 'Storms_List_Page.html')
 
 
 class TestConnectionHandler(TestCase):
@@ -13,8 +16,7 @@ class TestConnectionHandler(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         print(SELF_PATH)
-        cls.c = ConnectionHandler(html_text=open(path.join(SELF_PATH, 'resources/'
-                                                 'Storms_List_Page.html'), 'r').read())
+        cls.c = ConnectionHandler(html_text=open(TEST_FILE_PATH, 'r').read())
 
     def test_generate_storm_list_all(self):
 
