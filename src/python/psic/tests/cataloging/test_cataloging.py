@@ -11,7 +11,7 @@ SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input')
 CATALOG_FILE = os.path.join(INPUT_PATH, Cataloging.CATALOG_FILE)
-EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
+# EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
 # OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 
 
