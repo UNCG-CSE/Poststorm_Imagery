@@ -23,7 +23,9 @@ class TarRef:
     tar_label: str  # The label associated with the tar (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
     tar_file_name: str  # The .tar file's name not including the file suffix (.tar)
-    tar_file_path: Union[bytes, str] or None = None  # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
+
+    # The full path to the local copy of the .tar file, including file name and file suffix (.tar)
+    tar_file_path: Union[bytes, str] or None = None
 
     tar_file: tarfile.TarFile  # The TarFile object stored in memory
     tar_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object

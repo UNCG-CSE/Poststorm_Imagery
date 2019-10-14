@@ -3,7 +3,7 @@ from copy import deepcopy
 from os import path
 from typing import Dict, Union, Set
 
-from Poststorm_Imagery import h
+from psic import h
 
 
 def _cast_valid_types(content: str) -> Union[str, bool, int]:
@@ -210,7 +210,8 @@ class Image:
                     tags_flattened[tag] = value
 
         else:
-            tag_totals: Dict[str, Dict[str, int]] = self._sum_tag_values_by_users()  # tag_totals[tag][value] = <number of user_ids>
+            # tag_totals[tag][value] = <number of user_ids>
+            tag_totals: Dict[str, Dict[str, int]] = self._sum_tag_values_by_users()
 
             for tag in tag_totals:
 
