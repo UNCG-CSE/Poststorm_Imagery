@@ -17,6 +17,6 @@ ignore:
   - '**/psic/resizer/resize.py'
 
 coverage:
-  range: 40..80
+  range: 50..90
   round: down
   precision: 2
