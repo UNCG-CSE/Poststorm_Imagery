@@ -4,6 +4,12 @@ ignore:
 #  - "**/*.py"         # glob accepted
 #  - "[a-z]+/test_.*"  # regexp accepted
 
+  # Ignore command-line runners
+  - '**/psic/assigner/assign.py'
+  - '**/psic/cataloging/catalog.py'
+  - '**/psic/collector/collect.py'
+  - '**/psic/resizer/resize.py'
+
 coverage:
   range: 40..80
   round: down
