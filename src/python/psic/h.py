@@ -96,7 +96,7 @@ def is_locked_by_another_user(base_file: Union[bytes, str], this_user: str) -> b
     with open(base_file + s.LOCK_SUFFIX, 'r') as lock:
         for line in lock.readlines():
             if line.startswith('user = '):
-                if line.endswith(this_user):
+                if line.strip().endswith(this_user):
                     lock.close()
                     return False
                 else:
