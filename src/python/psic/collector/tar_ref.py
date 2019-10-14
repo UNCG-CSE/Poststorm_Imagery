@@ -52,7 +52,8 @@ class TarRef:
         else:
             return '(' + self.tar_date + ') ' + self.tar_file_name + '.tar [' + self.tar_label + ']'
 
-    def download_url(self, output_dir: str, user: str, overwrite: bool = False) -> tarfile.TarFile or None:
+    def download_url(self, output_dir: str, user: str, overwrite: bool = False) \
+            -> tarfile.TarFile or None:  # pragma: no cover
         """Download the .tar file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` parameter.
 
@@ -161,7 +162,7 @@ class TarRef:
 
         return tarfile.open(self.tar_file_path)
 
-    def get_file_size_origin(self) -> int:
+    def get_file_size_origin(self) -> int:  # pragma: no cover
         """Checks to see if the TarRef object has its full size cached. If it doesn't then it will make a request to
         the website and get the size of the .tar file from the header.
 
