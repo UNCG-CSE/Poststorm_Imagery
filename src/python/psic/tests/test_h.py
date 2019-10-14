@@ -7,6 +7,7 @@ SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input')
 TEST_FILE_PATH = os.path.join(INPUT_PATH, 'test_lock_me.txt')
+NO_USER_FILE_PATH = os.path.join(INPUT_PATH, 'no_user_lock_file.txt.lock')
 TEST_LOCK_PATH = TEST_FILE_PATH + s.LOCK_SUFFIX
 
 
@@ -65,6 +66,9 @@ class TestHelper(TestCase):
         assert h.is_locked_by_another_user('a_non_existent_file', this_user='not_test_dummy') is False
         assert h.is_locked_by_another_user(TEST_FILE_PATH, this_user='not_test_dummy')
         assert h.is_locked_by_another_user(TEST_FILE_PATH, this_user='test_dummy') is False
+
+    def test_is_locked_by_another_user_no_user_found(self):
+        assert h.is_locked_by_another_user(NO_USER_FILE_PATH, this_user='test_dummy') is False
 
     @classmethod
     def tearDownClass(cls) -> None:
