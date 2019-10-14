@@ -20,7 +20,7 @@ class TestHelper(TestCase):
         self.assertIn('MiB', h.to_readable_bytes(1024 ** 2 + 1))
         self.assertIn('GiB', h.to_readable_bytes(1024 ** 3 + 1))
 
-    def test_get_lock_info_none(self):
+    def test_1_get_lock_info_none(self):
 
         info: dict = h.get_lock_info(TEST_FILE_PATH)
 
@@ -28,7 +28,7 @@ class TestHelper(TestCase):
         assert info[s.LOCK_PART_SIZE_BYTES_FIELD] is None
         assert info[s.LOCK_TOTAL_SIZE_BYTES_FIELD] is None
 
-    def test_update_file_lock_new_lock(self):
+    def test_2_update_file_lock_new_lock(self):
 
         test_file_path = os.path.join(INPUT_PATH, 'test_lock_me.txt')
         test_lock_path = test_file_path + s.LOCK_SUFFIX
@@ -50,7 +50,7 @@ class TestHelper(TestCase):
         for x in {'user = test_dummy', 'size_bytes = 50', 'total_size_bytes = 100'}:
             assert x in line
 
-    def test_update_and_get_lock_info_existing(self):
+    def test_3_update_and_get_lock_info_existing(self):
 
         h.update_file_lock(base_file=TEST_FILE_PATH, user='test_dummy',
                            total_size_byte=100, part_size_byte=50)
@@ -60,6 +60,11 @@ class TestHelper(TestCase):
         assert info['user'] == 'test_dummy'
         assert info[s.LOCK_PART_SIZE_BYTES_FIELD] == 50
         assert info[s.LOCK_TOTAL_SIZE_BYTES_FIELD] == 100
+
+    def test_4_is_locked_by_another_user(self):
+        assert h.is_locked_by_another_user('a_non_existent_file', this_user='not_test_dummy') is False
+        assert h.is_locked_by_another_user(TEST_FILE_PATH, this_user='not_test_dummy')
+        assert h.is_locked_by_another_user(TEST_FILE_PATH, this_user='test_dummy') is False
 
     @classmethod
     def tearDownClass(cls) -> None:
