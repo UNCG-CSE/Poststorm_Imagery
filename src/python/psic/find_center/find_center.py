@@ -5,6 +5,7 @@ def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, 
     """
     find_center will find the center of a quadrilateral shape when the latitude and longitude
     are given for all four vertices. It will return the center point as tuple.
+
     :param ul_lat: upper left latitude
     :param ul_lon: upper left longitude
     :param ur_lat: upper right latitude
@@ -33,6 +34,7 @@ def mid_point(x1, y1, x2, y2):
     """
     mid_point will find the mid point of a line segment when four coordinates are given.
     It will return the mid point as a tuple.
+
     :param x1: x-coordinate of left vertex
     :param y1: y-coordinate of left vertex
     :param x2: x-coordinate of right vertex
@@ -49,6 +51,7 @@ def find_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
     """
     find_intersection will find the intersection point of two line segments when four coordinates
     are given for both line segments. It will return the intersection point as a tuple.
+
     :param x1: x-coordinate of vertex 1 in line 1
     :param y1: y-coordinate of vertex 2 in line 1
     :param x2: x-coordinate of vertex 1 in line 2
