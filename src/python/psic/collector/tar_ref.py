@@ -14,58 +14,6 @@ from psic.collector.response_getter import get_full_content_length
 UNKNOWN = 'Unknown'
 
 
-def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
-    """Takes in a file's path and reads through each record in the .tar's index to see if it is valid. This does not
-    ensure that the file is completely error-free, but ensures that the .tar has some validity.
-
-    :param tar_file_path: The path to the file to check
-    :return: True if the file seems valid, False if it does not
-    """
-    print('Checking the archive\'s integrity...')
-    # Check archive integrity by trying to read every file (may take a while)
-    try:
-        # print('  Opening file locally...')
-        tf = tarfile.open(tar_file_path)
-        # print('  Testing members...')
-        for member in tf.getmembers():
-            # print('    Testing member ' + member.name + '...')
-            tf.extractfile(member.name)
-
-    except IOError as e:
-        h.print_error('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
-        h.print_error('It is recommended to delete the archive and restart the download.')
-        h.print_error('Error: ' + str(e))
-
-        return False
-
-    return True
-
-
-def extract_archive(tar_file_path: Union[bytes, str]):
-    """Extract all the contents of a .tar file into a directory of the same name (minus .tar).
-
-    :param tar_file_path: The path to the .tar file (including .tar) to extract
-    """
-    tf = tarfile.open(tar_file_path)
-
-    # Extract to a directory of the same name, but without '.tar'
-    extract_dir_path = tar_file_path.replace('.tar', '')
-
-    # Create the directory specified if it does not exist
-    if not os.path.exists(extract_dir_path):
-        os.makedirs(extract_dir_path)
-
-    notify_skip_files = False
-
-    for member in tf.getmembers():
-        if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
-            print('Creating \t' + member.name + '...')
-            tf.extract(member, extract_dir_path)
-        elif not notify_skip_files and member.name != '.':
-            print('Skipping \t' + member.name + ' and other files that already exist...')
-            notify_skip_files = True
-
-
 class TarRef:
     """An object that stores information about a particular storm. Does not store the actual .tar archive by default,
     but instead stores a reference to the .tar on a remote host (the NOAA website) and its information locally."""
@@ -203,13 +151,13 @@ class TarRef:
         h.update_file_lock(base_file=self.tar_file_path, user=user,
                            total_size_byte=full_size_origin, part_size_byte=full_size_origin)
 
-        if verify_integrity(self.tar_file_path) is False:
+        if TarRef.verify_integrity(self.tar_file_path) is False:
             os.remove(self.tar_file_path)
             Exception('Integrity could not be verified! Deleting it!')
 
         else:
             print('Extracting files...')
-            extract_archive(self.tar_file_path)
+            TarRef.extract_archive(self.tar_file_path)
 
         return tarfile.open(self.tar_file_path)
 
@@ -223,3 +171,55 @@ class TarRef:
             return self.tar_file_origin_size
 
         return get_full_content_length(self.tar_url)
+
+    @staticmethod
+    def verify_integrity(tar_file_path: Union[bytes, str]) -> bool:
+        """Takes in a file's path and reads through each record in the .tar's index to see if it is valid. This does not
+        ensure that the file is completely error-free, but ensures that the .tar has some validity.
+
+        :param tar_file_path: The path to the file to check
+        :return: True if the file seems valid, False if it does not
+        """
+        print('Checking the archive\'s integrity...')
+        # Check archive integrity by trying to read every file (may take a while)
+        try:
+            # print('  Opening file locally...')
+            tf = tarfile.open(tar_file_path)
+            # print('  Testing members...')
+            for member in tf.getmembers():
+                # print('    Testing member ' + member.name + '...')
+                tf.extractfile(member.name)
+
+        except IOError as e:
+            h.print_error('There was an error in reading ' + tar_file_path + ' file. It might be corrupted!')
+            h.print_error('It is recommended to delete the archive and restart the download.')
+            h.print_error('Error: ' + str(e))
+
+            return False
+
+        return True
+
+    @staticmethod
+    def extract_archive(tar_file_path: Union[bytes, str]):
+        """Extract all the contents of a .tar file into a directory of the same name (minus .tar).
+
+        :param tar_file_path: The path to the .tar file (including .tar) to extract
+        """
+        tf = tarfile.open(tar_file_path)
+
+        # Extract to a directory of the same name, but without '.tar'
+        extract_dir_path = tar_file_path.replace('.tar', '')
+
+        # Create the directory specified if it does not exist
+        if not os.path.exists(extract_dir_path):
+            os.makedirs(extract_dir_path)
+
+        notify_skip_files = False
+
+        for member in tf.getmembers():
+            if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
+                print('Creating \t' + member.name + '...')
+                tf.extract(member, extract_dir_path)
+            elif not notify_skip_files and member.name != '.':
+                print('Skipping \t' + member.name + ' and other files that already exist...')
+                notify_skip_files = True
