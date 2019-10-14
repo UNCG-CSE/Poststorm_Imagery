@@ -2,8 +2,8 @@ import argparse
 import os
 from typing import Union, Set
 
+from cataloging.generate import Cataloging
 from psic import s
-from psic.cataloging import generate
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
@@ -40,8 +40,8 @@ parser.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
-generate.generate_index_from_scope(scope_path=OPTIONS.path,
-                                   file_extension=OPTIONS.extension,
-                                   fields_needed=OPTIONS.fields,
-                                   debug=OPTIONS.debug,
-                                   verbosity=OPTIONS.verbosity)
+Cataloging.generate_index_from_scope(scope_path=OPTIONS.path,
+                                     file_extension=OPTIONS.extension,
+                                     fields_needed=OPTIONS.fields,
+                                     debug=OPTIONS.debug,
+                                     verbosity=OPTIONS.verbosity)
