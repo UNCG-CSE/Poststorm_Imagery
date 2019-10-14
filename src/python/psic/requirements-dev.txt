@@ -1,5 +1,6 @@
 bumpversion
 flake8
 pytest
-pytest-cov
 pytest-runner
+pytest-cov
+pytest-datadir
