@@ -3,15 +3,12 @@ from __future__ import print_function
 import os
 import re
 import sys
-from typing import Union, Dict, Pattern, List
-
-import pytest
+from typing import Union, Dict, Pattern, List, TextIO
 
 from psic import s
 
 
-@pytest.mark.skip
-def print_error(*args, **kwargs) -> None:
+def print_error(*args, **kwargs) -> None:  # pragma: no cover
     """Take string(s) and print them to console as an error (red text) instead of a normal message (white text).
 
     :param args: The args passed to the `print` function
@@ -40,7 +37,7 @@ def to_readable_bytes(byte_count: int) -> str:
 
 
 def update_file_lock(base_file: Union[bytes, str], user: str,
-                     total_size_byte: int, part_size_byte: None or int = None):
+                     total_size_byte: int, part_size_byte: None or int = None) -> TextIO:
     """Modify or add a lock file (if one doesn't exist) for any file specified by the parameter,
     `base_file`. A lock is used in the case that multiple people are downloading to the same directory at the same time
     either over the internet on a service like Google Team Drive or elsewhere, where files may not appear to others
@@ -63,6 +60,8 @@ def update_file_lock(base_file: Union[bytes, str], user: str,
         lock.writelines(s.LOCK_TOTAL_SIZE_BYTES_FIELD + ' = ' + str(total_size_byte) + '\n')
 
     lock.close()
+
+    return lock
 
 
 def get_lock_info(base_file: Union[bytes, str]) -> Dict:
