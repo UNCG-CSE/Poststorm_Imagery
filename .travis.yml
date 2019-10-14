@@ -27,6 +27,7 @@ matrix:
     script:
     - tox
     after_success:
+    - sudo apt install tree -y
     - tree
     - codecov
 
