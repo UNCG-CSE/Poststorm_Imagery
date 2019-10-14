@@ -205,7 +205,7 @@ dmypy.json
 ### Post-Storm Imagery specific config
 !/.gitignore
 ./data/
-tests/**/output/*
+tests/**/output
 
 ### All IDE Stuff (duplicates some of above)
 .idea/
