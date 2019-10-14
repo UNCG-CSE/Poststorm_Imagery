@@ -1,4 +1,5 @@
 import os
+import shutil
 import unittest
 import pytest
 
@@ -12,6 +13,10 @@ OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 
 
 class TestResizeImages(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        shutil.rmtree(OUTPUT_PATH)
 
     # Allow for capturing console output for comparison using pytest fixtures
     @pytest.fixture(autouse=True)
@@ -36,3 +41,7 @@ class TestResizeImages(unittest.TestCase):
         assert 'input for the pattern' in str(out)
         assert 'Resizing file 1 of 2 (50.00%): ' in str(out)
         assert 'Resizing file 2 of 2 (100.00%): ' in str(out)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        shutil.rmtree(OUTPUT_PATH)
