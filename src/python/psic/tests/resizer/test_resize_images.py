@@ -15,18 +15,14 @@ class TestResizeImages(unittest.TestCase):
 
     # Allow for capturing console output for comparison using pytest fixtures
     @pytest.fixture(autouse=True)
-    def _pass_fixtures(self, capfd, shared_datadir):
+    def _pass_fixtures(self, capfd):
         self.capfd = capfd
-        if os.name == 'nt':
-            self.shared_datadir = str(shared_datadir)
-        else:
-            self.shared_datadir = str(DATA_PATH)
 
     def test_resize_all_images_debug(self):
 
         expected_size: tuple = (1081, 811)
-        images = ResizeImages.resize_all_images(path=os.path.join(self.shared_datadir, 'input'),
-                                                output_path=os.path.join(self.shared_datadir, 'output'),
+        images = ResizeImages.resize_all_images(path=INPUT_PATH,
+                                                output_path=OUTPUT_PATH,
                                                 scale=0.15,
                                                 save=True,
                                                 debug=True)
