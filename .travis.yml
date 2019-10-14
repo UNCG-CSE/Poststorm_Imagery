@@ -7,9 +7,7 @@ matrix:
     - cd src/python/psic
     - pip install -U pip
     install:
-    - pip install -U tox-travis #pipenv_to_requirements
-#    before_script:
-#    - pipenv_to_requirements -f
+    - pip install -U tox-travis
     script:
     - tox
     after_failure:
