@@ -1,7 +1,6 @@
 import os
 from typing import Tuple, Union, List
 
-import pytest
 from PIL import Image
 
 from psic import s, h
