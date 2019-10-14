@@ -7,7 +7,7 @@ SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input')
 TEST_FILE_PATH = os.path.join(INPUT_PATH, 'test_lock_me.txt')
-NO_USER_FILE_PATH = os.path.join(INPUT_PATH, 'no_user_lock_file.txt.lock')
+NO_USER_FILE_PATH = os.path.join(INPUT_PATH, 'no_user_lock_file.txt')
 TEST_LOCK_PATH = TEST_FILE_PATH + s.LOCK_SUFFIX
 
 
