@@ -26,9 +26,8 @@ search: False
 # default: empty
 # allowed: list
 requirements:
-  - src/python/requirements-dev.txt
-  - src/python/requirements-docs.txt
-  - src/python/Pipfile.lock
+  - src/python/psic/requirements-docs.txt
+  - src/python/psic/Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
