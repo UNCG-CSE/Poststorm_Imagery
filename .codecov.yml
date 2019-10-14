@@ -4,7 +4,13 @@ ignore:
 #  - "**/*.py"         # glob accepted
 #  - "[a-z]+/test_.*"  # regexp accepted
 
-  # Ignore command-line runners
+  # Setup configuration
+  - '**/psic/setup.py'
+
+  # Test files
+  - '**/psic/tests'
+
+  # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
   - '**/psic/collector/collect.py'
