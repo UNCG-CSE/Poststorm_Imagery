@@ -9,12 +9,12 @@ import pandas as pd
 
 from psic import s, h
 
-CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
-
 flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
 
 
 class Cataloging:
+
+    CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
@@ -39,7 +39,7 @@ class Cataloging:
         verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
         scope_path = h.validate_and_expand_path(path=scope_path)
-        catalog_path = os.path.join(scope_path, CATALOG_FILE)
+        catalog_path = os.path.join(scope_path, Cataloging.CATALOG_FILE)
 
         ##########################################
         # Collect matching files from filesystem #
@@ -229,7 +229,7 @@ class Cataloging:
                 catalog.to_csv(catalog_path)
                 flag_unsaved_changes = False
                 flag_save_incomplete = False
-            except PermissionError as e:
+            except PermissionError as e:  # pragma: no cover
                 h.print_error(str(e) + '\nTry closing the file if it is open in another program!\nWill attempt '
                                        'to save again in 10 seconds ... \n')
                 time.sleep(10)
