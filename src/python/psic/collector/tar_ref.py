@@ -218,8 +218,7 @@ class TarRef:
 
         for member in tf.getmembers():
             if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
-                print('Creating \t' + member.name + '...')
+                print('\rCreating \t' + member.name + ' ... ', end='')
                 tf.extract(member, extract_dir_path)
-            elif not notify_skip_files and member.name != '.':
-                print('Skipping \t' + member.name + ' and other files that already exist...')
-                notify_skip_files = True
+            elif member.name != '.':
+                print('\rSkipping \t' + member.name + ' as it already exists ... ', end='')
