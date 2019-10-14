@@ -26,6 +26,8 @@ search: False
 # default: empty
 # allowed: list
 requirements:
+  - src/python/psic/requirements-test.txt
+  - src/python/psic/requirements-dev.txt
   - src/python/psic/requirements-docs.txt
   - src/python/psic/Pipfile.lock
 
