@@ -5,40 +5,44 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../components/theme';
 import Layout from '../components/Layout/Layout';
-import {routePageNames} from '../components/routeToPageName';
+import routePageNames from '../components/routeToPageName';
 
+//Used to do POST/GET requests
 const axios = require('axios');
-
+//Contains what IP we using
 const serverConfig =require('../server-config')
 
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const IP=await serverConfig.getIp()
-    const BEARER= ''//await auth0Token.getAuth0Token()
-   
     
     let pageProps = {};
+    //Get inital props
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    //If theres a session from passport, add the user
     if (ctx.req && ctx.req.session.passport) {
       pageProps.user = ctx.req.session.passport.user;
 
       //This is so that it will only add the role if the user prop actualy exists
       if(pageProps.user) {
+
+        //Lets get the userrole,by calling our own api that needs the user ID
         var getUserOptions = {
           url: `http://${IP}:3000/api/getUserRole/${pageProps.user.user_id}`,
         };
-        console.log(getUserOptions.url)
-        const userRole=await axios.get(getUserOptions.url, getUserOptions)
+
+        pageProps.user.userRole=await axios.get(getUserOptions.url, getUserOptions)
         .then(function (response) {
          return response.data
         })
-        pageProps.user.userRole=userRole
       } 
     }
+
+    //lets tag on the IP onto the pageProps
     pageProps.ip=IP
     return { pageProps };
   }
@@ -47,7 +51,7 @@ export default class MyApp extends App {
     super(props);
     this.state = {
       user: props.pageProps.user,
-      pageName:'APP'
+      pageName:'APP NAME'
     };
   }
 
@@ -62,19 +66,16 @@ export default class MyApp extends App {
 
 
   render() {
+    //extract from props
     const { Component, pageProps,router } = this.props;
+    //used to get page title
     const {route}= router
     const props = {
       ...pageProps,
-      user: this.state.user,
+      //user: this.state.user,
     };
 
-  
-    const pageInfo=routePageNames.filter(
-      function(element){ return element.route == route }
-    )[0]
-
-    const pageName = pageInfo===undefined ? 'Welcome Page':pageInfo.name
+    const pageName = routePageNames.getPageTitle(route);
    
     return (
       <React.Fragment>

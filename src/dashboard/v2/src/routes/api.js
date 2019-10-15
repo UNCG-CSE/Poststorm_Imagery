@@ -3,7 +3,7 @@ require("dotenv").config();
 //const app = express();
 const router = express.Router();
 const request = require("request");
-const auth0Token = require("./getBearerToken");
+const auth0Token = require("../components/getBearerToken");
 
 
 async function  main() {

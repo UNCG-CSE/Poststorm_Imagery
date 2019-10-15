@@ -6,11 +6,6 @@ import StyledTreeItem from './TreeItem'
 import Link from "next/link";
 import MyTheme from '../theme';
 //icons
-import DeleteIcon from '@material-ui/icons/Delete';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import InfoIcon from '@material-ui/icons/Info';
-import ForumIcon from '@material-ui/icons/Forum';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 //signin icon
@@ -18,14 +13,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockIcon from '@material-ui/icons/Lock';
 import ImageIcon from '@material-ui/icons/Image';
 
-
-
-import Label from '@material-ui/icons/Label';
-
 import Styles from '../Styles'
 import Tab from '@material-ui/core/Tab';
-import { func } from 'prop-types';
 
+
+import NotLoggedIn from './sideDrawerGroups/notLoggedIn'
+import LoggedIn from './sideDrawerGroups/loggedIn'
 
 const useStyles = makeStyles(theme => ({
   rootTree: {
@@ -41,59 +34,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
 export default function SideDrawer(props) {
   const classes = useStyles();
   const hasUser=props.user !==undefined;
 
-  function show_login(){
-    if(!hasUser){
-      return (
-        <Link href="/login">
-          <StyledTreeItem color={MyTheme.palette.primary.main} nodeId="1" labelText="Signin" labelIcon={LockIcon} />
-        </Link>
-      )
+  function handleLoggedIn() {
+    if(hasUser) {
+      return <LoggedIn/>
     }
-    else {
-      return (
-        <></>
-      )
-    }
+    return <NotLoggedIn/>
   }
-
-  function show_logout(){
-    if(hasUser){
-      return (
-        <>
-          <Link href="/auth/dashboardHome">
-            <StyledTreeItem 
-            bgColor={MyTheme.palette.blue500.color} 
-            //textColor={MyTheme.palette.red500.color} 
-            color='#FFFFFF'
-            nodeId="1" labelText="Home" labelIcon={ImageIcon} />
-          </Link>
-          <Link href="/auth/tagImage">
-            <StyledTreeItem 
-            bgColor={MyTheme.palette.blue500.color} 
-            //textColor={MyTheme.palette.red500.color} 
-            color='#FFFFFF'
-            nodeId="1" labelText="Tag Image" labelIcon={ImageIcon} />
-          </Link>
-          <Link href="/logout">
-            <StyledTreeItem 
-            bgColor={MyTheme.palette.red500.color} 
-            //textColor={MyTheme.palette.red500.color} 
-            color='#FFFFFF'
-            nodeId="1" labelText="Logout" labelIcon={ExitToAppIcon} />
-          </Link>
-        </>
-      )
-    }
-    else {
-      return (
-        <></>
-      )
-    }
-  }
+ 
 
   const username= hasUser ? ','+props.user.nickname: '' 
   const role= hasUser ? ',': '' //props.user.userRole.data[0].name
@@ -112,8 +65,7 @@ export default function SideDrawer(props) {
         defaultExpandIcon={<ArrowRightIcon />}
         defaultEndIcon={<div style={{ width: 24 }} />}
       >
-        {show_login()}
-        {show_logout()}
+        {handleLoggedIn()}
        
         {/* <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
           <StyledTreeItem

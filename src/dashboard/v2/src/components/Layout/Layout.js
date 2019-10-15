@@ -46,18 +46,7 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const hasUser=props.user !==undefined
-  // console.log(props.user)
-  // if(props.user) {
-  //   if(props.user.userRole)
-  //   {
-  //     if(props.user.userRole.data){
-  //       console.log((props.user.userRole.data),'aaaaa')
-  //     } 
-      
-  //   }
-    
-  // }
-
+ 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };

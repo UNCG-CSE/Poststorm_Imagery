@@ -28,6 +28,12 @@ const theme = createMuiTheme({
     warning: {
       main: 'red'
     },
+
+    //100
+    grey100: {
+      color: grey[100]
+    },
+
     //300
     teal300: {
       color: teal[300]

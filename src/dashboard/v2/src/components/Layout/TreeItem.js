@@ -3,27 +3,30 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import TreeItem from '@material-ui/lab/TreeItem';
-
+import red from '@material-ui/core/colors/red';
 import MyTheme from '../theme';
 
 const useTreeItemStyles = makeStyles(theme => ({
     root: {
-      color: theme.palette.text.pr,
+      color: theme.palette.text.primary,
       '&:focus > $content': {
-        backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-        color: 'var(--tree-view-color)',
+        backgroundColor: `var(--tree-view-clicked-backgroundcolor, ${theme.palette.grey[700]})`,
+        color: `var(--tree-view-clicked-textcolor,${MyTheme.palette.primary.main})`,
         bordeRradius: '110px'
       },
     },
     content: {
-      color: theme.palette.text.secondary,
+      //text color
+      color: `var(--tree-view-textcolor, ${theme.palette.grey[100]})`,
       paddingRight: theme.spacing(1),
       fontWeight: theme.typography.fontWeightMedium,
       '$expanded > &': {
         fontWeight: theme.typography.fontWeightRegular,
       },
+      //hover effect
       '&:hover': {
-        backgroundColor:`${MyTheme.palette.primary.main}`,
+        color:`var(--tree-view-hover-textcolor, ${theme.palette.grey[100]})`,
+        backgroundColor:`var(--tree-view-hover-backgroundcolor, ${MyTheme.palette.primary.main})`//`${MyTheme.palette.primary.main}`,
       },
     },
     group: {
@@ -61,7 +64,19 @@ StyledTreeItem.propTypes = {
 
 function StyledTreeItem(props) {
     const classes = useTreeItemStyles();
-    const { labelText,textColor, labelIcon: LabelIcon, labelInfo, color, bgColor, ...other } = props;
+    const { 
+      labelText,textColor, 
+      labelIcon: LabelIcon, 
+      labelInfo, 
+      color, 
+      bgColor,
+      myClickedBackgroundColor,
+      myHoverBackgroundColor,
+      myTextColor,
+      myHoverTextColor,
+      myClickedTextColor,
+      ...other 
+    } = props;
   
     return (
       <TreeItem
@@ -82,8 +97,14 @@ function StyledTreeItem(props) {
           </div>
         }
         style={{
-          '--tree-view-color': color,
-          '--tree-view-bg-color': bgColor,
+          // '--tree-view-color': color,
+          // '--tree-view-bg-color': bgColor,
+
+          '--tree-view-textcolor': myTextColor,
+          '--tree-view-clicked-textcolor': myClickedTextColor,
+          '--tree-view-hover-textcolor': myHoverTextColor,
+          '--tree-view-hover-backgroundcolor': myHoverBackgroundColor,
+          '--tree-view-clicked-backgroundcolor': myClickedBackgroundColor,
         }}
         classes={{
           root: classes.root,
