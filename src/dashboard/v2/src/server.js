@@ -4,6 +4,8 @@ const express = require("express");
 const http = require("http");
 const next = require("next");
 const session = require("express-session");
+
+const serverConfig =require('./server-config')
 // 1 - importing dependencies
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
@@ -21,8 +23,9 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const server = express();
+  const IP= await serverConfig.getIp()
 
   // 2 - add session management to Express
   const sessionConfig = {
@@ -66,18 +69,17 @@ app.prepare().then(() => {
     } 
     next();
   };
-
-  // For these routes,restrict access :)
-  server.use("/protected", restrictAccess);
-  server.use("/auth", restrictAccess);
-  //server.use("/dashboardHome", restrictAccess);
-
-  server.use("/api", apiRoutes);
   
-  // handling everything else with Next.js
-  server.get("*", handle);
+   // For these routes,restrict access :)
+   //server.use("/auth", restrictAccess);
+   //server.use("/dashboardHome", restrictAccess);
+ 
+   server.use("/api", apiRoutes);
+   
+   // handling everything else with Next.js
+   server.get("*", handle);
 
   http.createServer(server).listen(process.env.PORT,'0.0.0.0', () => {
-    console.log(`listening on port ${process.env.PORT}`);
+    console.log(`>>> Site up on http://${IP}:${process.env.PORT}`);
   });
 });
