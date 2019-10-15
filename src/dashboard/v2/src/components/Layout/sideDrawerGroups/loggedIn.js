@@ -2,7 +2,7 @@ import React from 'react';
 import StyledTreeItem from '../TreeItem'
 import Link from "next/link";
 import MyTheme from '../../theme';
-
+import Divider from '@material-ui/core/Divider';
 //signin icon
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -33,6 +33,8 @@ export default function notLoggedIn(props) {
         
           nodeId="1" labelText="Tag Image" labelIcon={ImageIcon} />
         </Link>
+
+        <Divider />
 
         <Link href="/logout">
           <StyledTreeItem 

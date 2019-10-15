@@ -19,6 +19,7 @@ import Tab from '@material-ui/core/Tab';
 
 import NotLoggedIn from './sideDrawerGroups/notLoggedIn'
 import LoggedIn from './sideDrawerGroups/loggedIn'
+import { func } from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   rootTree: {
@@ -46,6 +47,26 @@ export default function SideDrawer(props) {
     }
     return <NotLoggedIn/>
   }
+
+  let userRole='N/A'
+
+  //Incase something goes big sad :(
+  try {
+    userRole=props.user.userRole.data[0].name
+
+  }
+  catch(err) {
+   
+    console.log(err.message)
+  }
+  
+  function generateUserRoleName() {
+    if(props.user) {
+      if(props.user.nickname) {
+        return `, ${userRole}: ${props.user.nickname}`
+      }
+    }
+  }
  
 
   const username= hasUser ? ','+props.user.nickname: '' 
@@ -56,7 +77,7 @@ export default function SideDrawer(props) {
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <Tab label={"Welcome"+username+role} disableRipple/>
+      <Tab label={"Welcome"+generateUserRoleName()} disableRipple/>
       <Divider />
       <TreeView
         className={classes.rootTree}
@@ -66,7 +87,8 @@ export default function SideDrawer(props) {
         defaultEndIcon={<div style={{ width: 24 }} />}
       >
         {handleLoggedIn()}
-       
+        
+       {/* keeping for nested layout */}
         {/* <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
           <StyledTreeItem
             nodeId="5"
