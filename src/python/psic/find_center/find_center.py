@@ -1,7 +1,8 @@
 from numpy import double
 
 
-def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, ll_lat: double, ll_lon: double, lr_lat: double, lr_lon: double):
+def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, ll_lat: double, ll_lon: double,
+                lr_lat: double, lr_lon: double):
     """
     find_center will find the center of a quadrilateral shape when the latitude and longitude
     are given for all four vertices. It will return the center point as tuple.
