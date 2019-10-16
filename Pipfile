@@ -9,6 +9,12 @@ flake8 = "*"
 pytest = "*"
 pytest-runner = "*"
 pytest-cov = "*"
+mkdocs = "*"
+mkdocs-git-revision-date-plugin = "*"
+mkdocs-macros-plugin = "*"
+mkdocs-material = "*"
+mkdocs-minify-plugin = "*"
+pymdown-extensions = "*"
 
 [packages]
 requests = "*"

@@ -29,7 +29,7 @@ requirements:
   - src/python/psic/requirements-dev.txt
   - src/python/psic/requirements-docs.txt
   - src/python/psic/requirements.txt
-  - src/python/psic/Pipfile.lock
+  - Pipfile.lock
 
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
