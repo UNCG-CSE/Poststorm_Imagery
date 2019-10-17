@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='psic',
-    version='1.1.0',
+    version='1.2.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     url='https://github.com/UNCG-CSE/Poststorm_Imagery',
