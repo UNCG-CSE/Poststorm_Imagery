@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from "next/link";
-// import Link from "next/link";
-// import Link from "../components/Link";
-
-import Grid from '@material-ui/core/Grid';
 
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CenterGrid from '../components/CenterGrid'
@@ -43,7 +38,7 @@ function Index(props) {
       return (
         <Typography className={classes.title} color="textSecondary" gutterBottom>       
           <Link href="/login"> 
-            <Button color="primary">
+            <Button color="primary" variant="outlined">
             Please Login to continue
             </Button>
           </Link>
@@ -64,10 +59,10 @@ function Index(props) {
           <CardContent>
             <Typography variant="h5" component="h2" className={classes.title} color="textSecondary" gutterBottom>
               Welcome to Post Storm Image Classification Tagging Dashboard
+              
             </Typography>
             {showShouldLogin()}
           </CardContent>
-          
         </Card>
       </CenterGrid>
      
@@ -76,8 +71,11 @@ function Index(props) {
 }
 
 Index.getInitialProps = async function() {
+  const serverConfig =require('../server-config')
   return {
-    initProps:'initPropValue'
+    initProps:{
+      IP:await serverConfig.getIp()
+    }  
   }
 }
 

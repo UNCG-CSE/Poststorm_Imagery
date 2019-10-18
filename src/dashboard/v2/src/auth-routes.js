@@ -5,15 +5,15 @@ const router = express.Router();
 
 router.get("/login", passport.authenticate("auth0", {
   scope: "openid email profile"
-}), (req, res) => res.redirect("/"));//? on fail?
+}), (req, res) => res.redirect("/"));// on fail
 
 router.get("/callback", (req, res, next) => {
   passport.authenticate("auth0",  (err, user) => {
     if (err) return next(err);
-    if (!user) return res.redirect("/login");
+    if (!user) return res.redirect("/login");//on login fail
     req.logIn(user, (err) => {
       if (err) return next(err);
-      res.redirect("/tagImage");//on successful login
+      res.redirect("/auth/dashboardHome");//on successful login
     });
   })(req, res, next);
 });

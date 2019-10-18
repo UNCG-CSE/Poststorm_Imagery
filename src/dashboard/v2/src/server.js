@@ -4,13 +4,18 @@ const express = require("express");
 const http = require("http");
 const next = require("next");
 const session = require("express-session");
+
+const serverConfig =require('./server-config')
 // 1 - importing dependencies
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const uid = require('uid-safe');
 const authRoutes = require("./auth-routes");
-//const thoughtsAPI = require("./thoughts-api");
 
+//routing modules
+const apiRoutes = require("./routes/api");
+
+//For Nextjs
 const dev = process.env.NODE_ENV !== "production";
 const app = next({
   dev,
@@ -18,8 +23,9 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const server = express();
+  const IP= await serverConfig.getIp()
 
   // 2 - add session management to Express
   const sessionConfig = {
@@ -55,22 +61,25 @@ app.prepare().then(() => {
   server.use(passport.session());
   server.use(authRoutes);
 
-//   server.use(thoughtsAPI);
-
   // 6 - you are restricting access to some routes
   const restrictAccess = (req, res, next) => {
-    if (!req.isAuthenticated()) return res.redirect("/login");
+    
+    if (!req.isAuthenticated()){
+      return res.redirect("/login");
+    } 
     next();
   };
-
-  server.use("/protected", restrictAccess);
-  server.use("/tagImage", restrictAccess);
   
+   // For these routes,restrict access :)
+   //server.use("/auth", restrictAccess);
+   //server.use("/dashboardHome", restrictAccess);
+ 
+   server.use("/api", apiRoutes);
+   
+   // handling everything else with Next.js
+   server.get("*", handle);
 
-  // handling everything else with Next.js
-  server.get("*", handle);
-
-  http.createServer(server).listen(process.env.PORT, () => {
-    console.log(`listening on port ${process.env.PORT}`);
+  http.createServer(server).listen(process.env.PORT,'0.0.0.0', () => {
+    console.log(`>>> Site up on http://${IP}:${process.env.PORT}`);
   });
 });
