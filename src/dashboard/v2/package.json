@@ -16,6 +16,7 @@
     "express-session": "^1.16.2",
     "formik": "^1.5.8",
     "isomorphic-fetch": "^2.2.1",
+    "isomorphic-unfetch": "^3.0.0",
     "material-ui-formik-components": "^0.4.1",
     "next": "latest",
     "passport": "^0.4.0",

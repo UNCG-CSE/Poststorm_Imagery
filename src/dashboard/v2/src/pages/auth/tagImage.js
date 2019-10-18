@@ -22,7 +22,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
-import MyTheme from '../components/theme';
+import MyTheme from '../../components/theme';
+const axios = require('axios');
+import fetch from 'isomorphic-unfetch';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,10 +67,10 @@ const useStyles = makeStyles(theme => ({
 function Index(props) {
   const classes = useStyles();
   const hasUser=props.user !==undefined
-  
+  const IP=props.ip
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
@@ -78,7 +81,7 @@ function Index(props) {
           <AppBar position="static">
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
               <Tab label="Pick a storm" {...a11yProps(0)} />
-              <Tab label="Tag Image" {...a11yProps(1)} />
+              <Tab label="Tag Image" {...a11yProps(1)} disabled/>
              
             </Tabs>
           </AppBar>
@@ -90,14 +93,28 @@ function Index(props) {
                 validationSchema={Yup.object().shape({
                   stormId: Yup.number().positive('Please select a option').required("Please select a option"),
                 })}
-                onSubmit={(values )=> {
-                  console.log(values)
-                  //handleChange('two')
-                  // axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
-                  // .then(res => {
-                  //   console.log(res);
-                  //   console.log(res.data);
-                  // })
+                onSubmit={async (values )=> {
+                  console.log(values,IP)
+                  // const response = await fetch(`http://${IP}:3000/api/stormToTag`, {
+                  //   method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                  //   mode: 'cors', // no-cors, *cors, same-origin
+                  //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                  //   credentials: 'same-origin', // include, *same-origin, omit
+                  //   headers: {
+                  //     'Content-Type': 'application/json'
+                  //     // 'Content-Type': 'application/x-www-form-urlencoded',
+                  //   },
+                  //   redirect: 'follow', // manual, *follow, error
+                  //   referrer: 'no-referrer', // no-referrer, *client
+                  //   body: JSON.stringify(values) // body data type must match "Content-Type" header
+                  // });
+                  // await response.json(); 
+                  handleChange(1)
+                  axios.post(`http://${IP}:3000/api/stormToTag`, values)
+                  .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                  })
                 }}
                 render={propsFormik => (
                   <Form>
@@ -117,18 +134,27 @@ function Index(props) {
                         {propsFormik.errors.stormId}
                       </div>)
                     }
-                    <button
+                    {/* <button
                       type="submit"
                       disabled={propsFormik.values.stormId==-1}
                     >
                       Submit
-                    </button>
+                    </button> */}
+
+                    <Button 
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={propsFormik.values.stormId==-1}
+                    >
+                      Default
+                    </Button>
                     
                   </Form>
                 )}
               />
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={1} >
             Item Two
           </TabPanel>
         </div>
@@ -138,16 +164,29 @@ function Index(props) {
   );
 }
 
-Index.getInitialProps = async function() {
+Index.getInitialProps = async function(props) {
+  const serverConfig =require('../../server-config')
+  const IP=await serverConfig.getIp()
+  
+  let fetchPayload = [
+    {label:"Storm #1",value:1},
+    {label:"Storm Dos",value:420},
+    {label: "Storm III",value:1337}
+  ]
+  
+  try {
+    const response = await fetch(`http://${IP}:3000/api/getTaggableStorms`);
+    fetchPayload = (await response.json()).storms;
+  } catch (err) {
+    console.log('error API failed to get storms')
+  }
+  
   return {
     initProps:{
-      storms:[
-        {label:"Storm #1",value:1},
-        {label:"Storm Dos",value:420},
-        {label: "Storm III",value:1337}
-      ]
+      storms:fetchPayload
     }
   }
+  
 }
 
 

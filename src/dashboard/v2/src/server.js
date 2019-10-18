@@ -4,6 +4,7 @@ const express = require("express");
 const http = require("http");
 const next = require("next");
 const session = require("express-session");
+const bodyParser = require('body-parser');
 
 const serverConfig =require('./server-config')
 // 1 - importing dependencies
@@ -69,9 +70,18 @@ app.prepare().then(async () => {
     } 
     next();
   };
+
+  server.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+  });
+
+  server.use(bodyParser.urlencoded({ extended: false }));
+  server.use(express.json());
   
    // For these routes,restrict access :)
-   //server.use("/auth", restrictAccess);
+   server.use("/auth", restrictAccess);
    //server.use("/dashboardHome", restrictAccess);
  
    server.use("/api", apiRoutes);

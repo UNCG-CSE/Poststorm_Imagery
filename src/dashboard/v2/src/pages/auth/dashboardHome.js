@@ -52,6 +52,10 @@ function dashboardHome(props) {
             <Typography variant="h5" component="h2" className={classes.title} color="textSecondary" gutterBottom>
               Dashboard
             </Typography>
+
+            <Typography color="textSecondary" gutterBottom>
+              Welcome to Image Tagger {JSON.stringify(props.initProps)}
+            </Typography>
             
           </CardContent>
           
@@ -62,9 +66,10 @@ function dashboardHome(props) {
   );
 }
 
-dashboardHome.getInitialProps = async function() {
+dashboardHome.getInitialProps = async function(props) {
+  //console.log(props)
   return {
-    initProps:'initPropValue'
+    initProps:props.query
   }
 }
 

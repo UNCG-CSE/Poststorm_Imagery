@@ -40,11 +40,11 @@ export default function notLoggedIn(props) {
         <Link href="/login">
           <StyledTreeItem 
             nodeId="1" labelText="Signin" labelIcon={LockIcon} 
-            myClickedBackgroundColor={MyTheme.palette.grey100.color} 
-            //myHoverBackgroundColor={MyTheme.palette.red500.color} 
-            myTextColor={MyTheme.palette.primary.main} 
-            myHoverTextColor={MyTheme.palette.grey100.color} 
-            myClickedTextColor={MyTheme.palette.primary.main} 
+            // myClickedBackgroundColor={MyTheme.palette.grey100.color} 
+            // //myHoverBackgroundColor={MyTheme.palette.red500.color} 
+            // myTextColor={MyTheme.palette.primary.main} 
+            // myHoverTextColor={MyTheme.palette.grey100.color} 
+            // myClickedTextColor={MyTheme.palette.primary.main} 
           />
         </Link>
     </div>

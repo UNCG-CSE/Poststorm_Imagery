@@ -42,6 +42,31 @@ async function  main() {
         });
      
     });
+
+    router.get('/getTaggableStorms', function (req, res) {
+        const storm_choices=[
+            {
+                label:"Storm #I",value:1
+            },
+            {
+                label:`Storm #${Math.random()}`,value:2
+            },
+            {
+                label:"Storm #Node.js?",value:3
+            },
+        ]
+        res.send({
+            storms:storm_choices
+        })
+     
+    });
+
+    router.post('/stormToTag', function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        console.log(req.body)
+        res.send('POST request to homepagex')
+    })
+    
 }
 main()
 
