@@ -23,8 +23,6 @@ module.exports.getPageTitle= (route) =>  {
   )[0]
 
   return (filteredPage===undefined ? 'ERROR - No Title Found':filteredPage.name)
-  
-<<<<<<< HEAD
     return { 
       routePageNames:[
         {
@@ -41,7 +39,4 @@ module.exports.getPageTitle= (route) =>  {
         }
       ]
     };
-=======
->>>>>>> auth-dashboard
-
 };
