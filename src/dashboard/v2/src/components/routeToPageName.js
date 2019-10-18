@@ -23,20 +23,4 @@ module.exports.getPageTitle= (route) =>  {
   )[0]
 
   return (filteredPage===undefined ? 'ERROR - No Title Found':filteredPage.name)
-    return { 
-      routePageNames:[
-        {
-          route:"/",
-          name:"Welcome to Image Dashboard"
-        },
-        {
-          route:"/unprotected",
-          name:"Test Name"
-        },
-        {
-          route:"/tagImage",
-          name:"Storm Tagging Selection"
-        }
-      ]
-    };
 };
