@@ -34,7 +34,7 @@ Currently, the script can be called via command-line using specific arguments.
 |     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern    | `.*`                     |
 |       `--tar`, `-t`  | *<regex\>*  | Search all tar files for a specific term or pattern | `.*`                     |
 |      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to      | `#!text /data/tar_cache` |
-|  `--no_status`, `-n` |             | Do not print out a report of all files found        | *False*                  |
+| `--no_status`, `-n`  |             | Do not print out a report of all files found        | *False*                  |
 |  `--download`, `-d`  |             | Download the .tar files as well after listing them  | *False*                  |
 | `--overwrite`, `-o`  |             | Overwrite existing .tar files with the same name    | *False*                  |
         
@@ -49,8 +49,8 @@ Currently, the script can be called via command-line using specific arguments.
 !!! note "Important Note"
 
     The script will automatically download all .tar files listed, sequentially, to the `--path` specified, or to the 
-    default cache folder if `--path` is left out of the parameters. Members of the C-Sick team would run the command 
-    with `#!text -p "G:\Shared drives\C-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:` 
+    default cache folder if `--path` is left out of the parameters. Members of the P-Sick team would run the command 
+    with `#!text -p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:` 
     drive (*Windows*).
 
 
