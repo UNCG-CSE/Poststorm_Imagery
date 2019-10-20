@@ -1,0 +1,22 @@
+ignore:
+#  - "path/to/folder"  # ignore folders and all its contents
+#  - "test_*.rb"       # wildcards accepted
+#  - "**/*.py"         # glob accepted
+#  - "[a-z]+/test_.*"  # regexp accepted
+
+  # Setup configuration
+  - '**/psic/setup.py'
+
+  # Test files
+  - '**/psic/tests'
+
+  # Command-line runners
+  - '**/psic/assigner/assign.py'
+  - '**/psic/cataloging/catalog.py'
+  - '**/psic/collector/collect.py'
+  - '**/psic/resizer/resize.py'
+
+coverage:
+  range: 50..90
+  round: down
+  precision: 2

@@ -1,4 +1,4 @@
-Download Status Report (September 13, 2019 at 03:36 PM) <-s 201[8-9] -t jpg -p D:\Shared drives\C-Sick\data>
+Download Status Report (September 13, 2019 at 03:36 PM) <-s 201[8-9] -t jpg -p D:\Shared drives\P-Sick\data>
 
 1.  	Hurricane Dorian (2019)
 		- 20190904a_jpgs.tar  ... 1.73 GiBs  ... Fully downloaded: 1.73 GiBs

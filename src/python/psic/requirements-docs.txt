@@ -1,0 +1,6 @@
+mkdocs
+mkdocs-git-revision-date-plugin
+mkdocs-macros-plugin
+mkdocs-material
+mkdocs-minify-plugin
+pymdown-extensions
