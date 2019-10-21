@@ -72,8 +72,15 @@ p_tag_add = p_tag_subparsers.add_parser(name='add', parents=[parent, user],)
 p_tag_add.add_argument('--tag', '-t', type=str, dest='tag', required=True,
                        help='The tag to add to the user\'s current image.')
 
-p_tag_add.add_argument('--content', '-c', dest='content', required=True,
-                       help='The content of the tag to add to the user\'s current image.')
+p_tag_add.add_argument('--content', '-c', dest='content', default=True,
+                       help='The content of the tag to add to the user\'s current image. (Default: %(default)s).')
+
+
+# Define the sub-command for adding tags to an image
+p_tag_notes = p_tag_subparsers.add_parser(name='add_notes', parents=[parent, user],)
+
+p_tag_notes.add_argument('--comment', '-c', dest='comment', required=True,
+                         help='The comment to add to the user\'s current image.')
 
 
 # Define the sub-command for removing tags from an image
@@ -125,6 +132,12 @@ try:
             if OPTIONS.tag_operation == 'add':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .add_tag(user_id=OPTIONS.user, tag=OPTIONS.tag, content=OPTIONS.content)
+                flag_pickle_changed = True
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
+                                                                                expanded=True)).json())
+            elif OPTIONS.tag_operation == 'add_notes':
+                assigner.get_current_image(user_id=OPTIONS.user)\
+                    .add_tag(user_id=OPTIONS.user, tag='notes', content=OPTIONS.comment)
                 flag_pickle_changed = True
                 print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
                                                                                 expanded=True)).json())
