@@ -1,7 +1,8 @@
 from numpy import double
 
 
-def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, ll_lat: double, ll_lon: double, lr_lat: double, lr_lon: double):
+def find_center(ul_lat: double, ul_lon: double, ur_lat: double, ur_lon: double, ll_lat: double, ll_lon: double,
+                lr_lat: double, lr_lon: double):
     """
     find_center will find the center of a quadrilateral shape when the latitude and longitude
     are given for all four vertices. It will return the center point as tuple.
@@ -62,9 +63,15 @@ def find_intersection(x1, y1, x2, y2, x3, y3, x4, y4):
     :param y4: y-coordinate of vertex 2 in line 4
     :return: intersection point of two line segments as tuple
     """
+
+    # Values that exist in both px and py
+    cross_1 = (x1 * y2 - y1 * x2)
+    cross_2 = (x3 * y4 - y3 * x4)
+    denominator = ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+
     # Find the x-coordinate of the center
-    px = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+    px = (cross_1 * (x3 - x4) - (x1 - x2) * cross_2) / denominator
     # Find the y-coordinate of the center
-    py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+    py = (cross_1 * (y3 - y4) - (y1 - y2) * cross_2) / denominator
     # Return the center as tuple
     return px, py

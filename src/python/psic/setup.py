@@ -3,18 +3,10 @@
 
 """The setup script."""
 from setuptools import setup, find_packages
-"""
-from pipenv.project import Project
-from pipenv.utils import convert_deps_to_pip
-
-pip_file = Project().parsed_pipfile
-requirements = convert_deps_to_pip(pip_file['packages'], r=False)
-test_requirements = convert_deps_to_pip(pip_file['dev-packages'], r=False)
-"""
 
 setup(
     name='psic',
-    version='1.1.0',
+    version='1.2.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     url='https://github.com/UNCG-CSE/Poststorm_Imagery',

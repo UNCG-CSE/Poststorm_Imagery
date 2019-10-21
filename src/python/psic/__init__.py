@@ -4,4 +4,4 @@
 
 __author__ = """P-Sick"""
 __email__ = 'mcmoretz@uncg.edu'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
