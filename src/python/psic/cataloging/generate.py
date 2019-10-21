@@ -14,8 +14,6 @@ flag_unsaved_changes = False  # Keep track of if files have been committed to th
 
 class Cataloging:
 
-    CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
-
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000, **kwargs) -> None:

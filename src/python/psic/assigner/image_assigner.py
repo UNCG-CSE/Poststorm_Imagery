@@ -60,7 +60,7 @@ class ImageAssigner:
 
         self.scope_path = h.validate_and_expand_path(scope_path)
 
-        self.catalog_path = path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
+        self.catalog_path = path.join(self.scope_path, s.CATALOG_FILE)
 
         if path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
@@ -77,7 +77,7 @@ class ImageAssigner:
         for image in self._image_list_from_csv():
             self.pending_images_queue.append(image)
             if self.debug and verbosity >= 2:
-                print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
+                print('Loaded %s from the %s file' % (str(image), s.CATALOG_FILE))
 
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
