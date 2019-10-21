@@ -9,9 +9,9 @@ const auth0Token = require("../components/getBearerToken");
 const {PythonShell}=  require ('python-shell');
 
 const assignerScript='assign.py';
-const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
-const fullSizeImagePath="/mnt/Secondary/mcmoretz@uncg.edu/C-Sick/data/Florence/";
-const smallSizeImagePath="/mnt/Secondary/mcmoretz@uncg.edu/C-Sick/small/Florence/";
+const assignerSrc='..\\..\\python\\psic\\assigner\\';//'./src/routes/'; //
+const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
+const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
 
 
 
@@ -68,7 +68,7 @@ async function  main() {
         //allow json to be sent
         res.setHeader('Access-Control-Allow-Origin', '*');
         const {userId}=req.body;
-        let responseJson='XX'
+        let responseJson='XX';
         //lets run py in js
 
         //our optionz
@@ -78,6 +78,7 @@ async function  main() {
             scriptPath: './',
             args: ['current', `-p "${fullSizeImagePath}"`, `-s "${smallSizeImagePath}"`, `-u "${userId}"`]
         };
+        console.log(`getImage > Using args: [${options.args}]`);
 
 
         PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
