@@ -55,7 +55,7 @@ async function  main() {
     router.get('/getTaggableStorms', function (req, res) {
         const storm_choices=[
             {
-                label:"Florence 2018",value:1
+                label:"Florence (2018)", value:1
             }
         ];
         res.send({
