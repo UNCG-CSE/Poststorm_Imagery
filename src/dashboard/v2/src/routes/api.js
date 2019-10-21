@@ -75,8 +75,11 @@ async function  main() {
         let options = {
             mode: 'text',
             pythonOptions: ['-u'], // get print results in real-time
-            scriptPath: './',
-            args: ['current', `-p "${fullSizeImagePath}"`, `-s "${smallSizeImagePath}"`, `-u "${userId}"`]
+            scriptPath: '.\\',
+            args: ['current',
+                `-p`, fullSizeImagePath,
+                `-s`, smallSizeImagePath,
+                `-u`, userId]
         };
         console.log(`getImage > Using args: [${options.args}]`);
 
