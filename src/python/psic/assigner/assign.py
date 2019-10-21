@@ -10,11 +10,9 @@ from psic.assigner.json_response import JSONResponse
 
 ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 
-DATA_PATH: Union[bytes, str] = path.abspath(s.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.TAR_CACHE)
+TAR_CACHE_PATH: Union[bytes, str] = path.join(s.DATA_PATH, s.TAR_CACHE)
 
-SMALL_PATH: Union[bytes, str] = path.abspath(s.SMALL_PATH)
-SMALL_TAR_CACHE_PATH: Union[bytes, str] = path.join(SMALL_PATH, s.TAR_CACHE)
+SMALL_TAR_CACHE_PATH: Union[bytes, str] = path.join(s.SMALL_PATH, s.TAR_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #

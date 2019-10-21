@@ -36,5 +36,3 @@ CATALOG_FILE_NAME = '${storm_id}'
 DEFAULT_FIELDS = {'file', 'size', 'date',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
-
-RESIZE_SUB_FOLDER = '/small/'

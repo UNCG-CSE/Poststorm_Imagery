@@ -10,7 +10,6 @@ from psic.resizer.generate import ResizeImages
 
 @pytest.mark.skip
 class ResizeRunner:
-    DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 
     ################################################
     # Define command-line parameters and arguments #
@@ -18,10 +17,10 @@ class ResizeRunner:
 
     parser = argparse.ArgumentParser(prog='resize')
 
-    parser.add_argument('--path', '-p', default=DATA_PATH,
+    parser.add_argument('--path', '-p', default=s.DATA_PATH,
                         help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
-    parser.add_argument('--output_path', '-o', default=os.path.join(DATA_PATH, s.RESIZE_SUB_FOLDER),
+    parser.add_argument('--output_path', '-o', default=s.SMALL_PATH,
                         help='The path on your system to set the output of resized images (Default: %(default)s).')
 
     parser.add_argument('--scale', '-s', type=float, default=0.15,

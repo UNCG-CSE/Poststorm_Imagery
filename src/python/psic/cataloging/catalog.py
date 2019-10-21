@@ -5,8 +5,7 @@ from typing import Union, Set
 from psic.cataloging.generate import Cataloging
 from psic import s
 
-DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
+TAR_CACHE_PATH: Union[bytes, str] = os.path.join(s.DATA_PATH, s.TAR_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #

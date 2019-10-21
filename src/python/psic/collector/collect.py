@@ -14,8 +14,7 @@ from psic.collector.connection_handler import ConnectionHandler
 from psic.collector.storm import Storm
 from psic.collector.tar_ref import TarRef
 
-DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
+TAR_CACHE_PATH: Union[bytes, str] = os.path.join(s.DATA_PATH, s.TAR_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #
