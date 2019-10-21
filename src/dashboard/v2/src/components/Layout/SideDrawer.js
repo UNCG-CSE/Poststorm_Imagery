@@ -66,7 +66,7 @@ export default function SideDrawer(props) {
         return `, ${userRole}: ${props.user.nickname}`
       }
     }
-    return ''
+    return '' 
   }
  
 

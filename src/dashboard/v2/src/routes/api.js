@@ -5,6 +5,24 @@ const router = express.Router();
 const request = require("request");
 const auth0Token = require("../components/getBearerToken");
 
+//For running python scripts
+const {PythonShell}=  require ('python-shell');
+
+const assigner='test.py'
+
+let options = {
+    mode: 'text',
+    pythonPath: '/bin/python3.7',
+    pythonOptions: ['-u'], // get print results in real-time
+    scriptPath: './',
+    args: ['value1', 'value2', 'value3']
+};
+   
+PythonShell.run(`./src/routes/${assigner}`, options, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution
+    console.log('results: %j', results);
+});
 
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token()

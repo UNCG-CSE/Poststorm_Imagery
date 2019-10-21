@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     
-  },
+  }, 
   drawer: {
     [theme.breakpoints.up('sm')]: {
       width: Styles.drawerWidth,

@@ -27,6 +27,8 @@ const axios = require('axios');
 import fetch from 'isomorphic-unfetch';
 
 
+import DisplayImage from '../../components/image_tagging/displayImage';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -155,7 +157,7 @@ function Index(props) {
               />
           </TabPanel>
           <TabPanel value={value} index={1} >
-            Item Two
+            <DisplayImage/>
           </TabPanel>
         </div>
       </CenterGrid>
