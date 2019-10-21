@@ -8,8 +8,11 @@ const auth0Token = require("../components/getBearerToken");
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
-const assigner='test.py'
+const assignerScript='assign.py'
+const assignerSrc='../../python/psic//assigner/'
 
+
+//lets run py in js
 let options = {
     mode: 'text',
     pythonPath: '/bin/python3.7',
@@ -17,8 +20,8 @@ let options = {
     scriptPath: './',
     args: ['value1', 'value2', 'value3']
 };
-   
-PythonShell.run(`./src/routes/${assigner}`, options, function (err, results) {
+ // 
+PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
     if (err) throw err;
     // results is an array consisting of messages collected during execution
     console.log('results: %j', results);
@@ -64,14 +67,14 @@ async function  main() {
     router.get('/getTaggableStorms', function (req, res) {
         const storm_choices=[
             {
-                label:"Storm #I",value:1
-            },
-            {
-                label:`Storm #${Math.random()}`,value:2
-            },
-            {
-                label:"Storm #Node.js?",value:3
-            },
+                label:"Florence 2018",value:1
+            // },
+            // {
+            //     label:`Storm #${Math.random()}`,value:2
+            // },
+            // {
+            //     label:"Storm #Node.js?",value:3
+            // },
         ]
         res.send({
             storms:storm_choices
