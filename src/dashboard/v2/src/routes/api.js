@@ -8,27 +8,15 @@ const auth0Token = require("../components/getBearerToken");
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
-const assignerScript='assign.py'
-const assignerSrc='../../python/psic//assigner/'
+const assignerScript='assign.py';
+const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
+const fullSizeImagePath="/mnt/Secondary/mcmoretz@uncg.edu/C-Sick/data/Florence/";
+const smallSizeImagePath="/mnt/Secondary/mcmoretz@uncg.edu/C-Sick/small/Florence/";
 
 
-//lets run py in js
-// let options = {
-//     mode: 'text',
-//     pythonPath: '/bin/python3.7',
-//     pythonOptions: ['-u'], // get print results in real-time
-//     scriptPath: './',
-//     args: ['value1', 'value2', 'value3']
-// };
-//  // 
-// PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-//     if (err) throw err;
-//     // results is an array consisting of messages collected during execution
-//     console.log('results: %j', results);
-// });
 
 async function  main() {
-    const BEARER= await auth0Token.getAuth0Token()
+    const BEARER= await auth0Token.getAuth0Token();
 
     router.use('/test', function (req, res) {
         res.json(
@@ -44,7 +32,7 @@ async function  main() {
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
         
-        const {user_id} = req.params
+        const {user_id} = req.params;
         const getRoleByUserOptions = {
           method: 'GET',
           url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
@@ -69,21 +57,48 @@ async function  main() {
             {
                 label:"Florence 2018",value:1
             }
-        ]
+        ];
         res.send({
             storms:storm_choices
-        })
+        });
      
+    });
+
+    router.post('/getImage', async function (req, res) {
+        //allow json to be sent
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        const {userId}=req.body;
+        let responseJson='XX'
+        //lets run py in js
+
+        //our optionz
+        let options = {
+            mode: 'text',
+            pythonPath: '/home/matmorcat/.local/share/virtualenvs/Poststorm_Imagery-Dz4rIip0/bin/python',
+            pythonOptions: ['-u'], // get print results in real-time
+            scriptPath: './',
+            args: ['current', `-p "${fullSizeImagePath}"`, `-s "${smallSizeImagePath}"`, `-u "${userId}"`]
+        };
+
+
+        PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+            if (err) throw err;
+            // results is an array consisting of messages collected during execution
+            console.log('>>>>>>>> results: %j', results);
+            res.send(`User id: ${userId} and res: ${results}`)
+        });
+
+
     });
 
     router.post('/stormToTag', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
-        console.log(req.body)
+        console.log(req.body);
         res.send('POST request to homepagex')
     })
     
 }
-main()
+main();
 
 //used below becuase https://stackoverflow.com/questions/27465850/typeerror-router-use-requires-middleware-function-but-got-a-object
 module.exports = router ;
