@@ -9,9 +9,15 @@ const auth0Token = require("../components/getBearerToken");
 const {PythonShell}=  require ('python-shell');
 
 const assignerScript='assign.py';
-const assignerSrc='..\\..\\python\\psic\\assigner\\';//'./src/routes/'; //
-const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
-const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
+const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
+
+// mattm specific test config
+// const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
+// const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
+
+// namenai specific test config
+const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
+const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 
 
 
@@ -28,10 +34,10 @@ async function  main() {
             }
         )
     });
-    
+
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
-        
+
         const {user_id} = req.params;
         const getRoleByUserOptions = {
           method: 'GET',
@@ -39,7 +45,7 @@ async function  main() {
           //qs: {q: 'email:"sarafiqu@uncg.edu"', search_engine: 'v3'},
           headers: {authorization: `Bearer ${BEARER}`}
         };
-    
+
         request(getRoleByUserOptions, function (error, response, body) {
             if (error) throw new Error(error);
             //console.log(JSON.parse(body))
@@ -49,7 +55,7 @@ async function  main() {
                 }
             )
         });
-     
+
     });
 
     router.get('/getTaggableStorms', function (req, res) {
@@ -61,7 +67,7 @@ async function  main() {
         res.send({
             storms:storm_choices
         });
-     
+
     });
 
     router.post('/getImage', async function (req, res) {
@@ -75,7 +81,7 @@ async function  main() {
         let options = {
             mode: 'text',
             pythonOptions: ['-u'], // get print results in real-time
-            scriptPath: '.\\',
+            scriptPath: './',
             args: [
                 'current',
                 `-p`, fullSizeImagePath,
@@ -166,7 +172,7 @@ async function  main() {
         console.log(req.body);
         res.send('POST request to homepagex')
     })
-    
+
 }
 main();
 
