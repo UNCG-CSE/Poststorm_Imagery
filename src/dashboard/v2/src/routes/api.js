@@ -13,19 +13,19 @@ const assignerSrc='../../python/psic//assigner/'
 
 
 //lets run py in js
-let options = {
-    mode: 'text',
-    pythonPath: '/bin/python3.7',
-    pythonOptions: ['-u'], // get print results in real-time
-    scriptPath: './',
-    args: ['value1', 'value2', 'value3']
-};
- // 
-PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-    if (err) throw err;
-    // results is an array consisting of messages collected during execution
-    console.log('results: %j', results);
-});
+// let options = {
+//     mode: 'text',
+//     pythonPath: '/bin/python3.7',
+//     pythonOptions: ['-u'], // get print results in real-time
+//     scriptPath: './',
+//     args: ['value1', 'value2', 'value3']
+// };
+//  // 
+// PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+//     if (err) throw err;
+//     // results is an array consisting of messages collected during execution
+//     console.log('results: %j', results);
+// });
 
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token()
@@ -68,13 +68,7 @@ async function  main() {
         const storm_choices=[
             {
                 label:"Florence 2018",value:1
-            // },
-            // {
-            //     label:`Storm #${Math.random()}`,value:2
-            // },
-            // {
-            //     label:"Storm #Node.js?",value:3
-            // },
+            }
         ]
         res.send({
             storms:storm_choices

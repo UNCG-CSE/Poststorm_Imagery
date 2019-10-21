@@ -56,6 +56,11 @@ function dashboardHome(props) {
             <Typography color="textSecondary" gutterBottom>
               Welcome to Image Tagger {JSON.stringify(props.initProps)}
             </Typography>
+            { Object.keys(props.user).map(key => (
+              <li key={key}>{key}: {props.user[key].toString()}</li>
+            ))}
+           
+            Role:{props.user.userRole.data[0].name}
             
           </CardContent>
           
