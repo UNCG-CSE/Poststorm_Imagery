@@ -1,9 +1,8 @@
 """A file that contains some commonly used strings (constants)"""
 from os import path
 
-SELF_PATH = path.dirname(path.abspath(__file__))
-DATA_PATH = path.join(SELF_PATH, '../../../../data')
-SMALL_PATH = path.join(SELF_PATH, '../../../../small/')
+DATA_PATH = path.abspath('../../../../data')
+SMALL_PATH = path.abspath('../../../../small/')
 
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1
