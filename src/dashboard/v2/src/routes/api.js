@@ -74,7 +74,6 @@ async function  main() {
         //our optionz
         let options = {
             mode: 'text',
-            pythonPath: '/home/matmorcat/.local/share/virtualenvs/Poststorm_Imagery-Dz4rIip0/bin/python',
             pythonOptions: ['-u'], // get print results in real-time
             scriptPath: './',
             args: ['current', `-p "${fullSizeImagePath}"`, `-s "${smallSizeImagePath}"`, `-u "${userId}"`]

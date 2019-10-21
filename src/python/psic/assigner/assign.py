@@ -152,7 +152,7 @@ try:
                                                                             expanded=True)).json())
 
 except CatalogNotFoundException as e:
-    print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed!').json())
+    print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' + OPTIONS.path).json())
 except Exception as e:
     print(JSONResponse(status=1, error_message=str(e)).json())
 
