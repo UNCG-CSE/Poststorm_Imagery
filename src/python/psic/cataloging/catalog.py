@@ -2,7 +2,6 @@ import argparse
 import os
 from typing import Union, Set
 
-from cataloging.generate import Cataloging
 from psic import s
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
