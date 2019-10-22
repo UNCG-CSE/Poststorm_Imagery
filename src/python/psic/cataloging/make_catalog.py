@@ -55,10 +55,11 @@ class Cataloging:
         """
 
         if storm_id is None:
-            return os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_DEFAULT)
+            return h.validate_and_expand_path(os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_DEFAULT))
 
         else:
-            return os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE.replace('${storm_id}', storm_id))
+            return h.validate_and_expand_path(
+                os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE.replace('${storm_id}', storm_id)))
 
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
@@ -140,10 +141,9 @@ class Cataloging:
 
             for i in range(len(files)):
                 entry: dict = dict()
-                file_directory = os.path.split(files[i])[0]
-                entry['storm_id'] = Cataloging._get_storm_from_path(file_directory).lower()
-                entry['archive'] = Cataloging._get_archive_from_path(file_directory).lower()
-                entry['image'] = Cataloging._get_archive_from_path(file_directory)
+                entry['storm_id'] = Cataloging._get_storm_from_path(os.path.join(scope_path, files[i])).lower()
+                entry['archive'] = Cataloging._get_archive_from_path(os.path.join(scope_path, files[i])).lower()
+                entry['image'] = Cataloging._get_image_from_path(os.path.join(scope_path, files[i]))
                 entries.append(entry)
 
             catalog: pd.DataFrame = pd.DataFrame(entries)
@@ -296,7 +296,7 @@ class Cataloging:
 
         image_file: str = os.path.split(scope_path)[1]
 
-        if image_file.contains('.jpg'):
+        if '.jpg' in image_file:
             return image_file
         else:
             return None
@@ -315,10 +315,11 @@ class Cataloging:
 
         if len(path_tail) == 0 \
             or path_tail[0].islower() \
-                or scope_path == s.DATA_PATH:
+                or 'jpg' in path_tail \
+                    or scope_path == s.DATA_PATH:
             # If the current directory is either not defined (input ends with / instead of the dir name)
             # or the first character of the directory's name is lower-cased (storms should have capitals)
-            # or is the data path
+            # or the directory is actually a file or archive or is the data path
 
             # Keep recursively checking each directory to match the pattern (traverse back through path)
             return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
@@ -344,9 +345,8 @@ class Cataloging:
             # If the current directory is either not defined (input ends with / instead of the dir name)
             # or does not look like an archive name
             # or is the data path
-
             # Keep recursively checking each directory to match the pattern (traverse back through path)
-            return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
+            return Cataloging._get_archive_from_path(scope_path=os.path.split(scope_path)[0])
 
         else:
             return path_tail
