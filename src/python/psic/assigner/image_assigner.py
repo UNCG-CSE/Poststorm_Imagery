@@ -8,7 +8,7 @@ from psic import h, s
 from psic.assigner.image_ref import Image
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
-from psic.cataloging.generate import Cataloging
+from psic.cataloging.make_catalog import Cataloging
 
 MAX_ALLOWED_SKIPS: int = 1
 

@@ -2,7 +2,7 @@ import argparse
 import os
 from typing import Union, Set
 
-from psic.cataloging.generate import Cataloging
+from psic.cataloging.make_catalog import Cataloging
 from psic import s
 
 TAR_CACHE_PATH: Union[bytes, str] = os.path.join(s.DATA_PATH, s.TAR_CACHE)
