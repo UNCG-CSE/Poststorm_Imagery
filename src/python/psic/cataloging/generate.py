@@ -15,6 +15,23 @@ flag_unsaved_changes = False  # Keep track of if files have been committed to th
 class Cataloging:
 
     @staticmethod
+    def get_catalog_path(storm_id: str = None) -> str:
+        """
+        Get the catalog path as specified in s.py. This will return the absolute path on the local machine including
+        the file name and extension (e.g. '/home/psic_user/Poststorm_Imagery/data/catalogs/v1/florence.csv').
+
+        :param storm_id: The id of the storm (usually the name of the storm, lower-cased with '_' instead of spaces)
+        :return: The absolute path of where the catalog should be (may not actually exist) including the filename and
+        extension
+        """
+
+        if storm_id is None:
+            return os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_DEFAULT)
+
+        else:
+            return os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE.replace('${storm_id}', storm_id))
+
+    @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000, **kwargs) -> None:
         """
@@ -37,7 +54,7 @@ class Cataloging:
         verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
         scope_path = h.validate_and_expand_path(path=scope_path)
-        catalog_path = os.path.join(scope_path, Cataloging.CATALOG_FILE)
+        catalog_path = os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE)
 
         ##########################################
         # Collect matching files from filesystem #
@@ -102,7 +119,7 @@ class Cataloging:
                 flag_unsaved_changes = True
 
             # Create the file in the scope directory
-            Cataloging._force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+            Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
         else:
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
@@ -163,14 +180,14 @@ class Cataloging:
 
                 print('\rSaving catalog to disk (' + str(stat_files_accessed) +
                       ' .geom files accessed) ... ', end='')
-                Cataloging._force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+                Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
 
         if debug and verbosity >= 1:
             print()
             print(catalog)
 
         # Do a final save of the file
-        Cataloging._force_save_catalog(catalog=catalog, catalog_path=catalog_path)
+        Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
 
     #####################################
     # Catalog-Specific Helper Functions #
@@ -213,7 +230,30 @@ class Cataloging:
         return timestamp.strftime("%Y/%m/%d")
 
     @staticmethod
-    def _force_save_catalog(catalog: pd.DataFrame, catalog_path: str):
+    def _get_storm_from_path(scope_path: Union[bytes, str] = None) -> str or None:
+
+        scope_path = h.validate_and_expand_path(scope_path)
+
+        if len(os.path.split(scope_path)[0]) == 0:
+
+            # If the filesystem root directory is reached, a storm-specific catalog cannot be found
+            return None
+
+        if len(os.path.split(scope_path)[1]) == 0 \
+            or os.path.split(scope_path)[1][0].islower() \
+                or scope_path == s.DATA_PATH:
+            # If the current directory is either not defined (input ends with / instead of the dir name)
+            # or the first character of the directory's name is lower-cased (storms should have capitals)
+            # or is the data path
+
+            # Keep recursively checking each directory to match the pattern (traverse back through path)
+            return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
+
+        else:
+            return os.path.split(scope_path)[1]
+
+    @staticmethod
+    def _force_save_catalog(catalog: pd.DataFrame, scope_path: Union[bytes, str]):
         global flag_unsaved_changes  # Include the global variable defined at top of this script
 
         if flag_unsaved_changes is False:
@@ -223,8 +263,15 @@ class Cataloging:
 
         while flag_save_incomplete:
             try:
+                storm_id: str = Cataloging._get_storm_from_path(scope_path=scope_path)
+                catalog_path: str = Cataloging.get_catalog_path(storm_id=storm_id)
+
+                if os.path.exists(os.path.split(catalog_path)[0]) is False:
+                    # Create the necessary directories if they do not exist
+                    os.makedirs(os.path.split(catalog_path)[0])
+
                 # Periodically save the file based on the save_interval parameter
-                catalog.to_csv(catalog_path)
+                catalog.to_csv(Cataloging.get_catalog_path(storm_id=storm_id))
                 flag_unsaved_changes = False
                 flag_save_incomplete = False
             except PermissionError as e:  # pragma: no cover

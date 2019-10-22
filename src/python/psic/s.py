@@ -33,7 +33,7 @@ CATALOG_DATA_PATH = path.join(DATA_PATH, 'catalogs/' + CATALOG_SCHEMA + '/')
 CATALOG_FILE = '${storm_id}.csv'
 
 # If the storm_id cannot be parsed (e.g. scope starts in the 'data' folder, but not in any specific storm)
-CATALOG_FILE_NAME_DEFAULT = 'catalog.csv'
+CATALOG_FILE_DEFAULT = 'catalog.csv'
 
 # The fields to grab from the .geom file of images when assembling a catalog
 DEFAULT_FIELDS = {'file', 'size', 'date',
