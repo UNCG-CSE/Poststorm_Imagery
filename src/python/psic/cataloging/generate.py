@@ -15,6 +15,34 @@ flag_unsaved_changes = False  # Keep track of if files have been committed to th
 class Cataloging:
 
     @staticmethod
+    def find_catalog_path(scope_path: str = None) -> str:
+        """
+        Attempts to find the catalog file given a current path. It does this by first checking to see if there is a
+        local copy of the catalog in the scope specified. If there isn't, the search then goes to the project data
+        directory to get the possible global copy.
+
+        :param scope_path: The root path of the scope to search for the catalog.csv in or None to default to the
+        global, storm non-specific file if one exists ('data/catalogs/<schema version>/catalog.csv')
+        :return: The path to the catalog file, including the filename and extension
+        :except CatalogNotFoundException: If a suitable catalog file cannot be found in the scope or project dir
+        """
+
+        storm_id: str = Cataloging._get_storm_from_path(scope_path=scope_path)
+        catalog_path: str = Cataloging.get_catalog_path(storm_id=storm_id)
+        alt_catalog_path: str = os.path.join(scope_path, s.CATALOG_FILE_DEFAULT)
+
+        if os.path.exists(catalog_path) and os.path.isfile(catalog_path):
+            # The catalog exists somewhere in the global catalog directory
+            return catalog_path
+
+        elif os.path.exists(alt_catalog_path) and os.path.isfile(alt_catalog_path):
+            # The catalog was found as catalog.csv in the scope path
+            return os.path.join(scope_path, s.CATALOG_FILE_DEFAULT)
+
+        else:
+            raise CatalogNotFoundException
+
+    @staticmethod
     def get_catalog_path(storm_id: str = None) -> str:
         """
         Get the catalog path as specified in s.py. This will return the absolute path on the local machine including
@@ -343,3 +371,8 @@ class Cataloging:
             f.close()
             h.print_error('\nCould not find any values for fields ' + str(field_id_set) + ' in ' + geom_path)
             return None
+
+
+class CatalogNotFoundException(IOError):
+    def __init__(self):
+        Exception.__init__(self, 'The catalog file was not found!')
