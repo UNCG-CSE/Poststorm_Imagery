@@ -1,3 +1,4 @@
+import hashlib
 import math
 import os
 import re
@@ -27,17 +28,17 @@ class Cataloging:
         :except CatalogNotFoundException: If a suitable catalog file cannot be found in the scope or project dir
         """
 
-        storm_id: str = Cataloging._get_storm_from_path(scope_path=scope_path)
-        catalog_path: str = Cataloging.get_catalog_path(storm_id=storm_id)
-        alt_catalog_path: str = os.path.join(scope_path, s.CATALOG_FILE_DEFAULT)
+        storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path)
+        catalog_path: str = h.validate_and_expand_path(Cataloging.get_catalog_path(storm_id=storm_id))
+        alt_catalog_path: str = h.validate_and_expand_path(os.path.join(scope_path, s.CATALOG_FILE_DEFAULT))
 
         if os.path.exists(catalog_path) and os.path.isfile(catalog_path):
             # The catalog exists somewhere in the global catalog directory
-            return catalog_path
+            return h.validate_and_expand_path(catalog_path)
 
         elif os.path.exists(alt_catalog_path) and os.path.isfile(alt_catalog_path):
             # The catalog was found as catalog.csv in the scope path
-            return os.path.join(scope_path, s.CATALOG_FILE_DEFAULT)
+            return h.validate_and_expand_path(os.path.join(scope_path, s.CATALOG_FILE_DEFAULT))
 
         else:
             raise CatalogNotFoundException
@@ -82,7 +83,12 @@ class Cataloging:
         verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
         scope_path = h.validate_and_expand_path(path=scope_path)
-        catalog_path = os.path.join(s.CATALOG_DATA_PATH, s.CATALOG_FILE)
+        storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path)
+
+        try:
+            catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
+        except CatalogNotFoundException:
+            catalog_path = Cataloging.get_catalog_path(storm_id=storm_id)
 
         ##########################################
         # Collect matching files from filesystem #
@@ -122,29 +128,54 @@ class Cataloging:
         if debug:
             print('\nGenerating DataFrame and calculating statistics ... \n')
 
-        catalog: pd.DataFrame or None
-
         current_fields_needed: Set = fields_needed.copy()
         flag_unsaved_changes = False
 
+        catalog: pd.DataFrame = pd.DataFrame()
+
         if os.path.exists(catalog_path) is False:
-            # If the catalog file doesn't exist, create a new one with the basic file info
-            catalog = pd.DataFrame(data=files, columns=['file'])
-            current_fields_needed.remove('file')
+            # If the catalog file doesn't exist, create a new one
+
+            entries: List[Dict[str, str or int]] = list()
+
+            for i in range(len(files)):
+                entry: dict = dict()
+                file_directory = os.path.split(files[i])[0]
+                entry['storm_id'] = Cataloging._get_storm_from_path(file_directory).lower()
+                entry['archive'] = Cataloging._get_archive_from_path(file_directory).lower()
+                entry['image'] = Cataloging._get_archive_from_path(file_directory)
+                entries.append(entry)
+
+            catalog: pd.DataFrame = pd.DataFrame(entries)
+
+            # DataFrame is populated with these fields, so remove them from the needed list
+            current_fields_needed -= {'storm_id', 'archive', 'image'}
 
             if 'size' in current_fields_needed:
+                sizes: List[int] = list()
+
                 if debug:
                     print('Calculating sizes of files ... ')
-                catalog['size'] = catalog['file'].apply(lambda x: os.path.getsize(os.path.join(scope_path, x)))
-                current_fields_needed.remove('size')
+
+                for i in range(len(files)):
+                    sizes.append(os.path.getsize(os.path.join(scope_path, files[i])))
+
+                catalog['size'] = sizes
                 flag_unsaved_changes = True
+                current_fields_needed.remove('size')
+
             if 'date' in current_fields_needed:
+                dates: List[str] = list()
+
                 if debug:
                     print('Calculating modify time of files ... ')
-                catalog['date'] = catalog['file'].apply(
-                    lambda x: Cataloging._get_best_date(os.path.join(scope_path, x)))
-                current_fields_needed.remove('date')
+
+                for i in range(len(files)):
+                    dates.append(Cataloging._get_best_date(os.path.join(scope_path, files[i])))
+
+                catalog['date'] = dates
                 flag_unsaved_changes = True
+                current_fields_needed.remove('date')
 
             # Create the file in the scope directory
             Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
@@ -152,7 +183,7 @@ class Cataloging:
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
             # Remove the size and time from the sets as they should already exist in the CSV file
-            current_fields_needed -= {'file', 'size', 'date'}
+            current_fields_needed -= {'storm_id', 'archive', 'image', 'date', 'size', 'checksum'}
 
         ##########################################################################################
         # Collect information from the .geom files about latitude and longitude of image corners #
@@ -194,6 +225,7 @@ class Cataloging:
                 # Look up the fields that are needed and still missing data
                 geom_data: Dict[str, str] or None = Cataloging._get_geom_fields(
                     field_id_set=row_fields_needed, file_path=os.path.join(
+                        # TODO: Make a way to re-construct local path from storm_id, archive, and image in the catalog
                         scope_path, os.path.normpath(row['file'])), **kwargs)
                 stat_files_accessed += 1
 
@@ -258,6 +290,18 @@ class Cataloging:
         return timestamp.strftime("%Y/%m/%d")
 
     @staticmethod
+    def _get_image_from_path(scope_path: Union[bytes, str] = None) -> str or None:
+
+        scope_path = h.validate_and_expand_path(scope_path)
+
+        image_file: str = os.path.split(scope_path)[1]
+
+        if image_file.contains('.jpg'):
+            return image_file
+        else:
+            return None
+
+    @staticmethod
     def _get_storm_from_path(scope_path: Union[bytes, str] = None) -> str or None:
 
         scope_path = h.validate_and_expand_path(scope_path)
@@ -267,8 +311,10 @@ class Cataloging:
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
             return None
 
-        if len(os.path.split(scope_path)[1]) == 0 \
-            or os.path.split(scope_path)[1][0].islower() \
+        path_tail: str = os.path.split(scope_path)[1]
+
+        if len(path_tail) == 0 \
+            or path_tail[0].islower() \
                 or scope_path == s.DATA_PATH:
             # If the current directory is either not defined (input ends with / instead of the dir name)
             # or the first character of the directory's name is lower-cased (storms should have capitals)
@@ -278,7 +324,32 @@ class Cataloging:
             return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
 
         else:
-            return os.path.split(scope_path)[1]
+            return path_tail
+
+    @staticmethod
+    def _get_archive_from_path(scope_path: Union[bytes, str] = None) -> str or None:
+
+        scope_path = h.validate_and_expand_path(scope_path)
+
+        if len(os.path.split(scope_path)[0]) == 0:
+
+            # If the filesystem root directory is reached, a storm-specific catalog cannot be found
+            return None
+
+        path_tail: str = os.path.split(scope_path)[1]
+
+        if len(path_tail) == 0 \
+            or ('20' in path_tail and '_jpgs' in path_tail) is False \
+                or scope_path == s.DATA_PATH:
+            # If the current directory is either not defined (input ends with / instead of the dir name)
+            # or does not look like an archive name
+            # or is the data path
+
+            # Keep recursively checking each directory to match the pattern (traverse back through path)
+            return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
+
+        else:
+            return path_tail
 
     @staticmethod
     def _force_save_catalog(catalog: pd.DataFrame, scope_path: Union[bytes, str]):
@@ -343,6 +414,12 @@ class Cataloging:
         result: Dict[str] = dict()
 
         with open(geom_path, 'r') as f:
+
+            if 'geom_checksum' in field_id_set:
+                # Generate a md5 hash to help ensure the correct data is being referenced if compared elsewhere
+                result['geom_checksum'] = hashlib.md5(f)
+                field_id_set.remove('geom_checksum')
+
             for line in f.readlines():
 
                 # If there are no more fields to find, close the file and return the resulting dictionary or string
