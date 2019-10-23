@@ -57,7 +57,7 @@ export default function SideDrawer(props) {
   }
   catch(err) {
    
-    console.log(err.message)
+    //console.log(err.message)
   }
   
   function generateUserRoleName() {

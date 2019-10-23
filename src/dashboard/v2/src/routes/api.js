@@ -73,11 +73,10 @@ async function  main() {
     });
 
     router.post('/getImage', async function (req, res) {
-
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {userId}=req.body;
-            let responseJson='XX';
+      
             // Options to get the user's current image
             let options = {
                 mode: 'text',
@@ -95,15 +94,15 @@ async function  main() {
             PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
                 if (err) throw err;
                 // results is an array consisting of messages collected during execution
-               
                 const parsed_result=JSON.parse(results)
-                const {original_size_path:original_path}=parsed_result.content
-                const splitted=original_path.split('\\P-Sick\\')
-                const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
-                const image_path_final=`${imageSource}${sliced_image_path}`
+                console.log(parsed_result)
+                // const {original_size_path:original_path}=parsed_result.content
+                // const splitted=original_path.split('\\P-Sick\\')
+                // const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
+                // const image_path_final=`${imageSource}${sliced_image_path}`
                 //x=/home/namenai/P-Sick/data/Florence/20180920b_jpgs/jpgs
                 //versus=/home/namenai/Documents/GitKraken/Poststorm_Imagery/src/dashboard/v2/F:\\Shared drives\\P-Sick\\data\\Florence/20180920b_jpgs/jpgs/C26356183.jpg',
-                console.log(image_path_final)
+                //console.log(image_path_final)
                 res.send(`User id: ${userId}`)
             });
             // res.send(`Wowe:${options.args}`)
