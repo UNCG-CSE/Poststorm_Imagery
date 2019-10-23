@@ -1,6 +1,6 @@
 import React from 'react';
 import StyledTreeItem from '../TreeItem'
-import Link from "next/link";
+import Link from "next/link";//'../../Link'
 import MyTheme from '../../theme';
 import Divider from '@material-ui/core/Divider';
 //signin icon
@@ -16,7 +16,7 @@ export default function notLoggedIn(props) {
 
   return (
     <div>
-        <Link href="/auth/dashboardHome">
+        {/* <Link href="/auth/dashboardHome">
           <StyledTreeItem 
 
           // myClickedBackgroundColor={MyTheme.palette.blue500.color} 
@@ -26,7 +26,7 @@ export default function notLoggedIn(props) {
           // myClickedTextColor='#FF0000'
 
           nodeId="1" labelText="Home" labelIcon={HomeIcon} />
-        </Link>
+        </Link> */}
 
         <Link href="/auth/tagImage">
           <StyledTreeItem 

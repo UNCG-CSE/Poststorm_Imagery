@@ -72,7 +72,7 @@ function dashboardHome(props) {
 }
 
 dashboardHome.getInitialProps = async function(props) {
-  //console.log(props)
+  console.log(Object.keys(props),' dddd----------------')
   return {
     initProps:props.query
   }

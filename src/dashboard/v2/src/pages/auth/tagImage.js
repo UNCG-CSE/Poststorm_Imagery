@@ -298,13 +298,13 @@ function Index(props) {
       
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Contemplative Reptile" image={props.data.url || SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Contemplative Reptile" image={`http://${IP}:3000/api/data${props.data.url}`|| SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {props.data.file_name}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {JSON.stringify(props.data, null, 4)}
+                  {console.log(props.data.url)}
                 </Typography>
               </CardContent>
             </Collapse> 
@@ -541,21 +541,21 @@ Index.getInitialProps = async function(props) {
       userId:props.req.user.user_id
     }
     
-    try {
-      const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
-      console.log(response.data)
-    } catch (err) {
-      console.log('error API failed to get storms',err)
-    }
-
-   
     
+    const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
+
+    //const image_url=await axios.get(`http://${IP}:3000/api/data${response.data.imageUrl}`);
     return {
       data:{
-        url:''
+        url:response.data.imageUrl
       }
     }
+
+  //catch  
   } catch(err) {
+    console.log(' <<< ERROR >>>',err.response.statusText)
+    console.log(' <<< ERROR >>>',Object.keys(err.response))
+    
     return {
       data:{
         url:'x'

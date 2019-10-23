@@ -6,6 +6,8 @@ const request = require("request");
 const fs = require('fs');
 const auth0Token = require("../components/getBearerToken");
 
+const axios = require('axios');
+
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
@@ -96,14 +98,20 @@ async function  main() {
                 // results is an array consisting of messages collected during execution
                 const parsed_result=JSON.parse(results)
                 console.log(parsed_result)
-                // const {original_size_path:original_path}=parsed_result.content
-                // const splitted=original_path.split('\\P-Sick\\')
-                // const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
-                // const image_path_final=`${imageSource}${sliced_image_path}`
+                const {original_size_path:original_path}=parsed_result.content
+                const splitted=original_path.split('\\P-Sick\\')
+                const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
+                const image_path_final=`${imageSource}${sliced_image_path}`
                 //x=/home/namenai/P-Sick/data/Florence/20180920b_jpgs/jpgs
                 //versus=/home/namenai/Documents/GitKraken/Poststorm_Imagery/src/dashboard/v2/F:\\Shared drives\\P-Sick\\data\\Florence/20180920b_jpgs/jpgs/C26356183.jpg',
-                //console.log(image_path_final)
-                res.send(`User id: ${userId}`)
+                //console.log(image_path_final,'>>>>>>>')
+
+                const image_url=image_path_final.split('data').slice(-1)[0]
+               
+                return_json ={
+                    imageUrl:image_url
+                }
+                res.send(return_json)
             });
             // res.send(`Wowe:${options.args}`)
             

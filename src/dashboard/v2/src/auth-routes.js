@@ -13,7 +13,7 @@ router.get("/callback", (req, res, next) => {
     if (!user) return res.redirect("/login");//on login fail
     req.logIn(user, (err) => {
       if (err) return next(err);
-      res.redirect("/auth/dashboardHome");//on successful login
+      res.redirect("/auth/tagImage");//on successful login
     });
   })(req, res, next);
 });
