@@ -3,6 +3,7 @@ require("dotenv").config();
 //const app = express();
 const router = express.Router();
 const request = require("request");
+const fs = require('fs');
 const auth0Token = require("../components/getBearerToken");
 
 //For running python scripts
@@ -10,6 +11,7 @@ const {PythonShell}=  require ('python-shell');
 
 const assignerScript='assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
+const imageSource='/home/namenai/P-Sick/'
 
 // mattm specific test config
 // const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
@@ -71,99 +73,90 @@ async function  main() {
     });
 
     router.post('/getImage', async function (req, res) {
-        //allow json to be sent
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        const {userId}=req.body;
-        let responseJson='XX';
-        //lets run py in js
 
-        // Options to get the user's current image
-        let options = {
-            mode: 'text',
-            pythonOptions: ['-u'], // get print results in real-time
-            scriptPath: './',
-            args: [
-                'current',
-                `-p`, fullSizeImagePath,
-                `-s`, smallSizeImagePath,
-                `-u`, userId
-            ]
-        };
-        console.log(`getImage > Using args: [${options.args}]`);
+        try {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            const {userId}=req.body;
+            let responseJson='XX';
+            // Options to get the user's current image
+            let options = {
+                mode: 'text',
+                pythonOptions: ['-u'], // get print results in real-time
+                scriptPath: './',
+                //pythonPath:'home/namenai/Documents/GitKraken/Poststorm_Imagery/src/python',
+                args: [
+                    'current',
+                    `-p`, fullSizeImagePath,
+                    `-s`, smallSizeImagePath,
+                    `-u`, userId
+                ]
+            };
 
+            PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+                if (err) throw err;
+                // results is an array consisting of messages collected during execution
+               
+                const parsed_result=JSON.parse(results)
+                const {original_size_path:original_path}=parsed_result.content
+                const splitted=original_path.split('\\P-Sick\\')
+                const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
+                const image_path_final=`${imageSource}${sliced_image_path}`
+                //x=/home/namenai/P-Sick/data/Florence/20180920b_jpgs/jpgs
+                //versus=/home/namenai/Documents/GitKraken/Poststorm_Imagery/src/dashboard/v2/F:\\Shared drives\\P-Sick\\data\\Florence/20180920b_jpgs/jpgs/C26356183.jpg',
+                console.log(image_path_final)
+                res.send(`User id: ${userId}`)
+            });
+            // res.send(`Wowe:${options.args}`)
+            
+        } catch(error){
+            res.send(`F,error`)
+        }
 
+    });
 
-    // // Get the user's next image (when they press Skip, after tags are saved)
-    //     args: [
-    //         'tag', 'skip',
-    //         `-p`, fullSizeImagePath,
-    //         `-s`, smallSizeImagePath,
-    //         `-u`, userId
-    //     ]
-    //
-    // // Get the user's next image (when they click Submit, after tags are saved)
-    //     args: [
-    //         'tag', 'next',
-    //         `-p`, fullSizeImagePath,
-    //         `-s`, smallSizeImagePath,
-    //         `-u`, userId
-    //     ]
-    //
-    // // Submit a multiple choice response with only 1 possibility (they selected one of the choices)
-    // // - In cases where multiple choices cannot be selected at the same time, the options should
-    // //   be incremented from 0 (0 = first option, 1 = second, 2 = third) such that only one can
-    // //   be set at a time.
-    // // - This will update any existing value with the new one passed as optionChoice (type: int)
-    //     args: [
-    //         'tag', 'add',
-    //         `-p`, fullSizeImagePath,
-    //         `-s`, smallSizeImagePath,
-    //         `-u`, userId,
-    //         `-t`, tagID,         // The tag id (e.g. 'development')
-    //         `-c`, tagContent     // The choice as an integer to set the tag to (e.g. 0 = undeveloped, 1 = developed)
-    //     ]
-    //
-    // // tagID = 'development':
-    // // - tagContent: '0' = undeveloped, '1' = developed
-    // //
-    // // tagID = 'wash-over':
-    // // - tagContent: '0' = no wash-over, '1' = visible wash-over
-    // //
-    // // tagID = 'storm_impact':
-    // // - tagContent: '0' = swash, '1' = collision, '2' = over-wash, '3' = inundation
-    //
-    // // Submit a TRUE / FALSE value tag as TRUE (they CHECK a checkbox or one sub-option of a multiple selections option)
-    // // - Multiple choice selections should each be considered their own true / false tag
-    // // - Choices where there is multiple options, but the user can only choose one should NOT be handled
-    // //   as separate tags, though!
-    //     args: [
-    //         'tag', 'add',
-    //         `-p`, fullSizeImagePath,
-    //         `-s`, smallSizeImagePath,
-    //         `-u`, userId,
-    //         `-t`, tagID
-    //     ]
-    //
-    // // Possible tagIDs = 'terrain_river', 'terrain_marsh', 'terrain_sandy_coastline', ???> 'terrain_water_only' <???
-    //
-    // // Submit additional text-based response (user has typed something in the 'Additional Notes' section)
-    //     args: [
-    //         'tag_notes',
-    //         `-p`, fullSizeImagePath,
-    //         `-s`, smallSizeImagePath,
-    //         `-u`, userId,
-    //         `-c`, comment  // The notes the user left for the current image (e.g. 'Wowe')
-    //     ]
-    // // Comment: A string of any length (preferably enforce some length limit on front-end)
+    //example data/Florence/20180920b_jpgs/jpgs/C26356183.jpg
+    //https://stackoverflow.com/questions/15128849/using-multiple-parameters-in-url-in-express
+    router.get('/data/:storm/:archive/:imageType/:imageFile', function (req, res,next) {
+        const {storm,archive,imageType,imageFile} = req.params;
 
+        const file_route=`${imageSource}data/${storm}/${archive}/${imageType}/${imageFile}`
+        console.log(file_route)
+        const options = {
+            root: '/',
+            dotfiles: 'allow',
+            headers: {
+              'x-timestamp': Date.now(),
+              'x-sent': true
+            }
+        }
 
-        PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-            if (err) throw err;
-            // results is an array consisting of messages collected during execution
-            console.log('>>>>>>>> results: %j', results);
-            res.send(`User id: ${userId} and res: ${results}`)
-        });
+        try {
 
+            //file exists
+            res.sendFile(file_route, options, function (err) {
+                //error catching http://expressjs.com/en/4x/api.html#res.sendFile
+                if (err) {
+                    //need so that node can handle 
+                    //res.status(404).send("Sorry! You can't see that.")
+                    next(err)
+                } else {
+                    console.log(`Sent: ${file_route} time: ${options.headers['x-timestamp']}`)
+                }
+            })
+         
+        } catch(err) {
+            console.error(err)
+            next()
+        }
+
+        // res.send({
+        //     x:[storm,archive,imageType,imageFile]
+        // })
+
+        
+      
+
+        
 
     });
 
