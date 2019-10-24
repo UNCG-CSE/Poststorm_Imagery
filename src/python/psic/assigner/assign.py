@@ -1,4 +1,5 @@
 import argparse
+import getpass
 from os import path
 from typing import Union
 
@@ -8,7 +9,9 @@ from psic import s
 from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
 from psic.assigner.json_response import JSONResponse
 
-ASSIGNER_FILE_NAME: str = 'assigner_state.json'
+# Get the username of the current user to prevent conflicts of multiple users testing same filesystem
+curr_user = getpass.getuser()
+ASSIGNER_FILE_NAME: str = 'assigner_state-' + curr_user + '.json'
 
 DATA_PATH: Union[bytes, str] = path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.TAR_CACHE)
