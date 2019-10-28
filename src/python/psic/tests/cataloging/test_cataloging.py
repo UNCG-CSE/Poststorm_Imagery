@@ -32,6 +32,8 @@ class TestCataloging(TestCase):
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
+                                             require_geom=True,
+                                             override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
         out, err = self.capfd.readouterr()
@@ -55,10 +57,10 @@ class TestCataloging(TestCase):
             assert 'Processing file 2 of 2 (50.00%)' in str(out)
 
         with self.subTest(msg='All default tags were found in a .geom file'):
-            assert str(out).count('Found 8 value(s)') == 2
+            assert str(out).count('Found 9 value(s)') == 2
 
         with self.subTest(msg='DataFrame is of right size'):
-            assert '[2 rows x 11 columns]' in str(out)
+            assert '[2 rows x 15 columns]' in str(out)
 
         with self.subTest(msg='Catalog was saved to disk at the end'):
             assert str(out).count('Saved catalog to disk!') == 2

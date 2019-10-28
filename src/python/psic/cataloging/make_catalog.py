@@ -64,7 +64,8 @@ class Cataloging:
 
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
-                                  save_interval: int = 1000, **kwargs) -> None:
+                                  save_interval: int = 1000, require_geom: bool = False,
+                                  override_catalog_path: Union[bytes, str] = None, **kwargs) -> None:
         """
         A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
         allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
@@ -74,6 +75,7 @@ class Cataloging:
         :param fields_needed: The fields to include in the catalog (gathered from the local file system)
         :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
         measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
+        :param require_geom: Whether (True) or not (False) to require a .geom file present in search for valid files
         """
 
         global flag_unsaved_changes  # Include the global variable defined at top of this script
@@ -87,17 +89,22 @@ class Cataloging:
         scope_path = h.validate_and_expand_path(path=scope_path)
         storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path)
 
-        try:
-            catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
-        except CatalogNotFoundException:
-            catalog_path = Cataloging.get_catalog_path(storm_id=storm_id)
+        if override_catalog_path is None: # pragma: no cover
+            try:
+                catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
+            except CatalogNotFoundException:
+                catalog_path = Cataloging.get_catalog_path(storm_id=storm_id)
+
+        else:
+            # A catalog path is provided, so no need to search (used for testing)
+            catalog_path = override_catalog_path
 
         ##########################################
         # Collect matching files from filesystem #
         ##########################################
 
         # Get a list of all files starting at the path specified
-        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=False, **kwargs)
+        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=require_geom, **kwargs)
 
         if debug and verbosity >= 2:
             print()
