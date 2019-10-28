@@ -184,7 +184,7 @@ class Cataloging:
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
             # Remove basic info as it should already exist in the CSV file
-            current_fields_needed -= {'file', 'storm_id', 'archive', 'image', 'date', 'size', 'checksum'}
+            current_fields_needed -= {'file', 'storm_id', 'archive', 'image', 'date', 'size'}
 
         ##########################################################################################
         # Collect information from the .geom files about latitude and longitude of image corners #
@@ -226,7 +226,6 @@ class Cataloging:
                 # Look up the fields that are needed and still missing data
                 geom_data: Dict[str, str] or None = Cataloging._get_geom_fields(
                     field_id_set=row_fields_needed, file_path=os.path.join(
-                        # TODO: Make a way to re-construct local path from storm_id, archive, and image in the catalog
                         scope_path, os.path.normpath(row['file'])), **kwargs)
                 stat_files_accessed += 1
 
