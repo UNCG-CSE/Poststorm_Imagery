@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Union, List, Dict, Set, Pattern
 
 import pandas as pd
+from numpy import NaN
 
 from psic import s, h
 
@@ -96,7 +97,7 @@ class Cataloging:
         ##########################################
 
         # Get a list of all files starting at the path specified
-        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
+        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=False, **kwargs)
 
         if debug and verbosity >= 2:
             print()
@@ -401,17 +402,25 @@ class Cataloging:
         # Get the .geom file that corresponds to this file (substitute existing extension for ".geom")
         geom_path = h.validate_and_expand_path(re.sub(pattern='\\.[^.]*$', repl='.geom', string=str(file_path)))
 
+        result: Dict[str] = dict()
+
         if os.path.exists(geom_path) is False:
             h.print_error('\n\nCould not find .geom file for "' + file_path + '": "' + geom_path + '"')
-            return None
+            for field_id in field_id_set:
+                # Since no .geom file was found, fill with NaN values
+                result[field_id] = NaN
+
+            return result
 
         if os.path.getsize(geom_path) == 0:
             h.print_error('\n\nThe .geom file for "' + file_path + '": "' + geom_path + '" is 0 KiBs.\n'
                           'Bad file access may have caused this, so check the archive to see if the image and '
                           'the .geom files in the archive are the same as the unzipped versions!\n')
-            return None
+            for field_id in field_id_set:
+                # Since no .geom file was found, fill with NaN values
+                result[field_id] = NaN
 
-        result: Dict[str] = dict()
+            return result
 
         # Generate a new hash object to store the hash data
         hashing: hashlib.md5 = hashlib.md5()
@@ -454,7 +463,11 @@ class Cataloging:
 
             f.close()
             h.print_error('\nCould not find any values for fields ' + str(field_id_set) + ' in ' + geom_path)
-            return None
+            for field_id in field_id_set:
+                # Fill missing fields with NaN values
+                result[field_id] = NaN
+
+            return result
 
 
 class CatalogNotFoundException(IOError):
