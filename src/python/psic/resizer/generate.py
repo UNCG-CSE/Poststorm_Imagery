@@ -16,7 +16,7 @@ class ResizeImages:
         debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
 
         # Get all jpg files
-        files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', **kwargs)
+        files: List[str] = h.all_files_recursively(root_path=path, require_geom=True, file_extension='jpg', **kwargs)
 
         new_images: List[Image] = list()
 
