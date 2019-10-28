@@ -414,12 +414,19 @@ class Cataloging:
 
         result: Dict[str] = dict()
 
-        with open(geom_path, 'r') as f:
+        # Generate a new hash object to store the hash data
+        hashing: hashlib.md5 = hashlib.md5()
+
+        with open(geom_path, 'rb') as f:
+            # Use the geom file's bytes to generate a checksum
 
             if 'geom_checksum' in field_id_set:
                 # Generate a md5 hash to help ensure the correct data is being referenced if compared elsewhere
-                result['geom_checksum'] = hashlib.md5(f)
+                hashing.update(f.read())
+                result['geom_checksum'] = hashing.hexdigest()
                 field_id_set.remove('geom_checksum')
+
+        with open(geom_path, 'r') as f:
 
             for line in f.readlines():
 
