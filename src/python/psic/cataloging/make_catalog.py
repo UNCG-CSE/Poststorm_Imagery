@@ -216,9 +216,9 @@ class Cataloging:
             # Remove redundant queries to .geom file if the data is already present in the catalog
             for field in current_fields_needed:
                 if (type(row[field]) is str and len(row[field]) > 0) \
-                        or (type(row[field]) is not str and str(row[field]) == "nan"):
-                    print('field: ' + field + '  row[field]: "' + str(row[field]) +
-                          '" type(row[field])' + str(type(row[field])))
+                        or (type(row[field]) is not str and str(row[field]) != "nan"):
+                    print('Found existing data ... field: ' + field + '  row[field]: "' + str(row[field]) +
+                          '" type(row[field])' + str(type(row[field])) + ' ... Skipping this field!')
                     row_fields_needed.remove(field)
 
             # Only query the .geom file if there are fields still unfilled
