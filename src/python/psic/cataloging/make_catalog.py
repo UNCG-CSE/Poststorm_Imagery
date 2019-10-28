@@ -407,8 +407,8 @@ class Cataloging:
 
         if os.path.getsize(geom_path) == 0:
             h.print_error('\n\nThe .geom file for "' + file_path + '": "' + geom_path + '" is 0 KiBs.\n'
-                          'Bad file access may have caused this, so check the archive to see if the image and the .geom '
-                          'files in the archive are the same as the unzipped versions!\n')
+                          'Bad file access may have caused this, so check the archive to see if the image and '
+                          'the .geom files in the archive are the same as the unzipped versions!\n')
             return None
 
         result: Dict[str] = dict()
