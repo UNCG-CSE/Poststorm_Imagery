@@ -141,6 +141,7 @@ class Cataloging:
 
             for i in range(len(files)):
                 entry: dict = dict()
+                entry['file'] = files[i]
                 entry['storm_id'] = Cataloging._get_storm_from_path(os.path.join(scope_path, files[i])).lower()
                 entry['archive'] = Cataloging._get_archive_from_path(os.path.join(scope_path, files[i])).lower()
                 entry['image'] = Cataloging._get_image_from_path(os.path.join(scope_path, files[i]))
@@ -149,7 +150,7 @@ class Cataloging:
             catalog: pd.DataFrame = pd.DataFrame(entries)
 
             # DataFrame is populated with these fields, so remove them from the needed list
-            current_fields_needed -= {'storm_id', 'archive', 'image'}
+            current_fields_needed -= {'file', 'storm_id', 'archive', 'image'}
 
             if 'size' in current_fields_needed:
                 sizes: List[int] = list()
@@ -182,8 +183,8 @@ class Cataloging:
         else:
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
-            # Remove the size and time from the sets as they should already exist in the CSV file
-            current_fields_needed -= {'storm_id', 'archive', 'image', 'date', 'size', 'checksum'}
+            # Remove basic info as it should already exist in the CSV file
+            current_fields_needed -= {'file', 'storm_id', 'archive', 'image', 'date', 'size', 'checksum'}
 
         ##########################################################################################
         # Collect information from the .geom files about latitude and longitude of image corners #

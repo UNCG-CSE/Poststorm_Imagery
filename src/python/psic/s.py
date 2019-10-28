@@ -36,7 +36,7 @@ CATALOG_FILE = '${storm_id}.csv'
 CATALOG_FILE_DEFAULT = 'default.csv'
 
 # The fields to grab from the .geom file of images when assembling a catalog
-DEFAULT_FIELDS = {'storm_id', 'archive', 'image',
+DEFAULT_FIELDS = {'file', 'storm_id', 'archive', 'image',
                   'date', 'size', 'geom_checksum',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
