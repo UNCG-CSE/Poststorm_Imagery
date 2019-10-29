@@ -35,6 +35,9 @@ CATALOG_FILE = '${storm_id}.csv'
 # If the storm_id cannot be parsed (e.g. scope starts in the 'data' folder, but not in any specific storm)
 CATALOG_FILE_DEFAULT = 'default.csv'
 
+# The catalog to store all storm data in when stacking
+CATALOG_FILE_GLOBAL = 'global.csv'
+
 # The fields to grab from the .geom file of images when assembling a catalog
 DEFAULT_FIELDS = {'file', 'storm_id', 'archive', 'image',
                   'date', 'size', 'geom_checksum',

@@ -9,7 +9,7 @@ from psic import s
 # Get all storm-specific CSV files in the catalogs folder (e.g. data/catalogs/v2)
 catalogs = [f for f in listdir(s.CATALOG_DATA_PATH) if isfile(join(s.CATALOG_DATA_PATH, f))
             and str(splitext(join(s.CATALOG_DATA_PATH, f))[1]) == '.csv'
-            and str(f) != s.CATALOG_FILE_DEFAULT]
+            and str(f) != s.CATALOG_FILE_GLOBAL]
 
 catalogs_str: str = ''
 for catalog in catalogs:
@@ -44,5 +44,5 @@ for catalog in catalogs:
 print(combined)
 
 # Save the combined catalog to the disk
-combined.to_csv(join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_DEFAULT))
+combined.to_csv(join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_GLOBAL))
 print('Saved complete catalog to disk!')
