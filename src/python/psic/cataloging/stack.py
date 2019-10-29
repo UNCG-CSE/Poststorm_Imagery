@@ -41,7 +41,8 @@ for catalog in catalogs:
         # Data already exists in the combined catalog
         combined = combined.append(curr_data, sort=False, ignore_index=True)
 
-print(combined)
+if s.DEFAULT_DEBUG:
+    print(combined)
 
 # Save the combined catalog to the disk
 combined.to_csv(join(s.CATALOG_DATA_PATH, s.CATALOG_FILE_GLOBAL))
