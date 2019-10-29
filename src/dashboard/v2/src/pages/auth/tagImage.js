@@ -336,13 +336,18 @@ function Index(props) {
       user_id:props.data.user_id
     }
     
-    
-
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
       alert(res.data.message)
       setSubmitionDisable(false)
-    })
+    }).catch(res => { 
+      //alert(res.data.message)
+      console.log(res)
+      //console.log('B',Object.keys(res.response))
+      //console.log('C',Object.keys(res.data.message))
+      setSubmitionDisable(false)
+      alert(res)
+    });
   }
 
   function skip_image(values) {
@@ -352,13 +357,15 @@ function Index(props) {
       user_id:props.data.user_id
     }
     
-    
-
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
       alert(res.data.message)
       setSubmitionDisable(false)
-    })
+      location.reload(); 
+    }).catch(res => { 
+      alert(res.data.message)
+      setSubmitionDisable(false)
+    });
   }
 
   function submit_tags(values, actions) {
@@ -377,7 +384,10 @@ function Index(props) {
     
       alert(res.data.message)
       setSubmitionDisable(false)
-    })
+    }).finally(res => { 
+      alert(res.data.message)
+      setSubmitionDisable(false)
+    });
  
   }
   return (

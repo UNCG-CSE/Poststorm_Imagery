@@ -194,7 +194,6 @@ async function  main() {
 
     });
 
-
     router.post('/submit_image_tags', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
