@@ -2,6 +2,6 @@
 
 """Top-level package for Post-Storm Imagery."""
 
-__author__ = """P-Sick"""
-__email__ = 'mcmoretz@uncg.edu'
+__name__ = 'psic'
+__author__ = 'P-Sick'
 __version__ = '1.2.0'
