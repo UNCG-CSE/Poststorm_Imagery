@@ -23,7 +23,7 @@ blacklist_labels = [] # default: [], options: list of label names (e.g. ["wip"])
 method = "merge" # default: "merge", options: "merge", "squash", "rebase"
 
 # once a PR is merged into master, delete the branch
-delete_branch_on_merge = false # default: false
+delete_branch_on_merge = true # default: false
 
 # if there is a merge conflict, make a comment on the PR and remove the
 # automerge label. this is disabled when require_automerge_label is enabled
