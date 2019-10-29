@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 
-import { red, green,purple } from '@material-ui/core/colors';
+import { red, green,purple,blue,orange } from '@material-ui/core/colors';
 
 import CardActions from '@material-ui/core/CardActions';
 import Card from '@material-ui/core/Card';
@@ -85,6 +85,9 @@ const useStyles = makeStyles(theme => ({
   imageCollapseMargin: {
     margin: theme.spacing(2,1),
   },
+  smallImage:{
+    maxWidth:700
+  }
 }));
 
 //These are custom colored buttons
@@ -114,6 +117,36 @@ const ToggleImageButton = withStyles(theme => ({
     backgroundColor: purple[500],
     '&:hover': {
       backgroundColor: purple[700],
+    },
+  },
+}))(Button);
+
+const OceanButon = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(blue[500]),
+    backgroundColor: blue[500],
+    '&:hover': {
+      backgroundColor: blue[700],
+    },
+  },
+}))(Button);
+
+const ShowFullImage = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  },
+}))(Button);
+
+const ShowSmallImage = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(orange[500]),
+    backgroundColor: orange[500],
+    '&:hover': {
+      backgroundColor: orange[700],
     },
   },
 }))(Button);
@@ -276,6 +309,9 @@ function Index(props) {
 
   const [expanded, setExpanded] = React.useState(false);
 
+
+  const [isSubmiting, setSubmitionDisable] = React.useState(false);
+
   function handle_image_collapse() {
     setExpanded(!expanded);
   }
@@ -284,6 +320,66 @@ function Index(props) {
     setValue(newValue);
   };
 
+  function show_full_image() {
+    window.open(props.data.full_image_path, "Full_Image");
+  }
+
+  function show_small_image() {
+    window.open(props.data.small_image_path, "Small_Image");
+  }
+
+  //submit
+  function submit_as_ocean(values, actions) {
+    setSubmitionDisable(true)
+    let json_to_send ={
+      image_id:props.data.image_id,
+      user_id:props.data.user_id
+    }
+    
+    
+
+    axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
+    .then(res => {
+      alert(res.data.message)
+      setSubmitionDisable(false)
+    })
+  }
+
+  function skip_image(values) {
+    setSubmitionDisable(true)
+    let json_to_send ={
+      image_id:props.data.image_id,
+      user_id:props.data.user_id
+    }
+    
+    
+
+    axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
+    .then(res => {
+      alert(res.data.message)
+      setSubmitionDisable(false)
+    })
+  }
+
+  function submit_tags(values, actions) {
+    setSubmitionDisable(true)
+                     
+    let form_values= {
+    
+        ...values,
+        additional_notes:document.getElementById("outlined-dense-multiline").value,
+        image_id:props.data.image_id,
+        user_id:props.data.user_id
+    }
+
+    axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
+    .then(res => {
+    
+      alert(res.data.message)
+      setSubmitionDisable(false)
+    })
+ 
+  }
   return (
     <div> 
       <CenterGrid>
@@ -294,26 +390,51 @@ function Index(props) {
           justify="center"
           alignItems="center"
       >
-        <Card className={classes.card}>
+        <Card className={classes.smallImage}>
       
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Contemplative Reptile" image={`http://${IP}:3000/api/data${props.data.url}`|| SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Post Storm Image to tag" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {props.data.file_name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {console.log(props.data.url)}
-                </Typography>
+                {/* <Typography gutterBottom variant="h5" component="h2">
+                  {props.data.small_image_path} !!
+                </Typography> */}
+                {/* <Typography variant="body2" color="textSecondary" component="p">
+                  Image Url: {JSON.stringify(props.data)} !!
+                </Typography> */}
               </CardContent>
             </Collapse> 
           </CardActionArea>
-        
+          <CardContent >
             <ToggleImageButton aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={handle_image_collapse}>
               {!expanded ? 'Hide Image': 'Show Image'}
             </ToggleImageButton>
-   
+
+            <ShowFullImage 
+            aria-expanded={expanded} 
+            size="small" variant="contained" color="primary" 
+            className={classes.imageCollapseMargin}
+            onClick={show_full_image}
+            >
+              Show Full Image
+            </ShowFullImage>
+
+            <ShowSmallImage 
+            aria-expanded={expanded} 
+            size="small" variant="contained" color="primary" 
+            className={classes.imageCollapseMargin}
+            onClick={show_small_image}
+            >
+              Show Compressed Image
+            </ShowSmallImage>
+
+            <OceanButon disabled={isSubmiting} aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={submit_as_ocean}>
+             Tag as Ocean image
+            </OceanButon>
+
+          </CardContent>
+
+      
             <Formik
               initialValues={{
                 developmentGroup: "",
@@ -330,23 +451,7 @@ function Index(props) {
                 //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
-                setTimeout(() => {
-                  
-                
-                  let form_values= {
-                    form_input:{
-                      ...values,
-                      additional_notes:document.getElementById("outlined-dense-multiline").value
-                    } 
-                  }
-                  axios.post(`http://34.74.4.64:4000/form_submit`, form_values)
-                  .then(res => {
-                    console.log(res);
-                    console.log(res.data);
-                  })
-                  
-                  actions.setSubmitting(false);
-                }, 500);
+                submit_tags(values, actions)
               }}
               render={({
                 handleSubmit,
@@ -486,7 +591,7 @@ function Index(props) {
 
                       <TextField
                         id="outlined-dense-multiline"
-                        label="Additional Notes"
+                        label="Additional Notes"isSubmitting
                         rows="5"
                         margin="dense"
                         variant="outlined"
@@ -505,11 +610,11 @@ function Index(props) {
                   </CardActions>
             
                   <CardActions >
-                    <SkipButton size="small" variant="contained" color="primary" className={classes.margin}>
+                    <SkipButton disabled={isSubmiting}size="small" variant="contained" color="primary" className={classes.margin} onClick={skip_image}>
                         Skip
                     </SkipButton>
 
-                    <SubmitButton disabled={isSubmitting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+                    <SubmitButton disabled={isSubmiting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
                         Submit
                     </SubmitButton>
                   </CardActions>
@@ -544,21 +649,24 @@ Index.getInitialProps = async function(props) {
     
     const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
 
-    //const image_url=await axios.get(`http://${IP}:3000/api/data${response.data.imageUrl}`);
+    
     return {
       data:{
-        url:response.data.imageUrl
+        full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
+        small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
+        image_id:response.data.image_id,
+        user_id:props.req.user.user_id
       }
     }
 
   //catch  
   } catch(err) {
-    console.log(' <<< ERROR >>>',err.response.statusText)
-    console.log(' <<< ERROR >>>',Object.keys(err.response))
+    console.log(' <<< ERROR >>>',err)
+   
     
     return {
       data:{
-        url:'x'
+        url:undefined
       }
     }
   }

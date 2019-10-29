@@ -28,11 +28,11 @@ export default function notLoggedIn(props) {
           nodeId="1" labelText="Home" labelIcon={HomeIcon} />
         </Link> */}
 
-        <Link href="/auth/tagImage">
+        {/* <Link href="/auth/tagImage">
           <StyledTreeItem 
         
           nodeId="1" labelText="Tag Image" labelIcon={ImageIcon} />
-        </Link>
+        </Link> */}
 
         <Divider />
 

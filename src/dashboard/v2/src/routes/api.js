@@ -23,7 +23,25 @@ const imageSource='/home/namenai/P-Sick/'
 const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
 const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 
-
+const possible_developmentGroup_tags =[
+    'DevelopedId',
+    'UndevelopedId'
+]
+const possible_washoverVisibilityGroup_tags =[
+    'VisibleWashoverId',
+    'NoVisibleWashoverId'
+]
+const possible_impactGroup_tags =[
+    'SwashId',
+    'OverwashId',
+    'InundationId',
+    'CollisionId'
+]
+const possible_terrianGroup_tags =[
+    'RiverId',
+    'MarshId',
+    'SandyCoastlineId'
+]
 
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
@@ -38,7 +56,7 @@ async function  main() {
             }
         )
     });
-
+    
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
 
@@ -74,11 +92,13 @@ async function  main() {
 
     });
 
+    //Python stuff
     router.post('/getImage', async function (req, res) {
+
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {userId}=req.body;
-      
+
             // Options to get the user's current image
             let options = {
                 mode: 'text',
@@ -95,38 +115,45 @@ async function  main() {
 
             PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
                 if (err) throw err;
-                // results is an array consisting of messages collected during execution
-                const parsed_result=JSON.parse(results)
-                console.log(parsed_result)
-                const {original_size_path:original_path}=parsed_result.content
-                const splitted=original_path.split('\\P-Sick\\')
-                const sliced_image_path=splitted.slice(-1)[0].replace('\\','/')
-                const image_path_final=`${imageSource}${sliced_image_path}`
-                //x=/home/namenai/P-Sick/data/Florence/20180920b_jpgs/jpgs
-                //versus=/home/namenai/Documents/GitKraken/Poststorm_Imagery/src/dashboard/v2/F:\\Shared drives\\P-Sick\\data\\Florence/20180920b_jpgs/jpgs/C26356183.jpg',
-                //console.log(image_path_final,'>>>>>>>')
 
-                const image_url=image_path_final.split('data').slice(-1)[0]
-               
+                const parsed_result=JSON.parse(results)
+
+                console.log('Parsed from python assinger',parsed_result)
+
+                //Get the contents of json
+                const {
+                    original_size_path:original_path,
+                    small_size_path:small_path
+                }=parsed_result.content
+
+                //Remove the parts that we dont need,everything left of 'P-Sick'
+                const full_image_path=original_path.split('P-Sick').slice(-1)[0]
+                const small_image_path=small_path.split('P-Sick').slice(-1)[0]
+
+                const image_id=full_image_path.split('data').slice(-1)[0]
+
+
                 return_json ={
-                    imageUrl:image_url
+                    full_image_path:full_image_path,
+                    small_image_path:small_image_path.replace('data','small'),
+                    image_id:image_id
                 }
                 res.send(return_json)
             });
-            // res.send(`Wowe:${options.args}`)
-            
+
+
         } catch(error){
-            res.send(`F,error`)
+            res.send({})
         }
 
     });
 
     //example data/Florence/20180920b_jpgs/jpgs/C26356183.jpg
     //https://stackoverflow.com/questions/15128849/using-multiple-parameters-in-url-in-express
-    router.get('/data/:storm/:archive/:imageType/:imageFile', function (req, res,next) {
-        const {storm,archive,imageType,imageFile} = req.params;
+    router.get('/:folder/:storm/:archive/:imageType/:imageFile', function (req, res,next) {
+        const {storm,archive,imageType,imageFile,folder} = req.params;
 
-        const file_route=`${imageSource}data/${storm}/${archive}/${imageType}/${imageFile}`
+        const file_route=`${imageSource}${folder}/${storm}/${archive}/${imageType}/${imageFile}`
         console.log(file_route)
         const options = {
             root: '/',
@@ -143,14 +170,14 @@ async function  main() {
             res.sendFile(file_route, options, function (err) {
                 //error catching http://expressjs.com/en/4x/api.html#res.sendFile
                 if (err) {
-                    //need so that node can handle 
+                    //need so that node can handle
                     //res.status(404).send("Sorry! You can't see that.")
                     next(err)
                 } else {
                     console.log(`Sent: ${file_route} time: ${options.headers['x-timestamp']}`)
                 }
             })
-         
+
         } catch(err) {
             console.error(err)
             next()
@@ -160,18 +187,173 @@ async function  main() {
         //     x:[storm,archive,imageType,imageFile]
         // })
 
-        
-      
 
-        
+
+
+
 
     });
 
-    router.post('/stormToTag', function (req, res) {
+
+    router.post('/submit_image_tags', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
-        console.log(req.body);
-        res.send('POST request to homepagex')
+        try {
+            const {
+                developmentGroup,
+                washoverVisibilityGroup,
+                impactGroup,
+                terrianGroup,
+                additional_notes,
+                image_id,
+                user_id
+            } = req.body
+            console.log(req.body)
+
+            if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
+                //Now to check the passed in data.
+                const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
+                const washoverCheck=[washoverVisibilityGroup].every(val => possible_washoverVisibilityGroup_tags.includes(val))
+                const impactCheck=[impactGroup].every(val => possible_impactGroup_tags.includes(val))
+
+                //Not sure wat to do or terrianGroup check
+                //if any fails
+                if( !devGroupCheck || !washoverCheck || !impactCheck) {
+                    throw 'Sent invalid tag id'
+                }
+
+                //Do insert
+                res.send({
+                    message:`Image ${image_id} for user ${user_id} has been tagged`
+                })
+
+            }
+            else
+            {
+                throw 'Not all tagging data was sent'
+
+            }
+
+        }catch (err){// big error
+            console.error(err);
+            res.send({
+                message:`ERROR - ${err}`
+            })
+        }
+
+        //res.send('POST request to homepagex')
     })
+
+    router.post('/submit_ocean_image', function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        try {
+            const {
+                image_id,
+                user_id
+            } = req.body
+            console.log(req.body)
+
+            if(user_id && image_id) {
+
+                let options = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    scriptPath: './',
+                    args: [
+                        'tag',
+                        'next'
+                        `-p`, fullSizeImagePath,
+                        `-s`, smallSizeImagePath,
+                        `-u`, user_id,
+                        `--ocean`
+                    ]
+                };
+
+                PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+                    if (err) throw err;
+
+                    const parsed_result=JSON.parse(results)
+
+                    console.log('Parsed from python assinger',parsed_result)
+
+                    res.send({
+                        message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
+                    })    
+                });
+
+                // //Do insert
+                // res.send({
+                //     message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
+                // })
+
+            }
+            else
+            {
+                throw 'Image ID not sent'
+            }
+
+        }catch (err){// big error
+            console.error(err);
+            res.send({
+                message:`ERROR - ${err}`
+            })
+        }
+
+        //res.send('POST request to homepagex')
+    })
+
+    router.post('/skip_image', async function (req, res) {
+
+        try {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            const {
+                user_id,
+                image_id
+            }=req.body;
+            if(user_id && image_id) {
+                
+            
+                // Options to get the user's current image
+                let options = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    scriptPath: './',
+                    args: [
+                        'tag',
+                        'skip',
+                        `-p`, fullSizeImagePath,
+                        `-s`, smallSizeImagePath,
+                        `-u`, user_id
+                    ]
+                };
+
+                PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+                    if (err) throw err;
+
+                    const parsed_result=JSON.parse(results)
+
+                    console.log('Parsed from python assinger',parsed_result)
+
+                    res.send({
+                        message:`Image ${image_id} for user ${user_id} skipped :)`
+                    })
+                });
+
+            }
+            else {
+                throw 'Incomplete data sent'
+            }
+
+
+
+
+        } catch (err){// big error
+            console.error(err);
+            res.send({
+                message:`ERROR - ${err}`
+            })
+        }
+
+    });
 
 }
 main();
