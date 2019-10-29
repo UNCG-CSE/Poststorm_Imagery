@@ -260,7 +260,7 @@ async function  main() {
                     scriptPath: './',
                     args: [
                         'tag',
-                        'next'
+                        'next',
                         `-p`, fullSizeImagePath,
                         `-s`, smallSizeImagePath,
                         `-u`, user_id,
