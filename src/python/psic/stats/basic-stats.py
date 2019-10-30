@@ -1,10 +1,5 @@
-import imageio
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-import imageio
 import numpy as np
-
 import os
 import matplotlib.image as pltimg
 
