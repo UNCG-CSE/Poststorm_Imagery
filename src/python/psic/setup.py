@@ -9,7 +9,7 @@ with open('README.md', 'r', encoding='utf8') as fh:
 
 setup(
     name='psic',
-    version='1.3.0',
+    version='1.3.1',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     description='Classification and analysis of post-storm response imagery.',
