@@ -3,4 +3,4 @@ mkdocs-git-revision-date-plugin==0.1.5
 mkdocs-macros-plugin==0.2.4
 mkdocs-material==4.4.3
 mkdocs-minify-plugin==0.2.1
-pymdown-extensions
+pymdown-extensions==6.1
