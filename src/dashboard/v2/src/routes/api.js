@@ -269,7 +269,7 @@ async function  main() {
     });
     
     //submit
-    router.post('/submit_image_tags', function (req, res) {
+    router.post('/submit_image_tags', async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const {
@@ -302,27 +302,39 @@ async function  main() {
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
                     throw 'Sent invalid tag id'
                 }
-                console.log({
-                    one:developmentGroup,
-                    two:washoverVisibilityGroup,
-                    three:impactGroup,
-                    for:terrianGroup
-                })
+                // console.log({
+                //     one:developmentGroup,
+                //     two:washoverVisibilityGroup,
+                //     three:impactGroup,
+                //     for:terrianGroup
+                // })
+                const dev_cat='development'
+                const washover_cat='washover'
+                const impact_cat='impact'
+                const terrian_cat='terrian'
 
-                const dev_value=tag_name_value_pairs['development'][developmentGroup]
-                const wash_value=tag_name_value_pairs['washover'][washoverVisibilityGroup]
-                const impact_value=tag_name_value_pairs['impact'][impactGroup]
+                const dev_value=tag_name_value_pairs[dev_cat][developmentGroup]
+                const wash_value=tag_name_value_pairs[washover_cat][washoverVisibilityGroup]
+                const impact_value=tag_name_value_pairs[impact_cat][impactGroup]
 
-                console.log(dev_value,wash_value,impact_value)
+                console.log(dev_value,wash_value,impact_value,terrianGroup)
                 //const dev_value=tag_name_value_pairs['development'][developmentGroup]
                 //const selected_development_option=
 
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     const parsed_result=JSON.parse(results)
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    const parsed_result=JSON.parse(results)
+                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                },gen_tag_options(user_id,dev_cat,dev_value))
 
-                //     console.log('Parsed from python assinger',parsed_result)
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    const parsed_result=JSON.parse(results)
+                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                },gen_tag_options(user_id,washover_cat,wash_value))
 
-                // },gen_tag_options(user_id,1,1))
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    const parsed_result=JSON.parse(results)
+                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                },gen_tag_options(user_id,impact_cat,impact_value))
 
                 //Do insert
                 res.send({

@@ -8,7 +8,7 @@ module.exports.getIp= async (options) =>  {
   
   //all Env are strings, so cant do strict typing
   if(USELOCAL){
-    return 'localhost';
+    return '152.13.47.119'//'localhost';
   }
 
 	return (await public_ip.v4());
