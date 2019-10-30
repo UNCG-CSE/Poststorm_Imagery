@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 from os import path
 from typing import Union
 
@@ -9,6 +10,8 @@ import jsonpickle
 from psic import s
 from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
 from psic.assigner.json_response import JSONResponse
+
+print('ARGV: ' + str(sys.argv))
 
 ASSIGNER_FILE_NAME: str = 'assigner_state.json'
 
