@@ -35,7 +35,7 @@ setup(
     keywords='python',
     license='MIT license',
     install_requires=['requests', 'tqdm', 'jupyter', 'pandas', 'Pillow',
-                      'jsonpickle', 'imageio', 'matplotlib', 'tensorflow'],
+                      'jsonpickle', 'imageio', 'matplotlib'],
     include_package_data=True,
     packages=find_packages(),
     test_suite='tests',
