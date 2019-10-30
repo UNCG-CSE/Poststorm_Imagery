@@ -43,10 +43,33 @@ const possible_terrianGroup_tags =[
     'SandyCoastlineId'
 ]
 
+async function runPy(sript_path,callback,options=null)
+{
+    return new Promise(async function(resolve, reject){
+        await PythonShell.run(sript_path, options, function (err, results) {
+                if (err) throw err;
+                console.log('results: ');
+                //for all results from script
+                for(let i of results){
+                    console.log(i, "---->", typeof i)
+                }
+            resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
+        });
+    })
+}
+
+
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
 
-    router.use('/test', function (req, res) {
+    router.use('/test', async function (req, res) {
+
+        await runPy('src/routes/test.py',function(err,results){
+            console.log(results)
+        })
+        runPy('src/routes/test2.py',function(err,results){
+            console.log(results)
+        })
         res.json(
             {
                 test_api:'WOWE, test api.',
@@ -202,6 +225,7 @@ async function  main() {
 
 
     });
+    
 
     router.post('/submit_image_tags', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -252,6 +276,7 @@ async function  main() {
             }
             else
             {
+                
                 throw 'Not all tagging data was sent'
 
             }
