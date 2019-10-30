@@ -5,7 +5,7 @@ bumpversion==0.5.3
 click==7.0
 coverage==4.5.4
 entrypoints==0.3
-flake8==3.7.8
+flake8==3.7.9
 gitdb2==2.0.6
 gitpython==3.0.3
 htmlmin==0.1.12
