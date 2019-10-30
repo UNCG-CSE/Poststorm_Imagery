@@ -11,7 +11,7 @@ ignore:
   - '**/psic/tests'
 
   # Command-line runners
-  - '**/psic/resizer/resize.py'
+  - '**/psic/main/pstorm.py'
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
   - '**/psic/collector/collect.py'
