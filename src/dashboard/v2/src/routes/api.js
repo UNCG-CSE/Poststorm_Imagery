@@ -14,7 +14,7 @@ const {PythonShell}=  require ('python-shell');
 const assignerScript='assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
 const imageSource='/home/namenai/P-Sick/'
-
+const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
 // mattm specific test config
 // const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
 // const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
@@ -120,6 +120,11 @@ async function  main() {
 
                 console.log('Parsed from python assinger',parsed_result)
 
+                if(parsed_result.error_message)
+                {
+                    throw 'Python script had error'
+                    return null
+                }
                 //Get the contents of json
                 const {
                     original_size_path:original_path,
@@ -143,7 +148,11 @@ async function  main() {
 
 
         } catch(error){
-            res.send({})
+            res.send({
+                full_image_path:error_image,
+                small_image_path:error_image,
+                image_id:`err`
+            })
         }
 
     });
@@ -206,7 +215,7 @@ async function  main() {
                 image_id,
                 user_id
             } = req.body
-            console.log(req.body)
+            //console.log(req.body)
 
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
@@ -219,6 +228,21 @@ async function  main() {
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
                     throw 'Sent invalid tag id'
                 }
+
+                let radio_tag_options = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    scriptPath: './',
+                    args: [
+                        'tag',
+                        'skip',
+                        `-p`, fullSizeImagePath,
+                        `-s`, smallSizeImagePath,
+                        `-u`, user_id,
+                        `-t`,tag_id,
+                        `-c`,tag_content
+                    ]
+                };
 
                 //Do insert
                 res.send({
@@ -242,42 +266,78 @@ async function  main() {
         //res.send('POST request to homepagex')
     })
 
-    router.post('/submit_ocean_image', function (req, res) {
+    router.post('/submit_ocean_image', async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const {
                 image_id,
                 user_id
             } = req.body
-            console.log(req.body)
+            //console.log(req.body)
 
             if(user_id && image_id) {
 
-                let options = {
+                let tag_ocean_option = {
                     mode: 'text',
                     pythonOptions: ['-u'],
                     scriptPath: './',
                     args: [
                         'tag',
-                        'next',
+                        'add',
                         `-p`, fullSizeImagePath,
                         `-s`, smallSizeImagePath,
                         `-u`, user_id,
-                        `--ocean`
+                        `-t`,`ocean`,`-c`,`true`
                     ]
                 };
 
-                PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-                    if (err) throw err;
+               
+              
+                console.log('running ocean')
+                PythonShell.run(`${assignerSrc}${assignerScript}`, tag_ocean_option, function (err, results) {
+                    if (err){
+                        throw err;
+                        reject(err)
+                    } 
+                    console.log('>>>>>>>>>>>>. tag ocean done')
 
-                    const parsed_result=JSON.parse(results)
-
-                    console.log('Parsed from python assinger',parsed_result)
-
-                    res.send({
-                        message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
-                    })    
+                    let get_next_option = {
+                        mode: 'text',
+                        pythonOptions: ['-u'],
+                        scriptPath: './',
+                        args: [
+                            'tag',
+                            'next',
+                            `-p`, fullSizeImagePath,
+                            `-s`, smallSizeImagePath,
+                            `-u`, user_id
+                        ]
+                    };
+                  
+                    console.log('running next')
+                    PythonShell.run(`${assignerSrc}${assignerScript}`, get_next_option, function (err, results) {
+                        if (err){
+                            throw err;
+                            reject(err)
+                        } 
+                        console.log('>>>>>>>>>>>>. get next done')
+                        // const parsed_result=JSON.parse(results)
+    
+                        // console.log('Parsed from python assinger',parsed_result)
+                        
+                        res.send({
+                            //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
+                            message: `Image has been tagged as ocean`
+                        })    
+                  
+                    });
+                   
                 });
+             
+                
+                
+              
+              
 
                 // //Do insert
                 // res.send({
@@ -333,7 +393,8 @@ async function  main() {
                     console.log('Parsed from python assinger',parsed_result)
 
                     res.send({
-                        message:`Image ${image_id} for user ${user_id} skipped :)`
+                        //message:`Image ${image_id} for user ${user_id} skipped :)`
+                        message: `Image skipped,page will refresh to get new image`
                     })
                 });
 

@@ -328,6 +328,17 @@ function Index(props) {
     window.open(props.data.small_image_path, "Small_Image");
   }
 
+  function handle_error_on_submit(res,enable=true){
+    setSubmitionDisable(enable)
+    alert(res)
+  }
+
+  function handle_success_on_submit(res,enable=true){
+    alert(res.data.message)
+    setSubmitionDisable(false)
+    location.reload(); 
+  }
+
   //submit
   function submit_as_ocean(values, actions) {
     setSubmitionDisable(true)
@@ -338,15 +349,9 @@ function Index(props) {
     
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
-      alert(res.data.message)
-      setSubmitionDisable(false)
+      handle_success_on_submit(res,false)
     }).catch(res => { 
-      //alert(res.data.message)
-      console.log(res)
-      //console.log('B',Object.keys(res.response))
-      //console.log('C',Object.keys(res.data.message))
-      setSubmitionDisable(false)
-      alert(res)
+      handle_error_on_submit(res,false)
     });
   }
 
@@ -359,12 +364,9 @@ function Index(props) {
     
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
-      alert(res.data.message)
-      setSubmitionDisable(false)
-      location.reload(); 
+      handle_success_on_submit(res,false)
     }).catch(res => { 
-      alert(res.data.message)
-      setSubmitionDisable(false)
+      handle_error_on_submit(res,false)
     });
   }
 
@@ -382,14 +384,13 @@ function Index(props) {
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
     .then(res => {
     
-      alert(res.data.message)
-      setSubmitionDisable(false)
-    }).finally(res => { 
-      alert(res.data.message)
-      setSubmitionDisable(false)
+      handle_success_on_submit(res,false)
+    }).catch(res => { 
+      handle_error_on_submit(res,false)
     });
  
   }
+
   return (
     <div> 
       <CenterGrid>
