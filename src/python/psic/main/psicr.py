@@ -1,27 +1,11 @@
 #!/usr/bin/env python3
 
-################################################
-# Define command-line parameters and arguments #
-################################################
 import os
 import sys
 
 from psic import h
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
-
-# r = argparse.ArgumentParser(add_help=False, prog='psic')
-#
-# r_subparsers = r.add_subparsers(title='operation', dest='module')
-#
-# r_subparsers += assign_parser()
-#
-# # p_assign = p_subparsers.add_parser(name='assign', help='JSON API for assigning images via the dashboard')
-# # p_assign.add_argument('extras', nargs='*', default='--help', help='Operation specific parameters')
-# # - '**/psic/assigner/assign.py'
-# # - '**/psic/cataloging/catalog.py'
-# # - '**/psic/collector/collect.py'
-# # - '**/psic/resizer/resize.py'
 
 paths = {
     'assign': '../assigner/assign.py',
