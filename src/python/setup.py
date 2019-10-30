@@ -4,7 +4,7 @@
 """The setup script."""
 from setuptools import setup, find_packages
 
-with open('README.md', 'r', encoding='utf8') as fh:
+with open('psic/README.md', 'r', encoding='utf8') as fh:
     long_description = fh.read()
 
 setup(
@@ -43,7 +43,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     python_requires='>=3.6',
-    scripts=['main/pstorm.py'],
+    scripts=['psic/main/pstorm.py'],
     test_suite='tests',
     tests_require=['bumpversion', 'flake8', 'pytest', 'pytest-cov', 'pytest-runner'],
     zip_safe=False,
