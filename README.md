@@ -56,12 +56,16 @@ Beta branch is the main place to submit new code.
 
 1. Python 3.6 or 3.7 [**(Download Here)**](https://www.python.org/downloads/)
 2. Pipenv **(Run `pip install pipenv`)**
+3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`.
+
+*If you get an error message that looks something like `Module not found: "psic"`,
+then the `PYTHONPATH` is not configured correctly!*
 
 ***You will need these in order to run the project.***
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to `src/python/Poststorm_Imagery` (inner-most `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `src/python/psic` (inside the project, `Poststorm_Imagery`)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data
