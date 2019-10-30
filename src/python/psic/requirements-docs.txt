@@ -1,4 +1,4 @@
-mkdocs
+mkdocs==1.0.4
 mkdocs-git-revision-date-plugin
 mkdocs-macros-plugin
 mkdocs-material
