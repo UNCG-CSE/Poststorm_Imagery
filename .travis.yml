@@ -32,7 +32,7 @@ matrix:
     script: tox
 
   - language: node_js
-    node_js: node
+    dist: precise
     before_install:
     - cd src/dashboard/web_server
     install:
