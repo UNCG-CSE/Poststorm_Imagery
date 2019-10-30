@@ -33,6 +33,7 @@ matrix:
 
   - language: node_js
     dist: trusty
+    node_js: node
     before_install:
     - cd src/dashboard/web_server
     install:
