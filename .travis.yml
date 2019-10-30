@@ -2,32 +2,37 @@ matrix:
   include:
   - language: python
     python: 3.6
+    env: TOXENV=py36
     cache: pip
     before_install:
     - pip install -U pip
     install:
     - pip install -U tox-travis
-    script:
-    - tox
-    after_failure:
-    # POST all failures on the main and beta branch to Discord
-    - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-    - chmod +x send.sh
-    - ./send.sh failure $WEBHOOK_URL
+    script: tox
 
   - language: python
     python: 3.7
+    env: TOXENV=py37
     cache: pip
     before_install:
     - pip install -U pip
     install:
     - pip install -U tox-travis codecov
-    script:
-    - tox
-    after_success:
-    - codecov
+    script: tox
+    after_success: codecov
+
+  - language: python
+    python: 3.7
+    env: TOXENV=flake8
+    cache: pip
+    before_install:
+    - pip install -U pip
+    install:
+    - pip install -U tox-travis
+    script: tox
 
   - language: node_js
+    dist: trusty
     node_js: node
     before_install:
     - cd src/dashboard/web_server
@@ -38,5 +43,12 @@ matrix:
     - node_modules/.bin/eslint . --fix
     - npm test
 
-#  allow_failures:
-#  - node_js: node
+
+  allow_failures:
+    - env: TOXENV=flake8
+
+after_failure:
+# POST all failures on the main and beta branch to Discord
+- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+- chmod +x send.sh
+- ./send.sh failure $WEBHOOK_URL
