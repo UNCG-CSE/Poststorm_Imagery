@@ -43,6 +43,7 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     python_requires='>=3.6',
+    scripts=['main/pstorm.py'],
     test_suite='tests',
     tests_require=['bumpversion', 'flake8', 'pytest', 'pytest-cov', 'pytest-runner'],
     zip_safe=False,
