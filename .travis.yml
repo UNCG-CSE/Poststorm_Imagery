@@ -5,7 +5,7 @@ matrix:
       before_install:
       - pip install --upgrade pip
       before_script:
-      - pip install --upgradetox-travis setuptools virtualenv codecov
+      - pip install --upgrade tox-travis setuptools virtualenv codecov
       script: tox
 
       matrix:
