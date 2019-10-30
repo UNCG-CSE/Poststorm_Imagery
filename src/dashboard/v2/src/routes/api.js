@@ -23,6 +23,28 @@ const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images
 const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
 const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 
+const tag_name_value_pairs={
+    development:{
+        DevelopedId:0,
+        UndevelopedId:1
+    },
+    washover:{
+        VisibleWashoverId:0,
+        NoVisibleWashoverId:1
+    },
+    impact:{
+        SwashId:0,
+        OverwashId:1,
+        InundationId:2,
+        CollisionId:3
+    },
+    terrian:{
+        RiverId:'RiverId',
+        MarshId:'MarshId',
+        SandyCoastlineId:'SandyCoastlineId'
+    }
+}
+
 const possible_developmentGroup_tags =[
     'DevelopedId',
     'UndevelopedId'
@@ -43,19 +65,39 @@ const possible_terrianGroup_tags =[
     'SandyCoastlineId'
 ]
 
+
+
 async function runPy(sript_path,callback,options=null)
 {
     return new Promise(async function(resolve, reject){
         await PythonShell.run(sript_path, options, function (err, results) {
                 if (err) throw err;
-                console.log('results: ');
+                //console.log('results: ');
                 //for all results from script
-                for(let i of results){
-                    console.log(i, "---->", typeof i)
-                }
-            resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
+                // for(let i of results){
+                //     console.log(i, "---->", typeof i)
+                // }
+                callback(err, results)
+                resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
         });
     })
+}
+
+function gen_tag_options(user_id,tag_id,tag_content){
+    return {
+        mode: 'text',
+        pythonOptions: ['-u'],
+        scriptPath: './',
+        args: [
+            'tag',
+            'skip',
+            `-p`, fullSizeImagePath,
+            `-s`, smallSizeImagePath,
+            `-u`, user_id,
+            `-t`,tag_id,
+            `-c`,tag_content
+        ]
+    };
 }
 
 
@@ -67,7 +109,7 @@ async function  main() {
         await runPy('src/routes/test.py',function(err,results){
             console.log(results)
         })
-        runPy('src/routes/test2.py',function(err,results){
+        await runPy('src/routes/test2.py',function(err,results){
             console.log(results)
         })
         res.json(
@@ -226,7 +268,7 @@ async function  main() {
 
     });
     
-
+    //submit
     router.post('/submit_image_tags', function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
@@ -239,7 +281,15 @@ async function  main() {
                 image_id,
                 user_id
             } = req.body
-            //console.log(req.body)
+            // console.log(req.body)
+            // { developmentGroup: 'UndevelopedId',
+            // washoverVisibilityGroup: 'NoVisibleWashoverId',
+            // impactGroup: 'OverwashId',
+            // terrianGroup: [ 'SandyCoastlineId' ],
+            // additional_notes: '',
+            // image_id: '/Florence/20180921a_jpgs/jpgs/C26452726.jpg',
+            // user_id: 'google-oauth2|100613204270669384478' }
+
 
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
@@ -252,21 +302,27 @@ async function  main() {
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
                     throw 'Sent invalid tag id'
                 }
+                console.log({
+                    one:developmentGroup,
+                    two:washoverVisibilityGroup,
+                    three:impactGroup,
+                    for:terrianGroup
+                })
 
-                let radio_tag_options = {
-                    mode: 'text',
-                    pythonOptions: ['-u'],
-                    scriptPath: './',
-                    args: [
-                        'tag',
-                        'skip',
-                        `-p`, fullSizeImagePath,
-                        `-s`, smallSizeImagePath,
-                        `-u`, user_id,
-                        `-t`,tag_id,
-                        `-c`,tag_content
-                    ]
-                };
+                const dev_value=tag_name_value_pairs['development'][developmentGroup]
+                const wash_value=tag_name_value_pairs['washover'][washoverVisibilityGroup]
+                const impact_value=tag_name_value_pairs['impact'][impactGroup]
+
+                console.log(dev_value,wash_value,impact_value)
+                //const dev_value=tag_name_value_pairs['development'][developmentGroup]
+                //const selected_development_option=
+
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     const parsed_result=JSON.parse(results)
+
+                //     console.log('Parsed from python assinger',parsed_result)
+
+                // },gen_tag_options(user_id,1,1))
 
                 //Do insert
                 res.send({
@@ -276,9 +332,7 @@ async function  main() {
             }
             else
             {
-                
                 throw 'Not all tagging data was sent'
-
             }
 
         }catch (err){// big error
@@ -316,48 +370,76 @@ async function  main() {
                     ]
                 };
 
+                let get_next_option = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    scriptPath: './',
+                    args: [
+                        'tag',
+                        'next',
+                        `-p`, fullSizeImagePath,
+                        `-s`, smallSizeImagePath,
+                        `-u`, user_id
+                    ]
+                };
+
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    console.log('>>>>>>>>>>>>. tag ocean done')
+                },tag_ocean_option)
+
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    console.log('>>>>>>>>>>>>. get next done')
+                    // const parsed_result=JSON.parse(results)
+
+                    // console.log('Parsed from python assinger',parsed_result)
+                    
+                    res.send({
+                        //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
+                        message: `Image has been tagged as ocean, page will refresh to get new image`
+                    })    
+                },get_next_option)
                
               
-                console.log('running ocean')
-                PythonShell.run(`${assignerSrc}${assignerScript}`, tag_ocean_option, function (err, results) {
-                    if (err){
-                        throw err;
-                        //reject(err)
-                    } 
-                    console.log('>>>>>>>>>>>>. tag ocean done')
+                // console.log('running ocean')
+                // PythonShell.run(`${assignerSrc}${assignerScript}`, tag_ocean_option, function (err, results) {
+                //     if (err){
+                //         throw err;
+                //         //reject(err)
+                //     } 
+                //     console.log('>>>>>>>>>>>>. tag ocean done')
 
-                    let get_next_option = {
-                        mode: 'text',
-                        pythonOptions: ['-u'],
-                        scriptPath: './',
-                        args: [
-                            'tag',
-                            'next',
-                            `-p`, fullSizeImagePath,
-                            `-s`, smallSizeImagePath,
-                            `-u`, user_id
-                        ]
-                    };
+                //     let get_next_option = {
+                //         mode: 'text',
+                //         pythonOptions: ['-u'],
+                //         scriptPath: './',
+                //         args: [
+                //             'tag',
+                //             'next',
+                //             `-p`, fullSizeImagePath,
+                //             `-s`, smallSizeImagePath,
+                //             `-u`, user_id
+                //         ]
+                //     };
                   
-                    console.log('running next')
-                    PythonShell.run(`${assignerSrc}${assignerScript}`, get_next_option, function (err, results) {
-                        if (err){
-                            throw err;
-                            //reject(err)
-                        } 
-                        console.log('>>>>>>>>>>>>. get next done')
-                        // const parsed_result=JSON.parse(results)
+                //     console.log('running next')
+                //     PythonShell.run(`${assignerSrc}${assignerScript}`, get_next_option, function (err, results) {
+                //         if (err){
+                //             throw err;
+                //             //reject(err)
+                //         } 
+                //         console.log('>>>>>>>>>>>>. get next done')
+                //         // const parsed_result=JSON.parse(results)
     
-                        // console.log('Parsed from python assinger',parsed_result)
+                //         // console.log('Parsed from python assinger',parsed_result)
                         
-                        res.send({
-                            //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
-                            message: `Image has been tagged as ocean`
-                        })    
+                //         res.send({
+                //             //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
+                //             message: `Image has been tagged as ocean`
+                //         })    
                   
-                    });
+                //     });
                    
-                });
+                // });
              
                 
                 
@@ -410,18 +492,29 @@ async function  main() {
                     ]
                 };
 
-                PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-                    if (err) throw err;
-
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
 
                     console.log('Parsed from python assinger',parsed_result)
 
                     res.send({
                         //message:`Image ${image_id} for user ${user_id} skipped :)`
-                        message: `Image skipped,page will refresh to get new image`
+                        message: `Image skipped,page will refresh to get new image.`
                     })
-                });
+                },options)
+
+                // PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
+                //     if (err) throw err;
+
+                //     const parsed_result=JSON.parse(results)
+
+                //     console.log('Parsed from python assinger',parsed_result)
+
+                //     res.send({
+                //         //message:`Image ${image_id} for user ${user_id} skipped :)`
+                //         message: `Image skipped,page will refresh to get new image`
+                //     })
+                // });
 
             }
             else {
