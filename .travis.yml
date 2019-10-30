@@ -4,19 +4,12 @@ matrix:
       cache: pip
       before_install:
       - pip install --upgrade pip
+      install:
+      - src/python/psic/requirements.txt
+      - src/python/psic/requirements-dev.txt
       before_script:
       - pip install --upgrade tox-travis setuptools virtualenv codecov
       script: tox
-
-      matrix:
-        include:
-        - python: 3.6
-          env: TOXENV=py36
-        - python: 3.7
-          env: TOXENV=py37
-        - python: 3.7
-          env: TOXENV=flake8
-
       after_success: codecov
 
     - language: node_js
