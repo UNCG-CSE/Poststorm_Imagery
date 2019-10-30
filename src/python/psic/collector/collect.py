@@ -23,7 +23,7 @@ TAR_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.TAR_CACHE)
 # Define command-line parameters and arguments #
 ################################################
 
-parser = argparse.ArgumentParser(prog='collect')
+parser = argparse.ArgumentParser(prog=(s.ROOT_CMD + ' collect'))
 
 parser.add_argument('--storm', '-s', default='.*',
                     help='Search all storms for a specific term or match a regular expression. '

@@ -14,7 +14,7 @@ DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 # Define command-line parameters and arguments #
 ################################################
 
-parser = argparse.ArgumentParser(prog='resize')
+parser = argparse.ArgumentParser(prog=(s.ROOT_CMD + ' resize'))
 
 parser.add_argument('--path', '-p', default=DATA_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')

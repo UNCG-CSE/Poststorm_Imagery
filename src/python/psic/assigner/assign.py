@@ -57,7 +57,7 @@ user.add_argument('--user', '-u', type=str, dest='user', required=True,
                   help='The user that the command will be run in the context of.')
 
 # Define the root command
-p = argparse.ArgumentParser(prog='assign', parents=[parent])
+p = argparse.ArgumentParser(prog=(s.ROOT_CMD + ' assign'), parents=[parent])
 p_subparsers = p.add_subparsers(title='operations', dest='command')
 
 
