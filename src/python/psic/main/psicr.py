@@ -35,3 +35,7 @@ if len(sys.argv) > 1 and sys.argv[1] in paths.keys():
     sys.argv.remove(sys.argv[1])
     sys.argv[0] = str(script)
     exec(open(sys.argv[0]).read())
+else:
+    h.print_error('Unknown sub-command "%s".'
+                  '\nValid sub-commands are %s'
+                  % (sys.argv[1], ', '.join(paths)))
