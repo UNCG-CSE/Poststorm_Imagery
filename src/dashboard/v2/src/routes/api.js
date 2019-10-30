@@ -297,7 +297,7 @@ async function  main() {
                 PythonShell.run(`${assignerSrc}${assignerScript}`, tag_ocean_option, function (err, results) {
                     if (err){
                         throw err;
-                        reject(err)
+                        //reject(err)
                     } 
                     console.log('>>>>>>>>>>>>. tag ocean done')
 
@@ -318,7 +318,7 @@ async function  main() {
                     PythonShell.run(`${assignerSrc}${assignerScript}`, get_next_option, function (err, results) {
                         if (err){
                             throw err;
-                            reject(err)
+                            //reject(err)
                         } 
                         console.log('>>>>>>>>>>>>. get next done')
                         // const parsed_result=JSON.parse(results)

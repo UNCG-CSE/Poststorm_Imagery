@@ -310,7 +310,7 @@ function Index(props) {
   const [expanded, setExpanded] = React.useState(false);
 
 
-  const [isSubmiting, setSubmitionDisable] = React.useState(false);
+  const [isSubmitingForm, setSubmitionDisable] = React.useState(false);
 
   function handle_image_collapse() {
     setExpanded(!expanded);
@@ -329,13 +329,13 @@ function Index(props) {
   }
 
   function handle_error_on_submit(res,enable=true){
-    setSubmitionDisable(enable)
+    //setSubmitionDisable(enable)
     alert(res)
   }
 
   function handle_success_on_submit(res,enable=true){
     alert(res.data.message)
-    setSubmitionDisable(false)
+    //setSubmitionDisable(false)
     location.reload(); 
   }
 
@@ -439,7 +439,7 @@ function Index(props) {
               Show Compressed Image
             </ShowSmallImage>
 
-            <OceanButon disabled={isSubmiting} aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={submit_as_ocean}>
+            <OceanButon disabled={isSubmitingForm} aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={submit_as_ocean}>
              Tag as Ocean image
             </OceanButon>
 
@@ -471,7 +471,7 @@ function Index(props) {
                 values,
                 errors,
                 touched,
-                isSubmitting
+                //isSubmitting
               }) => (
                 <form onSubmit={handleSubmit}>
                   <CardActions style={MyTheme.palette.grey700BG}>
@@ -602,7 +602,8 @@ function Index(props) {
 
                       <TextField
                         id="outlined-dense-multiline"
-                        label="Additional Notes"isSubmitting
+                        label="Additional Notes"
+                        // isSubmitting
                         rows="5"
                         margin="dense"
                         variant="outlined"
@@ -621,11 +622,11 @@ function Index(props) {
                   </CardActions>
             
                   <CardActions >
-                    <SkipButton disabled={isSubmiting}size="small" variant="contained" color="primary" className={classes.margin} onClick={skip_image}>
+                    <SkipButton disabled={isSubmitingForm}size="small" variant="contained" color="primary" className={classes.margin} onClick={skip_image}>
                         Skip
                     </SkipButton>
 
-                    <SubmitButton disabled={isSubmiting} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
+                    <SubmitButton disabled={isSubmitingForm} id="submitButtie" size="small" variant="contained" color="primary" className={classes.toolbarButtons} type="submit">
                         Submit
                     </SubmitButton>
                   </CardActions>
