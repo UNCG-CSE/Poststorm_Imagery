@@ -42,13 +42,14 @@ Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 
 **Hours spent:** A lot 😢, 8 to 13 to 20 depending on the week.
 
-[link](https://post-storm-imagery.readthedocs.io/en/latest/dashboard/)
+[link](https://post-storm-imagery.readthedocs.io/en/latest/dashboard/) to the dashboard readme.
 
 #### What I did
 
 1. Added user authentication with Auth0 service.
 2. As a result remade the entire dashobard from stracth to incorporate the
    authentication. Made sure protected links would only allowed logged in users.
+
 The above task took 2-3 weeks
 3. Added endpoint to call python script to get the image a specific user is
    supposed to tag.
@@ -58,6 +59,7 @@ The above task took 2-3 weeks
 6. Added endpoint to call python script to tag an image with the data from the
    form and get the next iamge to tag.
 7. Added package.json scripts to build the webserver for production
+
 items 3-7 took the last 3 weeks.
 
 ---
