@@ -84,9 +84,9 @@ def plot_images(folder):
         negative = 255 - img  # neg = (L-1) - img
 
         plt.figure(figsize=(6, 6))
-        plt.imshow(negative);
+        plt.imshow(negative)
         plt.title("Negative Image")
-        plt.axis('off');
+        plt.axis('off')
 
         # Gamma encoding
         # pic = imageio.imread('img/parrot.jpg')
@@ -96,7 +96,7 @@ def plot_images(folder):
         plt.figure(figsize=(5, 5))
         plt.title("Gamma Corrected Image")
         plt.imshow(gamma_correction)
-        plt.axis('off');
+        plt.axis('off')
         plt.show()
 
 
@@ -213,6 +213,6 @@ def average_images(folder):
 # concat_images('data/test_shoreline_images')
 
 # Generate histograms for the concatenated (sum of all images) images in each directory
-#grayscale_image_histogram('data/test_inland_images/concat.jpg')
-#grayscale_image_histogram('data/test_ocean_images/concat.jpg')
+grayscale_image_histogram('data/test_inland_images/concat.jpg')
+grayscale_image_histogram('data/test_ocean_images/concat.jpg')
 grayscale_image_histogram('data/test_shoreline_images/concat.jpg')
