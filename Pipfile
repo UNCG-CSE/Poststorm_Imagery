@@ -15,6 +15,7 @@ mkdocs-macros-plugin = "*"
 mkdocs-material = "*"
 mkdocs-minify-plugin = "*"
 pymdown-extensions = "*"
+pre-commit = "*"
 
 [packages]
 requests = "*"
@@ -27,4 +28,3 @@ imageio = "*"
 matplotlib = "*"
 scipy = "*"
 opencv-python = "*"
-pre-commit = "*"
