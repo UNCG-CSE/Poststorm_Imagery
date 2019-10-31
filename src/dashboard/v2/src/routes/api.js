@@ -1,28 +1,26 @@
 const express = require('express');
 require("dotenv").config();
-//const app = express();
+
 const router = express.Router();
 const request = require("request");
-const fs = require('fs');
 const auth0Token = require("../components/getBearerToken");
-
-const axios = require('axios');
 
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
+//Location of the python assinger script
 const assignerScript='assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
 const imageSource='/home/namenai/P-Sick/'
-const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
-// mattm specific test config
-// const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
-// const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
 
-// namenai specific test config
+//Image incase some error happens
+const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
+
+// Path to the images,so that assinger knows wats wat.
 const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
 const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 
+//Used to take user form inputs and convert over to intergers for tensor flow
 const tag_name_value_pairs={
     development:{
         DevelopedId:0,
@@ -46,6 +44,7 @@ const tag_name_value_pairs={
     }
 }
 
+//Used to validate wat is given for form submition
 const possible_developmentGroup_tags =[
     'DevelopedId',
     'UndevelopedId'
@@ -66,22 +65,19 @@ const possible_terrianGroup_tags =[
     'SandyCoastlineId'
 ]
 
-async function runPy(sript_path,callback,options=null)
-{
-    return new Promise(async function(resolve, reject){
-        await PythonShell.run(sript_path, options, function (err, results) {
+//Used to run python scripts in a sync manner so that we dont have to do promise nesting.
+async function runPy(sript_path,callback,options=null){
+    return new Promise(function(resolve, reject){
+        PythonShell.run(sript_path, options, function (err, results) {
                 if (err) throw err;
-                //console.log('results: ');
-                //for all results from script
-                // for(let i of results){
-                //     console.log(i, "---->", typeof i)
-                // }
+               
                 callback(err, results)
                 resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
         });
     })
 }
 
+//Used to gen tag options for submition since they vary little
 function gen_tag_options_submit(user_id,tag_id,tag_content){
     return {
         mode: 'text',
@@ -116,7 +112,6 @@ function gen_comment_options_submit(user_id,comment){
     };
 }
 
-
 function get_next_img_options(user_id){
     return {
         mode: 'text',
@@ -133,9 +128,11 @@ function get_next_img_options(user_id){
     };
 }
 
+//Everything is in an async function becuase sync is good.
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
 
+    //simple test route 
     router.use('/test', async function (req, res) {
 
         await runPy('src/routes/test.py',function(err,results){
@@ -154,6 +151,7 @@ async function  main() {
         )
     });
     
+    //Used to get the users role to prevent non roled ppl from tagging *Currently not used*
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
 
@@ -177,6 +175,7 @@ async function  main() {
 
     });
 
+    //Get list of storms we can tag *Not used*
     router.get('/getTaggableStorms', function (req, res) {
         const storm_choices=[
             {
@@ -189,7 +188,7 @@ async function  main() {
 
     });
 
-    //Python stuff
+    //Call the assinger script to get this users (passed in req.body) image
     router.post('/getImage', async function (req, res) {
 
         try {
@@ -220,7 +219,6 @@ async function  main() {
                 if(parsed_result.error_message)
                 {
                     throw 'Python script had error'
-                    return null
                 }
                 //Get the contents of json
                 const {
@@ -235,7 +233,7 @@ async function  main() {
                 const image_id=full_image_path.split('data').slice(-1)[0]
 
 
-                return_json ={
+                const return_json ={
                     full_image_path:full_image_path,
                     small_image_path:small_image_path.replace('data','small'),
                     image_id:image_id
@@ -254,7 +252,7 @@ async function  main() {
 
     });
 
-    //example data/Florence/20180920b_jpgs/jpgs/C26356183.jpg
+    //Below comment helped with finding out how to variables in url
     //https://stackoverflow.com/questions/15128849/using-multiple-parameters-in-url-in-express
     router.get('/:folder/:storm/:archive/:imageType/:imageFile', function (req, res,next) {
         const {storm,archive,imageType,imageFile,folder} = req.params;
@@ -300,7 +298,7 @@ async function  main() {
 
     });
     
-    //submit
+    //route to submit tags of an image and get next image.
     router.post('/submit_image_tags', async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
@@ -313,16 +311,7 @@ async function  main() {
                 image_id,
                 user_id
             } = req.body
-            // console.log(req.body)
-            // { developmentGroup: 'UndevelopedId',
-            // washoverVisibilityGroup: 'NoVisibleWashoverId',
-            // impactGroup: 'OverwashId',
-            // terrianGroup: [ 'SandyCoastlineId' ],
-            // additional_notes: '',
-            // image_id: '/Florence/20180921a_jpgs/jpgs/C26452726.jpg',
-            // user_id: 'google-oauth2|100613204270669384478' }
-
-
+           
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
                 const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
@@ -334,12 +323,6 @@ async function  main() {
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
                     throw 'Sent invalid tag id'
                 }
-                // console.log({
-                //     one:developmentGroup,
-                //     two:washoverVisibilityGroup,
-                //     three:impactGroup,
-                //     for:terrianGroup
-                // })
                 const dev_cat='development'
                 const washover_cat='washover'
                 const impact_cat='impact'
@@ -350,53 +333,48 @@ async function  main() {
                 const impact_value=tag_name_value_pairs[impact_cat][impactGroup]
 
                 console.log(dev_value,wash_value,impact_value,terrianGroup)
-                //const dev_value=tag_name_value_pairs['development'][developmentGroup]
-                //const selected_development_option=
-
+   
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                    console.log('development group tag added')
                 },gen_tag_options_submit(user_id,dev_cat,dev_value))
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                    console.log('washover group tag added')
                 },gen_tag_options_submit(user_id,washover_cat,wash_value))
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-                    console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
+                    console.log('impact group tag added')
                 },gen_tag_options_submit(user_id,impact_cat,impact_value))
 
-                
-            
+                //How to have looped await, cant use foreach becuase its not promise aware
                 //https://zellwk.com/blog/async-await-in-loops/
                 const terrian_promise = terrianGroup.map(async element => {
 
                     return await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                         const parsed_result=JSON.parse(results)
-                        console.log('<<<<<<<<<<<<<<<<<< terrian',parsed_result)
-                    
+                        console.log('terrian group tag added')
                     },gen_tag_options_submit(user_id,terrian_cat,true))
                   })
-                  
+                
+                //wait for all terrian tagging to be done
                 await Promise.all(terrian_promise)
 
+                console.log('All radio/checkbox tags added')
+
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
-                    console.log('adding comment',parsed_result)
+                    console.log('comment added',parsed_result)
                 },gen_comment_options_submit(user_id,additional_notes))
                   
-                console.log('------------- Wowe done tagging')
+                console.log('All tagging data done')
                 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-                    console.log('next img',parsed_result)
+                    console.log('Next image got')
                 },get_next_img_options(user_id))
 
-                //Do insert
+                //Return
                 res.send({
-                    message:`Image ${image_id} for user ${user_id} has been tagged `
+                    message:`Image has been tagged, page will refresh to get next image `
                 })
 
             }
@@ -411,10 +389,9 @@ async function  main() {
                 message:`ERROR - ${err}`
             })
         }
-
-        //res.send('POST request to homepagex')
     })
 
+    //What to do for the quick option of saying this image is a ocean
     router.post('/submit_ocean_image', async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
@@ -422,7 +399,6 @@ async function  main() {
                 image_id,
                 user_id
             } = req.body
-            //console.log(req.body)
 
             if(user_id && image_id) {
 
@@ -454,73 +430,15 @@ async function  main() {
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('>>>>>>>>>>>>. tag ocean done')
+                    console.log('Tagged as ocean')
                 },tag_ocean_option)
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('>>>>>>>>>>>>. get next done')
-                    // const parsed_result=JSON.parse(results)
-
-                    // console.log('Parsed from python assinger',parsed_result)
-                    
+                    console.log('Got next image')
                     res.send({
-                        //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
                         message: `Image has been tagged as ocean, page will refresh to get new image`
                     })    
                 },get_next_option)
-               
-              
-                // console.log('running ocean')
-                // PythonShell.run(`${assignerSrc}${assignerScript}`, tag_ocean_option, function (err, results) {
-                //     if (err){
-                //         throw err;
-                //         //reject(err)
-                //     } 
-                //     console.log('>>>>>>>>>>>>. tag ocean done')
-
-                //     let get_next_option = {
-                //         mode: 'text',
-                //         pythonOptions: ['-u'],
-                //         scriptPath: './',
-                //         args: [
-                //             'tag',
-                //             'next',
-                //             `-p`, fullSizeImagePath,
-                //             `-s`, smallSizeImagePath,
-                //             `-u`, user_id
-                //         ]
-                //     };
-                  
-                //     console.log('running next')
-                //     PythonShell.run(`${assignerSrc}${assignerScript}`, get_next_option, function (err, results) {
-                //         if (err){
-                //             throw err;
-                //             //reject(err)
-                //         } 
-                //         console.log('>>>>>>>>>>>>. get next done')
-                //         // const parsed_result=JSON.parse(results)
-    
-                //         // console.log('Parsed from python assinger',parsed_result)
-                        
-                //         res.send({
-                //             //message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
-                //             message: `Image has been tagged as ocean`
-                //         })    
-                  
-                //     });
-                   
-                // });
-             
-                
-                
-              
-              
-
-                // //Do insert
-                // res.send({
-                //     message:`Image ${image_id} for user ${user_id} has been tagged as ocean`
-                // })
-
             }
             else
             {
@@ -533,12 +451,10 @@ async function  main() {
                 message:`ERROR - ${err}`
             })
         }
-
-        //res.send('POST request to homepagex')
     })
 
+    //skip image quick option
     router.post('/skip_image', async function (req, res) {
-
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {
@@ -547,7 +463,6 @@ async function  main() {
             }=req.body;
             if(user_id && image_id) {
                 
-            
                 // Options to get the user's current image
                 let options = {
                     mode: 'text',
@@ -563,46 +478,22 @@ async function  main() {
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-
-                    console.log('Parsed from python assinger',parsed_result)
-
+                    console.log('Image skipped')
                     res.send({
-                        //message:`Image ${image_id} for user ${user_id} skipped :)`
                         message: `Image skipped,page will refresh to get new image.`
                     })
                 },options)
-
-                // PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
-                //     if (err) throw err;
-
-                //     const parsed_result=JSON.parse(results)
-
-                //     console.log('Parsed from python assinger',parsed_result)
-
-                //     res.send({
-                //         //message:`Image ${image_id} for user ${user_id} skipped :)`
-                //         message: `Image skipped,page will refresh to get new image`
-                //     })
-                // });
-
             }
             else {
                 throw 'Incomplete data sent'
             }
-
-
-
-
         } catch (err){// big error
             console.error(err);
             res.send({
                 message:`ERROR - ${err}`
             })
         }
-
     });
-
 }
 main();
 

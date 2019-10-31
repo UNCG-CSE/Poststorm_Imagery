@@ -34,6 +34,11 @@
     "uid-safe": "^2.1.5",
     "yup": "^0.27.0"
   },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.16.0"
+  },
   "scripts": {
     "dev": "node ./src/server",
     "prod": "NODE_ENV=production node ./src/server ",

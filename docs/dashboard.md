@@ -9,33 +9,39 @@ train a model to classify future images.
 
 The only requirement is **Node.js** which is a JavaScript runtime built on
 Chrome's V8 JavaScript engine. Simply go to [here](https://nodejs.org/en/) and
-download the latest version, *at this time **10.16.3 LTS***.
+download the latest version, *at this time **12.13.0 LTS***.
 
-### Steps to Reproduce
+### Steps to set up enviroment
 
 Now that you have Node installed you are going to need to install the packages.
 
 1. Check that `node` and `npm` are installed with `node -v` and `npm -v`
 
-2. Then go inside `Poststorm_Imagery\src\dashboard\web_server` and using your
+2. Then go inside `Poststorm_Imagery\src\dashboard\v2` and using your
    favorite terminal run `npm install` to install all packages.
 
 3. Now you need to determine if you want to run the Node servers with localhost
    or your machines IP address.
 
-#### Localhost
+### Configure Auth0
 
-To run off **localhost** execute the command `npm run localhost`. Then connect
-to `http://localhost:3000/` for the website or `http://localhost:4000/` to see
-the node-image server. In the event that port 3000 and 4000 are not used, the
-terminal will always display the correct URL to follow.
+the `v2` dashboard now has user authentication provived by Auth0. As such we have to add some configuration to get things working. At `Poststorm_Imagery\src\dashboard\v2` there will need to be a `.env` file that contains the following below.
 
-#### IP address
+```
+PORT= Port to have the web server to be on
 
-To run off **IP address** execute the command `npm run useIP`. . Then connect to
-`http://<YOUR IP>:3000/` for website or `http://<YOUR IP>:4000/` for node-image
-server. In the event that port 3000 and 4000 are not used, the terminal will
-always display the correct URL to follow.
+AUTH0_DOMAIN= The domain given by auth0
+AUTH0_CLIENT_ID= Id so auth0 knows who this is
+AUTH0_CLIENT_SECRET= secret key for authentication, DONT SHARE THIS EVER, LIKE EVER 
+AUTH0_CALLBACK_URL= call back route, for example http://localhost:3000/callback
+BASE_URL= our sites base url, for example http://localhost:3000
+```
+
+Note, there is a file called `.env.template.txt` that contains this. The information for `AUTH0_DOMAIN`,`AUTH0_CLIENT_ID`,`AUTH0_CLIENT_SECRET` can all be obtained from the Auth0 website for the application.
+
+### Running
+
+After setting up the packages and setting up the `.env` file for Auth0 we can start up the webserver. Assuming your python paths for the `psic` modules are set you can simply run `npm run prod` to run the producton server. Then simply login in by creating your own account or using one of the Oauth methods provided. Currently the site is setup to run on `localhost` but changing the `.env` and `/src/server-config` files to use the machines IP will also work.
 
 ## Resources 💎
 
@@ -47,14 +53,11 @@ names to follow to their websites.
 
 ## How It Works? 🤔
 
-### Frontend 📺
+### Frontend
 
 **Next.js** is a JavaScript framework that uses **React.js** to create the UI
 and also renders the HTML server side before sending it to the client.
 
-### Backend 📡
+### Backend
 
-There are two **Node.js** servers. The first one is tasked with rendering the
-HTML page and sending it down to the client. The second is responsible for
-interacting with the database and handling submitions from the client. They are
-seperated out to run on differnt threads and seperate code out.
+The **Node.js** server is comprised of multiple parts. The main file, `server.js` mainly handles serving the **Next.js** pages. It also defines what pages, in our case folders, need the user to be logged in order to access. `auth-routes` is used to handle login/logut. The `/routes/api` page is used to handle all API calls such as getting image to tag or getting bearer token or posting the tag information for an image. Finally under `components/getBearerToken` we have the file that gets the bearer token for the application so that we can access certian information about users such as their roles.

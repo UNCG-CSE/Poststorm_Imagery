@@ -1,8 +1,8 @@
 
 require("dotenv").config();
-const express = require("express");
+const express = require("express");//package for networking
 const http = require("http");
-const next = require("next");
+const next = require("next");//The react framework for server side rendering
 const session = require("express-session");
 const bodyParser = require('body-parser');
 
@@ -18,12 +18,15 @@ const apiRoutes = require("./routes/api");
 
 //For Nextjs
 const dev = process.env.NODE_ENV !== "production";
-console.log(`Is dev? ${dev}`)
+console.log(`Is in dev mode? ${dev}`)
 
+//This is used to change where src is, since in production the .next folder will be one level above
+// the ./src folder.
 const get_dir = dev => dev ? './src':'./'
+
 const app = next({
   dev,
-  dir: get_dir(dev)//"./src"
+  dir: get_dir(dev)
 });
 const handle = app.getRequestHandler();
 
@@ -83,15 +86,15 @@ app.prepare().then(async () => {
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(express.json());
   
-   // For these routes,restrict access :)
-   server.use("/auth", restrictAccess);
-   //server.use("/dashboardHome", restrictAccess);
- 
-   server.use("/api", apiRoutes);
-   
-   // handling everything else with Next.js
-   server.get("*", handle);
+  // For these routes,restrict access :)
+  server.use("/auth", restrictAccess);
 
+  server.use("/api", apiRoutes);
+  
+  // handling everything else with Next.js
+  server.get("*", handle);
+
+  //Say when and where server is up
   http.createServer(server).listen(process.env.PORT,'0.0.0.0', () => {
     console.log(`>>> Site up on http://${IP}:${process.env.PORT}`);
   });

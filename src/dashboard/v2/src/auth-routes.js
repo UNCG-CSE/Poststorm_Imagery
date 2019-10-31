@@ -3,10 +3,12 @@ const passport = require("passport");
 
 const router = express.Router();
 
+//What to do if we enter the login route
 router.get("/login", passport.authenticate("auth0", {
   scope: "openid email profile"
 }), (req, res) => res.redirect("/"));// on fail
 
+//WHen callback is called, either take user to tagImage if successful ,or login if fail
 router.get("/callback", (req, res, next) => {
   passport.authenticate("auth0",  (err, user) => {
     if (err) return next(err);
@@ -18,6 +20,7 @@ router.get("/callback", (req, res, next) => {
   })(req, res, next);
 });
 
+//What to do on logout
 router.get("/logout", (req, res) => {
   req.logout();
 

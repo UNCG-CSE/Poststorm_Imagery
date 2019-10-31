@@ -25,7 +25,10 @@
         "react"
     ],
     "rules": {
-        "react/react-in-jsx-scope": "off"
+        "react/display-name": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "no-unused-vars": "off"
     },
     //https://stackoverflow.com/questions/36001552/eslint-parsing-error-unexpected-token
     "parser": "babel-eslint",
