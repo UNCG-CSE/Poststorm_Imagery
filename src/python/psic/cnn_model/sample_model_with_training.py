@@ -17,7 +17,7 @@ print("x_train shape:", x_train.shape, "y_train shape:", y_train.shape)
 # Print training set shape - note there are 60,000 training data of image size of 28x28, 60,000 train labels)
 print("x_train shape:", x_train.shape, "y_train shape:", y_train.shape)
 
-# Print the number of training and test datasets
+# Print the number of training and test data-sets
 print(x_train.shape[0], 'train set')
 print(x_test.shape[0], 'test set')
 
