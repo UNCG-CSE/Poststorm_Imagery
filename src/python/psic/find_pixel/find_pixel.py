@@ -25,7 +25,7 @@ while row < height + 1:
     while col < width + 1:
         # Get the RGB values from the current pixel
         r, g, b = rgb_image.getpixel((col - 1, row - 1))
-        # Append the RGB values to the rowdata variable as (Red, Green, Blue)
+        # Append the RGB values to the row data variable as (Red, Green, Blue)
         row_data += "(" + str(r) + "," + str(g) + "," + str(b) + ") "
         # Increment the column count
         col = col + 1
