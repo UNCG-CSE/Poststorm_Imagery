@@ -82,7 +82,7 @@ https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assign
 **Time:** 75 hours
    
    
-#### 4. Cataloging
+#### 4. Misc
 
 I've been working on structuring of the repository and also looking into different strategies to handle the image
 data and the best way to work with it. I've also been tweaking everything, including other scripts to make them
