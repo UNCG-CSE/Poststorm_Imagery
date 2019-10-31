@@ -661,10 +661,6 @@ Index.getInitialProps = async function(props) {
         userId:props.req.user.user_id 
       }
     }
-    else
-    {
-
-    }
     // const options ={
     //   userId:props.req.user.user_id 
     // }
