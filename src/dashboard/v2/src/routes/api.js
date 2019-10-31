@@ -1,28 +1,26 @@
 const express = require('express');
 require("dotenv").config();
-//const app = express();
+
 const router = express.Router();
 const request = require("request");
-const fs = require('fs');
 const auth0Token = require("../components/getBearerToken");
-
-const axios = require('axios');
 
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
+//Location of the python assinger script
 const assignerScript='assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
 const imageSource='/home/namenai/P-Sick/'
-const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
-// mattm specific test config
-// const fullSizeImagePath='F:\\Shared drives\\P-Sick\\data\\Florence';
-// const smallSizeImagePath='F:\\Shared drives\\P-Sick\\small\\Florence';
 
-// namenai specific test config
+//Image incase some error happens
+const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
+
+// Path to the images,so that assinger knows wats wat.
 const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
 const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 
+//Used to take user form inputs and convert over to intergers for tensor flow
 const tag_name_value_pairs={
     development:{
         DevelopedId:0,
@@ -46,6 +44,7 @@ const tag_name_value_pairs={
     }
 }
 
+//Used to validate wat is given for form submition
 const possible_developmentGroup_tags =[
     'DevelopedId',
     'UndevelopedId'
@@ -66,8 +65,8 @@ const possible_terrianGroup_tags =[
     'SandyCoastlineId'
 ]
 
-async function runPy(sript_path,callback,options=null)
-{
+//Used to run python scripts in a sync manner so that we dont have to do promise nesting.
+async function runPy(sript_path,callback,options=null){
     return new Promise(async function(resolve, reject){
         await PythonShell.run(sript_path, options, function (err, results) {
                 if (err) throw err;
@@ -82,6 +81,7 @@ async function runPy(sript_path,callback,options=null)
     })
 }
 
+//Used to gen tag options for submition since they vary little
 function gen_tag_options_submit(user_id,tag_id,tag_content){
     return {
         mode: 'text',
@@ -116,7 +116,6 @@ function gen_comment_options_submit(user_id,comment){
     };
 }
 
-
 function get_next_img_options(user_id){
     return {
         mode: 'text',
@@ -133,6 +132,7 @@ function get_next_img_options(user_id){
     };
 }
 
+//Everything is in an async function becuase sync is good.
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
 
