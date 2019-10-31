@@ -21,7 +21,9 @@ preparation of the images for our goals.
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
-<!-- Insert tasks here -->
+Explored statistical analysis on the image size of Hurricane Florence coastal versus inland images and used the log function to scale down the values. The mean of inland image sizes is greater than that of the coastal images. Plotted histograms for each data set and fitted them with a gamma distribution using method of moments. Attempted to use MLE and KDE but had syntax/library issues. Applied two tailed z-test on coastal images to find 97.5% confidence interval. Total time spent on task: 12 hours
+
+Developed utility that inputs a GPS coordinate and outputs the image filename(s) that contains that lat/long point. Time spent on task: 5 hours.
 
 ---  
 
