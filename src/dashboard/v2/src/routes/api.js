@@ -67,14 +67,10 @@ const possible_terrianGroup_tags =[
 
 //Used to run python scripts in a sync manner so that we dont have to do promise nesting.
 async function runPy(sript_path,callback,options=null){
-    return new Promise(async function(resolve, reject){
-        await PythonShell.run(sript_path, options, function (err, results) {
+    return new Promise(function(resolve, reject){
+        PythonShell.run(sript_path, options, function (err, results) {
                 if (err) throw err;
-                //console.log('results: ');
-                //for all results from script
-                // for(let i of results){
-                //     console.log(i, "---->", typeof i)
-                // }
+               
                 callback(err, results)
                 resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
         });
@@ -223,7 +219,6 @@ async function  main() {
                 if(parsed_result.error_message)
                 {
                     throw 'Python script had error'
-                    return null
                 }
                 //Get the contents of json
                 const {
@@ -238,7 +233,7 @@ async function  main() {
                 const image_id=full_image_path.split('data').slice(-1)[0]
 
 
-                return_json ={
+                const return_json ={
                     full_image_path:full_image_path,
                     small_image_path:small_image_path.replace('data','small'),
                     image_id:image_id
