@@ -74,8 +74,7 @@ references to images that are either ready to be tagged, completely tagged, or s
 randomly chooses an image and assigns it to a user when a person starts tagging a new image. Once an image is tagged
 more than once
 
-[![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)](
-https://post-storm-imagery.readthedocs.io/en/latest/assigner/)
+![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
 
