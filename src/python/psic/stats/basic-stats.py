@@ -1,7 +1,8 @@
+import os
+
+import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-import matplotlib.image as pltimg
 import pandas as pd
 import cv2
 from PIL import Image
@@ -18,12 +19,16 @@ def analyze_images(folder):
     green_list = []
     blue_list = []
     for image in os.listdir(folder):
+<<<<<<< HEAD
         img = pltimg.imread(os.path.join(folder, image))
         plt.calcHist([img], [0], None, [256], [0, 256])
         plt.show()
+=======
+        img = plt_img.imread(os.path.join(folder, image))
+>>>>>>> 98eab92dcf338b14097ad7e96a9f9e822b56af47
 
         # print("Image Name: " + str(image))
-        # print('Image Hight {}'.format(img.shape[0]))
+        # print('Image Height {}'.format(img.shape[0]))
         # print('Image Width {}'.format(img.shape[1]))
         # print('Image size {}'.format(img.size))
         # print('Maximum RGB value in this image {}'.format(img.max()))
@@ -70,7 +75,7 @@ def analyze_images(folder):
 
 def plot_images(folder):
     for image in os.listdir(folder):
-        img = pltimg.imread(os.path.join(folder, image))
+        img = plt_img.imread(os.path.join(folder, image))
 
         # Original Image
         plt.figure()
@@ -78,6 +83,7 @@ def plot_images(folder):
         plt.title("Original Image (1549x1164)")
         plt.axis('off')
 
+<<<<<<< HEAD
         # Negative of Image
         negative = 255 - img  # neg = (L-1) - img
 
@@ -96,6 +102,27 @@ def plot_images(folder):
         plt.imshow(gamma_correction)
         plt.axis('off');
         plt.show()
+=======
+        # # Negative of Image
+        # negative = 255 - img  # neg = (L-1) - img
+        #
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(negative);
+        # plt.title("Negative Image")
+        # plt.axis('off');
+        #
+        #
+        # # Gamma encoding
+        # # # pic = imageio.imread('img/parrot.jpg')
+        # gamma = 2.2  # Gamma < 1 ~ Dark ; Gamma > 1 ~ Bright
+        #
+        # gamma_correction = ((img / 255) ** (1 / gamma))
+        # plt.figure(figsize=(5, 5))
+        # plt.title("Gamma Corrected Image")
+        # plt.imshow(gamma_correction)
+        # plt.axis('off');
+        # plt.show()
+>>>>>>> 98eab92dcf338b14097ad7e96a9f9e822b56af47
 
         # Grayscale
         gray = lambda rgb: np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
