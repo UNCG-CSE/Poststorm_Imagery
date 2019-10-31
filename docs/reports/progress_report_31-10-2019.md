@@ -23,13 +23,13 @@ the images for our goals.
 
 Created script to find the center of an Image using the longitude and latitude of each corner. It takes four longitude of each corner and four latitude of each corner as parameter. Then it finds the midppoint of each side of the image. After that it uses those four midpoints and create two lines. Then find the intersection point of those two lines. That intersection point is the center of that image. It returns the center as tuple. Center of an image will be useful for classifier later on and any user will be able to use it to do further research on the images using center point.
 
-**Time:** 5 - 7 hours
+**Time:** 8 hours
 
 #### 1. Find_pixel
 
 Created script to find the pixel value and RGB value of pixels of an image. It takes an image file as parameter. Then convert that image to RGB. It finds RGB value for each pixel in each row. It displays each RGB value for the user as list with three elements. Then it gives the height pixel and width pixel for the image. It also returns the total pixel value for that image. Find_pixel is used to do statistical analysis using pixel values and RGB values. Finding the average pixel value for different type of images etc.
 
-**Time:** 12 - 16 hours
+**Time:** 16 - 20 hours
 
 ---
 
