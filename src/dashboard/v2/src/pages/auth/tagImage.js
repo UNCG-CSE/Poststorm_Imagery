@@ -654,9 +654,20 @@ Index.getInitialProps = async function(props) {
       // {label: "Storm III",value:1337}
     ]
 
-    const options ={
-      userId:props.req.user.user_id
+    let options;
+    if(props.req.user)
+    {
+      options ={
+        userId:props.req.user.user_id 
+      }
     }
+    else
+    {
+
+    }
+    // const options ={
+    //   userId:props.req.user.user_id 
+    // }
     
     
     const response = await axios.post(`http://${IP}:3000/api/getImage`,options);

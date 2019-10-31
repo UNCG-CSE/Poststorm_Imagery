@@ -18,9 +18,12 @@ const apiRoutes = require("./routes/api");
 
 //For Nextjs
 const dev = process.env.NODE_ENV !== "production";
+console.log(`Is dev? ${dev}`)
+
+const get_dir = dev => dev ? './src':'./'
 const app = next({
   dev,
-  dir: "./src"
+  dir: get_dir(dev)//"./src"
 });
 const handle = app.getRequestHandler();
 

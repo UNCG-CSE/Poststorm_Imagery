@@ -36,7 +36,9 @@
   },
   "scripts": {
     "dev": "node ./src/server",
+    "prod": "NODE_ENV=production node ./src/server ",
     "build": "next build",
-    "start": "next start"
+    "export": "next export",
+    "start": "NODE_ENV=production next start"
   }
 }

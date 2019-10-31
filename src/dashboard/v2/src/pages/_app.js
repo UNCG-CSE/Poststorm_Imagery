@@ -24,23 +24,26 @@ export default class MyApp extends App {
     }
 
     //If theres a session from passport, add the user
-    if (ctx.req && ctx.req.session.passport) {
-      pageProps.user = ctx.req.session.passport.user;
-
-      //This is so that it will only add the role if the user prop actualy exists
-      if(pageProps.user) {
-
-        //Lets get the userrole,by calling our own api that needs the user ID
-        var getUserOptions = {
-          url: `http://${IP}:3000/api/getUserRole/${pageProps.user.user_id}`,
-        };
-
-        pageProps.user.userRole=await axios.get(getUserOptions.url, getUserOptions)
-        .then(function (response) {
-         return response.data
-        })
-      } 
+    if(ctx.req.session){
+      if (ctx.req && ctx.req.session.passport) {
+        pageProps.user = ctx.req.session.passport.user;
+  
+        //This is so that it will only add the role if the user prop actualy exists
+        if(pageProps.user) {
+  
+          //Lets get the userrole,by calling our own api that needs the user ID
+          var getUserOptions = {
+            url: `http://${IP}:3000/api/getUserRole/${pageProps.user.user_id}`,
+          };
+  
+          pageProps.user.userRole=await axios.get(getUserOptions.url, getUserOptions)
+          .then(function (response) {
+           return response.data
+          })
+        } 
+      }
     }
+   
 
     //lets tag on the IP onto the pageProps
     pageProps.ip=IP
