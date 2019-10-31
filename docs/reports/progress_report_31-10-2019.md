@@ -68,7 +68,7 @@ https://post-storm-imagery.readthedocs.io/en/latest/cataloging/)
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cataloging)
 
-**Time:** 125 hours
+**Time:** 90 hours
    
 #### 3. Assigner
 
@@ -81,7 +81,7 @@ more than once
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
 
-**Time:** 75 hours
+**Time:** 50 hours
    
    
 #### 4. Misc
