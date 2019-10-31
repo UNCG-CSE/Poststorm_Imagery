@@ -16,28 +16,28 @@ col = 1
 pix = 0
 
 # Create an empty output row
-rowdata = ""
+row_data = ""
 
 # Find the RGB value for each pixel in each row
 while row < height + 1:
     print("")
     print("Row number: " + str(row))
     while col < width + 1:
-        # get the RGB values from the current pixel
+        # Get the RGB values from the current pixel
         r, g, b = rgb_image.getpixel((col - 1, row - 1))
-        # append the RGB values to the rowdata variable as (Red, Green, Blue)
-        rowdata += "(" + str(r) + "," + str(g) + "," + str(b) + ") "
-        # increment the column count
+        # Append the RGB values to the rowdata variable as (Red, Green, Blue)
+        row_data += "(" + str(r) + "," + str(g) + "," + str(b) + ") "
+        # Increment the column count
         col = col + 1
-        # increment the pixel count
+        # Increment the pixel count
         pix = pix + 1
-    # print out all RGB values for the row
-    print(rowdata)
-    # clear out rowdata variable
-    rowdata = ""
-    # increment the row
+    # Print out all RGB values for the row
+    print(row_data)
+    # Clear out row data variable
+    row_data = ""
+    # Increment the row
     row = row + 1
-    # reset the column count
+    # Reset the column count
     col = 1
 
 # Print the result to the console
