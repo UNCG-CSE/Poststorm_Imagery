@@ -99,7 +99,6 @@ def plot_images(folder):
         plt.axis('off')
         plt.show()
 
-
         # Grayscale
         gray = lambda rgb: np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
         gray = gray(img)
