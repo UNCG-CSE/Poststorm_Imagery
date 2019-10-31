@@ -1,7 +1,8 @@
+import os
+
+import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-import matplotlib.image as pltimg
 import pandas as pd
 
 
@@ -10,10 +11,10 @@ def analyze_images(folder):
     green_list = []
     blue_list = []
     for image in os.listdir(folder):
-        img = pltimg.imread(os.path.join(folder, image))
+        img = plt_img.imread(os.path.join(folder, image))
 
         # print("Image Name: " + str(image))
-        # print('Image Hight {}'.format(img.shape[0]))
+        # print('Image Height {}'.format(img.shape[0]))
         # print('Image Width {}'.format(img.shape[1]))
         # print('Image size {}'.format(img.size))
         # print('Maximum RGB value in this image {}'.format(img.max()))
@@ -31,7 +32,7 @@ def analyze_images(folder):
         # print('Average pixel value for the Red Channel: ' + str(red_avg))
         # print('Average pixel value for the Green Channel: ' + str(green_avg))
         # print('Average pixel value for the Blue Channel: ' + str(blue_avg))
-        #print('\n')
+        # print('\n')
 
     print("Average RGB values for each image in " + folder + ': ')
     print(red_list)
@@ -57,15 +58,15 @@ def analyze_images(folder):
 
 def plot_images(folder):
     for image in os.listdir(folder):
-        img = pltimg.imread(os.path.join(folder, image))
+        img = plt_img.imread(os.path.join(folder, image))
 
-        ## Original Image
+        # Original Image
         plt.figure()
         plt.imshow(img)
         plt.title("Original Image")
         plt.axis('off')
 
-        # ## Negative of Image
+        # # Negative of Image
         # negative = 255 - img  # neg = (L-1) - img
         #
         # plt.figure(figsize=(6, 6))
@@ -75,7 +76,7 @@ def plot_images(folder):
         #
         #
         # # Gamma encoding
-        # ## pic = imageio.imread('img/parrot.jpg')
+        # # # pic = imageio.imread('img/parrot.jpg')
         # gamma = 2.2  # Gamma < 1 ~ Dark ; Gamma > 1 ~ Bright
         #
         # gamma_correction = ((img / 255) ** (1 / gamma))
@@ -85,8 +86,7 @@ def plot_images(folder):
         # plt.axis('off');
         # plt.show()
 
-
-        ## Grayscale
+        # Grayscale
         gray = lambda rgb: np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
         gray = gray(img)
         plt.figure()
