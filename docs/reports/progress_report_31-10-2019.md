@@ -96,12 +96,13 @@ Time spent on task: 5 hours.
 
 **Hours spent:** A lot 😢, 8 to 13 to 20 depending on the week.
 
-[link](https://post-storm-imagery.readthedocs.io/en/latest/dashboard/) to the dashboard readme.
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/en/latest/dashboard/)
 
 #### What I did
 
 1. Added user authentication with Auth0 service.
-2. As a result remade the entire dashobard from stracth to incorporate the
+2. As a result remade the entire dashboard from scratch to incorporate the
    authentication. Made sure protected links would only allowed logged in users.
 
 The above task took 2-3 weeks
@@ -111,8 +112,8 @@ The above task took 2-3 weeks
 5. Added endpoint to call python script to tag an image as an ocean and get the
    next image to tag.
 6. Added endpoint to call python script to tag an image with the data from the
-   form and get the next iamge to tag.
-7. Added package.json scripts to build the webserver for production
+   form and get the next image to tag.
+7. Added package.json scripts to build the web-server for production
 
 items 3-7 took the last 3 weeks.
 
