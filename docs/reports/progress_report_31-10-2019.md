@@ -130,7 +130,7 @@ Tasks 3-7 took the last 3 weeks.
 ---
 
 ### [**John Weber**](https://github.com/JWeb56)  
-####1.  Creating/configuring VM and Google Cloud Storage
+#### 1.  Creating/configuring VM and Google Cloud Storage
 
 I purchased a free account on Google Cloud and created a project for our 405 project. 
 I initialized and configured a VM instance on which we will ultimately house our tagging apparatus
@@ -145,7 +145,7 @@ using that.
     
 **Time:** 25 hours
 
-####2.  Attempting to create a NodeJS apparatus for storing tagged image information
+#### 2.  Attempting to create a NodeJS apparatus for storing tagged image information
 
 Originally, it was my task to save the tagged image information, passed from the NodeJS front-end,
 to the MySQL database. However, it was determined that the back-end should be written in python and this was eventually
@@ -154,7 +154,7 @@ passed to another group member.
     
 **Time:** 5 hours
 
-####3.  Analyzing image pixel values and performing basic statistics
+#### 3.  Analyzing image pixel values and performing basic statistics
 
 I gathered 60 Florence images (20 each from inland, ocean, and shoreline classes) and analyized their RGB
 pixel values in order to determine if there are any simple statistical measures (mean values, standard deviations
@@ -174,7 +174,7 @@ https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/stats)
     
 **Time:** 30 hours
 
-####4.  Providing a sample or template for training Convolutional Neural Network
+#### 4.  Providing a sample or template for training Convolutional Neural Network
 
 Since our ultimate goal is to train a convolutional neural network to classify our images based on a certain
 number of classes/labels, but we still have not completed the tagging of our images, I wanted to
