@@ -4,14 +4,12 @@ from __future__ import print_function
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
-from tensorflow import keras
+from tensorflow import keras as tf
 
 print(tf.__version__)
-print(keras.__version__)
 
 # Load the fashion-mnist pre-shuffled train data and test data
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+(x_train, y_train), (x_test, y_test) = tf.datasets.fashion_mnist.load_data()
 
 print("x_train shape:", x_train.shape, "y_train shape:", y_train.shape)
 
@@ -63,9 +61,9 @@ x_valid = x_valid.reshape(x_valid.shape[0], w, h, 1)
 x_test = x_test.reshape(x_test.shape[0], w, h, 1)
 
 # One-hot encode the labels
-y_train = tf.keras.utils.to_categorical(y_train, 10)
-y_valid = tf.keras.utils.to_categorical(y_valid, 10)
-y_test = tf.keras.utils.to_categorical(y_test, 10)
+y_train = tf.utils.to_categorical(y_train, 10)
+y_valid = tf.utils.to_categorical(y_valid, 10)
+y_test = tf.utils.to_categorical(y_test, 10)
 
 # Print training set shape
 print("x_train shape:", x_train.shape, "y_train shape:", y_train.shape)
@@ -76,42 +74,42 @@ print(x_valid.shape[0], 'validation set')
 print(x_test.shape[0], 'test set')
 
 
-model = tf.keras.Sequential()
+model = tf.Sequential()
 
 # CONV 1 64 3x3 filters at stride 1, pad 1
-model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu', input_shape=(28,28,1)))
+model.add(tf.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu', input_shape=(28,28,1)))
 
 # BN 1
-model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.layers.BatchNormalization())
 
 # MAX POOL 1
-model.add(tf.keras.layers.MaxPooling2D(pool_size=2))
-model.add(tf.keras.layers.Dropout(0.5))
+model.add(tf.layers.MaxPooling2D(pool_size=2))
+model.add(tf.layers.Dropout(0.5))
 
 # CONV 2
-model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu'))
+model.add(tf.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu'))
 
 # BN 2
-model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.layers.BatchNormalization())
 
 # MAX POOL 2
-model.add(tf.keras.layers.MaxPooling2D(pool_size=2))
-model.add(tf.keras.layers.Dropout(0.5))
+model.add(tf.layers.MaxPooling2D(pool_size=2))
+model.add(tf.layers.Dropout(0.5))
 
 # CONV 3
-model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu'))
+model.add(tf.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu'))
 
 # BN 3
-model.add(tf.keras.layers.BatchNormalization())
+model.add(tf.layers.BatchNormalization())
 
 # MAX POOL 3
-model.add(tf.keras.layers.MaxPooling2D(pool_size=2))
-model.add(tf.keras.layers.Dropout(0.5))
+model.add(tf.layers.MaxPooling2D(pool_size=2))
+model.add(tf.layers.Dropout(0.5))
 
-model.add(tf.keras.layers.Flatten())
-model.add(tf.keras.layers.Dense(256, activation='relu'))
-model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(10, activation='softmax'))
+model.add(tf.layers.Flatten())
+model.add(tf.layers.Dense(256, activation='relu'))
+model.add(tf.layers.Dropout(0.5))
+model.add(tf.layers.Dense(10, activation='softmax'))
 
 # Take a look at the model summary
 model.summary()
@@ -149,8 +147,8 @@ for i, index in enumerate(np.random.choice(x_test.shape[0], size=15, replace=Fal
     ax = figure.add_subplot(3, 5, i + 1, xticks=[], yticks=[])
     # Display each image
     ax.imshow(np.squeeze(x_test[index]))
-    predict_index = np.argmax(y_hat[index])
-    true_index = np.argmax(y_test[index])
+    predict_index = int(np.argmax(y_hat[index]))
+    true_index = int(np.argmax(y_test[index]))
     # Set the title for each image
     ax.set_title("{} ({})".format(fashion_mnist_labels[predict_index],
                                   fashion_mnist_labels[true_index]),
