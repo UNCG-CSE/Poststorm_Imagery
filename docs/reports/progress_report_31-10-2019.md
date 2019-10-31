@@ -37,9 +37,9 @@ the images for our goals.
 
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
-**Hours spent:** 8-13 depending on week
+**Hours spent:** A lot 😢, 8 to 13 to 20 depending on the week.
 
-[link](./docs/dashboard.md)
+[link](https://post-storm-imagery.readthedocs.io/en/latest/dashboard/)
 
 #### What I did
 
