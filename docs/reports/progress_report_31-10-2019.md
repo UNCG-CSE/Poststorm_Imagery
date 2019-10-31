@@ -40,7 +40,7 @@ Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
 
-**Hours spent:** A lot 😢, 8 to 13 to 20 depending on the week.
+**Hours spent:** A lot 😢, 8 to 13 to 20 per week depending on the week.
 
 [link](https://post-storm-imagery.readthedocs.io/en/latest/dashboard/) to the dashboard readme.
 
@@ -49,10 +49,8 @@ Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 1. Added user authentication with Auth0 service.
 2. As a result remade the entire dashobard from stracth to incorporate the
    authentication. Made sure protected links would only allowed logged in users.
-
-The above task took 2-3 weeks
 3. Added endpoint to call python script to get the image a specific user is
-   supposed to tag.
+   supposed to tag.  
 4. Added endpoint to call python script to skip an image.
 5. Added endpoint to call python script to tag an image as an ocean and get the
    next image to tag.
@@ -60,7 +58,8 @@ The above task took 2-3 weeks
    form and get the next iamge to tag.
 7. Added package.json scripts to build the webserver for production
 
-items 3-7 took the last 3 weeks.
+Tasks 1-2 took about 2 weeks.  
+Tasks 3-7 took the last 3 weeks.
 
 ---
 
