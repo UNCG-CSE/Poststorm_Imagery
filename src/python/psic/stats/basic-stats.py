@@ -1,6 +1,6 @@
 import os
 
--python as cv2
+import cv2
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
