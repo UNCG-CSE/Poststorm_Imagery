@@ -130,5 +130,61 @@ Tasks 3-7 took the last 3 weeks.
 ---
 
 ### [**John Weber**](https://github.com/JWeb56)  
+###1.  Creating/configuring VM and Google Cloud Storage
 
-<!-- Insert tasks here -->
+I purchased a free account on Google Cloud and created a project for our 405 project. 
+I initialized and configured a VM instance on which we will ultimately house our tagging apparatus
+and our web server, so taggers can access our dashboard via the web. Also, in order to allow for
+quick and efficient serving of images to our front-end, I purchased a storage bucket and uploaded
+all of the images which we want to tag (four or five archives from Florence) and uploaded all of the 
+full-sized images to the bucket. In order to access the images from our VM, I had to spend
+a good amount of time with configuring access to the different APIs and mounting the bucket to the 
+VM file system. I also set up a local MySQL server to store the tagged image info, but we didn't end up 
+using that. 
+    
+    
+**Time:** 25 hours
+
+###2.  Attempting to create a NodeJS apparatus for storing tagged image information
+
+Originally, it was my task to save the tagged image information, passed from the NodeJS front-end,
+to the MySQL database. However, it was determined that the back-end should be written in python and this was eventually
+passed to another group member.
+    
+    
+**Time:** 5 hours
+
+###3.  Analyzing image pixel values and performing basic statistics
+
+I gathered 60 Florence images (20 each from inland, ocean, and shoreline classes) and analyized their RGB
+pixel values in order to determine if there are any simple statistical measures (mean values, standard deviations
+between RGB channels, etc.) by which we might distinguish these different types of images.
+This involved writing scripts to calculate the average pixel values for RGB channels across multiple directories
+of images, plotting charts to show the differences between channels for all images, concatenating images, 
+converting images to grayscale, and fitting normal distributions to the histograms of these
+images in order to make inferences about image groups based on statistical measures such as mean
+and standard deviation. I then constructed confidence intervals to determine whether the mean differences
+observed across the different classes of images were statistically significant. 
+
+
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/stats)
+    
+**Time:** 30 hours
+
+###4.  Providing a sample or template for training Convolutional Neural Network
+
+Since our ultimate goal is to train a convolutional neural network to classify our images based on a certain
+number of classes/labels, but we still have not completed the tagging of our images, I wanted to
+provide a sample script which shows how to train and test a neural network model. The example I provided was largely
+taken from an example provided by keras/tensorflow, and trains a network to classify/recognize
+a set of images taken from a fashion dataset. Hopefully this will serve as a reference for group members
+as we progess into the next stage of our project.
+
+
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cnn_model)
+    
+**Time:** 1-2 hours
+
+
