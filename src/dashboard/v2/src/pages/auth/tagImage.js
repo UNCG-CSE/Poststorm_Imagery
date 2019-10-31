@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import PropTypes, { func } from 'prop-types';
-import { makeStyles,withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 
-import { red, green,purple,blue,orange } from '@material-ui/core/colors';
+import {blue, green, orange, purple, red} from '@material-ui/core/colors';
 
 import CardActions from '@material-ui/core/CardActions';
 import Card from '@material-ui/core/Card';
@@ -25,27 +25,19 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import TextField from '@material-ui/core/TextField';
-
 //form validation
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import {Field, Formik} from "formik";
 //import { TextField } from "material-ui-formik-components/TextField";
-import { Select } from "material-ui-formik-components/Select";
 import * as Yup from 'yup'
-
 //tab
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
 import MyTheme from '../../components/theme';
+
 const axios = require('axios');
-import fetch from 'isomorphic-unfetch';
 const SAD_FACE = `
 https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg
 `;
-
-import DisplayImage from '../../components/image_tagging/displayImage';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -160,7 +152,7 @@ const RadioButton = ({
   field: { name, onChange, onBlur },
   id,
   label,
-  
+
   style,
 
 }) => {
@@ -175,9 +167,9 @@ const RadioButton = ({
         id={id}
         value={id}
         onBlur={onBlur}
-        
+
       />
-     
+
     </div>
   );
 };
@@ -189,28 +181,28 @@ const RadioButtonGroup = ({
   touched,
   id,
   label,
-  
+
   children,
   onChange,
   style
 }) => {
   return (
     <div className={''}>
- 
+
         {/* <legend>{label}</legend> */}
         <FormLabel component="legend" style={style}>{label}</FormLabel>
         <RadioGroup id={id} label='' aria-label="position" name="position" value={value} onChange={onChange} row>
-        
-      
+
+
         {React.Children.map(children, child => {
-            
+
             return React.cloneElement(child, {
               style:style
             });
           })}
         </RadioGroup>
         {touched && <InputFeedback error={error} />}
-   
+
     </div>
   );
 };
@@ -223,10 +215,10 @@ const CheckboxButton = ({
   label,
 
 }) => {
- 
+
   return (
     <div>
-      
+
       <FormControlLabel control={
         <Checkbox
           name={name}
@@ -234,7 +226,7 @@ const CheckboxButton = ({
           type="checkbox"
           checked={value}
           onChange={onChange}
-          onBlur={onBlur}  
+          onBlur={onBlur}
           value={value}
           style={style}
           inputProps={{
@@ -242,7 +234,7 @@ const CheckboxButton = ({
           }}
         />
       } label={label} />
-    
+
       {touched[name] && <InputFeedback error={errors[name]} />}
     </div>
   );
@@ -277,13 +269,13 @@ class CheckboxGroup extends React.Component {
 
     return (
       <div >
-        
-        <FormLabel component="legend" style={style}>{label}</FormLabel>    
+
+        <FormLabel component="legend" style={style}>{label}</FormLabel>
           <FormGroup  row>
             {React.Children.map(children, child => {
-              
+
               return React.cloneElement(child, {
-                
+
                 field: {
                   value: value.includes(child.props.id),
                   onChange: this.handleChange,
@@ -294,7 +286,7 @@ class CheckboxGroup extends React.Component {
             })}
           </FormGroup>
           {touched && <InputFeedback error={error} />}
-      
+
       </div>
     );
   }
@@ -336,7 +328,7 @@ function Index(props) {
   function handle_success_on_submit(res,enable=true){
     alert(res.data.message)
     //setSubmitionDisable(false)
-    location.reload(); 
+    location.reload();
   }
 
   //submit
@@ -346,11 +338,11 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id
     }
-    
+
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
-    }).catch(res => { 
+    }).catch(res => {
       handle_error_on_submit(res,false)
     });
   }
@@ -361,20 +353,20 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id
     }
-    
+
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
-    }).catch(res => { 
+    }).catch(res => {
       handle_error_on_submit(res,false)
     });
   }
 
   function submit_tags(values, actions) {
     setSubmitionDisable(true)
-                     
+
     let form_values= {
-    
+
         ...values,
         additional_notes:document.getElementById("outlined-dense-multiline").value,
         image_id:props.data.image_id,
@@ -383,16 +375,16 @@ function Index(props) {
 
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
     .then(res => {
-    
+
       handle_success_on_submit(res,false)
-    }).catch(res => { 
+    }).catch(res => {
       handle_error_on_submit(res,false)
     });
- 
+
   }
 
   return (
-    <div> 
+    <div>
       <CenterGrid>
         <div className={classes.root}>
         <Grid
@@ -402,7 +394,7 @@ function Index(props) {
           alignItems="center"
       >
         <Card className={classes.smallImage}>
-      
+
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
               <CardMedia component="img" alt="Post Storm Image to tag" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
@@ -414,25 +406,25 @@ function Index(props) {
                   Image Url: {JSON.stringify(props.data)} !!
                 </Typography> */}
               </CardContent>
-            </Collapse> 
+            </Collapse>
           </CardActionArea>
           <CardContent >
             <ToggleImageButton aria-expanded={expanded} size="small" variant="contained" color="primary" className={classes.imageCollapseMargin}  onClick={handle_image_collapse}>
               {!expanded ? 'Hide Image': 'Show Image'}
             </ToggleImageButton>
 
-            <ShowFullImage 
-            aria-expanded={expanded} 
-            size="small" variant="contained" color="primary" 
+            <ShowFullImage
+            aria-expanded={expanded}
+            size="small" variant="contained" color="primary"
             className={classes.imageCollapseMargin}
             onClick={show_full_image}
             >
               Show Full Image
             </ShowFullImage>
 
-            <ShowSmallImage 
-            aria-expanded={expanded} 
-            size="small" variant="contained" color="primary" 
+            <ShowSmallImage
+            aria-expanded={expanded}
+            size="small" variant="contained" color="primary"
             className={classes.imageCollapseMargin}
             onClick={show_small_image}
             >
@@ -445,7 +437,7 @@ function Index(props) {
 
           </CardContent>
 
-      
+
             <Formik
               initialValues={{
                 developmentGroup: "",
@@ -485,7 +477,7 @@ function Index(props) {
                         //onChange={handleChange}
                         style={MyTheme.palette.amber500}
                       >
-          
+
                         <Field
                           component={RadioButton}
                           name="developmentGroup"
@@ -498,7 +490,7 @@ function Index(props) {
                           id="UndevelopedId"
                           label="Undeveloped"
                         />
-          
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -512,7 +504,7 @@ function Index(props) {
                         //onChange={handleChange2}
                         style={MyTheme.palette.blue500}
                       >
-          
+
                         <Field
                           component={RadioButton}
                           name="washoverVisibilityGroup"
@@ -538,7 +530,7 @@ function Index(props) {
                         //onChange={handleStomrImpackChange}
                         style={MyTheme.palette.green500}
                       >
-          
+
                         <Field
                           component={RadioButton}
                           name="impactGroup"
@@ -563,7 +555,7 @@ function Index(props) {
                           id="InundationId"
                           label="Inundation"
                         />
-          
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -610,17 +602,17 @@ function Index(props) {
                         multiline
                         rowsMax="4"
                         fullWidth
-                        classstyle={MyTheme.palette.amber500} 
+                        classstyle={MyTheme.palette.amber500}
                       />
-        
+
                     </div>
 
-                  
 
-                    
-                  
+
+
+
                   </CardActions>
-            
+
                   <CardActions >
                     <SkipButton disabled={isSubmitingForm}size="small" variant="contained" color="primary" className={classes.margin} onClick={skip_image}>
                         Skip
@@ -632,12 +624,12 @@ function Index(props) {
                   </CardActions>
                 </form>
               )}
-            />    
+            />
         </Card>
       </Grid>
         </div>
       </CenterGrid>
-     
+
     </div>
   );
 }
@@ -647,7 +639,7 @@ Index.getInitialProps = async function(props) {
     const serverConfig =require('../../server-config')
     const axios = require('axios');
     const IP=await serverConfig.getIp()
-    
+
     let fetchPayload = [
       {label:"Florence (2018)", value:1}
       // {label:"Storm Dos",value:420},
@@ -658,14 +650,14 @@ Index.getInitialProps = async function(props) {
     if(props.req.user)
     {
       options ={
-        userId:props.req.user.user_id 
+        userId:props.req.user.user_id
       }
     }
     // const options ={
-    //   userId:props.req.user.user_id 
+    //   userId:props.req.user.user_id
     // }
-    
-    
+
+
     const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
 
     let typed_user_id=undefined;
@@ -673,7 +665,7 @@ Index.getInitialProps = async function(props) {
     {
       typed_user_id=props.req.user.user_id
     }
-    
+
     return {
       data:{
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
@@ -683,19 +675,19 @@ Index.getInitialProps = async function(props) {
       }
     }
 
-  //catch  
+  //catch
   } catch(err) {
     console.log(' <<< ERROR >>>',err)
-    
-    
+
+
     return {
       data:{
         url:undefined
       }
     }
   }
-  
-  
+
+
 }
 
 

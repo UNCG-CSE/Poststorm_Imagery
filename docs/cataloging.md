@@ -2,9 +2,9 @@
 
 **Document Updated:** {{ git_revision_date }}
 
-Once data is downloaded and unpacked, the data can be cataloged in order to more quickly access key information such as 
-GPS data for each image, file size, and date taken to help with statistical and spacial analysis. 
-	
+Once data is downloaded and unpacked, the data can be cataloged in order to more quickly access key information such as
+GPS data for each image, file size, and date taken to help with statistical and spacial analysis.
+
 
 ## Command-Line Quick Reference
 
@@ -15,14 +15,14 @@ GPS data for each image, file size, and date taken to help with statistical and 
 |     `--fields`, `-e` | *<Set\>*       | Only include these fields from the .geom and system values                                   | *(See Note) [^1]*        |
 |      `--debug`, `-d` |                | Include parameter to output debug information to console                                     | *False*                  |
 |  `--verbosity`, `-v` | *<level\>*     | The amount of information to log to console (0 = only errors, 1 = low, 2 = medium, 3 = high) | `#!text 1`               |
-    
+
 !!! warning
-    If the command doesn't understand one of your parameters, try 
-    again, but with quotes around any argument. Command-line treats anything separated by a space as two separate 
-    arguments, so something like `-p C:\some dir\data\tar_cache\Florence` should instead be 
+    If the command doesn't understand one of your parameters, try
+    again, but with quotes around any argument. Command-line treats anything separated by a space as two separate
+    arguments, so something like `-p C:\some dir\data\tar_cache\Florence` should instead be
     `-p "C:\some dir\data\tar_cache\Florence"`
-    
-    
+
+
 ??? quote "Catalog Snippet Example (data/catalog.csv)"
     ```
         file	                                    size	date	    ur_lon	        ur_lat	    lr_lon	        ul_lon	        ll_lat	    ul_lat	    lr_lat	    ll_lon
@@ -46,10 +46,10 @@ GPS data for each image, file size, and date taken to help with statistical and 
     17	Florence/20180919c_jpgs/jpgs/C26275349.jpg	8532846	9/19/2018	-79.33914349	34.74817595	-79.33220113	-79.3426105	    34.73837696	34.74037772	34.74594119	-79.33557598
     18	Florence/20180919c_jpgs/jpgs/C26267489.jpg	8835280	9/19/2018	-79.21406618	34.63576507	-79.22140613	-79.21156486	34.64538086	34.64390819	34.63764472	-79.21860893
     ```
-    
 
-[^1]:   !!! note "Modifying Catalog Contents"  
-            Any field within the `.geom` file of all images can be added to the catalog by simply changing the `--fields` flag. 
-            The default fields are `{'file', 'size', 'date', 'll_lat', 'll_lon', 'lr_lat', 'lr_lon', 'ul_lat', 'ul_lon', 'ur_lat', 
-            'ur_lon'}` where `file` is parsed from the unpacked archive's folder name (`#!text .../20180919a_jpgs/...` 
+
+[^1]:   !!! note "Modifying Catalog Contents"
+            Any field within the `.geom` file of all images can be added to the catalog by simply changing the `--fields` flag.
+            The default fields are `{'file', 'size', 'date', 'll_lat', 'll_lon', 'lr_lat', 'lr_lon', 'ul_lat', 'ul_lon', 'ur_lat',
+            'ur_lon'}` where `file` is parsed from the unpacked archive's folder name (`#!text .../20180919a_jpgs/...`
             --> `#!text 2018/09/19`) and `#!text size` is determined by Python's `os.path.getsize()` function.

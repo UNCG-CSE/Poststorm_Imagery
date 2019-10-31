@@ -70,10 +70,10 @@ app.prepare().then(async () => {
 
   // 6 - you are restricting access to some routes
   const restrictAccess = (req, res, next) => {
-    
+
     if (!req.isAuthenticated()){
       return res.redirect("/login");
-    } 
+    }
     next();
   };
 
@@ -85,12 +85,12 @@ app.prepare().then(async () => {
 
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(express.json());
-  
+
   // For these routes,restrict access :)
   server.use("/auth", restrictAccess);
 
   server.use("/api", apiRoutes);
-  
+
   // handling everything else with Next.js
   server.get("*", handle);
 
