@@ -1,12 +1,11 @@
 import os
 
+import cv2
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2
 from PIL import Image
 from scipy.stats import norm
-
 
 red_super_list = []
 green_super_list = []
@@ -239,4 +238,4 @@ def average_images(folder):
 # grayscale_image_histogram('data/test_shoreline_images/concat.jpg')
 # blue_histogram('data/test_inland_images/concat.jpg')
 # blue_histogram('data/test_ocean_images/concat.jpg')
-blue_histogram('data/test_shoreline_images/concat.jpg')
+# blue_histogram('data/test_shoreline_images/concat.jpg')
