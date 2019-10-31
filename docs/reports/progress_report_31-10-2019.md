@@ -39,6 +39,8 @@ the images for our goals.
 
 **Hours spent:** 8-13 depending on week
 
+[link](./docs/dashboard.md)
+
 #### What I did
 
 1. Added user authentication with Auth0 service.
