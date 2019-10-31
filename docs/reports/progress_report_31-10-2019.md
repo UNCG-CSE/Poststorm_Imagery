@@ -163,8 +163,10 @@ This involved writing scripts to calculate the average pixel values for RGB chan
 of images, plotting charts to show the differences between channels for all images, concatenating images, 
 converting images to grayscale, and fitting normal distributions to the histograms of these
 images in order to make inferences about image groups based on statistical measures such as mean
-and standard deviation. I then constructed confidence intervals to determine whether the mean differences
-observed across the different classes of images were statistically significant. 
+and standard deviation. I then constructed confidence intervals to determine whether to accept or reject the
+hypothesis that the mean differences observed across the different classes of images was statistically significant
+and as such, a simple classifier could use these differences in order to label images with at least an acceptable
+level of accuracy.
 
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
