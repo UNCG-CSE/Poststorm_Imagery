@@ -41,7 +41,7 @@ matrix:
     - npm install --only=dev
     script:
     - node_modules/.bin/eslint . --fix
-    - npm test
+#    - npm test
 
 after_failure:
 # POST all failures on the main and beta branch to Discord
