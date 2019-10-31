@@ -1,12 +1,11 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
+import matplotlib.pyplot as plt
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.utils import to_categorical
-import numpy as np
-import matplotlib.pyplot as plt
-import os
 
 print(tf.__version__)
 print(keras.__version__)
@@ -38,7 +37,7 @@ fashion_mnist_labels = ["T-shirt/top",  # index 0
 
 # Image index, you can pick any number between 0 and 59,999
 img_index = 10
-# y_train contains the lables, ranging from 0 to 9
+# y_train contains the labels, ranging from 0 to 9
 label_index = y_train[img_index]
 # Print the label, for example 2 Pullover
 print ("y = " + str(label_index) + " " +(fashion_mnist_labels[label_index]))
@@ -52,7 +51,8 @@ print("Number of train data - " + str(len(x_train)))
 print("Number of test data - " + str(len(x_test)))
 
 
-# Further break training data into train / validation sets (# put 5000 into validation set and keep remaining 55,000 for train)
+# Further break training data into train / validation sets
+# (put 5000 into validation set and keep remaining 55,000 for train)
 (x_train, x_valid) = x_train[5000:], x_train[:5000]
 (y_train, y_valid) = y_train[5000:], y_train[:5000]
 
@@ -70,7 +70,7 @@ y_test = tf.keras.utils.to_categorical(y_test, 10)
 # Print training set shape
 print("x_train shape:", x_train.shape, "y_train shape:", y_train.shape)
 
-# Print the number of training, validation, and test datasets
+# Print the number of training, validation, and test data-sets
 print(x_train.shape[0], 'train set')
 print(x_valid.shape[0], 'validation set')
 print(x_test.shape[0], 'test set')
@@ -119,21 +119,20 @@ model.summary()
 
 # Compile the model
 model.compile(loss='categorical_crossentropy',
-             optimizer='adam',
-             metrics=['accuracy'])
+              optimizer='adam',
+              metrics=['accuracy'])
 
 
 # Train the model
 model.fit(x_train,
-         y_train,
-         batch_size=64,
-         # Change to 20 epochs
-         epochs=20,
-         validation_data=(x_valid, y_valid),
-         )
+          y_train,
+          batch_size=64,
+          # Change to 20 epochs
+          epochs=20,
+          validation_data=(x_valid, y_valid))
 
 
-#Test Accuracy
+# Test Accuracy
 # Evaluate the model on test set
 score = model.evaluate(x_test, y_test, verbose=0)
 
@@ -155,4 +154,4 @@ for i, index in enumerate(np.random.choice(x_test.shape[0], size=15, replace=Fal
     # Set the title for each image
     ax.set_title("{} ({})".format(fashion_mnist_labels[predict_index],
                                   fashion_mnist_labels[true_index]),
-                                  color=("green" if predict_index == true_index else "red"))
+                 color=("green" if predict_index == true_index else "red"))
