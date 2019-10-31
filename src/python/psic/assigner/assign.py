@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import getpass
 from os import path
 from typing import Union
 
@@ -14,7 +15,9 @@ from psic.assigner.json_response import JSONResponse
 if s.DEFAULT_DEBUG:
     print('ARGV: ' + str(sys.argv))
 
-ASSIGNER_FILE_NAME: str = 'assigner_state.json'
+# Get the username of the current user to prevent conflicts of multiple users testing same filesystem
+curr_user = getpass.getuser()
+ASSIGNER_FILE_NAME: str = 'assigner_state-' + curr_user + '.json'
 
 DATA_PATH: Union[bytes, str] = path.abspath(s.DATA_PATH)
 TAR_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.TAR_CACHE)
@@ -78,8 +81,15 @@ p_tag_add = p_tag_subparsers.add_parser(name='add', parents=[parent, user],)
 p_tag_add.add_argument('--tag', '-t', type=str, dest='tag', required=True,
                        help='The tag to add to the user\'s current image.')
 
-p_tag_add.add_argument('--content', '-c', dest='content', required=True,
-                       help='The content of the tag to add to the user\'s current image.')
+p_tag_add.add_argument('--content', '-c', dest='content', default=True,
+                       help='The content of the tag to add to the user\'s current image. (Default: %(default)s).')
+
+
+# Define the sub-command for adding tags to an image
+p_tag_notes = p_tag_subparsers.add_parser(name='add_notes', parents=[parent, user],)
+
+p_tag_notes.add_argument('--comment', '-c', dest='comment', required=True,
+                         help='The comment to add to the user\'s current image.')
 
 
 # Define the sub-command for removing tags from an image
@@ -134,6 +144,12 @@ try:
                 flag_pickle_changed = True
                 print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
                                                                                 expanded=True)).json())
+            elif OPTIONS.tag_operation == 'add_notes':
+                assigner.get_current_image(user_id=OPTIONS.user)\
+                    .add_tag(user_id=OPTIONS.user, tag='notes', content=OPTIONS.comment)
+                flag_pickle_changed = True
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=OPTIONS.user,
+                                                                                expanded=True)).json())
             elif OPTIONS.tag_operation == 'remove':
                 assigner.get_current_image(user_id=OPTIONS.user)\
                     .remove_tag(user_id=OPTIONS.user, tag=OPTIONS.tag)
@@ -158,7 +174,7 @@ try:
                                                                             expanded=True)).json())
 
 except CatalogNotFoundException as e:
-    print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed!').json())
+    print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' + OPTIONS.path).json())
 except Exception as e:
     print(JSONResponse(status=1, error_message=str(e)).json())
 
