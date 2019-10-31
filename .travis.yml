@@ -35,17 +35,13 @@ matrix:
     dist: trusty
     node_js: node
     before_install:
-    - cd src/dashboard/web_server
+    - cd src/dashboard/v2/
     install:
     - npm i
     - npm install --only=dev
     script:
     - node_modules/.bin/eslint . --fix
-    - npm test
-
-
-  allow_failures:
-    - env: TOXENV=flake8
+#    - npm test
 
 after_failure:
 # POST all failures on the main and beta branch to Discord
