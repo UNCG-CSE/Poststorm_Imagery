@@ -35,7 +35,7 @@ matrix:
     dist: trusty
     node_js: node
     before_install:
-    - cd src/dashboard/web_server
+    - cd src/dashboard/v2/
     install:
     - npm i
     - npm install --only=dev
