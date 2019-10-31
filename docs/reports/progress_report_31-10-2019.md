@@ -42,52 +42,53 @@ Time spent on task: 5 hours.
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)  
 
-1.  Collector
+#### 1. Collector
 
-    Improving the collector script and making sure that some edge cases 
-    (like the remote server returning a redirect work)
+Improving the collector script and making sure that some edge cases 
+(like the remote server returning a redirect work)
 
-    [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
-    https://post-storm-imagery.readthedocs.io/en/latest/collector/)
-    [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
-    https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/collector)
-    
-    **Time:** 50 hours
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/en/latest/collector/)
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/collector)
+
+**Time:** 50 hours
    
-2.  Cataloging
+#### 2. Cataloging
 
-    Create a cataloging script to aggregate data such as geo-spacial data like latitudes and longitudes from the
-    individual `.geom` files as well as checksums (`catalog_v2` branch) and actually run these scripts to generate the
-    files for storms from 2018 to 2019. This includes documentation and examples of usage
+Create a cataloging script to aggregate data such as geo-spacial data like latitudes and longitudes from the
+individual `.geom` files as well as checksums (`catalog_v2` branch) and actually run these scripts to generate the
+files for storms from 2018 to 2019. This includes documentation and examples of usage
 
-    [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
-    https://post-storm-imagery.readthedocs.io/en/latest/cataloging/)
-    [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
-    https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cataloging)
-    
-    **Time:** 125 hours
+[![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
+https://post-storm-imagery.readthedocs.io/en/latest/cataloging/)
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cataloging)
+
+**Time:** 125 hours
    
-3.  Assigner
+#### 3. Assigner
 
-    A back-end python system for handling the tagging of images. This script handles a set of queues that store
-    references to images that are either ready to be tagged, completely tagged, or skipped too often. The assigner
-    randomly chooses an image and assigns it to a user when a person starts tagging a new image. Once an image is tagged
-    more than once
+A back-end python system for handling the tagging of images. This script handles a set of queues that store
+references to images that are either ready to be tagged, completely tagged, or skipped too often. The assigner
+randomly chooses an image and assigns it to a user when a person starts tagging a new image. Once an image is tagged
+more than once
 
-    [![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)](
-    https://post-storm-imagery.readthedocs.io/en/latest/assigner/)
-    [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
-    https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
-    
-    **Time:** 75 hours
+[![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)](
+https://post-storm-imagery.readthedocs.io/en/latest/assigner/)
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
+
+**Time:** 75 hours
    
-3.  Misc
+   
+#### 4. Cataloging
 
-    I've been working on structuring of the repository and also looking into different strategies to handle the image
-    data and the best way to work with it. I've also been tweaking everything, including other scripts to make them
-    pretty and working with Nafis to get the dashboard working.
-    
-    **Time:** *too much*
+I've been working on structuring of the repository and also looking into different strategies to handle the image
+data and the best way to work with it. I've also been tweaking everything, including other scripts to make them
+pretty and working with Nafis to get the dashboard working.
+
+**Time:** *too much*
     
 
 ---
