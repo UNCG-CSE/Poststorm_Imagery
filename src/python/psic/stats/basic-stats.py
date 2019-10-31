@@ -3,7 +3,6 @@ import os
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import cv2
 from PIL import Image
 from scipy.stats import norm
@@ -153,9 +152,9 @@ def concat_images(folder):
     new_im.save(folder + '/concat.jpg')
 
 
-def blue_histogram(file):
-    img = cv2.imread(file)
-    blue_values = np.hstack(img[:, :, 0])
+# def blue_histogram(file):
+#     img = cv2.imread(file)
+#     blue_values = np.hstack(img[:, :, 0])
 
     # # best fit of normal distribution to image vector
     # (mu, sigma) = norm.fit(blue_values)
