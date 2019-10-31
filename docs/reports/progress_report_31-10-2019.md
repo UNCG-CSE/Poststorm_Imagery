@@ -45,11 +45,15 @@ didn't scale as needed. Used another method and plotted separately. Applied two
 tailed z-test on coastal images to find 97.5% confidence interval. I did not
 have other variables to apply correlation and null hypothesis testing. After the
 images are annotated, I'll return to statistical analysis of those data. Total
-time spent on task: 12 hours
+time spent on task: 15 hours
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/Data%20Statistics)
 
 Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 that contains that lat/long point. Unlike image count script, it runs in O(n),
 hurray! Time spent on task: 5 hours.
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/find_point)
 
 ---  
 
