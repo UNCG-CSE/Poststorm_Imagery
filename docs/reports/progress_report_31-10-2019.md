@@ -21,10 +21,18 @@ preparation of the images for our goals.
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)  
 
-Explored statistical analysis on the image size of Hurricane Florence coastal versus inland images and used the log function to scale down the values. The mean of inland image sizes is greater than that of the coastal images. Plotted histograms for each data set and fitted them with a gamma distribution using method of moments. Attempted to use MLE and KDE but had syntax/library issues. I also ran into an issue where the classroom method for fitting the distribution didn't scale as needed. Used another method and plotted separately. Applied two tailed z-test on coastal images to find 97.5% confidence interval. I did not have other variables to apply correlation and null hypothesis testing. After the images are annotated, I'll return to statistical analysis of those data. 
+Explored statistical analysis on the image size of Hurricane Florence coastal versus inland images and used the log
+function to scale down the values. The mean of inland image sizes is greater than that of the coastal images. Plotted
+histograms for each data set and fitted them with a gamma distribution using method of moments. Attempted to use MLE
+and KDE but had syntax/library issues. I also ran into an issue where the classroom method for fitting the distribution
+didn't scale as needed. Used another method and plotted separately. Applied two tailed z-test on coastal images to find
+97.5% confidence interval. I did not have other variables to apply correlation and null hypothesis testing. After the
+images are annotated, I'll return to statistical analysis of those data.
 Total time spent on task: 12 hours
 
-Developed utility that inputs a GPS coordinate and outputs the image filename(s) that contains that lat/long point. Unlike image count script, it runs in O(n), hurray! Time spent on task: 5 hours.
+Developed utility that inputs a GPS coordinate and outputs the image filename(s) that contains that lat/long point.
+Unlike image count script, it runs in O(n), hurray!
+Time spent on task: 5 hours.
 
 ---  
 
