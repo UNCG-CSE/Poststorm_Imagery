@@ -16,25 +16,25 @@ https://post-storm-imagery.readthedocs.io/)
 
 ## Team Members
 
-- [**Rinty Chowdhury**](https://github.com/rintychy)  
-- [**Daniel Foster**](https://github.com/dlfosterbot)  
-- [**Matthew Moretz**](https://github.com/Matmorcat)  
-- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
-- [**John Weber**](https://github.com/JWeb56)  
+- [**Rinty Chowdhury**](https://github.com/rintychy)
+- [**Daniel Foster**](https://github.com/dlfosterbot)
+- [**Matthew Moretz**](https://github.com/Matmorcat)
+- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
+- [**John Weber**](https://github.com/JWeb56)
 
-**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)  
+**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 **Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
 
 ## Contributions 🤝
 
 ### Code of Conduct
 
-We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project. 
+We hope to foster an inclusive and respectful environment surrounding the contribution and discussion of our project.
 Make sure you understand our [**Code of Conduct**](https://post-storm-imagery.readthedocs.io/en/latest/code_of_conduct/).
 
 ### Code Conventions
 
-Before committing to the repository **please** read the project 
+Before committing to the repository **please** read the project
 [**Code Conventions**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/).
 
 ### Beta Branch
