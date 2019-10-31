@@ -38,7 +38,7 @@ img_index = 10
 # y_train contains the labels, ranging from 0 to 9
 label_index = y_train[img_index]
 # Print the label, for example 2 Pullover
-print ("y = " + str(label_index) + " " +(fashion_mnist_labels[label_index]))
+print("y = " + str(label_index) + " " + (fashion_mnist_labels[label_index]))
 # # Show one of the images from the training dataset
 plt.imshow(x_train[img_index])
 
