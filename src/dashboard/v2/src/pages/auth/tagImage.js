@@ -674,7 +674,7 @@ Index.getInitialProps = async function(props) {
   //catch  
   } catch(err) {
     console.log(' <<< ERROR >>>',err)
-   
+    
     
     return {
       data:{

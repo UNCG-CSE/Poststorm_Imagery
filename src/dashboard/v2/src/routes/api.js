@@ -34,9 +34,10 @@ const tag_name_value_pairs={
     },
     impact:{
         SwashId:0,
-        OverwashId:1,
-        InundationId:2,
-        CollisionId:3
+        CollisionId:1,
+        OverwashId:2,
+        InundationId:3,
+        
     },
     terrian:{
         RiverId:'RiverId',
@@ -65,8 +66,6 @@ const possible_terrianGroup_tags =[
     'SandyCoastlineId'
 ]
 
-
-
 async function runPy(sript_path,callback,options=null)
 {
     return new Promise(async function(resolve, reject){
@@ -83,14 +82,14 @@ async function runPy(sript_path,callback,options=null)
     })
 }
 
-function gen_tag_options(user_id,tag_id,tag_content){
+function gen_tag_options_submit(user_id,tag_id,tag_content){
     return {
         mode: 'text',
         pythonOptions: ['-u'],
         scriptPath: './',
         args: [
             'tag',
-            'skip',
+            'add',
             `-p`, fullSizeImagePath,
             `-s`, smallSizeImagePath,
             `-u`, user_id,
@@ -100,6 +99,39 @@ function gen_tag_options(user_id,tag_id,tag_content){
     };
 }
 
+function gen_comment_options_submit(user_id,comment){
+    return {
+        mode: 'text',
+        pythonOptions: ['-u'],
+        scriptPath: './',
+        args: [
+            'tag',
+            'add',
+            `-p`, fullSizeImagePath,
+            `-s`, smallSizeImagePath,
+            `-u`, user_id,
+            `-t`,'notes',
+            `-c`,comment
+        ]
+    };
+}
+
+
+function get_next_img_options(user_id){
+    return {
+        mode: 'text',
+        pythonOptions: ['-u'],
+        scriptPath: './',
+        args: [
+            'tag',
+            'next',
+            `-p`, fullSizeImagePath,
+            `-s`, smallSizeImagePath,
+            `-u`, user_id
+            
+        ]
+    };
+}
 
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
@@ -324,21 +356,47 @@ async function  main() {
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
                     console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
-                },gen_tag_options(user_id,dev_cat,dev_value))
+                },gen_tag_options_submit(user_id,dev_cat,dev_value))
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
                     console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
-                },gen_tag_options(user_id,washover_cat,wash_value))
+                },gen_tag_options_submit(user_id,washover_cat,wash_value))
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
                     console.log('<<<<<<<<<<<<<<<<<< Parsed from python assinger',parsed_result)
-                },gen_tag_options(user_id,impact_cat,impact_value))
+                },gen_tag_options_submit(user_id,impact_cat,impact_value))
+
+                
+            
+                //https://zellwk.com/blog/async-await-in-loops/
+                const terrian_promise = terrianGroup.map(async element => {
+
+                    return await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                        const parsed_result=JSON.parse(results)
+                        console.log('<<<<<<<<<<<<<<<<<< terrian',parsed_result)
+                    
+                    },gen_tag_options_submit(user_id,terrian_cat,true))
+                  })
+                  
+                await Promise.all(terrian_promise)
+
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    const parsed_result=JSON.parse(results)
+                    console.log('adding comment',parsed_result)
+                },gen_comment_options_submit(user_id,additional_notes))
+                  
+                console.log('------------- Wowe done tagging')
+                
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    const parsed_result=JSON.parse(results)
+                    console.log('next img',parsed_result)
+                },get_next_img_options(user_id))
 
                 //Do insert
                 res.send({
-                    message:`Image ${image_id} for user ${user_id} has been tagged`
+                    message:`Image ${image_id} for user ${user_id} has been tagged `
                 })
 
             }

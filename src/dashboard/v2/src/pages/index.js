@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from "next/link";
+import Link from '../components/Link'//"next/link";
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -47,7 +47,13 @@ function Index(props) {
     }
     else {
       return (
-        <></>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>       
+          <Link href="/auth/tagImage"> 
+            <Button color="primary" variant="outlined">
+            Please go and tag an image :) :)
+            </Button>
+          </Link>
+        </Typography>
       )
     }
   }
@@ -72,6 +78,7 @@ function Index(props) {
 
 Index.getInitialProps = async function() {
   const serverConfig =require('../server-config')
+  
   return {
     initProps:{
       IP:await serverConfig.getIp()
