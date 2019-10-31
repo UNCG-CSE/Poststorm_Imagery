@@ -97,21 +97,28 @@ pretty and working with Nafis to get the dashboard working.
 
 **Hours spent:** A lot 😢, 8 to 13 to 20 per week depending on the week.
 
+
+#### Dashboard
+
 [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
 https://post-storm-imagery.readthedocs.io/en/latest/dashboard/)
 
-#### What I did
-
 1. Added user authentication with Auth0 service.
+
 2. As a result remade the entire dashboard from scratch to incorporate the
    authentication. Made sure protected links would only allowed logged in users.
+   
 3. Added endpoint to call python script to get the image a specific user is
-   supposed to tag.  
+   supposed to tag.
+   
 4. Added endpoint to call python script to skip an image.
+
 5. Added endpoint to call python script to tag an image as an ocean and get the
    next image to tag.
+   
 6. Added endpoint to call python script to tag an image with the data from the
    form and get the next image to tag.
+   
 7. Added package.json scripts to build the web-server for production
 
 Tasks 1-2 took about 2 weeks.  
