@@ -672,13 +672,18 @@ Index.getInitialProps = async function(props) {
     
     const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
 
+    let typed_user_id=undefined;
+    if(props.req.user)
+    {
+      typed_user_id=props.req.user.user_id
+    }
     
     return {
       data:{
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
         small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
         image_id:response.data.image_id,
-        user_id:props.req.user.user_id
+        user_id:typed_user_id//props.req.user.user_id
       }
     }
 
