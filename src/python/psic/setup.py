@@ -34,13 +34,8 @@ setup(
     ],
     keywords='python',
     license='MIT license',
-<<<<<<< HEAD
-    install_requires=['jupyter', 'pandas', 'pillow', 'requests', 'tqdm', 'imageio', 'imageio', 'matplotlib',
-                      'tensorflow', 'scipy'],
-=======
     install_requires=['requests', 'tqdm', 'jupyter', 'pandas', 'Pillow',
                       'jsonpickle', 'imageio', 'matplotlib'],
->>>>>>> 98eab92dcf338b14097ad7e96a9f9e822b56af47
     include_package_data=True,
     packages=find_packages(),
     test_suite='tests',
