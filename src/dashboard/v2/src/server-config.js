@@ -1,3 +1,5 @@
+//This file is mainly here so that we know to use local or ip address
+
 const public_ip = require('public-ip');
 const USELOCAL=true;
 
