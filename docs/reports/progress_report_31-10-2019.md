@@ -19,7 +19,17 @@ the images for our goals.
 
 ### [**Rinty Chowdhury**](https://github.com/rintychy)  
 
-<!-- Insert tasks here -->
+#### 1. Find_center
+
+Created script to find the center of an Image using the longitude and latitude of each corner. It takes four longitude of each corner and four latitude of each corner as parameter. Then it finds the midppoint of each side of the image. After that it uses those four midpoints and create two lines. Then find the intersection point of those two lines. That intersection point is the center of that image. It returns the center as tuple. Center of an image will be useful for classifier later on and any user will be able to use it to do further research on the images using center point.
+
+**Time:** 8 hours
+
+#### 1. Find_pixel
+
+Created script to find the pixel value and RGB value of pixels of an image. It takes an image file as parameter. Then convert that image to RGB. It finds RGB value for each pixel in each row. It displays each RGB value for the user as list with three elements. Then it gives the height pixel and width pixel for the image. It also returns the total pixel value for that image. Find_pixel is used to do statistical analysis using pixel values and RGB values. Finding the average pixel value for different type of images etc.
+
+**Time:** 16 - 20 hours
 
 ---
 
@@ -68,7 +78,7 @@ https://post-storm-imagery.readthedocs.io/en/latest/cataloging/)
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cataloging)
 
-**Time:** 125 hours
+**Time:** 90 hours
    
 #### 3. Assigner
 
@@ -77,12 +87,11 @@ references to images that are either ready to be tagged, completely tagged, or s
 randomly chooses an image and assigns it to a user when a person starts tagging a new image. Once an image is tagged
 more than once
 
-[![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)](
-https://post-storm-imagery.readthedocs.io/en/latest/assigner/)
+![Documentation](https://img.shields.io/badge/Documentation-Not%20Added%20Yet-inactive)
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
 
-**Time:** 75 hours
+**Time:** 50 hours
    
    
 #### 4. Misc
@@ -131,5 +140,63 @@ Tasks 3-7 took the last 3 weeks.
 ---
 
 ### [**John Weber**](https://github.com/JWeb56)  
+#### 1.  Creating/configuring VM and Google Cloud Storage
 
-<!-- Insert tasks here -->
+I purchased a free account on Google Cloud and created a project for our 405 project. 
+I initialized and configured a VM instance on which we will ultimately house our tagging apparatus
+and our web server, so taggers can access our dashboard via the web. Also, in order to allow for
+quick and efficient serving of images to our front-end, I purchased a storage bucket and uploaded
+all of the images which we want to tag (four or five archives from Florence) and uploaded all of the 
+full-sized images to the bucket. In order to access the images from our VM, I had to spend
+a good amount of time with configuring access to the different APIs and mounting the bucket to the 
+VM file system. I also set up a local MySQL server to store the tagged image info, but we didn't end up 
+using that. 
+    
+    
+**Time:** 25 hours
+
+#### 2.  Attempting to create a NodeJS apparatus for storing tagged image information
+
+Originally, it was my task to save the tagged image information, passed from the NodeJS front-end,
+to the MySQL database. However, it was determined that the back-end should be written in python and this was eventually
+passed to another group member.
+    
+    
+**Time:** 5 hours
+
+#### 3.  Analyzing image pixel values and performing basic statistics
+
+I gathered 60 Florence images (20 each from inland, ocean, and shoreline classes) and analyized their RGB
+pixel values in order to determine if there are any simple statistical measures (mean values, standard deviations
+between RGB channels, etc.) by which we might distinguish these different types of images.
+This involved writing scripts to calculate the average pixel values for RGB channels across multiple directories
+of images, plotting charts to show the differences between channels for all images, concatenating images, 
+converting images to grayscale, and fitting normal distributions to the histograms of these
+images in order to make inferences about image groups based on statistical measures such as mean
+and standard deviation. I then constructed confidence intervals to determine whether to accept or reject the
+hypothesis that the mean differences observed across the different classes of images was statistically significant
+and as such, a simple classifier could use these differences in order to label images with at least an acceptable
+level of accuracy.
+
+
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/stats)
+    
+**Time:** 30 hours
+
+#### 4.  Providing a sample or template for training Convolutional Neural Network
+
+Since our ultimate goal is to train a convolutional neural network to classify our images based on a certain
+number of classes/labels, but we still have not completed the tagging of our images, I wanted to
+provide a sample script which shows how to train and test a neural network model. The example I provided was largely
+taken from an example provided by keras/tensorflow, and trains a network to classify/recognize
+a set of images taken from a fashion dataset. Hopefully this will serve as a reference for group members
+as we progess into the next stage of our project.
+
+
+[![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cnn_model)
+    
+**Time:** 1-2 hours
+
+

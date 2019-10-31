@@ -3,7 +3,6 @@ import os
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import cv2
 from PIL import Image
 from scipy.stats import norm
@@ -20,9 +19,9 @@ def analyze_images(folder):
     blue_list = []
     for image in os.listdir(folder):
         img = cv2.imread(os.path.join(folder, image))
-        plt.calcHist([img], [0], None, [256], [0, 256])
-        plt.show()
-        img = plt_img.imread(os.path.join(folder, image))
+        # plt.calcHist([img], [0], None, [256], [0, 256])
+        # plt.show()
+        # img = plt_img.imread(os.path.join(folder, image))
 
         # print("Image Name: " + str(image))
         # print('Image Height {}'.format(img.shape[0]))
@@ -45,29 +44,29 @@ def analyze_images(folder):
         # print('Average pixel value for the Blue Channel: ' + str(blue_avg))
         # print('\n')
 
-    print("Average RGB values for each image in " + folder + ': ')
-    print(red_list)
-    print(green_list)
-    print(blue_list)
-    print('\n')
+    # print("Average RGB values for each image in " + folder + ': ')
+    # print(red_list)
+    # print(green_list)
+    # print(blue_list)
+    # print('\n')
+    #
+    # print("Total Average Red Channel Value for " + folder + ': ' + str(np.mean(red_list)))
+    # print("Total Average Green Channel Value for " + folder + ': ' + str(np.mean(green_list)))
+    # print("Total Average Blue Channel Value for " + folder + ': ' + str(np.mean(blue_list)))
+    # print('\n')
+    #
+    # red_super_list.append(np.mean(red_list))
+    # green_super_list.append(np.mean(green_list))
+    # blue_super_list.append(np.mean(blue_list))
 
-    print("Total Average Red Channel Value for " + folder + ': ' + str(np.mean(red_list)))
-    print("Total Average Green Channel Value for " + folder + ': ' + str(np.mean(green_list)))
-    print("Total Average Blue Channel Value for " + folder + ': ' + str(np.mean(blue_list)))
-    print('\n')
-
-    red_super_list.append(np.mean(red_list))
-    green_super_list.append(np.mean(green_list))
-    blue_super_list.append(np.mean(blue_list))
-
-    df = pd.DataFrame({'x': range(1, 21), 'y1': red_list, 'y2': green_list,
-                       'y3': blue_list})
-    # multiple line plot
-    plt.plot('x', 'y1', data=df, marker='', color='red', linewidth=2, label="red channel")
-    plt.plot('x', 'y2', data=df, marker='', color='green', linewidth=2, label="green channel")
-    plt.plot('x', 'y3', data=df, marker='', color='blue', linewidth=2, linestyle='dashed', label="blue channel")
-    plt.title("RGB Values for images in " + folder)
-    plt.show()
+    # df = pd.DataFrame({'x': range(1, 21), 'y1': red_list, 'y2': green_list,
+    #                    'y3': blue_list})
+    # # multiple line plot
+    # plt.plot('x', 'y1', data=df, marker='', color='red', linewidth=2, label="red channel")
+    # plt.plot('x', 'y2', data=df, marker='', color='green', linewidth=2, label="green channel")
+    # plt.plot('x', 'y3', data=df, marker='', color='blue', linewidth=2, linestyle='dashed', label="blue channel")
+    # plt.title("RGB Values for images in " + folder)
+    # plt.show()
 
 
 def plot_images(folder):
@@ -129,7 +128,7 @@ def grayscale_image_histogram(file):
     # plot
     plt.xlabel('Pixel Value')
     plt.ylabel('Probability')
-    plt.title(r'$\mathrm{Histogram\ of\ Shoreline\ Images:}\ \mu=%.3f,\ \sigma=%.3f$' % (mu, sigma))
+    plt.title(r'$\mathrm{Histogram\ of\ Ocean\ Images:}\ \mu=%.3f,\ \sigma=%.3f$' % (mu, sigma))
     plt.grid(True)
 
     plt.show()
@@ -151,6 +150,29 @@ def concat_images(folder):
         x_offset += im.size[0]
 
     new_im.save(folder + '/concat.jpg')
+
+
+# def blue_histogram(file):
+#     img = cv2.imread(file)
+#     blue_values = np.hstack(img[:, :, 0])
+
+    # # best fit of normal distribution to image vector
+    # (mu, sigma) = norm.fit(blue_values)
+    #
+    # # the histogram of the image data
+    # n, bins, patches = plt.hist(blue_values, 256, density=1, facecolor='blue', alpha=0.75)
+    #
+    # # add a 'best fit' line
+    # y = norm.pdf(bins, mu, sigma)
+    # plt.plot(bins, y, 'r--', linewidth=2)
+    #
+    # # plot
+    # plt.xlabel('Pixel Value')
+    # plt.ylabel('Probability')
+    # plt.title(r'$\mathrm{Blue\ Channel\ Values\ For\ Shoreline\ Images:}\ \mu=%.3f,\ \sigma=%.3f$' % (mu, sigma))
+    # plt.grid(True)
+    #
+    # plt.show()
 
 
 # This function takes in all of the images of the input directory and performs a pixel-by-pixel average of RGB values
@@ -186,9 +208,9 @@ def average_images(folder):
     out.show()
 
 
-# average_images('data/test_inland_images')
-# average_images('data/test_ocean_images')
-# average_images('data/test_shoreline_images')
+# analyze_images('data/test_inland_images')
+# analyze_images('data/test_ocean_images')
+# analyze_images('data/test_shoreline_images')
 # analyze_images('data/test_inland_images')
 # analyze_images('data/test_ocean_images')
 # analyze_images('data/test_shoreline_images')
@@ -212,6 +234,9 @@ def average_images(folder):
 # concat_images('data/test_shoreline_images')
 
 # Generate histograms for the concatenated (sum of all images) images in each directory
-grayscale_image_histogram('data/test_inland_images/concat.jpg')
-grayscale_image_histogram('data/test_ocean_images/concat.jpg')
-grayscale_image_histogram('data/test_shoreline_images/concat.jpg')
+# grayscale_image_histogram('data/test_inland_images/concat.jpg')
+# grayscale_image_histogram('data/test_ocean_images/concat.jpg')
+# grayscale_image_histogram('data/test_shoreline_images/concat.jpg')
+# blue_histogram('data/test_inland_images/concat.jpg')
+# blue_histogram('data/test_ocean_images/concat.jpg')
+blue_histogram('data/test_shoreline_images/concat.jpg')
