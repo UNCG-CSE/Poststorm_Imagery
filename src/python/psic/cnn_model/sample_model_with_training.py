@@ -77,7 +77,8 @@ print(x_test.shape[0], 'test set')
 model = tf.Sequential()
 
 # CONV 1 64 3x3 filters at stride 1, pad 1
-model.add(tf.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same', activation='relu', input_shape=(28,28,1)))
+model.add(tf.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same',
+                           activation='relu', input_shape=(28, 28, 1)))
 
 # BN 1
 model.add(tf.layers.BatchNormalization())
