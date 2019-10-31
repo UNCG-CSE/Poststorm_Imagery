@@ -40,7 +40,7 @@ setup(
     keywords='python',
     license='MIT license',
     install_requires=['requests', 'tqdm', 'jupyter', 'pandas', 'Pillow',
-                      'jsonpickle', 'imageio', 'matplotlib'],
+                      'jsonpickle', 'imageio', 'matplotlib', 'scipy', 'opencv-python'],
     include_package_data=True,
     packages=find_packages(),
     python_requires='>=3.6',

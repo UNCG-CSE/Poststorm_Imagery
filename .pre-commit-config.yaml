@@ -1,0 +1,20 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: flake8
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: check-yaml
+    -   id: check-toml
+    -   id: check-vcs-permalinks
+    -   id: check-added-large-files
+    -   id: check-merge-conflict
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v6.6.0
+    hooks:
+    -   id: eslint
+        additional_dependencies:
+        - eslint@6.6.0
+        - eslint-plugin-react@7.16.0
+        - babel-eslint@10.0.3

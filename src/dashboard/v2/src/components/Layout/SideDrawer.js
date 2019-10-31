@@ -1,37 +1,29 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import TreeView from '@material-ui/lab/TreeView';
-import StyledTreeItem from './TreeItem'
-import Link from "next/link";
-import MyTheme from '../theme';
 //icons
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-//signin icon
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LockIcon from '@material-ui/icons/Lock';
-import ImageIcon from '@material-ui/icons/Image';
-
 import Styles from '../Styles'
 import Tab from '@material-ui/core/Tab';
 
 
 import NotLoggedIn from './sideDrawerGroups/notLoggedIn'
 import LoggedIn from './sideDrawerGroups/loggedIn'
-import { func } from 'prop-types';
+//signin icon
 
 const useStyles = makeStyles(theme => ({
   rootTree: {
     height: 264,
     flexGrow: 1,
-   
+
     maxWidth: 400,
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: Styles.drawerWidth,
-    
+
   },
 }));
 
@@ -56,21 +48,21 @@ export default function SideDrawer(props) {
 
   }
   catch(err) {
-   
+
     //console.log(err.message)
   }
-  
+
   function generateUserRoleName() {
     if(props.user) {
       if(props.user.nickname) {
         return `, ${userRole}: ${props.user.nickname}`
       }
     }
-    return '' 
+    return ''
   }
- 
 
-  const username= hasUser ? ','+props.user.nickname: '' 
+
+  const username= hasUser ? ','+props.user.nickname: ''
   const role= hasUser ? ',': '' //props.user.userRole.data[0].name
 
 
@@ -88,7 +80,7 @@ export default function SideDrawer(props) {
         defaultEndIcon={<div style={{ width: 24 }} />}
       >
         {handleLoggedIn()}
-        
+
        {/* keeping for nested layout */}
         {/* <StyledTreeItem nodeId="3" labelText="Categories" labelIcon={Label}>
           <StyledTreeItem
@@ -124,7 +116,7 @@ export default function SideDrawer(props) {
             bgColor="#e6f4ea"
           />
         </StyledTreeItem> */}
-        
+
       </TreeView>
 
     </div>
