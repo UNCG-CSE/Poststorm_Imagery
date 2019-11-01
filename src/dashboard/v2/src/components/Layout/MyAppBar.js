@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -30,10 +30,10 @@ const useStyles = makeStyles(theme => ({
     },
     toolbar: theme.mixins.toolbar,
 }));
-  
+
 
 export default function MyAppBar(props) {
-  const classes = useStyles(); 
+  const classes = useStyles();
     return (
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>

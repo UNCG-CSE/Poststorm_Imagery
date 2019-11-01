@@ -1,9 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import TreeItem from '@material-ui/lab/TreeItem';
-import red from '@material-ui/core/colors/red';
 import MyTheme from '../theme';
 
 const useTreeItemStyles = makeStyles(theme => ({
@@ -64,20 +63,20 @@ StyledTreeItem.propTypes = {
 
 function StyledTreeItem(props) {
     const classes = useTreeItemStyles();
-    const { 
-      labelText,textColor, 
-      labelIcon: LabelIcon, 
-      labelInfo, 
-      color, 
+    const {
+      labelText,textColor,
+      labelIcon: LabelIcon,
+      labelInfo,
+      color,
       bgColor,
       myClickedBackgroundColor,
       myHoverBackgroundColor,
       myTextColor,
       myHoverTextColor,
       myClickedTextColor,
-      ...other 
+      ...other
     } = props;
-  
+
     return (
       <TreeItem
         label={
@@ -92,7 +91,7 @@ function StyledTreeItem(props) {
             </Typography>
             <Typography variant="caption" color="inherit">
               {labelInfo}
-              
+
             </Typography>
           </div>
         }
@@ -119,6 +118,3 @@ function StyledTreeItem(props) {
   }
 
 export default React.forwardRef((props,ref) => <StyledTreeItem {...props} innerRef={ref}  />);
-
-
-
