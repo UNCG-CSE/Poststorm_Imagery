@@ -17,7 +17,7 @@ the images for our goals.
 
 ## Member Tasks
 
-### [**Rinty Chowdhury**](https://github.com/rintychy)  
+### [**Rinty Chowdhury**](https://github.com/rintychy)
 
 #### 1. Find_center
 
@@ -33,7 +33,7 @@ Created script to find the pixel value and RGB value of pixels of an image. It t
 
 ---
 
-### [**Daniel Foster**](https://github.com/dlfosterbot)  
+### [**Daniel Foster**](https://github.com/dlfosterbot)
 
 Explored statistical analysis on the image size of Hurricane Florence coastal
 versus inland images and used the log function to scale down the values. The
@@ -55,13 +55,13 @@ hurray! Time spent on task: 5 hours.
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/find_point)
 
----  
+---
 
-### [**Matthew Moretz**](https://github.com/Matmorcat)  
+### [**Matthew Moretz**](https://github.com/Matmorcat)
 
 #### 1. Collector
 
-Improving the collector script and making sure that some edge cases 
+Improving the collector script and making sure that some edge cases
 (like the remote server returning a redirect work)
 
 [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
@@ -70,7 +70,7 @@ https://post-storm-imagery.readthedocs.io/en/latest/collector/)
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/collector)
 
 **Time:** 50 hours
-   
+
 #### 2. Cataloging
 
 Create a cataloging script to aggregate data such as geo-spacial data like latitudes and longitudes from the
@@ -83,7 +83,7 @@ https://post-storm-imagery.readthedocs.io/en/latest/cataloging/)
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cataloging)
 
 **Time:** 90 hours
-   
+
 #### 3. Assigner
 
 A back-end python system for handling the tagging of images. This script handles a set of queues that store
@@ -96,8 +96,8 @@ more than once
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/assigner)
 
 **Time:** 50 hours
-   
-   
+
+
 #### 4. Misc
 
 I've been working on structuring of the repository and also looking into different strategies to handle the image
@@ -105,12 +105,12 @@ data and the best way to work with it. I've also been tweaking everything, inclu
 pretty and working with Nafis to get the dashboard working.
 
 **Time:** *too much*
-    
+
 
 
 ---
 
-### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)  
+### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
 
 **Hours spent:** A lot 😢, 8 to 13 to 20 per week depending on the week.
 
@@ -124,39 +124,39 @@ https://post-storm-imagery.readthedocs.io/en/latest/dashboard/)
 
 2. As a result remade the entire dashboard from scratch to incorporate the
    authentication. Made sure protected links would only allowed logged in users.
-   
+
 3. Added endpoint to call python script to get the image a specific user is
    supposed to tag.
-   
+
 4. Added endpoint to call python script to skip an image.
 
 5. Added endpoint to call python script to tag an image as an ocean and get the
    next image to tag.
-   
+
 6. Added endpoint to call python script to tag an image with the data from the
    form and get the next image to tag.
-   
+
 7. Added package.json scripts to build the web-server for production
 
-Tasks 1-2 took about 3 weeks.  
+Tasks 1-2 took about 3 weeks.
 Tasks 3-7 took the last 3 weeks.
 
 ---
 
-### [**John Weber**](https://github.com/JWeb56)  
+### [**John Weber**](https://github.com/JWeb56)
 #### 1.  Creating/configuring VM and Google Cloud Storage
 
-I purchased a free account on Google Cloud and created a project for our 405 project. 
+I purchased a free account on Google Cloud and created a project for our 405 project.
 I initialized and configured a VM instance on which we will ultimately house our tagging apparatus
 and our web server, so taggers can access our dashboard via the web. Also, in order to allow for
 quick and efficient serving of images to our front-end, I purchased a storage bucket and uploaded
-all of the images which we want to tag (four or five archives from Florence) and uploaded all of the 
+all of the images which we want to tag (four or five archives from Florence) and uploaded all of the
 full-sized images to the bucket. In order to access the images from our VM, I had to spend
-a good amount of time with configuring access to the different APIs and mounting the bucket to the 
-VM file system. I also set up a local MySQL server to store the tagged image info, but we didn't end up 
-using that. 
-    
-    
+a good amount of time with configuring access to the different APIs and mounting the bucket to the
+VM file system. I also set up a local MySQL server to store the tagged image info, but we didn't end up
+using that.
+
+
 **Time:** 25 hours
 
 #### 2.  Attempting to create a NodeJS apparatus for storing tagged image information
@@ -164,8 +164,8 @@ using that.
 Originally, it was my task to save the tagged image information, passed from the NodeJS front-end,
 to the MySQL database. However, it was determined that the back-end should be written in python and this was eventually
 passed to another group member.
-    
-    
+
+
 **Time:** 5 hours
 
 #### 3.  Analyzing image pixel values and performing basic statistics
@@ -174,7 +174,7 @@ I gathered 60 Florence images (20 each from inland, ocean, and shoreline classes
 pixel values in order to determine if there are any simple statistical measures (mean values, standard deviations
 between RGB channels, etc.) by which we might distinguish these different types of images.
 This involved writing scripts to calculate the average pixel values for RGB channels across multiple directories
-of images, plotting charts to show the differences between channels for all images, concatenating images, 
+of images, plotting charts to show the differences between channels for all images, concatenating images,
 converting images to grayscale, and fitting normal distributions to the histograms of these
 images in order to make inferences about image groups based on statistical measures such as mean
 and standard deviation. I then constructed confidence intervals to determine whether to accept or reject the
@@ -185,7 +185,7 @@ level of accuracy.
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/stats)
-    
+
 **Time:** 30 hours
 
 #### 4.  Providing a sample or template for training Convolutional Neural Network
@@ -200,7 +200,5 @@ as we progess into the next stage of our project.
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/cnn_model)
-    
+
 **Time:** 1-2 hours
-
-
