@@ -35,7 +35,7 @@ const tag_name_value_pairs={
         CollisionId:1,
         OverwashId:2,
         InundationId:3,
-        
+
     },
     terrian:{
         RiverId:'RiverId',
@@ -70,7 +70,7 @@ async function runPy(sript_path,callback,options=null){
     return new Promise(function(resolve, reject){
         PythonShell.run(sript_path, options, function (err, results) {
                 if (err) throw err;
-               
+
                 callback(err, results)
                 resolve(results[1])//I returned only JSON(Stringified) out of all string I got from py script
         });
@@ -123,7 +123,7 @@ function get_next_img_options(user_id){
             `-p`, fullSizeImagePath,
             `-s`, smallSizeImagePath,
             `-u`, user_id
-            
+
         ]
     };
 }
@@ -132,7 +132,7 @@ function get_next_img_options(user_id){
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
 
-    //simple test route 
+    //simple test route
     router.use('/test', async function (req, res) {
 
         await runPy('src/routes/test.py',function(err,results){
@@ -150,7 +150,7 @@ async function  main() {
             }
         )
     });
-    
+
     //Used to get the users role to prevent non roled ppl from tagging *Currently not used*
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
@@ -297,7 +297,7 @@ async function  main() {
 
 
     });
-    
+
     //route to submit tags of an image and get next image.
     router.post('/submit_image_tags', async function (req, res) {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -311,7 +311,7 @@ async function  main() {
                 image_id,
                 user_id
             } = req.body
-           
+
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
                 const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
@@ -333,7 +333,7 @@ async function  main() {
                 const impact_value=tag_name_value_pairs[impact_cat][impactGroup]
 
                 console.log(dev_value,wash_value,impact_value,terrianGroup)
-   
+
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     console.log('development group tag added')
                 },gen_tag_options_submit(user_id,dev_cat,dev_value))
@@ -355,7 +355,7 @@ async function  main() {
                         console.log('terrian group tag added')
                     },gen_tag_options_submit(user_id,terrian_cat,true))
                   })
-                
+
                 //wait for all terrian tagging to be done
                 await Promise.all(terrian_promise)
 
@@ -365,9 +365,9 @@ async function  main() {
                     const parsed_result=JSON.parse(results)
                     console.log('comment added',parsed_result)
                 },gen_comment_options_submit(user_id,additional_notes))
-                  
+
                 console.log('All tagging data done')
-                
+
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     console.log('Next image got')
                 },get_next_img_options(user_id))
@@ -437,7 +437,7 @@ async function  main() {
                     console.log('Got next image')
                     res.send({
                         message: `Image has been tagged as ocean, page will refresh to get new image`
-                    })    
+                    })
                 },get_next_option)
             }
             else
@@ -462,7 +462,7 @@ async function  main() {
                 image_id
             }=req.body;
             if(user_id && image_id) {
-                
+
                 // Options to get the user's current image
                 let options = {
                     mode: 'text',

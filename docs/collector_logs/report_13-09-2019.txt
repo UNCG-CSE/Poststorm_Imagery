@@ -48,4 +48,3 @@ Download Status Report (September 13, 2019 at 03:36 PM) <-s 201[8-9] -t jpg -p D
 		Total: 10.16 GiBs / 10.16 GiBs  (100%)
 
 Total: 229.7 GiBs / 445.99 GiBs  (51%)
-

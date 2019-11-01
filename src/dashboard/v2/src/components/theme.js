@@ -1,16 +1,5 @@
-import { 
-  red,
-  purple,
-  blue,
-  orange,
-  yellow,
-  green,
-  cyan,
-  teal,
-  amber,
-  grey,
-} from '@material-ui/core/colors';
-import { createMuiTheme } from '@material-ui/core/styles';
+import {amber, blue, cyan, green, grey, orange, purple, red, teal, yellow,} from '@material-ui/core/colors';
+import {createMuiTheme} from '@material-ui/core/styles';
 
 // A custom theme for this app
 const theme = createMuiTheme({
@@ -46,10 +35,10 @@ const theme = createMuiTheme({
     },
 
     //400
-    blue400: { 
+    blue400: {
         color: blue[400]
     },
-    blue400BG: { 
+    blue400BG: {
       backgroundColor: blue[400]
   },
     purple400: {
@@ -107,7 +96,7 @@ const theme = createMuiTheme({
     },
 
     //600
-    blueBG600: { 
+    blueBG600: {
       backgroundColor: blue[600]
     },
 
@@ -126,7 +115,7 @@ const theme = createMuiTheme({
     purple800: {
       color: purple['800']
     }
-    
+
   },
 });
 //https://stackoverflow.com/questions/50069724/how-to-add-multiple-material-ui-palette-colors custom colors
