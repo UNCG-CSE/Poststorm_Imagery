@@ -2,14 +2,14 @@
 
 **Document Updated:** {{ git_revision_date }}
 
-In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data. 
+In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data.
 Currently, the script can be called via command-line using specific arguments.
 
 !!! warning "Collector Caveat"
     The script currently only recognizes Storms after Arthur (2015 and later) currently!
-    
+
     ??? info "Current Support List"
-    
+
         1.  	Hurricane Dorian (2019) --> RGB & JPG
         2.  	Hurricane Barry (2019) --> RGB & JPG
         3.  	Hurricane Michael (2018) --> RGB & JPG
@@ -23,9 +23,9 @@ Currently, the script can be called via command-line using specific arguments.
         11.  	Louisiana Flooding (2016) --> RGB and/or JPG
         12.  	Midwest U.S. Flooding (2015) --> RGB and/or JPG
         13.  	Illinois Tornadoes (2015) --> RGB and/or JPG
-        
+
         ...     Older Storms not supported yet!
-		
+
 
 ## Command-Line Quick Reference
 
@@ -37,20 +37,20 @@ Currently, the script can be called via command-line using specific arguments.
 | `--no_status`, `-n`  |             | Do not print out a report of all files found        | *False*                  |
 |  `--download`, `-d`  |             | Download the .tar files as well after listing them  | *False*                  |
 | `--overwrite`, `-o`  |             | Overwrite existing .tar files with the same name    | *False*                  |
-        
-    
-    
+
+
+
 !!! warning
-    If the command doesn't understand one of your parameters, try 
-    again, but with quotes around any argument. Command-line treats anything separated by a space as two separate 
+    If the command doesn't understand one of your parameters, try
+    again, but with quotes around any argument. Command-line treats anything separated by a space as two separate
     arguments, so something like `-s Hurricane Florence` should instead be `#!text -s "Hurricane Florence"`
-    
-    
+
+
 !!! note "Important Note"
 
-    The script will automatically download all .tar files listed, sequentially, to the `--path` specified, or to the 
-    default cache folder if `--path` is left out of the parameters. Members of the P-Sick team would run the command 
-    with `#!text -p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:` 
+    The script will automatically download all .tar files listed, sequentially, to the `--path` specified, or to the
+    default cache folder if `--path` is left out of the parameters. Members of the P-Sick team would run the command
+    with `#!text -p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:`
     drive (*Windows*).
 
 
@@ -58,7 +58,7 @@ Currently, the script can be called via command-line using specific arguments.
 
 1.  To list all .tar files for *Hurricane Dorian*,
     `collect.py -s Dorian`
-    
+
     ??? quote "Resulting Output"
         ```text
         Download Status Report (September 23, 2019 at 02:20 PM) <-s Dorian -t .* -p [...]>
@@ -90,17 +90,17 @@ Currently, the script can be called via command-line using specific arguments.
                 - 20190920a_RGB.tar  ... 4.49 GiBs  ... Not downloaded.
                 - 20190920a_jpgs.tar  ... 5.1 GiBs  ... Not downloaded.
                 Total: 0.0 KiBs / 253.66 GiBs  (0%)
-        
+
         Total: 0.0 KiBs / 253.66 GiBs  (0%)
         ```
-    
-2.  To list all .tar files for *Hurricane Dorian* that contain **jpg** in the file name,  
+
+2.  To list all .tar files for *Hurricane Dorian* that contain **jpg** in the file name,
     `collect.py -s Dorian -t jpg`
-    
+
     ??? quote "Resulting Output"
         ```text
         Download Status Report (September 23, 2019 at 02:28 PM) <-s Dorian -t jpg -p [...]>
-    
+
         1.  	Hurricane Dorian (2019)
                 - 20190904a_jpgs.tar  ... 1.73 GiBs  ... Not downloaded.
                 - 20190905a_jpgs.tar  ... 18.12 GiBs  ... Not downloaded.
@@ -115,18 +115,18 @@ Currently, the script can be called via command-line using specific arguments.
                 - 20190919a_jpgs.tar  ... 15.26 GiBs  ... Not downloaded.
                 - 20190920a_jpgs.tar  ... 5.1 GiBs  ... Not downloaded.
                 Total: 0.0 KiBs / 134.9 GiBs  (0%)
-        
+
         Total: 0.0 KiBs / 134.9 GiBs  (0%)
         ```
-    
-    
--   If you want a list of all .tar files that occurred in 2019 that contain **jpg** in the file name,  
+
+
+-   If you want a list of all .tar files that occurred in 2019 that contain **jpg** in the file name,
     `#!text collect.py -s 2019 -t jpg`
-    
+
     ??? quote "Resulting Output"
         ```text
         Download Status Report (September 23, 2019 at 02:37 PM) <-s 2019 -t jpg -p [...]>
-        
+
         1.  	Hurricane Dorian (2019)
                 - 20190904a_jpgs.tar  ... 1.73 GiBs  ... Not downloaded.
                 - 20190905a_jpgs.tar  ... 18.12 GiBs  ... Not downloaded.
@@ -141,31 +141,31 @@ Currently, the script can be called via command-line using specific arguments.
                 - 20190919a_jpgs.tar  ... 15.26 GiBs  ... Not downloaded.
                 - 20190920a_jpgs.tar  ... 5.1 GiBs  ... Not downloaded.
                 Total: 0.0 KiBs / 134.9 GiBs  (0%)
-        
+
         2.  	Hurricane Barry (2019)
                 - 20190716a_jpgs.tar  ... 40.19 GiBs  ... Not downloaded.
                 - 20190717a_jpgs.tar  ... 11.19 GiBs  ... Not downloaded.
                 - 20190719a_jpgs.tar  ... 4.66 GiBs  ... Not downloaded.
                 Total: 0.0 KiBs / 56.04 GiBs  (0%)
-        
+
         Total: 0.0 KiBs / 190.94 GiBs  (0%)
         ```
-    
-    
--   Both the `--storm` and `--tar` flag also support regular expressions like  
+
+
+-   Both the `--storm` and `--tar` flag also support regular expressions like
     `#!text collect.py -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
     which outputs all *jpg* files for *all storms* where the pictures were taken in *October* (month 10) of any year:
-    
+
     ??? quote "Resulting Output"
         ```text
         Download Status Report (September 23, 2019 at 02:38 PM) <-s .* -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -p [...]>
-        
+
         1.  	Hurricane Dorian (2019)
                 <No .tar files detected in index.html>
-        
+
         2.  	Hurricane Barry (2019)
                 <No .tar files detected in index.html>
-        
+
         3.  	Hurricane Michael (2018)
                 - 20181011a_jpgs.tar  ... 22.56 GiBs  ... Not downloaded.
                 - 20181012a_jpgs.tar  ... 15.65 GiBs  ... Not downloaded.
@@ -173,114 +173,114 @@ Currently, the script can be called via command-line using specific arguments.
                 - 20181013a_jpgs.tar  ... 16.15 GiBs  ... Not downloaded.
                 - 20181014a_jpgs.tar  ... 23.24 GiBs  ... Not downloaded.
                 Total: 0.0 KiBs / 90.45 GiBs  (0%)
-        
+
         4.  	Hurricane Florence (2018)
                 <No .tar files detected in index.html>
-        
+
         5.  	Tropical Storm Gordon (2018)
                 <No .tar files detected in index.html>
-        
+
         6.  	Hurricane Nate (2017)
                 <No .tar files detected in index.html>
-        
+
         7.  	Hurricane Maria (2017)
                 <No .tar files detected in index.html>
-        
+
         8.  	Hurricane Irma (2017)
                 <No .tar files detected in index.html>
-        
+
         9.  	Hurricane Harvey (2017)
                 <No .tar files detected in index.html>
-        
+
         10.  	Hurricane Matthew (2016)
                 <No .tar files detected in index.html>
-        
+
         11.  	Louisiana Flooding (2016)
                 <No .tar files detected in index.html>
-        
+
         12.  	Midwest U.S. Flooding (2015)
                 <No .tar files detected in index.html>
-        
+
         13.  	Illinois Tornadoes (2015)
                 <No .tar files detected in index.html>
-        
+
         14.  	Hurricane Arthur (2014)
                 <No .tar files detected in index.html>
-        
+
         15.  	Hurricane Sandy (2012)
                 <No .tar files detected in index.html>
-        
+
         16.  	Hurricane Isaac (2012)
                 <No .tar files detected in index.html>
-        
+
         17.  	Hurricane Irene (2011)
                 <No .tar files detected in index.html>
-        
+
         18.  	Joplin, MO Tornado (2011)
                 <No .tar files detected in index.html>
-        
+
         19.  	Tuscaloosa, AL Tornado (2011)
                 <No .tar files detected in index.html>
-        
+
         20.  	North Dakota Flooding (2011)
                 <No .tar files detected in index.html>
-        
+
         21.  	Hurricane Earl (2010)
                 <No .tar files detected in index.html>
-        
+
         22.  	Nor'Easter Nov09 (2009)
                 <No .tar files detected in index.html>
-        
+
         23.  	Hurricane Ike (2008)
                 <No .tar files detected in index.html>
-        
+
         24.  	Hurricane Gustav (2008)
                 <No .tar files detected in index.html>
-        
+
         25.  	Hurricane Humberto (2007)
                 <No .tar files detected in index.html>
-        
+
         26.  	Tropical Storm Ernesto (2006)
                 <No .tar files detected in index.html>
-        
+
         27.  	Hurricane Wilma (2005)
                 <No .tar files detected in index.html>
-        
+
         28.  	Hurricane Rita (2005)
                 <No .tar files detected in index.html>
-        
+
         29.  	Hurricane Ophelia (2005)
                 <No .tar files detected in index.html>
-        
+
         30.  	Hurricane Katrina (2005)
                 <No .tar files detected in index.html>
-        
+
         31.  	Hurricane Dennis (2005)
                 <No .tar files detected in index.html>
-        
+
         32.  	Hurricane Ivan (2004)
                 <No .tar files detected in index.html>
-        
+
         33.  	Hurricane Jeanne (2004)
                 <No .tar files detected in index.html>
-        
+
         34.  	Hurricane Isabel (2003)
                 <No .tar files detected in index.html>
-        
+
         Total: 0.0 KiBs / 90.45 GiBs  (0%)
         ```
-    
-    
-    
+
+
+
 -   Once you've found the results you want, simply add the download parameter, `-d`, before or after any parameter
-    (*but not between a parameter and argument(s)*) to the statement like so:  
-    `#!text -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes 
+    (*but not between a parameter and argument(s)*) to the statement like so:
+    `#!text -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes
     `#!text -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`
-    
+
     You should see an output like this below the file report, in the console:
-    
+
     ??? quote "Download Progress Bar"
-    
+
         ```text
         Downloading files...
         Downloading 20181011a_jpgs.tar:   0%|          | 20/23097 [00:04<1:24:32,  4.55MiB/s]

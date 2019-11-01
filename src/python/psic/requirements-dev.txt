@@ -9,7 +9,7 @@ flake8==3.7.9
 gitdb2==2.0.6
 gitpython==3.0.4
 htmlmin==0.1.12
-importlib-metadata==0.23
+importlib-metadata==0.23 ; python_version < '3.8'
 jinja2==2.10.3
 jsmin==2.2.2
 livereload==2.6.1
