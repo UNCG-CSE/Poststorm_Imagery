@@ -80,6 +80,10 @@ fabric.properties
 !/.gitignore
 ./data/
 
+## John's stats test data
+src/python/psic/stats/data
+
 ### All IDE Stuff (duplicates some of above)
 .idea/
 !/.idea/codeStyles/
+src/dashboard/v2/.env

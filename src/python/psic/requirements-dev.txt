@@ -5,11 +5,11 @@ bumpversion==0.5.3
 click==7.0
 coverage==4.5.4
 entrypoints==0.3
-flake8==3.7.8
+flake8==3.7.9
 gitdb2==2.0.6
-gitpython==3.0.3
+gitpython==3.0.4
 htmlmin==0.1.12
-importlib-metadata==0.23
+importlib-metadata==0.23 ; python_version < '3.8'
 jinja2==2.10.3
 jsmin==2.2.2
 livereload==2.6.1
@@ -32,8 +32,8 @@ pygments==2.4.2
 pymdown-extensions==6.1
 pyparsing==2.4.2
 pytest-cov==2.8.1
-pytest-runner==5.1
-pytest==5.2.1
+pytest-runner==5.2
+pytest==5.2.2
 pyyaml==5.1.2
 repackage==0.7.3
 six==1.12.0
