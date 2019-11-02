@@ -25,7 +25,7 @@ Created script to find the center of an Image using the longitude and latitude o
 
 **Time:** 8 - 10 hours
 
-#### 1. Statistical analysis using Image size and resolution
+#### 2. Statistical analysis using Image size and resolution
 
 For basic statistics, I calculated the mean, variance, median, and standard deviation for image size and resolution. 
 
