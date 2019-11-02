@@ -23,13 +23,19 @@ the images for our goals.
 
 Created script to find the center of an Image using the longitude and latitude of each corner. It takes four longitude of each corner and four latitude of each corner as parameter. Then it finds the midppoint of each side of the image. After that it uses those four midpoints and create two lines. Then find the intersection point of those two lines. That intersection point is the center of that image. It returns the center as tuple. Center of an image will be useful for classifier later on and any user will be able to use it to do further research on the images using center point.
 
-**Time:** 8 hours
+**Time:** 8 - 10 hours
 
-#### 1. Find_pixel
+#### 1. Statistical analysis using Image size and resolution
 
-Created script to find the pixel value and RGB value of pixels of an image. It takes an image file as parameter. Then convert that image to RGB. It finds RGB value for each pixel in each row. It displays each RGB value for the user as list with three elements. Then it gives the height pixel and width pixel for the image. It also returns the total pixel value for that image. Find_pixel is used to do statistical analysis using pixel values and RGB values. Finding the average pixel value for different type of images etc.
+For basic statistics, I calculated the mean, variance, median, and standard deviation for image size and resolution. 
 
-**Time:** 16 - 20 hours
+For distribution modeling, I ploted the histogram and density curve using seaborn for image size and resolution. Based on the diagram the image size data fall under unimodal distribution and image resolution fall under bimodal distribution. One of them has one high peak and another has two high peaks. I also used the T-critical value to find the confidence interval for image size and resolution.
+
+For hypothesis testing, I have seperated the data into two parts. One part contains images with 300 dpi resolution and another part contains images with 96 dpi resolution. Then I calculated the mean and standard deviation for each type of resolutions. I used two sample t-test for the hypothesis testing. Null hypothesis is checking if the image size mean is same between 300 and 96 dpi resolution images. I ploted the data and their mean together to see if the mean for both data are same or not. Then I calculated the p-value for my t-test. Since the p-value was smaller than the 95% confidence level, I rejected the null hypothesis. 
+
+For correlation and cooveriance, I calculated the correlatio and covariance of image size and resolution. Then I ploted the data to see if their is any correlation between size and resolution. Found that their is very little position correlation between size and resolution.
+
+**Time:** 34 - 36 hours
 
 ---
 
