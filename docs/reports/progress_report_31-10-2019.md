@@ -33,7 +33,7 @@ For distribution modeling, I ploted the histogram and density curve using seabor
 
 For hypothesis testing, I have seperated the data into two parts. One part contains images with 300 dpi resolution and another part contains images with 96 dpi resolution. Then I calculated the mean and standard deviation for each type of resolutions. I used two sample t-test for the hypothesis testing. Null hypothesis is checking if the image size mean is same between 300 and 96 dpi resolution images. I ploted the data and their mean together to see if the mean for both data are same or not. Then I calculated the p-value for my t-test. Since the p-value was smaller than the 95% confidence level, I rejected the null hypothesis. 
 
-For correlation and cooveriance, I calculated the correlatio and covariance of image size and resolution. Then I ploted the data to see if their is any correlation between size and resolution. Found that their is very little position correlation between size and resolution.
+For correlation and covariance, I calculated the correlatio and covariance of image size and resolution. Then I ploted the data to see if their is any correlation between size and resolution. Found that their is very little position correlation between size and resolution.
 
 **Time:** 34 - 36 hours
 
