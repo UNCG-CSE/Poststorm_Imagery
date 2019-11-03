@@ -317,7 +317,9 @@ async function  main() {
                 terrianGroup,
                 additional_notes,
                 image_id,
-                user_id
+                user_id,
+                time_end_tagging,
+                time_start_tagging
             } = req.body
             //console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
