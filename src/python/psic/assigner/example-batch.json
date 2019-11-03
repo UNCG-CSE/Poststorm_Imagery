@@ -1,0 +1,12 @@
+{
+	"py/object": "psic.assigner.batch.Batch",
+	"path": "F:\\Shared drives\\P-Sick\\data\\Florence",
+	"small_path": "F:\\Shared drives\\P-Sick\\small\\Florence",
+	"operations": [
+		{
+			"integer_test": 1,
+			"boolean_test": true,
+			"string_test": "Hello world, how are you?"
+		}
+	]
+}
