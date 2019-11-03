@@ -260,7 +260,6 @@ async function  main() {
         const file_route=`${imageSource}${folder}/${storm}/${archive}/${imageType}/${imageFile}`
         console.log(file_route)
         const options = {
-            root: '/',
             dotfiles: 'allow',
             headers: {
               'x-timestamp': Date.now(),
