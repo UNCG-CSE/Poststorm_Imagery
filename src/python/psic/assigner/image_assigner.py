@@ -135,7 +135,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 
@@ -191,7 +191,7 @@ class ImageAssigner:
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 

@@ -107,20 +107,21 @@ class Image:
         self.taggers = self.taggers.copy()
         return self
 
-    def expanded(self, scope_path: Union[str, bytes]):
+    def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
         """
         This function allows for making a copy of the object that includes absolute paths (starting all the way from
         root or the file's drive letter all the way to to the file name including the file type suffix. This is
         useful for the runner in order to pass the context that these Python scripts are running in to the program
         running them through the JSON API.
 
-        :param scope_path: The path to concatenate with the relative path in the copied object
+        :param scope_path: The path to the `full size` image data directory
+        :param small_path: The path to the `small` image data directory
         :return: A copy of the Image object that has all path variables expanded to the absolute path of the scope path
         specified
         """
         expanded_copy = deepcopy(x=self)
-        expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.original_size_path))
-        expanded_copy.small_size_path = h.validate_and_expand_path(path.join(scope_path, self.small_size_path))
+        expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.rel_path))
+        expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
 
         return expanded_copy
 
