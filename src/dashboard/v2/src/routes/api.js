@@ -23,21 +23,25 @@ const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
 //Used to take user form inputs and convert over to intergers for tensor flow
 const tag_name_value_pairs={
     development:{
-        DevelopedId:0,
-        UndevelopedId:1
+        NoneId:0,
+        DevelopedId:1,
+        UndevelopedId:2
     },
     washover:{
-        VisibleWashoverId:0,
-        NoVisibleWashoverId:1
+        NoneId:0,
+        VisibleWashoverId:1,
+        NoVisibleWashoverId:2
     },
     impact:{
-        SwashId:0,
-        CollisionId:1,
-        OverwashId:2,
-        InundationId:3,
+        NoneId:0,
+        SwashId:1,
+        CollisionId:2,
+        OverwashId:3,
+        InundationId:4,
 
     },
     terrian:{
+        NoneId:'NoneId',
         RiverId:'RiverId',
         MarshId:'MarshId',
         SandyCoastlineId:'SandyCoastlineId'
@@ -47,22 +51,26 @@ const tag_name_value_pairs={
 //Used to validate wat is given for form submition
 const possible_developmentGroup_tags =[
     'DevelopedId',
-    'UndevelopedId'
+    'UndevelopedId',
+    'NoneId'
 ]
 const possible_washoverVisibilityGroup_tags =[
     'VisibleWashoverId',
-    'NoVisibleWashoverId'
+    'NoVisibleWashoverId',
+    'NoneId'
 ]
 const possible_impactGroup_tags =[
     'SwashId',
     'OverwashId',
     'InundationId',
-    'CollisionId'
+    'CollisionId',
+    'NoneId'
 ]
 const possible_terrianGroup_tags =[
     'RiverId',
     'MarshId',
-    'SandyCoastlineId'
+    'SandyCoastlineId',
+    'NoneId'
 ]
 
 //Used to run python scripts in a sync manner so that we dont have to do promise nesting.
@@ -135,12 +143,13 @@ async function  main() {
     //simple test route
     router.use('/test', async function (req, res) {
 
-        await runPy('src/routes/test.py',function(err,results){
-            console.log(results)
-        })
-        await runPy('src/routes/test2.py',function(err,results){
-            console.log(results)
-        })
+        // const x =  runPy('src/routes/test.py',function(err,results){
+        //     console.log(results)
+        // })
+        // console.log(x)
+        // await runPy('src/routes/test2.py',function(err,results){
+        //     console.log(results)
+        // })
         res.json(
             {
                 test_api:'WOWE, test api.',
@@ -218,7 +227,7 @@ async function  main() {
                 console.log(`Got image: ${parsed_result.content.original_size_path}`)
                 if(parsed_result.error_message)
                 {
-                    throw 'Python script had error'
+                    throw parsed_result.error_message//'Python script had error'
                 }
                 //Get the contents of json
                 const {
@@ -308,15 +317,18 @@ async function  main() {
                 terrianGroup,
                 additional_notes,
                 image_id,
-                user_id
+                user_id,
+                time_end_tagging,
+                time_start_tagging
             } = req.body
-
+            //console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
                 const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
                 const washoverCheck=[washoverVisibilityGroup].every(val => possible_washoverVisibilityGroup_tags.includes(val))
                 const impactCheck=[impactGroup].every(val => possible_impactGroup_tags.includes(val))
-
+                
+                //console.log(!devGroupCheck,!washoverCheck,!impactCheck)
                 //Not sure wat to do or terrianGroup check
                 //if any fails
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
@@ -362,7 +374,7 @@ async function  main() {
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     const parsed_result=JSON.parse(results)
-                    console.log('comment added',parsed_result)
+                    console.log('comment added')
                 },gen_comment_options_submit(user_id,additional_notes))
 
                 console.log('All tagging data done')

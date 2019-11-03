@@ -499,6 +499,13 @@ function Index(props) {
                           label="Undeveloped"
                         />
 
+                        <Field
+                          component={RadioButton}
+                          name="developmentGroup"
+                          id="NoneId"
+                          label="N/A"
+                        />
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -524,6 +531,12 @@ function Index(props) {
                           name="washoverVisibilityGroup"
                           id="NoVisibleWashoverId"
                           label="No Washover"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="washoverVisibilityGroup"
+                          id="NoneId"
+                          label="N/A"
                         />
                       </RadioButtonGroup>
 
@@ -564,6 +577,13 @@ function Index(props) {
                           label="Inundation"
                         />
 
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="NoneId"
+                          label="N/A"
+                        />
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -595,6 +615,12 @@ function Index(props) {
                           name="terrianGroup"
                           id="SandyCoastlineId"
                           label="Sandy Coastline"
+                        />
+                        <Field
+                          component={CheckboxButton}
+                          name="terrianGroup"
+                          id="NodeId"
+                          label="N/A"
                         />
                       </CheckboxGroup>
 
