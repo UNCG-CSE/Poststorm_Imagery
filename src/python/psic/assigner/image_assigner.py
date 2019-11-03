@@ -159,7 +159,7 @@ class ImageAssigner:
                 path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
+                path.join(self.small_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
 
     def get_next_image(self, user_id: str, expanded: bool = False, skip: bool = False) -> Image:
         """
