@@ -200,7 +200,7 @@ class ImageAssigner:
 
         if user_id in (next_image.skippers or next_image.get_taggers()):
             if self.debug:
-                print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
+                print('User has already processed %s (tagged or skipped)' % next_image.rel_path)
 
             # Recursively search until an image that has not been tagged or skipped by this user is found
             next_next_image = self._get_next_suitable_image(user_id=user_id)
