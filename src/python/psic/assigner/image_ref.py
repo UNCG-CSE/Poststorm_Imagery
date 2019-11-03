@@ -28,27 +28,28 @@ def _cast_valid_types(content: str) -> Union[str, bool, int]:
 
 class Image:
 
-    original_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the full size image
-    small_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the resized version of the image
+    rel_path: str  # The relative path from the catalog.csv for the full size image
 
-    skippers: Set[str] = set()  # The number of times this image has been skipped
+    skippers: Set[str]  # The number of times this image has been skipped
 
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
-    taggers: Dict[str, Dict] = dict()
+    taggers: Dict[str, Dict]
 
-    def __init__(self, original_size_path: Union[bytes, str], small_size_path: Union[bytes, str]):
-        self.original_size_path = original_size_path
-        self.small_size_path = small_size_path
+    def __init__(self, rel_path: str):
+        self.rel_path = rel_path
 
     def __str__(self):
-        return self.original_size_path
+        return self.rel_path
 
-    def get_taggers(self):
+    def get_taggers(self) -> Set:
         """Simply get a set of users' ids who have tagged this image.
 
         :return: The people (by id) who have tagged this image
         """
-        return self.taggers.keys()
+        if self.taggers is None:
+            return set()
+
+        return set(self.taggers.keys())
 
     def add_tag(self, user_id: str, tag: str, content: str) -> None:
         """
@@ -103,8 +104,10 @@ class Image:
         """
 
         # Save a copy of the dictionaries when creating a pickle (without this, the dicts will not save in the pickle)
-        self.skippers = self.skippers.copy()
-        self.taggers = self.taggers.copy()
+        if self.skippers is not None:
+            self.skippers = self.skippers.copy()
+        if self.taggers is not None:
+            self.taggers = self.taggers.copy()
         return self
 
     def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
