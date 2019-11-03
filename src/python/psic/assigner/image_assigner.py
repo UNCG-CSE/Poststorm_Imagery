@@ -179,7 +179,7 @@ class ImageAssigner:
             return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].get_taggers()) \
-                and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
+                and len(self.current_image[user_id].get_tags(user_id=user_id).keys()) > 0:
             self._user_done_tagging_current_image(user_id=user_id)
         else:
             self._user_skip_tagging_current_image(user_id=user_id)

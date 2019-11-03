@@ -41,6 +41,16 @@ class Image:
     def __str__(self):
         return self.rel_path
 
+    def get_tags(self, user_id: str) -> dict:
+        """Simply get a set of users' ids who have tagged this image.
+
+        :return: The people (by id) who have tagged this image
+        """
+        if self.taggers[user_id] is None:
+            return dict()
+
+        return self.taggers[user_id]
+
     def get_taggers(self) -> Set:
         """Simply get a set of users' ids who have tagged this image.
 
