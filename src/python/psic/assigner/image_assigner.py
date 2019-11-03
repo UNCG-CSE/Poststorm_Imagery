@@ -95,8 +95,7 @@ class ImageAssigner:
             'file'}).values.tolist()
 
         for f in rel_file_paths:
-            image_list.append(Image(original_size_path=f[0],
-                                    small_size_path=f[0]))
+            image_list.append(Image(rel_path=f[0]))
 
         # TODO: Should probably ensure that each image exists and has a smaller version and possibly create a smaller
         #  image if it doesn't exist.
@@ -114,10 +113,10 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].original_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].small_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
 
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
@@ -156,10 +155,10 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
+                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.small_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
+                path.join(self.small_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
 
     def get_next_image(self, user_id: str, expanded: bool = False, skip: bool = False) -> Image:
         """
