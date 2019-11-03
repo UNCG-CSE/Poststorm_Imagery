@@ -7,7 +7,7 @@ class Batch:
 
     path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     small_path: Union[bytes, str]  # The path to the resized image scope path
-    operations: List[dict]         # An ordered list of operations to execute
+    operations: List[dict]  # An ordered list of operations to execute
 
     debug: bool  # True for debug statements
 
