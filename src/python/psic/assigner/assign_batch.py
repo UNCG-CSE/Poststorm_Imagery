@@ -47,29 +47,29 @@ with open(assigner_cache, 'r') as f:
             # Modifying the tags of a user's current image
             if op['command'] == 'tag':
                 if op['tag_operation'] == 'add':
-                    assigner.get_current_image(user_id=op['user'])\
-                        .add_tag(user_id=op['user'], tag=op['tag'], content=op['content'])
+                    assigner.get_current_image(user_id=json_obj.user_id)\
+                        .add_tag(user_id=json_obj.user_id, tag=op['tag'], content=op['content'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=op['user'],
+                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
                                                                                     expanded=True)).json())
                 elif op['tag_operation'] == 'add_notes':
-                    assigner.get_current_image(user_id=op['user'])\
-                        .add_tag(user_id=op['user'], tag='notes', content=op['content'])
+                    assigner.get_current_image(user_id=json_obj.user_id)\
+                        .add_tag(user_id=json_obj.user_id, tag='notes', content=op['content'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=op['user'],
+                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
                                                                                     expanded=True)).json())
                 elif op['tag_operation'] == 'remove':
-                    assigner.get_current_image(user_id=op['user'])\
-                        .remove_tag(user_id=op['user'], tag=op['tag'])
+                    assigner.get_current_image(user_id=json_obj.user_id)\
+                        .remove_tag(user_id=json_obj.user_id, tag=op['tag'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=op['user'],
+                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
                                                                                     expanded=True)).json())
                 elif op['tag_operation'] == 'next':
-                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=op['user'],
+                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=json_obj.user_id,
                                                                                  expanded=True)).json())
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
-                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=op['user'],
+                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=json_obj.user_id,
                                                                                  skip=True,
                                                                                  expanded=True)).json())
                     flag_pickle_changed = True
@@ -78,7 +78,7 @@ with open(assigner_cache, 'r') as f:
 
             # Get the user's current image
             elif op['command'] == 'current':
-                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=op['user'],
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
                                                                                 expanded=True)).json())
 
         except CatalogNotFoundException as e:

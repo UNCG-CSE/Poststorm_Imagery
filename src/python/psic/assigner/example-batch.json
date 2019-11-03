@@ -2,11 +2,27 @@
 	"py/object": "psic.assigner.batch.Batch",
 	"path": "F:\\Shared drives\\P-Sick\\data\\Florence",
 	"small_path": "F:\\Shared drives\\P-Sick\\small\\Florence",
+	"user": "Derp",
 	"operations": [
 		{
-			"integer_test": 1,
-			"boolean_test": true,
-			"string_test": "Hello world, how are you?"
+			"command": "tag",
+			"tag_operation": "add",
+			"tag": "some_bool_tag",
+			"content": true
+		},
+		{
+			"command": "tag",
+			"tag_operation": "add",
+			"tag": "some_int_tag",
+			"content": 1
+		},
+		{
+			"command": "tag",
+			"tag_operation": "add_notes",
+			"content": "Hello world, how are you?"
+		},
+		{
+			"command": "next"
 		}
 	]
 }
