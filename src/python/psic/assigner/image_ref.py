@@ -6,22 +6,24 @@ from typing import Dict, Union, Set
 from psic import h
 
 
-def _cast_valid_types(content: str) -> Union[str, bool, int]:
+def _cast_valid_types(content: Union[str, int, bool]) -> Union[str, bool, int]:
     """
     Cast an input that explicitly reads "true" or "false" (case-insensitive) as a boolean type and cast all strings
-    of only digits as an integer type.
+    of only digits as an integer type. This function does nothing and returns the same value if the input is not a
+    string.
 
     :param content: The string of content to parse out compatible types for
     :return: The value casted as the type detected
     """
+    if type(content) == str:
 
-    # Check if the response matches a boolean's text (must be explicit to prevent coercion of ints like '1' -> True)
-    if content.lower() == ('true' or 'false'):
-        content = bool(content)
+        # Check if the response matches a boolean's text (must be explicit to prevent coercion of ints like '1' -> True)
+        if content.lower() == ('true' or 'false'):
+            content = bool(content)
 
-    # Check if the response is an integer and only an integer (explicitly define match to avoid type coercion)
-    elif re.fullmatch('\\d+', content):
-        content = int(content)
+        # Check if the response is an integer and only an integer (explicitly define match to avoid type coercion)
+        elif re.fullmatch('\\d+', content):
+            content = int(content)
 
     return content
 

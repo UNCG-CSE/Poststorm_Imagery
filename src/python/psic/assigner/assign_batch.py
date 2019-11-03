@@ -18,7 +18,7 @@ assigner: ImageAssigner
 flag_pickle_changed: bool = False
 
 # Get everything after the command path as a pickle-able JSON object
-json_obj: Batch = jsonpickle.decode(sys.argv[1:])
+json_obj: Batch = jsonpickle.decode(' '.join(sys.argv[1:]))
 
 assigner_cache = path.join(json_obj.path, ASSIGNER_FILE_NAME)
 
