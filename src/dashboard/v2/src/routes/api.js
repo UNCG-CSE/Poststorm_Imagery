@@ -214,8 +214,8 @@ async function  main() {
 
                 const parsed_result=JSON.parse(results)
 
-                console.log('Parsed from python assinger',parsed_result)
-
+                //console.log('Parsed from python assinger',parsed_result)
+                console.log(`Got image: ${parsed_result.content.original_size_path}`)
                 if(parsed_result.error_message)
                 {
                     throw 'Python script had error'

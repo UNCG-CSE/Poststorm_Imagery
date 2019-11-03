@@ -334,11 +334,14 @@ function Index(props) {
   //submit
   function submit_as_ocean(values, actions) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -349,11 +352,14 @@ function Index(props) {
 
   function skip_image(values) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -364,15 +370,17 @@ function Index(props) {
 
   function submit_tags(values, actions) {
     setSubmitionDisable(true)
-
+    const date=new Date()
     let form_values= {
 
         ...values,
         additional_notes:document.getElementById("outlined-dense-multiline").value,
         image_id:props.data.image_id,
-        user_id:props.data.user_id
+        user_id:props.data.user_id,
+        time_end_tagging:date.getTime(),
+        time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(form_values)
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
     .then(res => {
 
@@ -665,9 +673,10 @@ Index.getInitialProps = async function(props) {
     {
       typed_user_id=props.req.user.user_id
     }
-
+    const date=new Date()
     return {
       data:{
+        time_start_tagging:date.getTime(),
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
         small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
         image_id:response.data.image_id,
