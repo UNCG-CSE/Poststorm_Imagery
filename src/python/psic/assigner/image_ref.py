@@ -30,10 +30,10 @@ class Image:
 
     rel_path: str  # The relative path from the catalog.csv for the full size image
 
-    skippers: Set[str]  # The number of times this image has been skipped
+    skippers: Set[str] = None  # The number of times this image has been skipped
 
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
-    taggers: Dict[str, Dict]
+    taggers: Dict[str, Dict] = None
 
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
@@ -50,6 +50,16 @@ class Image:
             return set()
 
         return set(self.taggers.keys())
+
+    def get_skippers(self) -> Set:
+        """Simply get a set of users' ids who have skipped tagging this image.
+
+        :return: The people (by id) who have skipped this image
+        """
+        if self.skippers is None:
+            return set()
+
+        return self.skippers
 
     def add_tag(self, user_id: str, tag: str, content: str) -> None:
         """

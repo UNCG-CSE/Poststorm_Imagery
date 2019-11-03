@@ -38,7 +38,7 @@ class ImageAssigner:
     debug: bool = False
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
-    small_path: Union[bytes, str, None]  # The path to the resized image scope path
+    small_path: Union[bytes, str]  # The path to the resized image scope path
 
     pending_images_queue: List[Image] or None = list()  # The queue that stores all images left to tag by their ID
 
@@ -50,7 +50,7 @@ class ImageAssigner:
     current_image: Dict[str, Image] = {}
 
     def __init__(self, scope_path: Union[bytes, str],
-                 small_path: Union[bytes, str, None] = None, **kwargs):
+                 small_path: Union[bytes, str], **kwargs):
 
         # Enable debugging flag (True = output debug statements, False = don't output debug statements)
         self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
@@ -65,13 +65,10 @@ class ImageAssigner:
         if path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
 
-        try:
-            if small_path is not None and path.exists(h.validate_and_expand_path(small_path)):
-                self.small_path = h.validate_and_expand_path(small_path)
-            else:
-                self.small_path = None
-        except OSError:
-            self.small_path = None
+        if path.exists(h.validate_and_expand_path(small_path)):
+            self.small_path = h.validate_and_expand_path(small_path)
+        else:
+            raise OSError('Could not find the path: %s on the local file-system!' % small_path)
 
         # Add each image into the queue
         for image in self._image_list_from_csv():
@@ -197,7 +194,7 @@ class ImageAssigner:
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id in (next_image.skippers or next_image.get_taggers()):
+        if user_id in (next_image.get_skippers() or next_image.get_taggers()):
             if self.debug:
                 print('User has already processed %s (tagged or skipped)' % next_image.rel_path)
 
@@ -227,9 +224,12 @@ class ImageAssigner:
 
     def _user_skip_tagging_current_image(self, user_id: str):
 
+        if self.current_image[user_id].get_skippers() is None:
+            self.current_image[user_id].skippers = set()
+
         self.current_image[user_id].skippers.add(user_id)
 
-        if len(self.current_image[user_id].skippers) > MAX_ALLOWED_SKIPS:
+        if len(self.current_image[user_id].get_skippers()) > MAX_ALLOWED_SKIPS:
             # If the image has exceeded the allowed number of skips
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
