@@ -93,6 +93,8 @@ class Image:
         """
 
         # Make sure this key exists before attempting to access it
+        if self.taggers is None:
+            self.taggers = dict()
         if user_id not in self.get_taggers():
             self.taggers[user_id] = dict()
 
