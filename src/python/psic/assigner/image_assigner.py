@@ -224,10 +224,7 @@ class ImageAssigner:
 
     def _user_skip_tagging_current_image(self, user_id: str):
 
-        if self.current_image[user_id].get_skippers() is None:
-            self.current_image[user_id].skippers = set()
-
-        self.current_image[user_id].skippers.add(user_id)
+        self.current_image[user_id].add_skipper(user_id)
 
         if len(self.current_image[user_id].get_skippers()) > MAX_ALLOWED_SKIPS:
             # If the image has exceeded the allowed number of skips

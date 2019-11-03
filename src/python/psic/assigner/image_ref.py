@@ -61,6 +61,17 @@ class Image:
 
         return self.skippers
 
+    def add_skipper(self, user_id: str) -> None:
+        """
+        Add a user to the set of skippers for this image.
+
+        :param user_id: The user to add as a skipper
+        """
+        if self.skippers is None:
+            self.skippers = set()
+
+        self.skippers.add(user_id)
+
     def add_tag(self, user_id: str, tag: str, content: str) -> None:
         """
         Add a tag to the image under a specific user's name. If the tag already exists either with the same value or
