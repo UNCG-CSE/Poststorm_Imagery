@@ -34,59 +34,79 @@ if path.exists(assigner_cache) is False:
     with open(assigner_cache, 'w') as f:
         f.write(cache_data)
 
+if json_obj.debug:
+    print('Using assigner object at ' + json_obj.path + ' ... ')
 
 with open(assigner_cache, 'r') as f:
     assigner = jsonpickle.decode(f.read())
 
+    batch_return = list()
+
     for op in json_obj.operations:
 
         try:
-            if json_obj.debug:
-                print('Using assigner object at ' + json_obj.path + ' ... ')
 
             # Modifying the tags of a user's current image
             if op['command'] == 'tag':
                 if op['tag_operation'] == 'add':
-                    assigner.get_current_image(user_id=json_obj.user_id)\
+                    assigner.get_current_image(user_id=json_obj.user_id) \
                         .add_tag(user_id=json_obj.user_id, tag=op['tag'], content=op['content'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
-                                                                                    expanded=True)).json())
+                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
+                        user_id=json_obj.user_id,
+                        expanded=True)).json())
                 elif op['tag_operation'] == 'add_notes':
-                    assigner.get_current_image(user_id=json_obj.user_id)\
+                    assigner.get_current_image(user_id=json_obj.user_id) \
                         .add_tag(user_id=json_obj.user_id, tag='notes', content=op['content'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
-                                                                                    expanded=True)).json())
+                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
+                        user_id=json_obj.user_id,
+                        expanded=True)).json())
                 elif op['tag_operation'] == 'remove':
-                    assigner.get_current_image(user_id=json_obj.user_id)\
+                    assigner.get_current_image(user_id=json_obj.user_id) \
                         .remove_tag(user_id=json_obj.user_id, tag=op['tag'])
                     flag_pickle_changed = True
-                    print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
-                                                                                    expanded=True)).json())
+                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
+                        user_id=json_obj.user_id,
+                        expanded=True)).json())
                 elif op['tag_operation'] == 'next':
-                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=json_obj.user_id,
-                                                                                 expanded=True)).json())
+                    batch_return.append(JSONResponse(status=0, content=assigner.get_next_image(
+                        user_id=json_obj.user_id,
+                        expanded=True)).json())
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
-                    print(JSONResponse(status=0, content=assigner.get_next_image(user_id=json_obj.user_id,
-                                                                                 skip=True,
-                                                                                 expanded=True)).json())
+                    batch_return.append(JSONResponse(status=0, content=assigner.get_next_image(
+                        user_id=json_obj.user_id,
+                        skip=True,
+                        expanded=True)).json())
                     flag_pickle_changed = True
                 else:
-                    print(JSONResponse(status=1, error_message='This tagging operation is not implemented yet!').json())
+                    print(JSONResponse(status=1, error_message='\'%s\' is not a valid tagging operation in {add, '
+                                                               'add_notes, remove, next, skip}!'
+                                                               % op['tag_operation']).json())
+                    exit()
 
             # Get the user's current image
             elif op['command'] == 'current':
-                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
-                                                                                expanded=True)).json())
+                batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
+                    user_id=json_obj.user_id,
+                    expanded=True)).json())
+            else:
+                print(JSONResponse(status=1, error_message='\'%s\' is not a command in {tag, current}!'
+                                                           % op['command']).json())
+                exit()
 
         except CatalogNotFoundException as e:
-            print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' + json_obj.path).json())
+            print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' +
+                                                                json_obj.path).json())
+            exit()
         except Exception as e:
             print(JSONResponse(status=1, error_message=str(e)).json())
             if json_obj.debug:
                 raise e
+
+    # If all the operations were successful, return all the changes as a JSON object
+    print(JSONResponse(status=0, content=batch_return).json())
 
 try:
     if flag_pickle_changed:

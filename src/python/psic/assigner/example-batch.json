@@ -23,7 +23,8 @@
 			\"content\": \"Hello world, how are you?\"
 		},
 		{
-			\"command\": \"next\"
+			\"command\": \"tag\"
+			\"tag_operation\": \"next\",
 		}
 	]
 }
