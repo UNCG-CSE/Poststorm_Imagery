@@ -213,9 +213,11 @@ const CheckboxButton = ({
   form: { errors, touched },
   id,
   label,
+  checked,
+  disabled
 
 }) => {
-
+  
   return (
     <div>
 
@@ -224,7 +226,7 @@ const CheckboxButton = ({
           name={name}
           id={id}
           type="checkbox"
-          checked={value}
+          checked={value }
           onChange={onChange}
           onBlur={onBlur}
           value={value}
@@ -232,6 +234,7 @@ const CheckboxButton = ({
           inputProps={{
             'aria-label': 'primary checkbox',
           }}
+          disabled={disabled}
         />
       } label={label} />
 
@@ -266,21 +269,20 @@ class CheckboxGroup extends React.Component {
 
   render() {
     const { value, error, touched, label, children,style } = this.props;
-
     return (
       <div >
 
         <FormLabel component="legend" style={style}>{label}</FormLabel>
           <FormGroup  row>
             {React.Children.map(children, child => {
-
               return React.cloneElement(child, {
-
+                
                 field: {
                   value: value.includes(child.props.id),
                   onChange: this.handleChange,
                   onBlur: this.handleBlur,
                   style:style
+               
                 }
               });
             })}
@@ -304,6 +306,8 @@ function Index(props) {
 
   const [isSubmitingForm, setSubmitionDisable] = React.useState(false);
 
+  const [terrianNoneStatus, setTerrianNoneStatus] = React.useState(true);
+
   function handle_image_collapse() {
     setExpanded(!expanded);
   }
@@ -323,6 +327,7 @@ function Index(props) {
   function handle_error_on_submit(res,enable=true){
     //setSubmitionDisable(enable)
     alert(res)
+    location.reload();
   }
 
   function handle_success_on_submit(res,enable=true){
@@ -391,6 +396,9 @@ function Index(props) {
 
   }
 
+  function toggleNa(){
+    terrianNoneStatus(!terrianNoneStatus)
+  }
   return (
     <div>
       <CenterGrid>
@@ -405,7 +413,7 @@ function Index(props) {
 
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Post Storm Image to tag" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Error - Please click full image button" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
                 {/* <Typography gutterBottom variant="h5" component="h2">
                   {props.data.small_image_path} !!
@@ -597,30 +605,37 @@ function Index(props) {
                         onChange={setFieldValue}
                         onBlur={setFieldTouched}
                         style={MyTheme.palette.purple800}
+                        
                       >
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="RiverId"
                           label="River"
+                          disabled={terrianNoneStatus}
+                          
                         />
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="MarshId"
                           label="Marsh"
+                          disabled={terrianNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="SandyCoastlineId"
                           label="Sandy Coastline"
+                          disabled={terrianNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="NodeId"
                           label="N/A"
+                          onChange={toggleNa}
+                          // checked={terrianNoneStatus}
                         />
                       </CheckboxGroup>
 

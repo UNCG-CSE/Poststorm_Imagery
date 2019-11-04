@@ -9,7 +9,7 @@ const auth0Token = require("../components/getBearerToken");
 const {PythonShell}=  require ('python-shell');
 
 //Location of the python assinger script
-const assignerScript='assign.py';
+const assignerScript='assign_batch.py'//'assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
 const imageSource='/home/namenai/P-Sick/'
 
@@ -136,6 +136,19 @@ function get_next_img_options(user_id){
     };
 }
 
+function gen_json_arg(userId,operations){
+    return  {
+        "py/object": "psic.assigner.batch.Batch",
+        "path": fullSizeImagePath,
+        "small_path": smallSizeImagePath,
+        "user_id": userId,
+        "debug": false,
+        "operations": [
+            ...operations
+        ]
+    }
+}
+
 //Everything is in an async function becuase sync is good.
 async function  main() {
     const BEARER= await auth0Token.getAuth0Token();
@@ -204,6 +217,12 @@ async function  main() {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {userId}=req.body;
 
+            const json_args= gen_json_arg(userId,[
+                {
+                    "command":"current"
+                }
+            ])
+
             // Options to get the user's current image
             let options = {
                 mode: 'text',
@@ -211,29 +230,27 @@ async function  main() {
                 scriptPath: './',
                 //pythonPath:'home/namenai/Documents/GitKraken/Poststorm_Imagery/src/python',
                 args: [
-                    'current',
-                    `-p`, fullSizeImagePath,
-                    `-s`, smallSizeImagePath,
-                    `-u`, userId
+                    JSON.stringify(json_args)
                 ]
             };
 
             PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
                 if (err) throw err;
-
-                const parsed_result=JSON.parse(results)
-
-                //console.log('Parsed from python assinger',parsed_result)
-                console.log(`Got image: ${parsed_result.content.original_size_path}`)
-                if(parsed_result.error_message)
+                
+                const results_parted=JSON.parse(results)
+                const results_content=JSON.parse(results_parted.content[0])
+               
+                if(results_content.status==1)
                 {
-                    throw parsed_result.error_message//'Python script had error'
+                    throw results_content.error_message//'Python script had error'
                 }
                 //Get the contents of json
                 const {
                     original_size_path:original_path,
                     small_size_path:small_path
-                }=parsed_result.content
+                }=results_content.content
+
+                
 
                 //Remove the parts that we dont need,everything left of 'P-Sick'
                 const full_image_path=original_path.split('P-Sick').slice(-1)[0]
@@ -241,6 +258,7 @@ async function  main() {
 
                 const image_id=full_image_path.split('data').slice(-1)[0]
 
+                console.log(`Got Image ${image_id}`)
 
                 const return_json ={
                     full_image_path:full_image_path,
@@ -267,7 +285,7 @@ async function  main() {
         const {storm,archive,imageType,imageFile,folder} = req.params;
 
         const file_route=`${imageSource}${folder}/${storm}/${archive}/${imageType}/${imageFile}`
-        console.log(file_route)
+        //console.log(file_route)
         const options = {
             dotfiles: 'allow',
             headers: {
@@ -282,16 +300,16 @@ async function  main() {
             res.sendFile(file_route, options, function (err) {
                 //error catching http://expressjs.com/en/4x/api.html#res.sendFile
                 if (err) {
-                    //need so that node can handle
-                    //res.status(404).send("Sorry! You can't see that.")
-                    next(err)
+                    //f
+                    res.send('Image does not exist')
                 } else {
-                    console.log(`Sent: ${file_route} time: ${options.headers['x-timestamp']}`)
+                    console.log(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)
                 }
             })
 
         } catch(err) {
             console.error(err)
+            res.send('Image does not exist')
             next()
         }
 
@@ -343,45 +361,90 @@ async function  main() {
                 const wash_value=tag_name_value_pairs[washover_cat][washoverVisibilityGroup]
                 const impact_value=tag_name_value_pairs[impact_cat][impactGroup]
 
-                console.log(dev_value,wash_value,impact_value,terrianGroup)
+                //console.log(dev_value,wash_value,impact_value,terrianGroup)
+                console.log('>>>>>>>>>>>>>>>>>>>',terrianGroup)
+                // const json_args=gen_json_arg(user_id,[
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "add",
+                //         "tag": dev_cat,
+                //         "content": dev_value
+                //     },
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "add",
+                //         "tag": washover_cat,
+                //         "content": wash_value
+                //     },
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "add",
+                //         "tag": impact_cat,
+                //         "content": impact_value
+                //     },
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "add_notes",
+                //         "content": additional_notes
+                //     },
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "add",
+                //         "tag": `terrian_${}`,
+                //         "content": impact_value
+                //     },
+                //     {
+                //         "command": "tag",
+                //         "tag_operation": "next"
+                //     }
+                // ])
 
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('development group tag added')
-                },gen_tag_options_submit(user_id,dev_cat,dev_value))
+                // let options = {
+                //     mode: 'text',
+                //     pythonOptions: ['-u'],
+                //     scriptPath: './',
+                //     args: [
+                //         JSON.stringify(json_args)
+                //     ]
+                // };
 
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('washover group tag added')
-                },gen_tag_options_submit(user_id,washover_cat,wash_value))
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     console.log('development group tag added')
+                // },gen_tag_options_submit(user_id,dev_cat,dev_value))
 
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('impact group tag added')
-                },gen_tag_options_submit(user_id,impact_cat,impact_value))
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     console.log('washover group tag added')
+                // },gen_tag_options_submit(user_id,washover_cat,wash_value))
+
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     console.log('impact group tag added')
+                // },gen_tag_options_submit(user_id,impact_cat,impact_value))
 
                 //How to have looped await, cant use foreach becuase its not promise aware
                 //https://zellwk.com/blog/async-await-in-loops/
-                const terrian_promise = terrianGroup.map(async element => {
+                // const terrian_promise = terrianGroup.map(async element => {
 
-                    return await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                        const parsed_result=JSON.parse(results)
-                        console.log('terrian group tag added')
-                    },gen_tag_options_submit(user_id,terrian_cat,true))
-                  })
+                //     return await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //         const parsed_result=JSON.parse(results)
+                //         console.log('terrian group tag added')
+                //     },gen_tag_options_submit(user_id,terrian_cat,true))
+                //   })
 
-                //wait for all terrian tagging to be done
-                await Promise.all(terrian_promise)
+                // //wait for all terrian tagging to be done
+                // await Promise.all(terrian_promise)
 
-                console.log('All radio/checkbox tags added')
+                // console.log('All radio/checkbox tags added')
 
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    const parsed_result=JSON.parse(results)
-                    console.log('comment added')
-                },gen_comment_options_submit(user_id,additional_notes))
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     const parsed_result=JSON.parse(results)
+                //     console.log('comment added')
+                // },gen_comment_options_submit(user_id,additional_notes))
 
-                console.log('All tagging data done')
+                // console.log('All tagging data done')
 
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('Next image got')
-                },get_next_img_options(user_id))
+                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                //     console.log('Next image got')
+                // },get_next_img_options(user_id))
 
                 //Return
                 res.send({
@@ -408,48 +471,42 @@ async function  main() {
         try {
             const {
                 image_id,
-                user_id
+                user_id,
+                time_end_tagging,
+                time_start_tagging
             } = req.body
 
             if(user_id && image_id) {
 
-                let tag_ocean_option = {
+                console.log(`Tagging time for ocean ${time_end_tagging-time_start_tagging}`)
+                const json_args=gen_json_arg(user_id,[
+                    {
+                        "command": "tag",
+                        "tag_operation": "add",
+                        "tag": "ocean",
+                        "content": true
+                    },
+                    {
+                        "command": "tag",
+                        "tag_operation": "next"
+                    }
+                ])
+
+                let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
                     scriptPath: './',
                     args: [
-                        'tag',
-                        'add',
-                        `-p`, fullSizeImagePath,
-                        `-s`, smallSizeImagePath,
-                        `-u`, user_id,
-                        `-t`,`ocean`,`-c`,`true`
-                    ]
-                };
-
-                let get_next_option = {
-                    mode: 'text',
-                    pythonOptions: ['-u'],
-                    scriptPath: './',
-                    args: [
-                        'tag',
-                        'next',
-                        `-p`, fullSizeImagePath,
-                        `-s`, smallSizeImagePath,
-                        `-u`, user_id
+                        JSON.stringify(json_args)
                     ]
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('Tagged as ocean')
-                },tag_ocean_option)
-
-                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('Got next image')
+                    console.log('tagged as ocean and got next')
                     res.send({
                         message: `Image has been tagged as ocean, page will refresh to get new image`
                     })
-                },get_next_option)
+                },options)
             }
             else
             {
@@ -470,23 +527,33 @@ async function  main() {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {
                 user_id,
-                image_id
+                image_id,
+                time_end_tagging,
+                time_start_tagging
             }=req.body;
             if(user_id && image_id) {
 
+                console.log(`Tagging time for skip ${time_end_tagging-time_start_tagging}`)
                 // Options to get the user's current image
+                const json_args=gen_json_arg(user_id,[
+                    {
+                    "command": "tag",
+                    "tag_operation": "skip"
+                    }
+                ])
+            
+                
                 let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
                     scriptPath: './',
                     args: [
-                        'tag',
-                        'skip',
-                        `-p`, fullSizeImagePath,
-                        `-s`, smallSizeImagePath,
-                        `-u`, user_id
+                        JSON.stringify(json_args)
+
                     ]
                 };
+
+                
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     console.log('Image skipped')
