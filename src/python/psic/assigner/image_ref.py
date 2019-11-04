@@ -170,9 +170,9 @@ class Image:
         expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
 
         if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)):
-            if ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
-                                                 small_path=expanded_copy.small_size_path,
-                                                 scale=0.15):
+            if not ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
+                                                     small_path=expanded_copy.small_size_path,
+                                                     scale=0.15):
                 expanded_copy.small_size_path = expanded_copy.original_size_path
 
         return expanded_copy
