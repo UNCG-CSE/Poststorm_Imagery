@@ -4,6 +4,7 @@ from os import path
 from typing import Dict, Union, Set
 
 from psic import h
+from psic.resizer.generate import ResizeImages
 
 
 def _cast_valid_types(content: Union[str, int, bool]) -> Union[str, bool, int]:
@@ -41,6 +42,13 @@ class Image:
         self.rel_path = rel_path
 
     def __str__(self):
+        return self.rel_path
+
+    def get_rel_path(self) -> str:
+        """Simply get the relative path of the image.
+
+        :return: The relative path (e.g. '20180919a_jpgs/jpg/C3240590.jpg')
+        """
         return self.rel_path
 
     def get_tags(self, user_id: str) -> dict:
@@ -160,6 +168,12 @@ class Image:
         expanded_copy = deepcopy(x=self)
         expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.rel_path))
         expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
+
+        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)):
+            if ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
+                                                 small_path=expanded_copy.small_size_path,
+                                                 scale=0.15):
+                expanded_copy.small_size_path = expanded_copy.original_size_path
 
         return expanded_copy
 
