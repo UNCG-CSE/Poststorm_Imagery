@@ -217,7 +217,7 @@ const CheckboxButton = ({
   disabled
 
 }) => {
-  
+  //console.log(onChange)
   return (
     <div>
 
@@ -234,7 +234,7 @@ const CheckboxButton = ({
           inputProps={{
             'aria-label': 'primary checkbox',
           }}
-          disabled={disabled}
+          //disabled={disabled}
         />
       } label={label} />
 
@@ -268,7 +268,8 @@ class CheckboxGroup extends React.Component {
   };
 
   render() {
-    const { value, error, touched, label, children,style } = this.props;
+    const { value, error, touched, label, children,style,onChange } = this.props;
+    
     return (
       <div >
 
@@ -398,6 +399,7 @@ function Index(props) {
 
   function toggleNa(){
     terrianNoneStatus(!terrianNoneStatus)
+    console.log(terrianNoneStatus)
   }
   return (
     <div>
@@ -634,7 +636,7 @@ function Index(props) {
                           name="terrianGroup"
                           id="NodeId"
                           label="N/A"
-                          onChange={toggleNa}
+                          onChange='aaaaaaaaaaaaaaaaaaa'
                           // checked={terrianNoneStatus}
                         />
                       </CheckboxGroup>

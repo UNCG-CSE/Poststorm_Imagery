@@ -48,6 +48,13 @@ const tag_name_value_pairs={
     }
 }
 
+const terrian_id_tag_pair={
+    SandyCoastlineId: 'sandy_coastline', 
+    MarshId:'marsh', 
+    RiverId:'river',
+    NodeId:'none'
+}
+
 //Used to validate wat is given for form submition
 const possible_developmentGroup_tags =[
     'DevelopedId',
@@ -361,90 +368,74 @@ async function  main() {
                 const wash_value=tag_name_value_pairs[washover_cat][washoverVisibilityGroup]
                 const impact_value=tag_name_value_pairs[impact_cat][impactGroup]
 
-                //console.log(dev_value,wash_value,impact_value,terrianGroup)
-                console.log('>>>>>>>>>>>>>>>>>>>',terrianGroup)
-                // const json_args=gen_json_arg(user_id,[
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "add",
-                //         "tag": dev_cat,
-                //         "content": dev_value
-                //     },
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "add",
-                //         "tag": washover_cat,
-                //         "content": wash_value
-                //     },
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "add",
-                //         "tag": impact_cat,
-                //         "content": impact_value
-                //     },
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "add_notes",
-                //         "content": additional_notes
-                //     },
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "add",
-                //         "tag": `terrian_${}`,
-                //         "content": impact_value
-                //     },
-                //     {
-                //         "command": "tag",
-                //         "tag_operation": "next"
-                //     }
-                // ])
+                //[ 'NodeId', 'SandyCoastlineId', 'MarshId', 'RiverId' ]
 
-                // let options = {
-                //     mode: 'text',
-                //     pythonOptions: ['-u'],
-                //     scriptPath: './',
-                //     args: [
-                //         JSON.stringify(json_args)
-                //     ]
-                // };
+                const terrian_array= terrianGroup.includes('NodeId')? ['NodeId'] : terrianGroup
 
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     console.log('development group tag added')
-                // },gen_tag_options_submit(user_id,dev_cat,dev_value))
+                //console.log(terrian_array)
 
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     console.log('washover group tag added')
-                // },gen_tag_options_submit(user_id,washover_cat,wash_value))
+                const terrian_tag_names_adjusted = terrian_array.map(element => {
+                    return `terrian_${terrian_id_tag_pair[element]}`
+                })
 
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     console.log('impact group tag added')
-                // },gen_tag_options_submit(user_id,impact_cat,impact_value))
+                //console.log(terrian_tag_names_adjusted)
 
-                //How to have looped await, cant use foreach becuase its not promise aware
-                //https://zellwk.com/blog/async-await-in-loops/
-                // const terrian_promise = terrianGroup.map(async element => {
+                let json_terrian_array=[];
 
-                //     return await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //         const parsed_result=JSON.parse(results)
-                //         console.log('terrian group tag added')
-                //     },gen_tag_options_submit(user_id,terrian_cat,true))
-                //   })
+                terrian_tag_names_adjusted.forEach(element => {
+                    json_terrian_array.push( {
+                        "command": "tag",
+                        "tag_operation": "add",
+                        "tag": element,
+                        "content": true
+                    })
+                })
+                
 
-                // //wait for all terrian tagging to be done
-                // await Promise.all(terrian_promise)
+                console.log(json_terrian_array)
+                const json_args=gen_json_arg(user_id,[
+                    {
+                        "command": "tag",
+                        "tag_operation": "add",
+                        "tag": dev_cat,
+                        "content": dev_value
+                    },
+                    {
+                        "command": "tag",
+                        "tag_operation": "add",
+                        "tag": washover_cat,
+                        "content": wash_value
+                    },
+                    {
+                        "command": "tag",
+                        "tag_operation": "add",
+                        "tag": impact_cat,
+                        "content": impact_value
+                    },
+                    {
+                        "command": "tag",
+                        "tag_operation": "add_notes",
+                        "content": additional_notes
+                    },
+                    ...json_terrian_array,
+                    {
+                        "command": "tag",
+                        "tag_operation": "next"
+                    }
+                ])
 
-                // console.log('All radio/checkbox tags added')
+                let options = {
+                    mode: 'text',
+                    pythonOptions: ['-u'],
+                    scriptPath: './',
+                    args: [
+                        JSON.stringify(json_args)
+                    ]
+                };
 
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     const parsed_result=JSON.parse(results)
-                //     console.log('comment added')
-                // },gen_comment_options_submit(user_id,additional_notes))
-
-                // console.log('All tagging data done')
-
-                // await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                //     console.log('Next image got')
-                // },get_next_img_options(user_id))
+                await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
+                    console.log('All tags added,and got next image')
+                },options)
 
                 //Return
                 res.send({
