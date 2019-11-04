@@ -11,14 +11,14 @@ const {PythonShell}=  require ('python-shell');
 //Location of the python assinger script
 const assignerScript='assign_batch.py'//'assign.py';
 const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
-const imageSource='/home/namenai/P-Sick/'
+const imageSource='/media/bucket'//'/home/namenai/P-Sick/'
 
 //Image incase some error happens
 const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
 
 // Path to the images,so that assinger knows wats wat.
-const fullSizeImagePath='/home/namenai/P-Sick/data/Florence';
-const smallSizeImagePath='/home/namenai/P-Sick/small/Florence';
+const fullSizeImagePath=`${imageSource}data/Florence`;
+const smallSizeImagePath=`${imageSource}small/Florence`;
 
 //Used to take user form inputs and convert over to intergers for tensor flow
 const tag_name_value_pairs={
