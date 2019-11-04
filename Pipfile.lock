@@ -605,10 +605,10 @@
         },
         "testpath": {
             "hashes": [
-                "sha256:46c89ebb683f473ffe2aab0ed9f12581d4d078308a3cb3765d79c6b2317b0109",
-                "sha256:b694b3d9288dbd81685c5d2e7140b81365d46c29f5db4bc659de5aa6b98780f8"
+                "sha256:a15a90476b3b0eae847b132431567942b439a349da2769dd54774c34fb9cf7b4",
+                "sha256:c37791fd70f4386d1a85852e7dde06531b87557e47a3788a0ff0cff84fff9dc4"
             ],
-            "version": "==0.4.2"
+            "version": "==0.4.3"
         },
         "tornado": {
             "hashes": [
