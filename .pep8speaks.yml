@@ -7,7 +7,11 @@ flake8:
     ignore:  # Errors and warnings to ignore
         - W504  # line break after binary operator
         - E731  # do not assign a lambda expression, use a def
-        - C406  # Unnecessary list literal - rewrite as a dict literal.
+        - C406  # unnecessary list literal - rewrite as a dict literal
+        - W291 	# trailing whitespace
+        - W292 	# no newline at end of file
+        - W293 	# blank line contains whitespace
+        - W391  # blank line at end of file
 
 no_blank_comment: False  # If True, no comment is made on PR without any errors.
 descending_issues_order: False # False = Ascending line order per file, True = Descending line order per file

@@ -1,0 +1,49 @@
+{
+  "name": "nextjs",
+  "version": "4.0.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "^4.4.3",
+    "@material-ui/lab": "^4.0.0-alpha.28",
+    "@material-ui/styles": "latest",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "clsx": "latest",
+    "dotenv": "^8.1.0",
+    "dotenv-webpack": "^1.7.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "formik": "^1.5.8",
+    "fs": "0.0.1-security",
+    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "material-ui-formik-components": "^0.4.1",
+    "next": "latest",
+    "passport": "^0.4.0",
+    "passport-auth0": "^1.2.1",
+    "prop-types": "^15.7.2",
+    "public-ip": "^3.2.0",
+    "python-shell": "^1.0.8",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-spring": "^8.0.27",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "styled-components": "^4.4.0",
+    "uid-safe": "^2.1.5",
+    "yup": "^0.27.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.16.0"
+  },
+  "scripts": {
+    "dev": "node ./src/server",
+    "prod": "NODE_ENV=production node ./src/server ",
+    "build": "next build",
+    "export": "next export",
+    "start": "NODE_ENV=production next start"
+  }
+}
