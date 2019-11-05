@@ -213,9 +213,11 @@ const CheckboxButton = ({
   form: { errors, touched },
   id,
   label,
+  checked,
+  disabled
 
 }) => {
-
+  //console.log(onChange)
   return (
     <div>
 
@@ -224,7 +226,7 @@ const CheckboxButton = ({
           name={name}
           id={id}
           type="checkbox"
-          checked={value}
+          checked={value }
           onChange={onChange}
           onBlur={onBlur}
           value={value}
@@ -232,6 +234,7 @@ const CheckboxButton = ({
           inputProps={{
             'aria-label': 'primary checkbox',
           }}
+          //disabled={disabled}
         />
       } label={label} />
 
@@ -265,22 +268,22 @@ class CheckboxGroup extends React.Component {
   };
 
   render() {
-    const { value, error, touched, label, children,style } = this.props;
-
+    const { value, error, touched, label, children,style,onChange } = this.props;
+    
     return (
       <div >
 
         <FormLabel component="legend" style={style}>{label}</FormLabel>
           <FormGroup  row>
             {React.Children.map(children, child => {
-
               return React.cloneElement(child, {
-
+                
                 field: {
                   value: value.includes(child.props.id),
                   onChange: this.handleChange,
                   onBlur: this.handleBlur,
                   style:style
+               
                 }
               });
             })}
@@ -304,6 +307,8 @@ function Index(props) {
 
   const [isSubmitingForm, setSubmitionDisable] = React.useState(false);
 
+  const [terrianNoneStatus, setTerrianNoneStatus] = React.useState(true);
+
   function handle_image_collapse() {
     setExpanded(!expanded);
   }
@@ -323,6 +328,7 @@ function Index(props) {
   function handle_error_on_submit(res,enable=true){
     //setSubmitionDisable(enable)
     alert(res)
+    location.reload();
   }
 
   function handle_success_on_submit(res,enable=true){
@@ -334,11 +340,14 @@ function Index(props) {
   //submit
   function submit_as_ocean(values, actions) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -349,11 +358,14 @@ function Index(props) {
 
   function skip_image(values) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -364,15 +376,17 @@ function Index(props) {
 
   function submit_tags(values, actions) {
     setSubmitionDisable(true)
-
+    const date=new Date()
     let form_values= {
 
         ...values,
         additional_notes:document.getElementById("outlined-dense-multiline").value,
         image_id:props.data.image_id,
-        user_id:props.data.user_id
+        user_id:props.data.user_id,
+        time_end_tagging:date.getTime(),
+        time_start_tagging:props.data.time_start_tagging
     }
-
+    console.log(form_values)
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
     .then(res => {
 
@@ -383,6 +397,10 @@ function Index(props) {
 
   }
 
+  function toggleNa(){
+    terrianNoneStatus(!terrianNoneStatus)
+    console.log(terrianNoneStatus)
+  }
   return (
     <div>
       <CenterGrid>
@@ -397,7 +415,7 @@ function Index(props) {
 
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Post Storm Image to tag" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Error - Please click full image button" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
                 {/* <Typography gutterBottom variant="h5" component="h2">
                   {props.data.small_image_path} !!
@@ -491,6 +509,13 @@ function Index(props) {
                           label="Undeveloped"
                         />
 
+                        <Field
+                          component={RadioButton}
+                          name="developmentGroup"
+                          id="NoneId"
+                          label="N/A"
+                        />
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -516,6 +541,12 @@ function Index(props) {
                           name="washoverVisibilityGroup"
                           id="NoVisibleWashoverId"
                           label="No Washover"
+                        />
+                        <Field
+                          component={RadioButton}
+                          name="washoverVisibilityGroup"
+                          id="NoneId"
+                          label="N/A"
                         />
                       </RadioButtonGroup>
 
@@ -556,6 +587,13 @@ function Index(props) {
                           label="Inundation"
                         />
 
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="NoneId"
+                          label="N/A"
+                        />
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -569,24 +607,37 @@ function Index(props) {
                         onChange={setFieldValue}
                         onBlur={setFieldTouched}
                         style={MyTheme.palette.purple800}
+                        
                       >
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="RiverId"
                           label="River"
+                          disabled={terrianNoneStatus}
+                          
                         />
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="MarshId"
                           label="Marsh"
+                          disabled={terrianNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
                           id="SandyCoastlineId"
                           label="Sandy Coastline"
+                          disabled={terrianNoneStatus}
+                        />
+                        <Field
+                          component={CheckboxButton}
+                          name="terrianGroup"
+                          id="NodeId"
+                          label="N/A"
+                          onChange='aaaaaaaaaaaaaaaaaaa'
+                          // checked={terrianNoneStatus}
                         />
                       </CheckboxGroup>
 
@@ -665,9 +716,10 @@ Index.getInitialProps = async function(props) {
     {
       typed_user_id=props.req.user.user_id
     }
-
+    const date=new Date()
     return {
       data:{
+        time_start_tagging:date.getTime(),
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
         small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
         image_id:response.data.image_id,

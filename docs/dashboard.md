@@ -11,13 +11,13 @@ The only requirement is **Node.js** which is a JavaScript runtime built on
 Chrome's V8 JavaScript engine. Simply go to [here](https://nodejs.org/en/) and
 download the latest version, *at this time **12.13.0 LTS***.
 
-### Steps to set up enviroment
+### Setting Up The Environment
 
 Now that you have Node installed you are going to need to install the packages.
 
 1. Check that `node` and `npm` are installed with `node -v` and `npm -v`
 
-2. Then go inside `Poststorm_Imagery\src\dashboard\v2` and using your
+2. Then go inside `src/dashboard/v2` and using your
    favorite terminal run `npm install` to install all packages.
 
 3. Now you need to determine if you want to run the Node servers with localhost
@@ -25,7 +25,8 @@ Now that you have Node installed you are going to need to install the packages.
 
 ### Configure Auth0
 
-the `v2` dashboard now has user authentication provived by Auth0. As such we have to add some configuration to get things working. At `Poststorm_Imagery\src\dashboard\v2` there will need to be a `.env` file that contains the following below.
+the `v2` dashboard now has user authentication provided by Auth0. As such we have to add some configuration to get
+things working. At `src/dashboard/v2` a file called `.env` should exist that contains the following contents:
 
 ```
 PORT= Port to have the web server to be on
@@ -37,11 +38,20 @@ AUTH0_CALLBACK_URL= call back route, for example http://localhost:3000/callback
 BASE_URL= our sites base url, for example http://localhost:3000
 ```
 
-Note, there is a file called `.env.template.txt` that contains this. The information for `AUTH0_DOMAIN`,`AUTH0_CLIENT_ID`,`AUTH0_CLIENT_SECRET` can all be obtained from the Auth0 website for the application.
+!!! Note
+    There is a file called `.env.template.txt` that contains the above information. The values for
+    `AUTH0_DOMAIN`,`AUTH0_CLIENT_ID`,`AUTH0_CLIENT_SECRET` can all be obtained from the Auth0 website for the
+    application. You may copy this file and rename it to `.env` then modify the values as needed.
+
+### Configuring Python Path
+
+Follow the steps at [**Configuring Module**](./configure_python_path.md)
 
 ### Running
 
-After setting up the packages and setting up the `.env` file for Auth0 we can start up the webserver. Assuming your python paths for the `psic` modules are set you can simply run `npm run prod` to run the producton server. Then simply login in by creating your own account or using one of the Oauth methods provided. Currently the site is setup to run on `localhost` but changing the `.env` and `/src/server-config` files to use the machines IP will also work.
+After setting up the packages and setting up the `.env` file for Auth0 we can start up the host server.
+Assuming your python paths for the `psic` modules are set you can simply run `npm run prod` to run the production
+server. Then simply login in by creating your own account or using one of the Oauth methods provided. Currently the site is setup to run on `localhost` but changing the `.env` and `/src/server-config` files to use the machines IP will also work.
 
 ## Resources 💎
 
