@@ -46,7 +46,7 @@ data are same or not. Then I calculated the p-value for my t-test. Since the p-v
 level, I rejected the null hypothesis.
 
 For correlation and covariance, I calculated the correlation and covariance of image size and resolution. Then I plotted
-the data to see if their is any correlation between size and resolution. Found that their is very little position
+the data to see if their is any correlation between size and resolution. Found that their is very little positive
 correlation between size and resolution.
 
 **Time:** 34 - 36 hours
