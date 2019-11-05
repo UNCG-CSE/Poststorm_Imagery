@@ -102,6 +102,7 @@ try:
             f.write(cache_data)
 except Exception as e:
     print(JSONResponse(status=1, error_message=str(e)).json())
+    exit()
 
 # If all the operations were successful, return the final result (before skip / next)
 print(JSONResponse(status=0, content=last_tagged_image).json())
