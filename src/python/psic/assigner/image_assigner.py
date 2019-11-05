@@ -94,8 +94,6 @@ class ImageAssigner:
         for f in rel_file_paths:
             image_list.append(Image(rel_path=f[0]))
 
-        # TODO: Should probably ensure that each image exists and has a smaller version and possibly create a smaller
-        #  image if it doesn't exist.
         return random.sample(image_list, k=len(image_list))
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
