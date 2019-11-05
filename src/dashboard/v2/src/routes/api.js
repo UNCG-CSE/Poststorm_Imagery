@@ -49,8 +49,8 @@ const tag_name_value_pairs={
 }
 
 const terrian_id_tag_pair={
-    SandyCoastlineId: 'sandy_coastline', 
-    MarshId:'marsh', 
+    SandyCoastlineId: 'sandy_coastline',
+    MarshId:'marsh',
     RiverId:'river',
     NodeId:'none'
 }
@@ -243,11 +243,10 @@ async function  main() {
 
             PythonShell.run(`${assignerSrc}${assignerScript}`, options, function (err, results) {
                 if (err) throw err;
-                
-                const results_parted=JSON.parse(results)
-                const results_content=JSON.parse(results_parted.content[0])
-               
-                if(results_content.status==1)
+
+                const results_content=JSON.parse(results)
+
+                if(results_content.status===1)
                 {
                     throw results_content.error_message//'Python script had error'
                 }
@@ -257,7 +256,7 @@ async function  main() {
                     small_size_path:small_path
                 }=results_content.content
 
-                
+
 
                 //Remove the parts that we dont need,everything left of 'P-Sick'
                 const full_image_path=original_path.split('P-Sick').slice(-1)[0]
@@ -352,7 +351,7 @@ async function  main() {
                 const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
                 const washoverCheck=[washoverVisibilityGroup].every(val => possible_washoverVisibilityGroup_tags.includes(val))
                 const impactCheck=[impactGroup].every(val => possible_impactGroup_tags.includes(val))
-                
+
                 //console.log(!devGroupCheck,!washoverCheck,!impactCheck)
                 //Not sure wat to do or terrianGroup check
                 //if any fails
@@ -390,7 +389,7 @@ async function  main() {
                         "content": true
                     })
                 })
-                
+
 
                 console.log(json_terrian_array)
                 const json_args=gen_json_arg(user_id,[
@@ -532,8 +531,8 @@ async function  main() {
                     "tag_operation": "skip"
                     }
                 ])
-            
-                
+
+
                 let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
@@ -544,7 +543,7 @@ async function  main() {
                     ]
                 };
 
-                
+
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     console.log('Image skipped')
