@@ -8,6 +8,7 @@ import jsonpickle
 
 from psic.assigner.batch import Batch
 from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
+from psic.assigner.image_ref import Image
 from psic.assigner.json_response import JSONResponse
 
 # Get the username of the current user to prevent conflicts of multiple users testing same filesystem
@@ -40,7 +41,7 @@ if json_obj.debug:
 with open(assigner_cache, 'r') as f:
     assigner = jsonpickle.decode(f.read())
 
-    batch_return = list()
+    last_tagged_image: Image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
 
     for op in json_obj.operations:
 
@@ -52,33 +53,22 @@ with open(assigner_cache, 'r') as f:
                     assigner.get_current_image(user_id=json_obj.user_id) \
                         .add_tag(user_id=json_obj.user_id, tag=op['tag'], content=op['content'])
                     flag_pickle_changed = True
-                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
-                        user_id=json_obj.user_id,
-                        expanded=True)).json())
+                    last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
                 elif op['tag_operation'] == 'add_notes':
                     assigner.get_current_image(user_id=json_obj.user_id) \
                         .add_tag(user_id=json_obj.user_id, tag='notes', content=op['content'])
                     flag_pickle_changed = True
-                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
-                        user_id=json_obj.user_id,
-                        expanded=True)).json())
+                    last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
                 elif op['tag_operation'] == 'remove':
                     assigner.get_current_image(user_id=json_obj.user_id) \
                         .remove_tag(user_id=json_obj.user_id, tag=op['tag'])
                     flag_pickle_changed = True
-                    batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
-                        user_id=json_obj.user_id,
-                        expanded=True)).json())
+                    last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
                 elif op['tag_operation'] == 'next':
-                    batch_return.append(JSONResponse(status=0, content=assigner.get_next_image(
-                        user_id=json_obj.user_id,
-                        expanded=True)).json())
+                    assigner.get_next_image(user_id=json_obj.user_id)
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
-                    batch_return.append(JSONResponse(status=0, content=assigner.get_next_image(
-                        user_id=json_obj.user_id,
-                        skip=True,
-                        expanded=True)).json())
+                    assigner.get_next_image(user_id=json_obj.user_id, skip=True)
                     flag_pickle_changed = True
                 else:
                     print(JSONResponse(status=1, error_message='\'%s\' is not a valid tagging operation in {add, '
@@ -88,9 +78,9 @@ with open(assigner_cache, 'r') as f:
 
             # Get the user's current image
             elif op['command'] == 'current':
-                batch_return.append(JSONResponse(status=0, content=assigner.get_current_image(
-                    user_id=json_obj.user_id,
-                    expanded=True)).json())
+                print(JSONResponse(status=0, content=assigner.get_current_image(user_id=json_obj.user_id,
+                                                                                expanded=True)).json())
+                exit()
             else:
                 print(JSONResponse(status=1, error_message='\'%s\' is not a command in {tag, current}!'
                                                            % op['command']).json())
@@ -105,9 +95,6 @@ with open(assigner_cache, 'r') as f:
             if json_obj.debug:
                 raise e
 
-    # If all the operations were successful, return all the changes as a JSON object
-    print(JSONResponse(status=0, content=batch_return).json())
-
 try:
     if flag_pickle_changed:
         cache_data = jsonpickle.encode(assigner.save())
@@ -115,3 +102,6 @@ try:
             f.write(cache_data)
 except Exception as e:
     print(JSONResponse(status=1, error_message=str(e)).json())
+
+# If all the operations were successful, return the final result (before skip / next)
+print(JSONResponse(status=0, content=last_tagged_image).json())
