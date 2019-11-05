@@ -10,6 +10,7 @@ nav:
     - Home: index.md
     - Code of Conduct: code_of_conduct.md
     - Code Conventions: contributing.md
+    - Configuring Module: configure_python_path.md
     - Data Collection: collector.md
     - Cataloging Images: cataloging.md
     - Dashboard UI: dashboard.md
