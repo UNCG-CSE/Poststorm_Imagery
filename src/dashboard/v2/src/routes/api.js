@@ -454,6 +454,7 @@ async function  main() {
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
                     log(chalk.green('All tags added,and got next image'))
+                    console.log(chalk.red(results))
                 },options)
 
                 //Return
