@@ -47,7 +47,7 @@ const tag_name_value_pairs={
         InundationId:4,
 
     },
-    terrian:{
+    terrain:{
         NoneId:'NoneId',
         RiverId:'RiverId',
         MarshId:'MarshId',
@@ -55,7 +55,7 @@ const tag_name_value_pairs={
     }
 }
 
-const terrian_id_tag_pair={
+const terrain_id_tag_pair={
     SandyCoastlineId: 'sandy_coastline',
     MarshId:'marsh',
     RiverId:'river',
@@ -82,7 +82,7 @@ const possible_impactGroup_tags =[
     'NoneId'
 ]
 
-const possible_terrianGroup_tags =[
+const possible_terrainGroup_tags =[
     'RiverId',
     'MarshId',
     'SandyCoastlineId',
@@ -330,9 +330,9 @@ async function  main() {
                 //error catching http://expressjs.com/en/4x/api.html#res.sendFile
                 if (err) {
                     //f
-                
+
                     throw 'Image does not exist'
-                    
+
                 } else {
                     log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
                     log_api_done(`/${folder}/${storm}/${archive}/${imageType}/${imageFile}`)
@@ -356,7 +356,7 @@ async function  main() {
                 developmentGroup,
                 washoverVisibilityGroup,
                 impactGroup,
-                terrianGroup,
+                terrainGroup,
                 additional_notes,
                 image_id,
                 user_id,
@@ -365,17 +365,17 @@ async function  main() {
                 time_start_tagging
             } = req.body
 
-            log_img(image_id,user_name,user_id) 
+            log_img(image_id,user_name,user_id)
             log(`Tagging time for submit ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
             //console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
-            if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
+            if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrainGroup && image_id) {
                 //Now to check the passed in data.
                 const devGroupCheck=[developmentGroup].every(val => possible_developmentGroup_tags.includes(val))
                 const washoverCheck=[washoverVisibilityGroup].every(val => possible_washoverVisibilityGroup_tags.includes(val))
                 const impactCheck=[impactGroup].every(val => possible_impactGroup_tags.includes(val))
 
                 //console.log(!devGroupCheck,!washoverCheck,!impactCheck)
-                //Not sure wat to do or terrianGroup check
+                //Not sure wat to do or terrainGroup check
                 //if any fails
                 if( !devGroupCheck || !washoverCheck || !impactCheck) {
                     throw 'Sent invalid tag id'
@@ -383,7 +383,7 @@ async function  main() {
                 const dev_cat='development'
                 const washover_cat='washover'
                 const impact_cat='impact'
-                const terrian_cat='terrian'
+                const terrain_cat='terrain'
 
                 const dev_value=tag_name_value_pairs[dev_cat][developmentGroup]
                 const wash_value=tag_name_value_pairs[washover_cat][washoverVisibilityGroup]
@@ -391,20 +391,20 @@ async function  main() {
 
                 //[ 'NodeId', 'SandyCoastlineId', 'MarshId', 'RiverId' ]
 
-                const terrian_array= terrianGroup.includes('NodeId')? ['NodeId'] : terrianGroup
+                const terrain_array= terrainGroup.includes('NodeId')? ['NodeId'] : terrainGroup
 
-                //console.log(terrian_array)
+                //console.log(terrain_array)
 
-                const terrian_tag_names_adjusted = terrian_array.map(element => {
-                    return `terrain_${terrian_id_tag_pair[element]}`
+                const terrain_tag_names_adjusted = terrain_array.map(element => {
+                    return `terrain_${terrain_id_tag_pair[element]}`
                 })
 
-                //console.log(terrian_tag_names_adjusted)
+                //console.log(terrain_tag_names_adjusted)
 
-                let json_terrian_array=[];
+                let json_terrain_array=[];
 
-                terrian_tag_names_adjusted.forEach(element => {
-                    json_terrian_array.push( {
+                terrain_tag_names_adjusted.forEach(element => {
+                    json_terrain_array.push( {
                         "command": "tag",
                         "tag_operation": "add",
                         "tag": element,
@@ -436,7 +436,7 @@ async function  main() {
                         "tag_operation": "add_notes",
                         "content": additional_notes
                     },
-                    ...json_terrian_array,
+                    ...json_terrain_array,
                     {
                         "command": "tag",
                         "tag_operation": "next"
@@ -492,7 +492,7 @@ async function  main() {
             } = req.body
 
             if(user_id && image_id) {
-                log_img(image_id,user_name,user_id) 
+                log_img(image_id,user_name,user_id)
                 log(`Tagging time for ocean ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
                 const json_args=gen_json_arg(user_id,[
                     {
@@ -551,7 +551,7 @@ async function  main() {
                 time_start_tagging
             }=req.body;
             if(user_id && image_id) {
-                log_img(image_id,user_name,user_id) 
+                log_img(image_id,user_name,user_id)
                 log(`Tagging time for skip ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
                 // Options to get the user's current image
                 const json_args=gen_json_arg(user_id,[
