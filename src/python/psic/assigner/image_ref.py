@@ -194,7 +194,8 @@ class Image:
         # tagged the image with the same values.
 
         for user_id in self.get_taggers():
-            for tag, value in self.taggers[user_id]:
+            for tag in self.taggers[user_id].keys():
+                value = self.taggers[user_id][tag]
                 if type(value) is not str:
 
                     if tag_totals[tag] is None:
