@@ -65,7 +65,7 @@ then the `PYTHONPATH` is not configured correctly!*
 
 ### Installing Dependencies
 
-1. Change current directory (`cd`) to `src/python/psic` (inside the project, `Poststorm_Imagery`)
+1. Change current directory (`cd`) to `Poststorm_Imagery/` (the project root)
 2. Run `pipenv install` to install dependencies
 
 ### Collecting Data

@@ -21,15 +21,35 @@ the images for our goals.
 
 #### 1. Find_center
 
-Created script to find the center of an Image using the longitude and latitude of each corner. It takes four longitude of each corner and four latitude of each corner as parameter. Then it finds the midppoint of each side of the image. After that it uses those four midpoints and create two lines. Then find the intersection point of those two lines. That intersection point is the center of that image. It returns the center as tuple. Center of an image will be useful for classifier later on and any user will be able to use it to do further research on the images using center point.
+Created script to find the center of an Image using the longitude and latitude of each corner. It takes four longitude
+of each corner and four latitude of each corner as parameter. Then it finds the midpoint of each side of the image.
+After that it uses those four midpoints and create two lines. Then find the intersection point of those two lines.
+That intersection point is the center of that image. It returns the center as tuple. Center of an image will be useful
+for classifier later on and any user will be able to use it to do further research on the images using center point.
 
-**Time:** 8 hours
+**Time:** 8 - 10 hours
 
-#### 1. Find_pixel
+#### 2. Statistical analysis using Image size and resolution
 
-Created script to find the pixel value and RGB value of pixels of an image. It takes an image file as parameter. Then convert that image to RGB. It finds RGB value for each pixel in each row. It displays each RGB value for the user as list with three elements. Then it gives the height pixel and width pixel for the image. It also returns the total pixel value for that image. Find_pixel is used to do statistical analysis using pixel values and RGB values. Finding the average pixel value for different type of images etc.
+For basic statistics, I calculated the mean, variance, median, and standard deviation for image size and resolution.
 
-**Time:** 16 - 20 hours
+For distribution modeling, I plotted the histogram and density curve using sea-born for image size and resolution.
+Based on the diagram the image size data fall under uni-modal distribution and image resolution fall under bimodal
+distribution. One of them has one high peak and another has two high peaks. I also used the T-critical value to find
+the confidence interval for image size and resolution.
+
+For hypothesis testing, I have separated the data into two parts. One part contains images with 300 dpi resolution and
+another part contains images with 96 dpi resolution. Then I calculated the mean and standard deviation for each type of
+resolutions. I used two sample t-test for the hypothesis testing. Null hypothesis is checking if the image size mean is
+same between 300 and 96 dpi resolution images. I plotted the data and their mean together to see if the mean for both
+data are same or not. Then I calculated the p-value for my t-test. Since the p-value was smaller than the 95% confidence
+level, I rejected the null hypothesis.
+
+For correlation and covariance, I calculated the correlation and covariance of image size and resolution. Then I plotted
+the data to see if their is any correlation between size and resolution. Found that their is very little positive
+correlation between size and resolution.
+
+**Time:** 34 - 36 hours
 
 ---
 
@@ -46,12 +66,14 @@ tailed z-test on coastal images to find 97.5% confidence interval. I did not
 have other variables to apply correlation and null hypothesis testing. After the
 images are annotated, I'll return to statistical analysis of those data. Total
 time spent on task: 15 hours
+
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/Data%20Statistics)
 
 Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 that contains that lat/long point. Unlike image count script, it runs in O(n),
 hurray! Time spent on task: 5 hours.
+
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
 https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/find_point)
 
@@ -144,6 +166,7 @@ Tasks 3-7 took the last 3 weeks.
 ---
 
 ### [**John Weber**](https://github.com/JWeb56)
+
 #### 1.  Creating/configuring VM and Google Cloud Storage
 
 I purchased a free account on Google Cloud and created a project for our 405 project.
@@ -193,9 +216,9 @@ https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/stats)
 Since our ultimate goal is to train a convolutional neural network to classify our images based on a certain
 number of classes/labels, but we still have not completed the tagging of our images, I wanted to
 provide a sample script which shows how to train and test a neural network model. The example I provided was largely
-taken from an example provided by keras/tensorflow, and trains a network to classify/recognize
+taken from an example provided by keras/TensorFlow, and trains a network to classify/recognize
 a set of images taken from a fashion dataset. Hopefully this will serve as a reference for group members
-as we progess into the next stage of our project.
+as we progress into the next stage of our project.
 
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](

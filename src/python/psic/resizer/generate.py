@@ -78,3 +78,35 @@ class ResizeImages:
 
         except Exception as e:
             h.print_error(e)
+
+    @staticmethod
+    def resize_image_at_path(original_path: Union[bytes, str], small_path: Union[bytes, str], scale: float) -> bool:
+        """
+        Takes in an absolute path to an image file and resizes it and saves it to the specified small image path.
+
+        :param original_path: The path to the full size image to compress
+        :param small_path: The path to the resized image
+        :param scale: The scale factor to reduce the image to (0.15 = 15% of the full image size)
+        :return: Whether (True) or not (False) the image was resized successfully (some images may not be able to)
+        """
+
+        try:
+            # Open file as an image
+            original_image = Image.open(original_path)
+
+            # Resize the image based on given scale factor
+            new_image = ResizeImages.resize_image(original_image=original_image, scale=scale)
+
+            # Get the path for the new (smaller) image without the file's name & extension in it
+            new_abs_dir = os.path.split(small_path)[0]
+
+            # Check to make sure that the appropriate directories exist
+            if not os.path.exists(new_abs_dir):
+                os.makedirs(new_abs_dir)
+
+            # Save the new image to the specified directory
+            new_image.save(small_path)
+            return True
+
+        except (IOError, OSError):
+            return False

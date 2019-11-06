@@ -16,9 +16,17 @@ const authRoutes = require("./auth-routes");
 //routing modules
 const apiRoutes = require("./routes/api");
 
+//For colored console prints
+const chalk = require('chalk');
+
+const log = serverConfig.log
+
 //For Nextjs
 const dev = process.env.NODE_ENV !== "production";
-console.log(`Is in dev mode? ${dev}`)
+
+const is_dev_mode = dev => dev ? chalk.green('yes'): chalk.red('no')
+
+log(`Is in dev mode: ${is_dev_mode(dev)}`)
 
 //This is used to change where src is, since in production the .next folder will be one level above
 // the ./src folder.
@@ -96,6 +104,7 @@ app.prepare().then(async () => {
 
   //Say when and where server is up
   http.createServer(server).listen(process.env.PORT,'0.0.0.0', () => {
-    console.log(`>>> Site up on http://${IP}:${process.env.PORT}`);
+    log(`${chalk.green('Site up')} at ${chalk.cyan(`http://${IP}:${process.env.PORT}`)}`);
+    
   });
 });
