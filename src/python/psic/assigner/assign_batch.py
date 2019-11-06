@@ -3,7 +3,6 @@
 import getpass
 import sys
 from os import path, mknod, remove
-from time import sleep
 
 import jsonpickle
 
@@ -24,8 +23,8 @@ json_obj: Batch = jsonpickle.decode(' '.join(sys.argv[1:]))
 
 assigner_cache = ASSIGNER_FILE_NAME
 
-while path.exists(ASSIGNER_FILE_NAME + '.lock'):
-    sleep(5)
+# while path.exists(ASSIGNER_FILE_NAME + '.lock'):
+#     sleep(5)
 
 mknod(ASSIGNER_FILE_NAME + '.lock')
 
@@ -95,18 +94,20 @@ with open(assigner_cache, 'r') as f:
                 exit()
 
         except CatalogNotFoundException as e:
-            print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' +
-                                                                json_obj.path).json())
-            f.close()
-            remove(ASSIGNER_FILE_NAME + '.lock')
-            exit()
+            raise e
+            # print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' +
+            #                                                     json_obj.path).json())
+            # f.close()
+            # remove(ASSIGNER_FILE_NAME + '.lock')
+            # exit()
         except Exception as e:
-            print(JSONResponse(status=1, error_message=str(e)).json())
-            if json_obj.debug:
-                raise e
-            f.close()
-            remove(ASSIGNER_FILE_NAME + '.lock')
-            exit()
+            raise e
+            # print(JSONResponse(status=1, error_message=str(e)).json())
+            # if json_obj.debug:
+            #     raise e
+            # f.close()
+            # remove(ASSIGNER_FILE_NAME + '.lock')
+            # exit()
 
     f.close()
 
@@ -116,9 +117,10 @@ try:
         f.write(cache_data)
         f.close()
 except Exception as e:
-    print(JSONResponse(status=1, error_message=str(e)).json())
-    remove(ASSIGNER_FILE_NAME + '.lock')
-    exit()
+    raise e
+    # print(JSONResponse(status=1, error_message=str(e)).json())
+    # remove(ASSIGNER_FILE_NAME + '.lock')
+    # exit()
 
 # If all the operations were successful, return the final result (before skip / next)
 print(JSONResponse(status=0, content=last_tagged_image).json())
