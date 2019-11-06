@@ -11,7 +11,7 @@ const log = serverConfig.log
 const log_api = api_name => log(`${chalk.yellow(`Running ${chalk.cyan(api_name)} API`)}`)
 const log_api_done = api_name =>log(`${chalk.yellow(`${chalk.cyan(api_name)} ${chalk.green(`done`)}`)}`)
 const log_api_error = (api_name,err) =>log(`${chalk.red(`ERROR`)} for ${chalk.yellow(`${chalk.cyan(api_name)}`)} API: ${err}`)
-const log_img = (image_id,user_name,user_id) => log(`Submitting image ${chalk.cyan(image_id)} for user: ${chalk.orange(user_name)} aka ${chalk.magenta(user_id)}`)
+const log_img = (image_id,user_name,user_id) => log(`Submitting image ${chalk.cyan(image_id)} for user: ${chalk.yellow(user_name)} aka ${chalk.magenta(user_id)}`)
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
@@ -365,7 +365,7 @@ async function  main() {
             } = req.body
 
             log_img(image_id,user_name,user_id) 
-            log(`Tagging time for submit ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
+            log(`Tagging time for submit ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
             //console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
@@ -441,7 +441,7 @@ async function  main() {
                         "tag_operation": "next"
                     }
                 ])
-                log(chalk.orange('Generated JSON arguments'))
+                log(chalk.yellow('Generated JSON arguments'))
                 let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
@@ -491,7 +491,7 @@ async function  main() {
 
             if(user_id && image_id) {
                 log_img(image_id,user_name,user_id) 
-                log(`Tagging time for ocean ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
+                log(`Tagging time for ocean ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
                 const json_args=gen_json_arg(user_id,[
                     {
                         "command": "tag",
@@ -550,7 +550,7 @@ async function  main() {
             }=req.body;
             if(user_id && image_id) {
                 log_img(image_id,user_name,user_id) 
-                log(`Tagging time for skip ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
+                log(`Tagging time for skip ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`)
                 // Options to get the user's current image
                 const json_args=gen_json_arg(user_id,[
                     {
