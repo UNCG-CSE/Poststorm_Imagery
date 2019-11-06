@@ -198,10 +198,10 @@ class Image:
                 value = self.taggers[user_id][tag]
                 if type(value) is not str:
 
-                    if tag_totals[tag] is None:
+                    if tag not in tag_totals.keys():
                         tag_totals[tag] = dict()
 
-                    if tag_totals[tag][str(value)] is None:
+                    if str(value) not in tag_totals[tag]:
                         tag_totals[tag][str(value)] = 0
                     else:
                         tag_totals[tag][str(value)] += 1
