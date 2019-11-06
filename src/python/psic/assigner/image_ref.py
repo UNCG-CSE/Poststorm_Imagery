@@ -38,6 +38,7 @@ class Image:
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
     taggers: Dict[str, Dict] = None
 
+    # The final results: final_tags[tag_id] = value
     final_tags: dict or None = None
 
     def __init__(self, rel_path: str):
