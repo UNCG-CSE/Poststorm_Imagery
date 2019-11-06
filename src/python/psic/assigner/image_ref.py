@@ -153,6 +153,8 @@ class Image:
             self.skippers = self.skippers.copy()
         if self.taggers is not None:
             self.taggers = self.taggers.copy()
+        if self.final_tags is not None:
+            self.final_tags = self.final_tags.copy()
         return self
 
     def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
