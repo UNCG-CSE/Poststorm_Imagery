@@ -287,7 +287,7 @@ async function  main() {
 
                 const return_json ={
                     full_image_path:full_image_path,
-                    small_image_path:small_image_path.replace('data','small'),
+                    small_image_path:small_image_path,
                     image_id:image_id
                 };
                 res.send(return_json)
