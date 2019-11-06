@@ -221,7 +221,8 @@ class Image:
 
         # Make sure there are at least 2 sets of tags to compare (function should not be called otherwise)
         if len(self.get_taggers()) < 2:
-            raise NotEnoughTaggersError
+            # raise NotEnoughTaggersError
+            return True
 
         # Total up all the values for each tag grouped by user's id
         tag_totals: Dict[str, Dict[str, int]] = self._sum_tag_values_by_users()
@@ -235,7 +236,8 @@ class Image:
             agreed_upon_value = list(tag_totals[tag].keys())[0]
             if tag_totals[tag][agreed_upon_value] != len(self.get_taggers()):
                 # If one user has non-string tags added that the other doesn't
-                raise UsersHaveDifferentTagsError
+                # raise UsersHaveDifferentTagsError
+                return False
 
         # All tags have exactly one value for each tag name
         return True
