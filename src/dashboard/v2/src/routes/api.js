@@ -11,7 +11,7 @@ const log = serverConfig.log
 const log_api = api_name => log(`${chalk.yellow(`Running ${chalk.cyan(api_name)} API`)}`)
 const log_api_done = api_name =>log(`${chalk.yellow(`${chalk.cyan(api_name)} ${chalk.green(`done`)}`)}`)
 const log_api_error = (api_name,err) =>log(`${chalk.red(`ERROR`)} for ${chalk.yellow(`${chalk.cyan(api_name)}`)} API: ${err}`)
-const log_img = (image_id,user_name,user_id) => log(`Submitting image ${chalk.cyan(image_id)} for user: ${chalk.yellow(user_name)} aka ${chalk.magenta(user_id)}`)
+const log_img = (image_id,user_name,user_id) => log(`Submitting image ${chalk.cyan(image_id)} for user: ${chalk.magenta(user_name)} aka ${chalk.magenta(user_id)}`)
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
@@ -241,7 +241,7 @@ async function  main() {
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {userId,user_name}=req.body;
-            log(`Getting Image for ${chalk.yellow(userId)} aka ${chalk.yellow(user_name)}`)
+            log(`Getting Image for ${chalk.magenta(userId)} aka ${chalk.magenta(user_name)}`)
             const json_args= gen_json_arg(userId,[
                 {
                     "command":"current"
