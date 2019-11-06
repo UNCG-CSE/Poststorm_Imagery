@@ -171,10 +171,23 @@ class Image:
         expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.rel_path))
         expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
 
-        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)):
+        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)
+                and path.getsize(expanded_copy.small_size_path) > 1000):
+            # If there is no resized version of the image or it might be corrupted
+
+            # Try to resize the image on the fly
             if not ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
                                                      small_path=expanded_copy.small_size_path,
                                                      scale=0.15):
+                # If the image cannot be resized
+
+                expanded_copy.small_size_path = expanded_copy.original_size_path
+
+            elif not (path.exists(expanded_copy.small_size_path)
+                      and path.isfile(expanded_copy.small_size_path)
+                      and path.getsize(expanded_copy.small_size_path) > 1000):
+                # If the small version of the image is still missing or corrupted
+
                 expanded_copy.small_size_path = expanded_copy.original_size_path
 
         return expanded_copy
