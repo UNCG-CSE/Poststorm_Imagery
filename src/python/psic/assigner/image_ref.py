@@ -4,51 +4,93 @@ from os import path
 from typing import Dict, Union, Set
 
 from psic import h
+from psic.resizer.generate import ResizeImages
 
 
-def _cast_valid_types(content: str) -> Union[str, bool, int]:
+def _cast_valid_types(content: Union[str, int, bool]) -> Union[str, bool, int]:
     """
     Cast an input that explicitly reads "true" or "false" (case-insensitive) as a boolean type and cast all strings
-    of only digits as an integer type.
+    of only digits as an integer type. This function does nothing and returns the same value if the input is not a
+    string.
 
     :param content: The string of content to parse out compatible types for
     :return: The value casted as the type detected
     """
+    if type(content) == str:
 
-    # Check if the response matches a boolean's text (must be explicit to prevent coercion of ints like '1' -> True)
-    if content.lower() == ('true' or 'false'):
-        content = bool(content)
+        # Check if the response matches a boolean's text (must be explicit to prevent coercion of ints like '1' -> True)
+        if content.lower() == ('true' or 'false'):
+            content = bool(content)
 
-    # Check if the response is an integer and only an integer (explicitly define match to avoid type coercion)
-    elif re.fullmatch('\\d+', content):
-        content = int(content)
+        # Check if the response is an integer and only an integer (explicitly define match to avoid type coercion)
+        elif re.fullmatch('\\d+', content):
+            content = int(content)
 
     return content
 
 
 class Image:
 
-    original_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the full size image
-    small_size_path: Union[bytes, str]  # The relative path from the catalog.csv for the resized version of the image
+    rel_path: str  # The relative path from the catalog.csv for the full size image
 
-    skippers: Set[str] = set()  # The number of times this image has been skipped
+    skippers: Set[str] = None  # The number of times this image has been skipped
 
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
-    taggers: Dict[str, Dict] = dict()
+    taggers: Dict[str, Dict] = None
 
-    def __init__(self, original_size_path: Union[bytes, str], small_size_path: Union[bytes, str]):
-        self.original_size_path = original_size_path
-        self.small_size_path = small_size_path
+    def __init__(self, rel_path: str):
+        self.rel_path = rel_path
 
     def __str__(self):
-        return self.original_size_path
+        return self.rel_path
 
-    def get_taggers(self):
+    def get_rel_path(self) -> str:
+        """Simply get the relative path of the image.
+
+        :return: The relative path (e.g. '20180919a_jpgs/jpg/C3240590.jpg')
+        """
+        return self.rel_path
+
+    def get_tags(self, user_id: str) -> dict:
         """Simply get a set of users' ids who have tagged this image.
 
         :return: The people (by id) who have tagged this image
         """
-        return self.taggers.keys()
+        if self.taggers[user_id] is None:
+            return dict()
+
+        return self.taggers[user_id]
+
+    def get_taggers(self) -> Set:
+        """Simply get a set of users' ids who have tagged this image.
+
+        :return: The people (by id) who have tagged this image
+        """
+        if self.taggers is None:
+            return set()
+
+        return set(self.taggers.keys())
+
+    def get_skippers(self) -> Set:
+        """Simply get a set of users' ids who have skipped tagging this image.
+
+        :return: The people (by id) who have skipped this image
+        """
+        if self.skippers is None:
+            return set()
+
+        return self.skippers
+
+    def add_skipper(self, user_id: str) -> None:
+        """
+        Add a user to the set of skippers for this image.
+
+        :param user_id: The user to add as a skipper
+        """
+        if self.skippers is None:
+            self.skippers = set()
+
+        self.skippers.add(user_id)
 
     def add_tag(self, user_id: str, tag: str, content: str) -> None:
         """
@@ -61,6 +103,8 @@ class Image:
         """
 
         # Make sure this key exists before attempting to access it
+        if self.taggers is None:
+            self.taggers = dict()
         if user_id not in self.get_taggers():
             self.taggers[user_id] = dict()
 
@@ -103,24 +147,33 @@ class Image:
         """
 
         # Save a copy of the dictionaries when creating a pickle (without this, the dicts will not save in the pickle)
-        self.skippers = self.skippers.copy()
-        self.taggers = self.taggers.copy()
+        if self.skippers is not None:
+            self.skippers = self.skippers.copy()
+        if self.taggers is not None:
+            self.taggers = self.taggers.copy()
         return self
 
-    def expanded(self, scope_path: Union[str, bytes]):
+    def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
         """
         This function allows for making a copy of the object that includes absolute paths (starting all the way from
         root or the file's drive letter all the way to to the file name including the file type suffix. This is
         useful for the runner in order to pass the context that these Python scripts are running in to the program
         running them through the JSON API.
 
-        :param scope_path: The path to concatenate with the relative path in the copied object
+        :param scope_path: The path to the `full size` image data directory
+        :param small_path: The path to the `small` image data directory
         :return: A copy of the Image object that has all path variables expanded to the absolute path of the scope path
         specified
         """
         expanded_copy = deepcopy(x=self)
-        expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.original_size_path))
-        expanded_copy.small_size_path = h.validate_and_expand_path(path.join(scope_path, self.small_size_path))
+        expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.rel_path))
+        expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
+
+        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)):
+            if not ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
+                                                     small_path=expanded_copy.small_size_path,
+                                                     scale=0.15):
+                expanded_copy.small_size_path = expanded_copy.original_size_path
 
         return expanded_copy
 

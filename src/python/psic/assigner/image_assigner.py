@@ -38,7 +38,7 @@ class ImageAssigner:
     debug: bool = False
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
-    small_path: Union[bytes, str, None]  # The path to the resized image scope path
+    small_path: Union[bytes, str]  # The path to the resized image scope path
 
     pending_images_queue: List[Image] or None = list()  # The queue that stores all images left to tag by their ID
 
@@ -50,7 +50,7 @@ class ImageAssigner:
     current_image: Dict[str, Image] = {}
 
     def __init__(self, scope_path: Union[bytes, str],
-                 small_path: Union[bytes, str, None] = None, **kwargs):
+                 small_path: Union[bytes, str], **kwargs):
 
         # Enable debugging flag (True = output debug statements, False = don't output debug statements)
         self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
@@ -65,13 +65,10 @@ class ImageAssigner:
         if path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
 
-        try:
-            if small_path is not None and path.exists(h.validate_and_expand_path(small_path)):
-                self.small_path = h.validate_and_expand_path(small_path)
-            else:
-                self.small_path = None
-        except OSError:
-            self.small_path = None
+        if path.exists(h.validate_and_expand_path(small_path)):
+            self.small_path = h.validate_and_expand_path(small_path)
+        else:
+            raise OSError('Could not find the path: %s on the local file-system!' % small_path)
 
         # Add each image into the queue
         for image in self._image_list_from_csv():
@@ -95,11 +92,8 @@ class ImageAssigner:
             'file'}).values.tolist()
 
         for f in rel_file_paths:
-            image_list.append(Image(original_size_path=f[0],
-                                    small_size_path=f[0]))
+            image_list.append(Image(rel_path=f[0]))
 
-        # TODO: Should probably ensure that each image exists and has a smaller version and possibly create a smaller
-        #  image if it doesn't exist.
         return random.sample(image_list, k=len(image_list))
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
@@ -114,10 +108,10 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].original_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].small_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
 
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
@@ -135,7 +129,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 
@@ -156,10 +150,10 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
+                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
+                path.join(self.small_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
 
     def get_next_image(self, user_id: str, expanded: bool = False, skip: bool = False) -> Image:
         """
@@ -183,7 +177,7 @@ class ImageAssigner:
             return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].get_taggers()) \
-                and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
+                and len(self.current_image[user_id].get_tags(user_id=user_id).keys()) > 0:
             self._user_done_tagging_current_image(user_id=user_id)
         else:
             self._user_skip_tagging_current_image(user_id=user_id)
@@ -191,16 +185,16 @@ class ImageAssigner:
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id in (next_image.skippers or next_image.get_taggers()):
+        if user_id in (next_image.get_skippers() or next_image.get_taggers()):
             if self.debug:
-                print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
+                print('User has already processed %s (tagged or skipped)' % next_image.rel_path)
 
             # Recursively search until an image that has not been tagged or skipped by this user is found
             next_next_image = self._get_next_suitable_image(user_id=user_id)
@@ -228,9 +222,9 @@ class ImageAssigner:
 
     def _user_skip_tagging_current_image(self, user_id: str):
 
-        self.current_image[user_id].skippers.add(user_id)
+        self.current_image[user_id].add_skipper(user_id)
 
-        if len(self.current_image[user_id].skippers) > MAX_ALLOWED_SKIPS:
+        if len(self.current_image[user_id].get_skippers()) > MAX_ALLOWED_SKIPS:
             # If the image has exceeded the allowed number of skips
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
