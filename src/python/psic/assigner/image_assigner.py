@@ -192,7 +192,7 @@ class ImageAssigner:
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id in (next_image.get_skippers() or next_image.get_taggers()):
+        if (user_id in next_image.get_skippers()) or (user_id in next_image.get_taggers()):
             if self.debug:
                 print('User has already processed %s (tagged or skipped)' % next_image.rel_path)
 
