@@ -704,7 +704,8 @@ Index.getInitialProps = async function(props) {
     if(props.req.user)
     {
       options ={
-        userId:props.req.user.user_id
+        userId:props.req.user.user_id,
+        user_name:props.req.user.nickname
       }
     }
     // const options ={
