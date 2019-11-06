@@ -332,7 +332,7 @@ async function  main() {
                 if (err) {
                     // f
 
-                    throw 'Image does not exist'
+                    throw `Image does not exist: ${file_route}`
 
                 } else {
                     log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
