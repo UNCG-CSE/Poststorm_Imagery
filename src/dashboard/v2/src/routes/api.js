@@ -11,6 +11,7 @@ const log = serverConfig.log
 const log_api = api_name => log(`${chalk.yellow(`Running ${chalk.cyan(api_name)} API`)}`)
 const log_api_done = api_name =>log(`${chalk.yellow(`${chalk.cyan(api_name)} ${chalk.green(`done`)}`)}`)
 const log_api_error = (api_name,err) =>log(`${chalk.red(`ERROR`)} for ${chalk.yellow(`${chalk.cyan(api_name)}`)} API: ${err}`)
+const log_img = (image_id,user_name,user_id) => log(`Submitting image ${chalk.cyan(image_id)} for user: ${chalk.orange(user_name)} aka ${chalk.magenta(user_id)}`)
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
@@ -281,7 +282,7 @@ async function  main() {
 
                 const image_id=full_image_path.split('data').slice(-1)[0]
 
-                console.log(`Got Image ${image_id}`)
+                log(`Got Image ${chalk.cyan(image_id)}`)
 
                 const return_json ={
                     full_image_path:full_image_path,
@@ -299,6 +300,7 @@ async function  main() {
                 small_image_path:error_image,
                 image_id:`err`
             })
+            log_api_error('/getImage',error)
         }
 
     });
@@ -306,9 +308,12 @@ async function  main() {
     //Below comment helped with finding out how to variables in url
     //https://stackoverflow.com/questions/15128849/using-multiple-parameters-in-url-in-express
     router.get('/:folder/:storm/:archive/:imageType/:imageFile', function (req, res,next) {
+        log_api('/:folder/:storm/:archive/:imageType/:imageFile')
         const {storm,archive,imageType,imageFile,folder} = req.params;
 
         const file_route=`${imageSource}${folder}/${storm}/${archive}/${imageType}/${imageFile}`
+
+        log(`${chalk.yellow(`Getting file: ${chalk.cyan(`${file_route}`)}`)}`)
         //console.log(file_route)
         const options = {
             dotfiles: 'allow',
@@ -326,30 +331,24 @@ async function  main() {
                 if (err) {
                     //f
                     res.send('Image does not exist')
+                    log(`Image does not exist`)
                 } else {
-                    console.log(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)
+                    log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
+                    log_api_done(`/${folder}/${storm}/${archive}/${imageType}/${imageFile}`)
                 }
             })
 
         } catch(err) {
             console.error(err)
             res.send('Image does not exist')
+            log_api_error('/:folder/:storm/:archive/:imageType/:imageFile',err)
             next()
         }
-
-        // res.send({
-        //     x:[storm,archive,imageType,imageFile]
-        // })
-
-
-
-
-
-
     });
 
     //route to submit tags of an image and get next image.
     router.post('/submit_image_tags', async function (req, res) {
+        log_api('/submit_image_tags')
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const {
@@ -360,9 +359,13 @@ async function  main() {
                 additional_notes,
                 image_id,
                 user_id,
+                user_name,
                 time_end_tagging,
                 time_start_tagging
             } = req.body
+
+            log_img(image_id,user_name,user_id) 
+            log(`Tagging time for submit ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
             //console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrianGroup && image_id) {
                 //Now to check the passed in data.
@@ -408,8 +411,6 @@ async function  main() {
                     })
                 })
 
-
-                console.log(json_terrian_array)
                 const json_args=gen_json_arg(user_id,[
                     {
                         "command": "tag",
@@ -440,7 +441,7 @@ async function  main() {
                         "tag_operation": "next"
                     }
                 ])
-
+                log(chalk.orange('Generated JSON arguments'))
                 let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
@@ -451,13 +452,14 @@ async function  main() {
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('All tags added,and got next image')
+                    log(chalk.green('All tags added,and got next image'))
                 },options)
 
                 //Return
                 res.send({
                     message:`Image has been tagged, page will refresh to get next image `
                 })
+                log_api_done(`/submit_image_tags`)
 
             }
             else
@@ -466,27 +468,30 @@ async function  main() {
             }
 
         }catch (err){// big error
-            console.error(err);
+            //console.error(err);
             res.send({
                 message:`ERROR - ${err}`
             })
+            log_api_error('/submit_image_tags',err)
         }
     })
 
     //What to do for the quick option of saying this image is a ocean
     router.post('/submit_ocean_image', async function (req, res) {
+        log_api('/submit_ocean_image')
         res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const {
                 image_id,
                 user_id,
+                user_name,
                 time_end_tagging,
                 time_start_tagging
             } = req.body
 
             if(user_id && image_id) {
-
-                console.log(`Tagging time for ocean ${time_end_tagging-time_start_tagging}`)
+                log_img(image_id,user_name,user_id) 
+                log(`Tagging time for ocean ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
                 const json_args=gen_json_arg(user_id,[
                     {
                         "command": "tag",
@@ -510,10 +515,11 @@ async function  main() {
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('tagged as ocean and got next')
+                    log('tagged as ocean and got next')
                     res.send({
                         message: `Image has been tagged as ocean, page will refresh to get new image`
                     })
+                    log_api_done(`/submit_ocean_image`)
                 },options)
             }
             else
@@ -522,26 +528,29 @@ async function  main() {
             }
 
         }catch (err){// big error
-            console.error(err);
+            //console.error(err);
             res.send({
                 message:`ERROR - ${err}`
             })
+            log_api_error('/submit_ocean_image',err)
         }
     })
 
     //skip image quick option
     router.post('/skip_image', async function (req, res) {
+        log_api('/skip_image')
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {
                 user_id,
                 image_id,
+                user_name,
                 time_end_tagging,
                 time_start_tagging
             }=req.body;
             if(user_id && image_id) {
-
-                console.log(`Tagging time for skip ${time_end_tagging-time_start_tagging}`)
+                log_img(image_id,user_name,user_id) 
+                log(`Tagging time for skip ${chalk.orange(time_end_tagging-time_start_tagging)} ms`)
                 // Options to get the user's current image
                 const json_args=gen_json_arg(user_id,[
                     {
@@ -564,20 +573,22 @@ async function  main() {
 
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    console.log('Image skipped')
+                    log('Image skipped')
                     res.send({
                         message: `Image skipped,page will refresh to get new image.`
                     })
+                    log_api_done(`/skip_image`)
                 },options)
             }
             else {
                 throw 'Incomplete data sent'
             }
         } catch (err){// big error
-            console.error(err);
+            //console.error(err);
             res.send({
                 message:`ERROR - ${err}`
             })
+            log_api_error('/skip_image',err)
         }
     });
 }

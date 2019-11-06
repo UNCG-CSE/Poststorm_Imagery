@@ -345,7 +345,8 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id,
       time_end_tagging:date.getTime(),
-      time_start_tagging:props.data.time_start_tagging
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
@@ -363,7 +364,8 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id,
       time_end_tagging:date.getTime(),
-      time_start_tagging:props.data.time_start_tagging
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
@@ -384,7 +386,8 @@ function Index(props) {
         image_id:props.data.image_id,
         user_id:props.data.user_id,
         time_end_tagging:date.getTime(),
-        time_start_tagging:props.data.time_start_tagging
+        time_start_tagging:props.data.time_start_tagging,
+        user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(form_values)
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
@@ -690,7 +693,7 @@ Index.getInitialProps = async function(props) {
     const serverConfig =require('../../server-config')
     const axios = require('axios');
     const IP=await serverConfig.getIp()
-
+    
     let fetchPayload = [
       {label:"Florence (2018)", value:1}
       // {label:"Storm Dos",value:420},
