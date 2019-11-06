@@ -269,7 +269,7 @@ class CheckboxGroup extends React.Component {
 
   render() {
     const { value, error, touched, label, children,style,onChange } = this.props;
-    
+
     return (
       <div >
 
@@ -277,13 +277,13 @@ class CheckboxGroup extends React.Component {
           <FormGroup  row>
             {React.Children.map(children, child => {
               return React.cloneElement(child, {
-                
+
                 field: {
                   value: value.includes(child.props.id),
                   onChange: this.handleChange,
                   onBlur: this.handleBlur,
                   style:style
-               
+
                 }
               });
             })}
@@ -307,7 +307,7 @@ function Index(props) {
 
   const [isSubmitingForm, setSubmitionDisable] = React.useState(false);
 
-  const [terrianNoneStatus, setTerrianNoneStatus] = React.useState(true);
+  const [terrainNoneStatus, setTerrainNoneStatus] = React.useState(true);
 
   function handle_image_collapse() {
     setExpanded(!expanded);
@@ -345,7 +345,8 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id,
       time_end_tagging:date.getTime(),
-      time_start_tagging:props.data.time_start_tagging
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
@@ -363,7 +364,8 @@ function Index(props) {
       image_id:props.data.image_id,
       user_id:props.data.user_id,
       time_end_tagging:date.getTime(),
-      time_start_tagging:props.data.time_start_tagging
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
@@ -384,7 +386,8 @@ function Index(props) {
         image_id:props.data.image_id,
         user_id:props.data.user_id,
         time_end_tagging:date.getTime(),
-        time_start_tagging:props.data.time_start_tagging
+        time_start_tagging:props.data.time_start_tagging,
+        user_name: hasUser ? props.user.nickname: undefined
     }
     console.log(form_values)
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
@@ -398,8 +401,8 @@ function Index(props) {
   }
 
   function toggleNa(){
-    terrianNoneStatus(!terrianNoneStatus)
-    console.log(terrianNoneStatus)
+    terrainNoneStatus(!terrainNoneStatus)
+    console.log(terrainNoneStatus)
   }
   return (
     <div>
@@ -461,14 +464,14 @@ function Index(props) {
                 developmentGroup: "",
                 washoverVisibilityGroup: "",
                 impactGroup:"",
-                terrianGroup:[],
+                terrainGroup:[],
                 //additionalNotes:""
               }}
               validationSchema={Yup.object().shape({
                 developmentGroup: Yup.string().required("Please select a option"),
                 washoverVisibilityGroup: Yup.string().required("Please select a option"),
                 impactGroup: Yup.string().required("Please select a option"),
-                terrianGroup: Yup.array().required("Please select atleast one option"),
+                terrainGroup: Yup.array().required("Please select atleast one option"),
                 //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
@@ -599,45 +602,45 @@ function Index(props) {
                       <br/>
 
                       <CheckboxGroup
-                        id="terrianGroup"
-                        label="Terrian Type"
-                        value={values.terrianGroup}
-                        error={errors.terrianGroup}
-                        touched={touched.terrianGroup}
+                        id="terrainGroup"
+                        label="Terrain Type"
+                        value={values.terrainGroup}
+                        error={errors.terrainGroup}
+                        touched={touched.terrainGroup}
                         onChange={setFieldValue}
                         onBlur={setFieldTouched}
                         style={MyTheme.palette.purple800}
-                        
+
                       >
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="RiverId"
                           label="River"
-                          disabled={terrianNoneStatus}
-                          
+                          disabled={terrainNoneStatus}
+
                         />
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="MarshId"
                           label="Marsh"
-                          disabled={terrianNoneStatus}
+                          disabled={terrainNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="SandyCoastlineId"
                           label="Sandy Coastline"
-                          disabled={terrianNoneStatus}
+                          disabled={terrainNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="NodeId"
                           label="N/A"
                           onChange='aaaaaaaaaaaaaaaaaaa'
-                          // checked={terrianNoneStatus}
+                          // checked={terrainNoneStatus}
                         />
                       </CheckboxGroup>
 
@@ -701,7 +704,8 @@ Index.getInitialProps = async function(props) {
     if(props.req.user)
     {
       options ={
-        userId:props.req.user.user_id
+        userId:props.req.user.user_id,
+        user_name:props.req.user.nickname
       }
     }
     // const options ={

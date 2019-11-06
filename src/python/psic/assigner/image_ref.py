@@ -38,6 +38,8 @@ class Image:
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
     taggers: Dict[str, Dict] = None
 
+    final_tags: dict or None = None
+
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
 
@@ -169,10 +171,23 @@ class Image:
         expanded_copy.original_size_path = h.validate_and_expand_path(path.join(scope_path, self.rel_path))
         expanded_copy.small_size_path = h.validate_and_expand_path(path.join(small_path, self.rel_path))
 
-        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)):
+        if not (path.exists(expanded_copy.small_size_path) and path.isfile(expanded_copy.small_size_path)
+                and path.getsize(expanded_copy.small_size_path) > 1000):
+            # If there is no resized version of the image or it might be corrupted
+
+            # Try to resize the image on the fly
             if not ResizeImages.resize_image_at_path(original_path=expanded_copy.original_size_path,
                                                      small_path=expanded_copy.small_size_path,
                                                      scale=0.15):
+                # If the image cannot be resized
+
+                expanded_copy.small_size_path = expanded_copy.original_size_path
+
+            elif not (path.exists(expanded_copy.small_size_path)
+                      and path.isfile(expanded_copy.small_size_path)
+                      and path.getsize(expanded_copy.small_size_path) > 1000):
+                # If the small version of the image is still missing or corrupted
+
                 expanded_copy.small_size_path = expanded_copy.original_size_path
 
         return expanded_copy
@@ -194,13 +209,13 @@ class Image:
         # tagged the image with the same values.
 
         for user_id in self.get_taggers():
-            for tag, value in self.taggers[user_id]:
+            for tag, value in self.taggers[user_id].items():
                 if type(value) is not str:
 
-                    if tag_totals[tag] is None:
+                    if tag not in tag_totals.keys():
                         tag_totals[tag] = dict()
 
-                    if tag_totals[tag][str(value)] is None:
+                    if str(value) not in tag_totals[tag]:
                         tag_totals[tag][str(value)] = 0
                     else:
                         tag_totals[tag][str(value)] += 1
@@ -220,7 +235,8 @@ class Image:
 
         # Make sure there are at least 2 sets of tags to compare (function should not be called otherwise)
         if len(self.get_taggers()) < 2:
-            raise NotEnoughTaggersError
+            # raise NotEnoughTaggersError
+            return True
 
         # Total up all the values for each tag grouped by user's id
         tag_totals: Dict[str, Dict[str, int]] = self._sum_tag_values_by_users()
@@ -234,7 +250,8 @@ class Image:
             agreed_upon_value = list(tag_totals[tag].keys())[0]
             if tag_totals[tag][agreed_upon_value] != len(self.get_taggers()):
                 # If one user has non-string tags added that the other doesn't
-                raise UsersHaveDifferentTagsError
+                # raise UsersHaveDifferentTagsError
+                return False
 
         # All tags have exactly one value for each tag name
         return True
@@ -287,6 +304,10 @@ class Image:
                     return None
 
         return tags_flattened
+
+    def finalize_tags(self):
+        """Calculate the best tags then set the final tags variable"""
+        self.final_tags = self.get_best_tags()
 
 
 class NotEnoughTaggersError(ValueError):

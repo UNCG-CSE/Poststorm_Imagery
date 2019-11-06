@@ -2,6 +2,8 @@
 const public_ip = require('public-ip');
 const USELOCAL=true;
 
+const chalk = require('chalk');
+
 module.exports.getIp= async (options) =>  {
 	options = {
 		...options
@@ -14,3 +16,13 @@ module.exports.getIp= async (options) =>  {
 
 	return (await public_ip.v4());
 };
+
+// module.exports.getShabang = (colored=true) => {
+//   let text=''
+//   colored ? (text = chalk.yellow('>>>>')) : text= '>>>>'
+//   return text;
+// }
+
+module.exports.log = (text) => {
+  console.log(`${chalk.yellow('>>>>')} ${text}`)
+}

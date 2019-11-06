@@ -5,6 +5,7 @@ scanner:
 flake8:
     max-line-length: 130  # Default is 79 in PEP 8
     ignore:  # Errors and warnings to ignore
+        - W503  # line before after binary operator
         - W504  # line break after binary operator
         - E731  # do not assign a lambda expression, use a def
         - C406  # unnecessary list literal - rewrite as a dict literal
