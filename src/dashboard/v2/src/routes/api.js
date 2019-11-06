@@ -240,8 +240,8 @@ async function  main() {
         log_api('/getImage')
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
-            const {userId}=req.body;
-
+            const {userId,user_name}=req.body;
+            log(`Getting Image for ${chalk.yellow(userId)} aka ${chalk.yellow(user_name)}`)
             const json_args= gen_json_arg(userId,[
                 {
                     "command":"current"
