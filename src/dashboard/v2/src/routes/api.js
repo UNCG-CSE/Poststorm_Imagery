@@ -15,17 +15,17 @@ const log_api_error = (api_name,err) =>log(`${chalk.red(`ERROR`)} for ${chalk.ye
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
-//Location of the python assinger script
-const assignerScript='assign_batch.py'//'assign.py';
-const assignerSrc='../../python/psic/assigner/';//'./src/routes/'; //
-const imageSource='/media/bucket'//'/home/namenai/P-Sick/'
+//Location of the python assigner script
+const assignerScript=process.env.ASSIGNER_SCRIPT;
+const assignerSrc=process.env.ASSIGNER_SOURCE;
+const imageSource=process.env.IMAGE_SOURCE;
 
-//Image incase some error happens
+//Image in-case some error happens
 const error_image='https://www.nationwidechildrens.org/-/media/nch/giving/images/on-our-sleeves-1010/icons/icon-teasers/w45084_iconcollectionlandingiconteaserimages_facesad.jpg'
 
 // Path to the images,so that assinger knows wats wat.
-const fullSizeImagePath=`${imageSource}data/Florence`;
-const smallSizeImagePath=`${imageSource}small/Florence`;
+const fullSizeImagePath=process.env.FULL_SIZE_IMAGE_PATH;
+const smallSizeImagePath=process.env.SMALL_SIZE_IMAGE_PATH;
 
 //Used to take user form inputs and convert over to intergers for tensor flow
 const tag_name_value_pairs={
@@ -187,7 +187,8 @@ async function  main() {
                 test_api:'WOWE, test api.',
                 test_IP:5,
                 test_rng:Math.random(),
-                test_api_ver:'1.0'
+                test_api_ver:'1.0',
+                test_domain:process.env.BASE_URL
             }
         )
         log_api_done('/test')
@@ -200,7 +201,7 @@ async function  main() {
         const {user_id} = req.params;
 
         log(`${chalk.yellow(`Getting user: ${chalk.cyan(`${user_id || 'N/A'}`)}`)}`)
-        
+
         const getRoleByUserOptions = {
           method: 'GET',
           url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
