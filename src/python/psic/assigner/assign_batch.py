@@ -117,10 +117,11 @@ with open(assigner_cache, 'r') as f:
     f.close()
 
 try:
-    cache_data = jsonpickle.encode(assigner.save())
-    with open(assigner_cache, 'w') as f:
-        f.write(cache_data)
-        f.close()
+    if flag_pickle_changed:
+        cache_data = jsonpickle.encode(assigner.save())
+        with open(assigner_cache, 'w') as f:
+            f.write(cache_data)
+            f.close()
 except Exception as e:
     raise e
     # print(JSONResponse(status=1, error_message=str(e)).json())
