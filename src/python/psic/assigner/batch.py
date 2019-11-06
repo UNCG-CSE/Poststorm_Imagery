@@ -10,12 +10,12 @@ class Batch:
     user_id: str  # The user to perform the operations as
     operations: List[dict]  # An ordered list of operations to execute
 
-    stats_time_elapsed_ms: int or None  # The number of ms elapsed in this user's current / final session
+    stats_time_elapsed_ms: int  # The number of ms elapsed in this user's current / final session
 
     debug: bool  # True for debug statements
 
-    def __init__(self, path: Union[bytes, str], small_path: Union[bytes, str], stats_time_elapsed_ms: int or None =
-                 None, operations: List[dict] or None = None, debug: bool = s.DEFAULT_DEBUG):
+    def __init__(self, path: Union[bytes, str], small_path: Union[bytes, str], stats_time_elapsed_ms: int,
+                 operations: List[dict] or None = None, debug: bool = s.DEFAULT_DEBUG):
 
         if operations is None:
             operations = list()

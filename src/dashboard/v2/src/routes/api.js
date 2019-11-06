@@ -366,8 +366,10 @@ async function  main() {
                 time_start_tagging
             } = req.body
 
+            const time_elapsed_tagging = (time_end_tagging - time_start_tagging);
+
             log_img(image_id,user_name,user_id);
-            log(`Tagging time for submit ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`);
+            log(`Tagging time for submit ${chalk.yellow(time_elapsed_tagging)} ms`);
             // console.log(developmentGroup,washoverVisibilityGroup,impactGroup)
             if(user_id && developmentGroup && washoverVisibilityGroup && impactGroup && terrainGroup && image_id) {
                 // Now to check the passed in data
@@ -440,7 +442,8 @@ async function  main() {
                     ...json_terrain_array,
                     {
                         "command": "tag",
-                        "tag_operation": "next"
+                        "tag_operation": "next",
+                        "stats_time_elapsed_ms": time_elapsed_tagging,
                     }
                 ]);
                 log(chalk.yellow('Generated JSON arguments'));
@@ -492,9 +495,11 @@ async function  main() {
                 time_start_tagging
             } = req.body;
 
+            const time_elapsed_tagging = (time_end_tagging - time_start_tagging);
+
             if(user_id && image_id) {
                 log_img(image_id,user_name,user_id);
-                log(`Tagging time for ocean ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`);
+                log(`Tagging time for ocean ${chalk.yellow(time_elapsed_tagging)} ms`);
                 const json_args=gen_json_arg(user_id,[
                     {
                         "command": "tag",
@@ -504,7 +509,8 @@ async function  main() {
                     },
                     {
                         "command": "tag",
-                        "tag_operation": "next"
+                        "tag_operation": "next",
+                        "stats_time_elapsed_ms": time_elapsed_tagging,
                     }
                 ]);
 
@@ -551,14 +557,18 @@ async function  main() {
                 time_end_tagging,
                 time_start_tagging
             }=req.body;
+
+            const time_elapsed_tagging = (time_end_tagging - time_start_tagging);
+
             if(user_id && image_id) {
                 log_img(image_id,user_name,user_id);
-                log(`Tagging time for skip ${chalk.yellow(time_end_tagging-time_start_tagging)} ms`);
+                log(`Tagging time for skip ${chalk.yellow(time_elapsed_tagging)} ms`);
                 // Options to get the user's current image
                 const json_args=gen_json_arg(user_id,[
                     {
                     "command": "tag",
-                    "tag_operation": "skip"
+                    "tag_operation": "skip",
+                    "stats_time_elapsed_ms": time_elapsed_tagging,
                     }
                 ]);
 
