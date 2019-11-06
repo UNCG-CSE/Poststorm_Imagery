@@ -41,6 +41,12 @@ class Image:
     # The final results: final_tags[tag_id] = value
     final_tags: dict or None = None
 
+    # Some statistical variables: stats_<stat_name>[user_id] = value
+    stats_tagging_start: dict or None = None  # The timestamp of the time the user started tagging
+    stats_tagging_stop: dict or None = None  # The timestamp of the time the user finished tagging / skipped
+    stats_tag_elapsed_session: dict or None = None  # The time in the final session that the user took to tag an image
+    stats_tag_elapsed_assigned: dict or None = None  # The time between being assigned the image and finishing tagging
+
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
 
