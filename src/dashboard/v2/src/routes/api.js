@@ -282,7 +282,7 @@ async function  main() {
 
                 const image_id=full_image_path.split('data').slice(-1)[0]
 
-                console.log(`Got Image ${image_id}`)
+                log(`Got Image ${chalk.cyan(image_id)}`)
 
                 const return_json ={
                     full_image_path:full_image_path,
@@ -437,7 +437,7 @@ async function  main() {
                         "tag_operation": "next"
                     }
                 ])
-                log('Generated JSON arguments')
+                log(chalk.orange('Generated JSON arguments'))
                 let options = {
                     mode: 'text',
                     pythonOptions: ['-u'],
@@ -448,7 +448,7 @@ async function  main() {
                 };
 
                 await runPy(`${assignerSrc}${assignerScript}`,function(err,results){
-                    log('All tags added,and got next image')
+                    log(chalk.green('All tags added,and got next image'))
                 },options)
 
                 //Return
