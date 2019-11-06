@@ -7,11 +7,12 @@ from os import path
 import jsonpickle
 
 from psic.assigner.batch import Batch
-from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
+from psic.assigner.image_assigner import ImageAssigner
 from psic.assigner.image_ref import Image
 from psic.assigner.json_response import JSONResponse
-
 # Get the username of the current user to prevent conflicts of multiple users testing same filesystem
+from psic.cataloging.make_catalog import CatalogNotFoundException
+
 curr_user = getpass.getuser()
 ASSIGNER_FILE_NAME: str = 'assigner_state-' + curr_user + '.json'
 
