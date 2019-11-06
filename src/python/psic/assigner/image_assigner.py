@@ -28,9 +28,6 @@ class ImageAssigner:
     tagging (in the scope of the directory containing the catalog.csv).
     """
 
-    # For this class, use queues instead of lists for the sake of implementing into an asynchronous environment due to
-    # the Queue object's ability to enforce blocking.
-
     random.seed(a=RANDOM_SEED)
 
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
