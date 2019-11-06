@@ -21,7 +21,7 @@ flag_pickle_changed: bool = False
 # Get everything after the command path as a pickle-able JSON object
 json_obj: Batch = jsonpickle.decode(' '.join(sys.argv[1:]))
 
-assigner_cache = path.join(json_obj.path, ASSIGNER_FILE_NAME)
+assigner_cache = ASSIGNER_FILE_NAME
 
 # Create a new assigner state if one doesn't exist
 if path.exists(assigner_cache) is False:
