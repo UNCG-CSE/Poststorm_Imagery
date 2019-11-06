@@ -2,7 +2,7 @@
 
 import getpass
 import sys
-from os import path, mknod, remove
+from os import path
 
 import jsonpickle
 
@@ -26,7 +26,7 @@ assigner_cache = ASSIGNER_FILE_NAME
 # while path.exists(ASSIGNER_FILE_NAME + '.lock'):
 #     sleep(5)
 
-mknod(ASSIGNER_FILE_NAME + '.lock')
+# mknod(ASSIGNER_FILE_NAME + '.lock')
 
 # Create a new assigner state if one doesn't exist
 if path.exists(assigner_cache) is False:
@@ -80,7 +80,7 @@ with open(assigner_cache, 'r') as f:
                     print(JSONResponse(status=1, error_message='\'%s\' is not a valid tagging operation in {add, '
                                                                'add_notes, remove, next, skip}!'
                                                                % op['tag_operation']).json())
-                    remove(ASSIGNER_FILE_NAME + '.lock')
+                    # remove(ASSIGNER_FILE_NAME + '.lock')
                     exit()
 
             # Get the user's current image
@@ -90,7 +90,7 @@ with open(assigner_cache, 'r') as f:
                 print(JSONResponse(status=1, error_message='\'%s\' is not a command in {tag, current}!'
                                                            % op['command']).json())
                 f.close()
-                remove(ASSIGNER_FILE_NAME + '.lock')
+                # remove(ASSIGNER_FILE_NAME + '.lock')
                 exit()
 
         except CatalogNotFoundException as e:
@@ -124,4 +124,4 @@ except Exception as e:
 
 # If all the operations were successful, return the final result (before skip / next)
 print(JSONResponse(status=0, content=last_tagged_image).json())
-remove(ASSIGNER_FILE_NAME + '.lock')
+# remove(ASSIGNER_FILE_NAME + '.lock')
