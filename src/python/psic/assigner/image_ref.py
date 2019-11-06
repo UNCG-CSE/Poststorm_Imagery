@@ -38,6 +38,8 @@ class Image:
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
     taggers: Dict[str, Dict] = None
 
+    final_tags: dict or None = None
+
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
 
@@ -289,6 +291,10 @@ class Image:
                     return None
 
         return tags_flattened
+
+    def finalize_tags(self):
+        """Calculate the best tags then set the final tags variable"""
+        self.final_tags = self.get_best_tags()
 
 
 class NotEnoughTaggersError(ValueError):

@@ -205,17 +205,14 @@ class ImageAssigner:
             return next_image
 
     def _user_done_tagging_current_image(self, user_id: str):
-        if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED:
+        if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED \
+                and self.current_image[user_id].all_user_tags_equal():
             # If enough people have tagged this image
 
-            final_tags = self.current_image[user_id].get_best_tags()
+            self.current_image[user_id].finalize_tags()
 
-            if final_tags is None:
-                # There is no consensus between users on what the accurate tags are
-                self.pending_images_queue.append(self.current_image[user_id])
-            else:
-                # Majority of users agree on a tag for this image
-                self.finished_tagged_queue.append(self.current_image[user_id])
+            # Majority of users agree on a tag for this image
+            self.finished_tagged_queue.append(self.current_image[user_id])
         else:
             # If image needs more people to tag it
             self.pending_images_queue.append(self.current_image[user_id])
