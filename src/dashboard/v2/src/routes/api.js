@@ -396,7 +396,7 @@ async function  main() {
                 //console.log(terrian_array)
 
                 const terrian_tag_names_adjusted = terrian_array.map(element => {
-                    return `terrian_${terrian_id_tag_pair[element]}`
+                    return `terrain_${terrian_id_tag_pair[element]}`
                 })
 
                 //console.log(terrian_tag_names_adjusted)
