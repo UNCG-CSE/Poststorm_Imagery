@@ -336,7 +336,7 @@ async function  main() {
 
                 } else {
                     log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
-                    log_api_done(`${imageSource}/${imageType}/${imageFile}}`)
+                    log_api_done(`/${folder}/${storm}/${archive}/${imageType}/${imageFile}`)
                 }
             })
 
