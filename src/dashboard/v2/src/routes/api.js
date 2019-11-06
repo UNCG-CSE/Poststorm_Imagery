@@ -330,8 +330,9 @@ async function  main() {
                 //error catching http://expressjs.com/en/4x/api.html#res.sendFile
                 if (err) {
                     //f
-                    res.send('Image does not exist')
-                    log(`Image does not exist`)
+                
+                    throw 'Image does not exist'
+                    
                 } else {
                     log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
                     log_api_done(`/${folder}/${storm}/${archive}/${imageType}/${imageFile}`)
