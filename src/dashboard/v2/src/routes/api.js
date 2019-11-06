@@ -312,7 +312,7 @@ async function  main() {
         log_api('/:folder/:storm/:archive/:imageType/:imageFile')
         const {storm,archive,imageType,imageFile,folder} = req.params;
 
-        const file_route=`${imageSource}/${imageType}/${imageFile}`
+        const file_route=`${imageSource}/${folder}/${storm}/${archive}/${imageType}/${imageFile}`
 
         log(`${chalk.yellow(`Getting file: ${chalk.cyan(`${file_route}`)}`)}`)
         // console.log(file_route)
