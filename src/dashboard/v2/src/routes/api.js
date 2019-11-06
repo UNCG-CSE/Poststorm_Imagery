@@ -5,6 +5,12 @@ const router = express.Router();
 const request = require("request");
 const auth0Token = require("../components/getBearerToken");
 
+const chalk = require('chalk');
+const serverConfig =require('../server-config')
+const log = serverConfig.log
+const log_api = api_name => log(`${chalk.yellow(`Running ${chalk.cyan(api_name)} API`)}`)
+const log_api_done = api_name =>log(`${chalk.yellow(`${chalk.cyan(api_name)} ${chalk.green(`done`)}`)}`)
+const log_api_error = (api_name,err) =>log(`${chalk.red(`ERROR`)} for ${chalk.yellow(`${chalk.cyan(api_name)}`)} API: ${err}`)
 //For running python scripts
 const {PythonShell}=  require ('python-shell');
 
@@ -66,6 +72,7 @@ const possible_washoverVisibilityGroup_tags =[
     'NoVisibleWashoverId',
     'NoneId'
 ]
+
 const possible_impactGroup_tags =[
     'SwashId',
     'OverwashId',
@@ -73,6 +80,7 @@ const possible_impactGroup_tags =[
     'CollisionId',
     'NoneId'
 ]
+
 const possible_terrianGroup_tags =[
     'RiverId',
     'MarshId',
@@ -158,11 +166,14 @@ function gen_json_arg(userId,operations){
 
 //Everything is in an async function becuase sync is good.
 async function  main() {
+
+    log(`${chalk.yellow(`Getting Bearer token...`)}`)
     const BEARER= await auth0Token.getAuth0Token();
+    log(`${chalk.green(`Got`)} ${chalk.yellow(`Bearer token`)}`)
 
     //simple test route
     router.use('/test', async function (req, res) {
-
+        log_api('/test')
         // const x =  runPy('src/routes/test.py',function(err,results){
         //     console.log(results)
         // })
@@ -178,13 +189,17 @@ async function  main() {
                 test_api_ver:'1.0'
             }
         )
+        log_api_done('/test')
     });
 
     //Used to get the users role to prevent non roled ppl from tagging *Currently not used*
     router.get('/getUserRole/:user_id', function (req, res) {
         //google-oauth2|100613204270669384478
-
+        log_api('/getUserRole/:user_id')
         const {user_id} = req.params;
+
+        log(`${chalk.yellow(`Getting user: ${chalk.cyan(`${user_id || 'N/A'}`)}`)}`)
+        
         const getRoleByUserOptions = {
           method: 'GET',
           url: `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
@@ -200,26 +215,27 @@ async function  main() {
                     data:JSON.parse(body)
                 }
             )
+            log_api_done('/getUserRole/:user_id')
         });
 
     });
 
     //Get list of storms we can tag *Not used*
-    router.get('/getTaggableStorms', function (req, res) {
-        const storm_choices=[
-            {
-                label:"Florence (2018)", value:1
-            }
-        ];
-        res.send({
-            storms:storm_choices
-        });
+    // router.get('/getTaggableStorms', function (req, res) {
+    //     const storm_choices=[
+    //         {
+    //             label:"Florence (2018)", value:1
+    //         }
+    //     ];
+    //     res.send({
+    //         storms:storm_choices
+    //     });
 
-    });
+    // });
 
     //Call the assinger script to get this users (passed in req.body) image
     router.post('/getImage', async function (req, res) {
-
+        log_api('/getImage')
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             const {userId}=req.body;
@@ -272,6 +288,7 @@ async function  main() {
                     image_id:image_id
                 }
                 res.send(return_json)
+                log_api_done('/getImage')
             });
 
 
