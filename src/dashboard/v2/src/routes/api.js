@@ -311,7 +311,7 @@ async function  main() {
         log_api('/:folder/:storm/:archive/:imageType/:imageFile')
         const {storm,archive,imageType,imageFile,folder} = req.params;
 
-        const file_route=`${imageSource}${folder}/${storm}/${archive}/${imageType}/${imageFile}`
+        const file_route=`${imageSource}${imageType}/${imageFile}`
 
         log(`${chalk.yellow(`Getting file: ${chalk.cyan(`${file_route}`)}`)}`)
         //console.log(file_route)
@@ -335,7 +335,7 @@ async function  main() {
 
                 } else {
                     log(`${chalk.cyan(`Image: ${file_route} accessed at time: ${options.headers['x-timestamp']}`)}`)
-                    log_api_done(`/${folder}/${storm}/${archive}/${imageType}/${imageFile}`)
+                    log_api_done(`${imageSource}${imageType}/${imageFile}}`)
                 }
             })
 
