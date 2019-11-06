@@ -14,8 +14,8 @@ class Batch:
 
     debug: bool  # True for debug statements
 
-    def __init__(self, path: Union[bytes, str], small_path: Union[bytes, str], stats_time_elapsed_ms: int = None,
-                 operations: List[dict] or None = None, debug: bool = s.DEFAULT_DEBUG):
+    def __init__(self, path: Union[bytes, str], small_path: Union[bytes, str], stats_time_elapsed_ms: int or None =
+                 None, operations: List[dict] or None = None, debug: bool = s.DEFAULT_DEBUG):
 
         if operations is None:
             operations = list()

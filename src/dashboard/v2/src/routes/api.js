@@ -114,8 +114,8 @@ function gen_tag_options_submit(user_id,tag_id,tag_content){
             `-p`, fullSizeImagePath,
             `-s`, smallSizeImagePath,
             `-u`, user_id,
-            `-t`,tag_id,
-            `-c`,tag_content
+            `-t`, tag_id,
+            `-c`, tag_content
         ]
     };
 }
@@ -131,8 +131,8 @@ function gen_comment_options_submit(user_id,comment){
             `-p`, fullSizeImagePath,
             `-s`, smallSizeImagePath,
             `-u`, user_id,
-            `-t`,'notes',
-            `-c`,comment
+            `-t`, 'notes',
+            `-c`, comment
         ]
     };
 }
