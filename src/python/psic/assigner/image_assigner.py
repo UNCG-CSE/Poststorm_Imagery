@@ -187,6 +187,9 @@ class ImageAssigner:
         # Record that the user stopped tagging the most recent image
         self.current_image[user_id].stats_tagging_stop[user_id]: datetime = datetime.now()
 
+        print('Stop Keys: %s, Start Keys: %s' % (self.current_image[user_id].stats_tagging_stop.keys(),
+                                                 self.current_image[user_id].stats_tagging_start.keys()))
+
         # Calculate how much time has elapsed since the user was assigned the most recent image
         self.current_image[user_id].stats_tag_elapsed_assigned[user_id]: datetime = self.current_image[user_id] \
             .stats_tagging_stop[user_id] - self.current_image[user_id].stats_tagging_start[user_id]
