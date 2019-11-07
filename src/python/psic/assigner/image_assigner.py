@@ -126,6 +126,9 @@ class ImageAssigner:
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
+            # Record that the user started tagging the image
+            self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
