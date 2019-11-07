@@ -162,6 +162,14 @@ class Image:
             self.taggers = self.taggers.copy()
         if self.final_tags is not None:
             self.final_tags = self.final_tags.copy()
+        if self.stats_tagging_start is not None:
+            self.stats_tagging_start = self.stats_tagging_start.copy()
+        if self.stats_tagging_stop is not None:
+            self.stats_tagging_stop = self.stats_tagging_stop.copy()
+        if self.stats_tag_elapsed_session is not None:
+            self.stats_tag_elapsed_session = self.stats_tag_elapsed_session.copy()
+        if self.stats_tag_elapsed_assigned is not None:
+            self.stats_tag_elapsed_assigned = self.stats_tag_elapsed_assigned.copy()
         return self
 
     def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
