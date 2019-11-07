@@ -71,9 +71,19 @@ with open(assigner_cache, 'r') as f:
                     flag_pickle_changed = True
                     last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
                 elif op['tag_operation'] == 'next':
+
+                    # Register the elapsed time stat in the image for the user
+                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
+                        op['stats_time_elapsed_ms']
+
                     assigner.get_next_image(user_id=json_obj.user_id)
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
+
+                    # Register the elapsed time stat in the image for the user
+                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
+                        op['stats_time_elapsed_ms']
+
                     assigner.get_next_image(user_id=json_obj.user_id, skip=True)
                     flag_pickle_changed = True
                 else:
@@ -112,10 +122,11 @@ with open(assigner_cache, 'r') as f:
     f.close()
 
 try:
-    cache_data = jsonpickle.encode(assigner.save())
-    with open(assigner_cache, 'w') as f:
-        f.write(cache_data)
-        f.close()
+    if flag_pickle_changed:
+        cache_data = jsonpickle.encode(assigner.save())
+        with open(assigner_cache, 'w') as f:
+            f.write(cache_data)
+            f.close()
 except Exception as e:
     raise e
     # print(JSONResponse(status=1, error_message=str(e)).json())

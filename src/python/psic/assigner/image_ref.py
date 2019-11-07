@@ -38,7 +38,14 @@ class Image:
     # People who have tagged this image and their tags: taggers[user_id] = {'tag_id': 'value'}
     taggers: Dict[str, Dict] = None
 
+    # The final results: final_tags[tag_id] = value
     final_tags: dict or None = None
+
+    # Some statistical variables: stats_<stat_name>[user_id] = value
+    stats_tagging_start: dict = dict()  # The timestamp of the time the user started tagging
+    stats_tagging_stop: dict = dict()  # The timestamp of the time the user finished tagging / skipped
+    stats_tag_elapsed_session: dict = dict()  # The time in the final session that the user took to tag an image
+    stats_tag_elapsed_assigned: dict = dict()  # The time between being assigned the image and finishing tagging
 
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
@@ -153,6 +160,16 @@ class Image:
             self.skippers = self.skippers.copy()
         if self.taggers is not None:
             self.taggers = self.taggers.copy()
+        if self.final_tags is not None:
+            self.final_tags = self.final_tags.copy()
+        if self.stats_tagging_start is not None:
+            self.stats_tagging_start = self.stats_tagging_start.copy()
+        if self.stats_tagging_stop is not None:
+            self.stats_tagging_stop = self.stats_tagging_stop.copy()
+        if self.stats_tag_elapsed_session is not None:
+            self.stats_tag_elapsed_session = self.stats_tag_elapsed_session.copy()
+        if self.stats_tag_elapsed_assigned is not None:
+            self.stats_tag_elapsed_assigned = self.stats_tag_elapsed_assigned.copy()
         return self
 
     def expanded(self, scope_path: Union[str, bytes], small_path: Union[str, bytes]):
