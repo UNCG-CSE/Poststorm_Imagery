@@ -49,11 +49,6 @@ with open(assigner_cache, 'r') as f:
 
     last_tagged_image: Image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
 
-    if json_obj.stats_time_elapsed_ms is not None:
-        assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
-            json_obj.stats_time_elapsed_ms
-        flag_pickle_changed = True
-
     for op in json_obj.operations:
 
         try:
@@ -76,9 +71,19 @@ with open(assigner_cache, 'r') as f:
                     flag_pickle_changed = True
                     last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
                 elif op['tag_operation'] == 'next':
+
+                    # Register the elapsed time stat in the image for the user
+                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
+                        json_obj.stats_time_elapsed_ms
+
                     assigner.get_next_image(user_id=json_obj.user_id)
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
+
+                    # Register the elapsed time stat in the image for the user
+                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
+                        json_obj.stats_time_elapsed_ms
+
                     assigner.get_next_image(user_id=json_obj.user_id, skip=True)
                     flag_pickle_changed = True
                 else:
