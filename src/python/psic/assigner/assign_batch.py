@@ -74,7 +74,7 @@ with open(assigner_cache, 'r') as f:
 
                     # Register the elapsed time stat in the image for the user
                     assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
-                        json_obj.stats_time_elapsed_ms
+                        op['stats_time_elapsed_ms']
 
                     assigner.get_next_image(user_id=json_obj.user_id)
                     flag_pickle_changed = True
@@ -82,7 +82,7 @@ with open(assigner_cache, 'r') as f:
 
                     # Register the elapsed time stat in the image for the user
                     assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
-                        json_obj.stats_time_elapsed_ms
+                        op['stats_time_elapsed_ms']
 
                     assigner.get_next_image(user_id=json_obj.user_id, skip=True)
                     flag_pickle_changed = True
