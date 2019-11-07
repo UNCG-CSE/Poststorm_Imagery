@@ -73,16 +73,18 @@ with open(assigner_cache, 'r') as f:
                 elif op['tag_operation'] == 'next':
 
                     # Register the elapsed time stat in the image for the user
-                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
-                        float(int(op['stats_time_elapsed_ms']) / 1000)
+                    assigner.get_current_image(user_id=json_obj.user_id) \
+                        .set_stats_tag_elapsed_session(user_id=json_obj.user_id,
+                                                       session_seconds=float(int(op['stats_time_elapsed_ms']) / 1000))
 
                     assigner.get_next_image(user_id=json_obj.user_id)
                     flag_pickle_changed = True
                 elif op['tag_operation'] == 'skip':
 
                     # Register the elapsed time stat in the image for the user
-                    assigner.get_current_image(user_id=json_obj.user_id).stats_tag_elapsed_session[json_obj.user_id] = \
-                        float(int(op['stats_time_elapsed_ms']) / 1000)
+                    assigner.get_current_image(user_id=json_obj.user_id) \
+                        .set_stats_tag_elapsed_session(user_id=json_obj.user_id,
+                                                       session_seconds=float(int(op['stats_time_elapsed_ms']) / 1000))
 
                     assigner.get_next_image(user_id=json_obj.user_id, skip=True)
                     flag_pickle_changed = True

@@ -1,5 +1,6 @@
 import re
 from copy import deepcopy
+from datetime import datetime
 from os import path
 from typing import Dict, Union, Set
 
@@ -42,12 +43,35 @@ class Image:
     final_tags: dict or None = None
 
     # Some statistical variables: stats_<stat_name>[user_id] = value
-    stats_tagging_start: Dict[str, float] = dict()  # The timestamp of the time the user started tagging
-    stats_tagging_stop: Dict[str, float] = dict()  # The timestamp of the time the user finished tagging / skipped
-    stats_tag_elapsed_session: Dict[str, float] = dict()  # The time in seconds for the final session that the user took
+    stats_tagging_start: Dict[str, float] = None  # The timestamp of the time the user started tagging
+    stats_tagging_stop: Dict[str, float] = None  # The timestamp of the time the user finished tagging / skipped
+    stats_tag_elapsed_session: Dict[str, float] = None  # The time in seconds for the final session that the user took
     # to tag an image
-    stats_tag_elapsed_assigned: Dict[str, float] = dict()  # The time between being assigned the image and finishing tagging
+    stats_tag_elapsed_assigned: Dict[str, float] = None  # The time between being assigned the image and finishing tagging
     # in seconds
+
+    def mark_tagging_start(self, user_id: str):
+        if self.stats_tagging_start is None:
+            self.stats_tagging_start = dict()
+        self.stats_tagging_start[user_id]: float = datetime.now().timestamp()
+
+    def mark_tagging_stop(self, user_id: str):
+        if self.stats_tagging_stop is None:
+            self.stats_tagging_stop = dict()
+        self.stats_tagging_stop[user_id]: float = datetime.now().timestamp()
+
+        # Save the elapsed time of the tagging session in seconds
+        self.set_stats_tag_elapsed_assigned(user_id=user_id)
+
+    def set_stats_tag_elapsed_session(self, user_id: str, session_seconds: float):
+        if self.stats_tag_elapsed_session is None:
+            self.stats_tag_elapsed_session = dict()
+        self.stats_tag_elapsed_session[user_id]: float = session_seconds
+
+    def set_stats_tag_elapsed_assigned(self, user_id: str):
+        if self.stats_tag_elapsed_assigned is None:
+            self.stats_tag_elapsed_assigned = dict()
+        self.stats_tag_elapsed_assigned[user_id]: float = self.stats_tagging_stop[user_id] - self.stats_tagging_start[user_id]
 
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
