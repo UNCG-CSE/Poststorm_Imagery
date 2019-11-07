@@ -127,7 +127,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
             # Record that the user started tagging the image
-            self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+            self.current_image[user_id].stats_tagging_start[user_id]: float = datetime.now().timestamp()
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
@@ -177,7 +177,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
             # Record that the user started tagging the image
-            self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+            self.current_image[user_id].stats_tagging_start[user_id]: float = datetime.now().timestamp()
 
             return self.current_image[user_id]
 
@@ -188,10 +188,7 @@ class ImageAssigner:
             self._user_skip_tagging_current_image(user_id=user_id)
 
         # Record that the user stopped tagging the most recent image
-        self.current_image[user_id].stats_tagging_stop[user_id]: datetime = datetime.now()
-
-        self.current_image[user_id].stats_tagging_start[user_id]
-        self.current_image[user_id].stats_tagging_stop[user_id]
+        self.current_image[user_id].stats_tagging_stop[user_id]: float = datetime.now().timestamp()
 
         # Calculate how much time has elapsed since the user was assigned the most recent image
         self.current_image[user_id].stats_tag_elapsed_assigned[user_id]: datetime = self.current_image[user_id] \
@@ -201,7 +198,7 @@ class ImageAssigner:
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         # Record that the user started tagging the new image
-        self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+        self.current_image[user_id].stats_tagging_start[user_id]: float = datetime.now().timestamp()
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)

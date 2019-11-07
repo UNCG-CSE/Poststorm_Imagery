@@ -42,10 +42,12 @@ class Image:
     final_tags: dict or None = None
 
     # Some statistical variables: stats_<stat_name>[user_id] = value
-    stats_tagging_start: dict = dict()  # The timestamp of the time the user started tagging
-    stats_tagging_stop: dict = dict()  # The timestamp of the time the user finished tagging / skipped
-    stats_tag_elapsed_session: dict = dict()  # The time in the final session that the user took to tag an image
-    stats_tag_elapsed_assigned: dict = dict()  # The time between being assigned the image and finishing tagging
+    stats_tagging_start: Dict[str, float] = dict()  # The timestamp of the time the user started tagging
+    stats_tagging_stop: Dict[str, float] = dict()  # The timestamp of the time the user finished tagging / skipped
+    stats_tag_elapsed_session: Dict[str, float] = dict()  # The time in seconds for the final session that the user took
+    # to tag an image
+    stats_tag_elapsed_assigned: Dict[str, float] = dict()  # The time between being assigned the image and finishing tagging
+    # in seconds
 
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
