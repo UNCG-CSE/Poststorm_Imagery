@@ -262,7 +262,7 @@ class Image:
 
         for tag in tag_totals:
 
-            if len(tag_totals[tag].keys()) > 2:
+            if len(tag_totals[tag].keys()) > 1:
                 # If there are users with different responses for a non-string tag
                 return False
 
