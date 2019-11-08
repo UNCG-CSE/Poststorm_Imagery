@@ -16,7 +16,7 @@ MINIMUM_TAGGERS_NEEDED: int = 2
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
-MINUTES_BETWEEN_BACKUPS: float = 0.01
+MINUTES_BETWEEN_BACKUPS: float = 15
 
 
 class ImageAssigner:
@@ -101,10 +101,18 @@ class ImageAssigner:
 
         return random.sample(image_list, k=len(image_list))
 
-    def is_time_for_backup(self) -> bool:
+    def is_time_for_backup(self, max_minutes=MINUTES_BETWEEN_BACKUPS) -> bool:
+        """
+        A method to get if it is time for a new backup to be taken. This simply takes the number of minutes specified or
+        the default value defined in the class and sees if the time since the last backup exceeds the specified number
+        of minutes. This method does not change any values. It only does a comparison.
+
+        :param max_minutes: The max number of minutes to wait in-between backups
+        :return: Whether (True) or not (False) it is time for the next backup to occur
+        """
 
         # Calculate the difference between the last backup and now
-        return (datetime.now() - self.get_last_backup_datetime()).total_seconds() >= (MINUTES_BETWEEN_BACKUPS * 60)
+        return (datetime.now() - self.get_last_backup_datetime()).total_seconds() > (max_minutes * 60)
 
     def get_last_backup_datetime(self) -> datetime:
         return self.last_backup_datetime
