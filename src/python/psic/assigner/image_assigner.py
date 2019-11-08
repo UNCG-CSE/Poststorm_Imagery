@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 from os import path
 from typing import List, Dict, Union
 
@@ -14,6 +15,8 @@ MINIMUM_TAGGERS_NEEDED: int = 2
 
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
+
+MINUTES_BETWEEN_BACKUPS: float = 0.01
 
 
 class ImageAssigner:
@@ -45,6 +48,9 @@ class ImageAssigner:
 
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
+
+    # The last time a backup of the assigner state was made
+    last_backup_datetime: datetime = datetime.now()
 
     def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str], **kwargs):
@@ -92,6 +98,17 @@ class ImageAssigner:
             image_list.append(Image(rel_path=f[0]))
 
         return random.sample(image_list, k=len(image_list))
+
+    def is_time_for_backup(self):
+
+        # Calculate the difference between the last backup and now
+        return (datetime.now() - self.get_last_backup_datetime()).total_seconds() >= (MINUTES_BETWEEN_BACKUPS * 60)
+
+    def get_last_backup_datetime(self) -> datetime:
+        return self.last_backup_datetime
+
+    def mark_last_backup_datetime(self):
+        self.last_backup_datetime = datetime.now()
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         """

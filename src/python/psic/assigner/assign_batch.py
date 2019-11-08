@@ -2,6 +2,7 @@
 
 import getpass
 import sys
+from datetime import datetime
 from os import path, mknod, remove
 from time import sleep
 
@@ -129,10 +130,23 @@ with open(assigner_cache, 'r') as f:
 
 try:
     if flag_pickle_changed:
-        cache_data = jsonpickle.encode(assigner.save())
         with open(assigner_cache, 'w') as f:
-            f.write(cache_data)
+            f.write(jsonpickle.encode(assigner.save()))
             f.close()
+
+        # Write a backup every so often
+        if assigner.is_time_for_backup():
+            with open(path.join('backup/', path.splitext(assigner_cache)[0]
+                                + '-' + str(datetime.today().isoformat())
+                                + path.splitext(assigner_cache)[0]), 'w') as f:
+
+                # Set last backup date/time to now
+                assigner.mark_last_backup_datetime()
+
+                # Write a copy of the data to the backup file
+                f.write(jsonpickle.encode(assigner.save()))
+                f.close()
+
 except Exception as e:
     remove(ASSIGNER_FILE_NAME + '.lock')
     raise e
