@@ -144,7 +144,8 @@ class Image:
             self.taggers[user_id] = dict()
 
         # If a valid type is found in the string, cast as either bool or int, otherwise keep as a string
-        content = _cast_valid_types(content=content)
+        if 'note' not in tag:
+            content = _cast_valid_types(content=content)
 
         self.taggers[user_id][tag]: Union[str, bool, int] = content
 
@@ -340,7 +341,9 @@ class Image:
 
                 if len(all_max_value_names) == 1:
                     # There exists only one value for a tag that has the most votes (i.e. 2 of 3 people agree)
-                    tags_flattened[tag] = _cast_valid_types(content=list(all_max_value_names)[0])
+
+                    if 'note' not in tag:
+                        tags_flattened[tag] = _cast_valid_types(content=list(all_max_value_names)[0])
 
                 else:
                     # There is no clear winner for this tag
