@@ -28,7 +28,7 @@ json_obj: Batch = jsonpickle.decode(' '.join(sys.argv[1:]))
 assigner_cache = ASSIGNER_FILE_NAME
 
 while path.exists(ASSIGNER_FILE_NAME + '.lock'):
-    sleep(1)
+    sleep(0.25)
 
 mknod(ASSIGNER_FILE_NAME + '.lock')
 
