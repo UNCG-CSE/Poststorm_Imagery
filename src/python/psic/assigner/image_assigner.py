@@ -49,8 +49,7 @@ class ImageAssigner:
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
 
-    # The last time a backup of the assigner state was made
-    last_backup_datetime: datetime = datetime.now()
+    last_backup_datetime: datetime  # The last time a backup of the assigner state was made
 
     def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str], **kwargs):
@@ -79,6 +78,9 @@ class ImageAssigner:
             if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
 
+        # Set a starting value for the last time the assigner was backed up
+        self.last_backup_datetime = datetime.now()
+
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
@@ -99,7 +101,7 @@ class ImageAssigner:
 
         return random.sample(image_list, k=len(image_list))
 
-    def is_time_for_backup(self):
+    def is_time_for_backup(self) -> bool:
 
         # Calculate the difference between the last backup and now
         return (datetime.now() - self.get_last_backup_datetime()).total_seconds() >= (MINUTES_BETWEEN_BACKUPS * 60)
