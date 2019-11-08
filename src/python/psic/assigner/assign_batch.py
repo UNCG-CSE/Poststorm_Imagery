@@ -110,20 +110,20 @@ with open(assigner_cache, 'r') as f:
                 exit()
 
         except CatalogNotFoundException as e:
-            raise e
             # print(JSONResponse(status=1, error_message=str(e) + ' Try double-checking the path passed: ' +
             #                                                     json_obj.path).json())
+            # exit()
             f.close()
             remove(ASSIGNER_FILE_NAME + '.lock')
-            exit()
-        except Exception as e:
             raise e
+        except Exception as e:
             # print(JSONResponse(status=1, error_message=str(e)).json())
             # if json_obj.debug:
             #     raise e
+            # exit()
             f.close()
             remove(ASSIGNER_FILE_NAME + '.lock')
-            exit()
+            raise e
 
     f.close()
 
