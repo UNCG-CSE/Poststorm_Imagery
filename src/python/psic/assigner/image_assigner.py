@@ -214,8 +214,8 @@ class ImageAssigner:
 
     def _user_done_tagging_current_image(self, user_id: str):
         if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED \
-                and self.current_image[user_id].all_user_tags_equal():
-            # If enough people have tagged this image
+                and self.current_image[user_id].get_best_tags() is not None:
+            # If enough people have tagged this image and there's a consensus
 
             self.current_image[user_id].finalize_tags()
 
