@@ -468,10 +468,10 @@ function Index(props) {
                 //additionalNotes:""
               }}
               validationSchema={Yup.object().shape({
-                developmentGroup: Yup.string().required("Please select a option"),
-                washoverVisibilityGroup: Yup.string().required("Please select a option"),
-                impactGroup: Yup.string().required("Please select a option"),
-                terrainGroup: Yup.array().required("Please select atleast one option"),
+                developmentGroup: Yup.string().required("Please select an option"),
+                washoverVisibilityGroup: Yup.string().required("Please select an option"),
+                impactGroup: Yup.string().required("Please select an option"),
+                terrainGroup: Yup.array().required("Please select at least one option"),
                 //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {

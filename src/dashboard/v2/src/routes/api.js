@@ -463,7 +463,7 @@ async function  main() {
 
                 // Return
                 res.send({
-                    message:`Image has been tagged, page will refresh to get next image `
+                    message:`Image has been tagged successfully! `
                 });
                 log_api_done(`/submit_image_tags`)
 
@@ -526,7 +526,7 @@ async function  main() {
                 await runPy(`${assignerSrc}/${assignerScript}`,function(err,results){
                     log('tagged as ocean and got next');
                     res.send({
-                        message: `Image has been tagged as ocean, page will refresh to get new image`
+                        message: `Image has been tagged as ocean successfully!`
                     });
                     log_api_done(`/submit_ocean_image`)
                 },options)
@@ -588,7 +588,7 @@ async function  main() {
                 await runPy(`${assignerSrc}/${assignerScript}`,function(err,results){
                     log('Image skipped');
                     res.send({
-                        message: `Image skipped,page will refresh to get new image.`
+                        message: `Image skipped successfully.`
                     });
                     log_api_done(`/skip_image`)
                 }, options)

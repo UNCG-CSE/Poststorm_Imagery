@@ -16,6 +16,8 @@ MINIMUM_TAGGERS_NEEDED: int = 2
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
+MINUTES_BETWEEN_BACKUPS: float = 15
+
 
 class ImageAssigner:
     """
@@ -47,6 +49,8 @@ class ImageAssigner:
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
 
+    last_backup_timestamp: float  # The last time a backup of the assigner state was made
+
     def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str], **kwargs):
 
@@ -74,6 +78,9 @@ class ImageAssigner:
             if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
 
+        # Set a starting value for the last time the assigner was backed up
+        self.last_backup_timestamp = datetime.now().timestamp()
+
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
@@ -94,6 +101,25 @@ class ImageAssigner:
 
         return random.sample(image_list, k=len(image_list))
 
+    def is_time_for_backup(self, max_minutes=MINUTES_BETWEEN_BACKUPS) -> bool:
+        """
+        A method to get if it is time for a new backup to be taken. This simply takes the number of minutes specified or
+        the default value defined in the class and sees if the time since the last backup exceeds the specified number
+        of minutes. This method does not change any values. It only does a comparison.
+
+        :param max_minutes: The max number of minutes to wait in-between backups
+        :return: Whether (True) or not (False) it is time for the next backup to occur
+        """
+
+        # Calculate the difference between the last backup and now
+        return (datetime.now().timestamp() - self.get_last_backup_timestamp()) > (max_minutes * 60)
+
+    def get_last_backup_timestamp(self) -> float:
+        return self.last_backup_timestamp
+
+    def mark_last_backup_timestamp(self):
+        self.last_backup_timestamp = datetime.now().timestamp()
+
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         """
         Simply get the absolute path of the specified user's current image. Returns as just the full path with no
@@ -111,6 +137,14 @@ class ImageAssigner:
             return h.validate_and_expand_path(
                 path.join(self.scope_path, self.current_image[user_id].rel_path))
 
+    def has_a_current_image(self, user_id: str) -> bool:
+        """
+        Check if the user has an image currently. This can be used to check for cases where the user has not been
+        assigned an image yet (i.e. they logged into the dashboard for the first time).
+
+        :return: Whether (True) or not (False) the user currently is assigned an image"""
+        return user_id in self.current_image.keys()
+
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
         Get the Image object that contains information about the specified user's current image.
@@ -124,10 +158,7 @@ class ImageAssigner:
         # If the user has no current image, assign them one from the pending queue
 
         if user_id not in self.current_image.keys():
-            self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
-
-            # Record that the user started tagging the image
-            self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+            self.get_next_image(user_id=user_id)
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
@@ -177,7 +208,7 @@ class ImageAssigner:
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
             # Record that the user started tagging the image
-            self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+            self.current_image[user_id].mark_tagging_start(user_id=user_id)
 
             return self.current_image[user_id]
 
@@ -188,20 +219,13 @@ class ImageAssigner:
             self._user_skip_tagging_current_image(user_id=user_id)
 
         # Record that the user stopped tagging the most recent image
-        self.current_image[user_id].stats_tagging_stop[user_id]: datetime = datetime.now()
-
-        self.current_image[user_id].stats_tagging_start[user_id]
-        self.current_image[user_id].stats_tagging_stop[user_id]
-
-        # Calculate how much time has elapsed since the user was assigned the most recent image
-        self.current_image[user_id].stats_tag_elapsed_assigned[user_id]: datetime = self.current_image[user_id] \
-            .stats_tagging_stop[user_id] - self.current_image[user_id].stats_tagging_start[user_id]
+        self.current_image[user_id].mark_tagging_stop(user_id=user_id)
 
         # Set the chosen image as the user's current image
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
         # Record that the user started tagging the new image
-        self.current_image[user_id].stats_tagging_start[user_id]: datetime = datetime.now()
+        self.current_image[user_id].mark_tagging_start(user_id=user_id)
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
@@ -225,8 +249,8 @@ class ImageAssigner:
 
     def _user_done_tagging_current_image(self, user_id: str):
         if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED \
-                and self.current_image[user_id].all_user_tags_equal():
-            # If enough people have tagged this image
+                and self.current_image[user_id].get_best_tags() is not None:
+            # If enough people have tagged this image and there's a consensus
 
             self.current_image[user_id].finalize_tags()
 

@@ -1,5 +1,7 @@
+import operator
 import re
 from copy import deepcopy
+from datetime import datetime
 from os import path
 from typing import Dict, Union, Set
 
@@ -42,10 +44,35 @@ class Image:
     final_tags: dict or None = None
 
     # Some statistical variables: stats_<stat_name>[user_id] = value
-    stats_tagging_start: dict = dict()  # The timestamp of the time the user started tagging
-    stats_tagging_stop: dict = dict()  # The timestamp of the time the user finished tagging / skipped
-    stats_tag_elapsed_session: dict = dict()  # The time in the final session that the user took to tag an image
-    stats_tag_elapsed_assigned: dict = dict()  # The time between being assigned the image and finishing tagging
+    stats_tagging_start: Dict[str, float] = None  # The timestamp of the time the user started tagging
+    stats_tagging_stop: Dict[str, float] = None  # The timestamp of the time the user finished tagging / skipped
+    stats_tag_elapsed_session: Dict[str, float] = None  # The time in seconds for the final session that the user took
+    # to tag an image
+    stats_tag_elapsed_assigned: Dict[str, float] = None  # The time between being assigned the image and finishing tagging
+    # in seconds
+
+    def mark_tagging_start(self, user_id: str):
+        if self.stats_tagging_start is None:
+            self.stats_tagging_start = dict()
+        self.stats_tagging_start[user_id]: float = datetime.now().timestamp()
+
+    def mark_tagging_stop(self, user_id: str):
+        if self.stats_tagging_stop is None:
+            self.stats_tagging_stop = dict()
+        self.stats_tagging_stop[user_id]: float = datetime.now().timestamp()
+
+        # Save the elapsed time of the tagging session in seconds
+        self.set_stats_tag_elapsed_assigned(user_id=user_id)
+
+    def set_stats_tag_elapsed_session(self, user_id: str, session_seconds: float):
+        if self.stats_tag_elapsed_session is None:
+            self.stats_tag_elapsed_session = dict()
+        self.stats_tag_elapsed_session[user_id]: float = session_seconds
+
+    def set_stats_tag_elapsed_assigned(self, user_id: str):
+        if self.stats_tag_elapsed_assigned is None:
+            self.stats_tag_elapsed_assigned = dict()
+        self.stats_tag_elapsed_assigned[user_id]: float = self.stats_tagging_stop[user_id] - self.stats_tagging_start[user_id]
 
     def __init__(self, rel_path: str):
         self.rel_path = rel_path
@@ -118,7 +145,8 @@ class Image:
             self.taggers[user_id] = dict()
 
         # If a valid type is found in the string, cast as either bool or int, otherwise keep as a string
-        content = _cast_valid_types(content=content)
+        if 'note' not in tag:
+            content = _cast_valid_types(content=content)
 
         self.taggers[user_id][tag]: Union[str, bool, int] = content
 
@@ -233,7 +261,7 @@ class Image:
                         tag_totals[tag] = dict()
 
                     if str(value) not in tag_totals[tag]:
-                        tag_totals[tag][str(value)] = 0
+                        tag_totals[tag][str(value)] = 1
                     else:
                         tag_totals[tag][str(value)] += 1
 
@@ -260,7 +288,7 @@ class Image:
 
         for tag in tag_totals:
 
-            if len(tag_totals[tag].keys()) > 2:
+            if len(tag_totals[tag].keys()) > 1:
                 # If there are users with different responses for a non-string tag
                 return False
 
@@ -305,16 +333,18 @@ class Image:
                 all_max_value_names: Set[str] = set()
 
                 # Get the first key of the value name with the most occurrences
-                max_value_name = max(tag_totals[tag], key=tag_totals[tag].get)
-                for value_name, count in tag_totals.items():
-                    if count == tag_totals[max_value_name]:
+                max_value_name = max(tag_totals[tag].items(), key=operator.itemgetter(1))[0]
+                for value_name, count in tag_totals[tag].items():
+                    if count == tag_totals[tag][max_value_name]:
 
                         # Make a set of all tag values that have equally high amount of same values for a tag
                         all_max_value_names.add(value_name)
 
                 if len(all_max_value_names) == 1:
                     # There exists only one value for a tag that has the most votes (i.e. 2 of 3 people agree)
-                    tags_flattened[tag] = _cast_valid_types(content=list(all_max_value_names)[0])
+
+                    if 'note' not in tag:
+                        tags_flattened[tag] = _cast_valid_types(content=list(all_max_value_names)[0])
 
                 else:
                     # There is no clear winner for this tag
