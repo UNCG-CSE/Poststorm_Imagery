@@ -334,8 +334,8 @@ class Image:
 
                 # Get the first key of the value name with the most occurrences
                 max_value_name = max(tag_totals[tag].items(), key=operator.itemgetter(1))[0]
-                for value_name, count in tag_totals.items():
-                    if count == tag_totals[max_value_name]:
+                for value_name, count in tag_totals[tag].items():
+                    if count == tag_totals[tag][max_value_name]:
 
                         # Make a set of all tag values that have equally high amount of same values for a tag
                         all_max_value_names.add(value_name)
