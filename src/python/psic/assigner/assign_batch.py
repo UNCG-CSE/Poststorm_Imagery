@@ -101,10 +101,12 @@ with open(assigner_cache, 'r') as f:
 
             # Get the user's current image
             elif op['command'] == 'current':
-                last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
 
-                # While it isn't always the case, just save in-case the user had no image and new one was assigned
-                flag_pickle_changed = True
+                # If the user is going to be assigned an image for the first time, flag changes ahead of time
+                if assigner.has_a_current_image(user_id=json_obj.user_id):
+                    flag_pickle_changed = True
+
+                last_tagged_image = assigner.get_current_image(user_id=json_obj.user_id, expanded=True)
             else:
                 print(JSONResponse(status=1, error_message='\'%s\' is not a command in {tag, current}!'
                                                            % op['command']).json())

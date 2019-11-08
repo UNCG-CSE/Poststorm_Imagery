@@ -137,6 +137,14 @@ class ImageAssigner:
             return h.validate_and_expand_path(
                 path.join(self.scope_path, self.current_image[user_id].rel_path))
 
+    def has_a_current_image(self, user_id: str) -> bool:
+        """
+        Check if the user has an image currently. This can be used to check for cases where the user has not been
+        assigned an image yet (i.e. they logged into the dashboard for the first time).
+
+        :return: Whether (True) or not (False) the user currently is assigned an image"""
+        return user_id in self.current_image.keys()
+
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
         Get the Image object that contains information about the specified user's current image.
