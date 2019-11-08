@@ -259,7 +259,7 @@ class Image:
                         tag_totals[tag] = dict()
 
                     if str(value) not in tag_totals[tag]:
-                        tag_totals[tag][str(value)] = 0
+                        tag_totals[tag][str(value)] = 1
                     else:
                         tag_totals[tag][str(value)] += 1
 
