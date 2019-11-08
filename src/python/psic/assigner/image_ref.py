@@ -1,3 +1,4 @@
+import operator
 import re
 from copy import deepcopy
 from datetime import datetime
@@ -332,7 +333,7 @@ class Image:
                 all_max_value_names: Set[str] = set()
 
                 # Get the first key of the value name with the most occurrences
-                max_value_name = max(tag_totals[tag], key=tag_totals[tag].get)
+                max_value_name = max(tag_totals.items(), key=operator.itemgetter(1))[0]
                 for value_name, count in tag_totals.items():
                     if count == tag_totals[max_value_name]:
 
