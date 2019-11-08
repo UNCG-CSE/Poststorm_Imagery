@@ -3,7 +3,7 @@
 import getpass
 import sys
 from datetime import datetime
-from os import path, mknod, remove
+from os import path, mknod, remove, mkdir
 from time import sleep
 
 import jsonpickle
@@ -16,6 +16,8 @@ from psic.assigner.json_response import JSONResponse
 # Get the username of the current user to prevent conflicts of multiple users testing same filesystem
 curr_user = getpass.getuser()
 ASSIGNER_FILE_NAME: str = 'assigner_state-' + curr_user + '.json'
+
+BACKUP_FOLDER: str = './backup/'
 
 assigner: ImageAssigner
 flag_pickle_changed: bool = False
@@ -136,9 +138,14 @@ try:
 
         # Write a backup every so often
         if assigner.is_time_for_backup():
-            with open(path.join('backup/', path.splitext(assigner_cache)[0]
-                                + '-' + str(datetime.today().isoformat())
-                                + path.splitext(assigner_cache)[0]), 'w') as f:
+
+            if not (path.exists(BACKUP_FOLDER) and path.isdir(BACKUP_FOLDER)):
+                mkdir(BACKUP_FOLDER)
+
+            f_name, f_ext = path.splitext(assigner_cache)
+            backup_path = path.join(BACKUP_FOLDER, f_name + '-' + str(datetime.today().isoformat()) + f_ext)
+
+            with open(backup_path, 'w') as f:
 
                 # Set last backup date/time to now
                 assigner.mark_last_backup_datetime()
