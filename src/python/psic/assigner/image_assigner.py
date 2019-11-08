@@ -49,7 +49,7 @@ class ImageAssigner:
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
 
-    last_backup_datetime: datetime  # The last time a backup of the assigner state was made
+    last_backup_timestamp: float  # The last time a backup of the assigner state was made
 
     def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str], **kwargs):
@@ -79,7 +79,7 @@ class ImageAssigner:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
 
         # Set a starting value for the last time the assigner was backed up
-        self.last_backup_datetime = datetime.now()
+        self.last_backup_timestamp = datetime.now().timestamp()
 
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
@@ -112,13 +112,13 @@ class ImageAssigner:
         """
 
         # Calculate the difference between the last backup and now
-        return (datetime.now() - self.get_last_backup_datetime()).total_seconds() > (max_minutes * 60)
+        return (datetime.now().timestamp() - self.get_last_backup_timestamp()) > (max_minutes * 60)
 
-    def get_last_backup_datetime(self) -> datetime:
-        return self.last_backup_datetime
+    def get_last_backup_timestamp(self) -> float:
+        return self.last_backup_timestamp
 
-    def mark_last_backup_datetime(self):
-        self.last_backup_datetime = datetime.now()
+    def mark_last_backup_timestamp(self):
+        self.last_backup_timestamp = datetime.now().timestamp()
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         """

@@ -150,7 +150,7 @@ try:
             with open(backup_path, 'w') as f:
 
                 # Set last backup date/time to now
-                assigner.mark_last_backup_datetime()
+                assigner.mark_last_backup_timestamp()
 
                 # Write a copy of the data to the backup file
                 f.write(jsonpickle.encode(assigner.save()))
