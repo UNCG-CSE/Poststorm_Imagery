@@ -56,6 +56,13 @@ class Archive:
         else:
             return '(' + self.date + ') ' + self.name + '.tar [' + self.type_label + ']'
 
+    def get_ext(self) -> str:
+        """Simply get the file extension for this archive (e.g. '.tar' or '.zip')
+
+        :returns: The file extension (e.g. '.tar' or '.zip') as a string
+        """
+        return '.' + self.type
+
     def download_url(self, output_dir: str, user: str, overwrite: bool = False) \
             -> tarfile.TarFile or None:  # pragma: no cover
         """Download the archive file to the given path. Whether or not to overwrite
