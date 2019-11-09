@@ -9,7 +9,7 @@ from psic.collector.connection_handler import get_http_response
 
 # Matches archive files for most (if not all) formats
 URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"]+\\.tar)\\s*[\"\']"
-# Groups: <archive_url>
+# Groups: <url>
 
 
 class Storm:
@@ -67,7 +67,7 @@ class Storm:
                 exists = False
 
                 for archive in self.archive_list:
-                    if archive.archive_url == archive_url:
+                    if archive.url == archive_url:
                         exists = True
                         break
 
@@ -77,21 +77,21 @@ class Storm:
     """ DISABLED: Does not cover JPEG files reliably
 
         # Find all storm data by regex parsing of URLs
-        for archive_date, archive_url, archive_label in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_1, self.r.text):
+        for date, url, type_label in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_1, self.r.text):
 
             # Search for the given pattern
-            if re.search(search_re, archive_date) or re.search(search_re, archive_url) or re.search(search_re, archive_label):
-                self.archive_list.append(Archive(archive_url, archive_date, archive_label))
+            if re.search(search_re, date) or re.search(search_re, url) or re.search(search_re, type_label):
+                self.archive_list.append(Archive(url, date, type_label))
 
-        for archive_url, archive_date, archive_label in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_2, self.r.text):
+        for url, date, type_label in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_2, self.r.text):
 
             # Search for the given pattern
-            if re.search(search_re, archive_date) or re.search(search_re, archive_url) or re.search(search_re, archive_label):
-                self.archive_list.append(Archive(archive_url, archive_date, archive_label))
+            if re.search(search_re, date) or re.search(search_re, url) or re.search(search_re, type_label):
+                self.archive_list.append(Archive(url, date, type_label))
 
         if len(self.archive_list) == 0:
-            for archive_url in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_FINAL, self.r.text):
-                self.archive_list.append(Archive(archive_url=archive_url))
+            for url in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_FINAL, self.r.text):
+                self.archive_list.append(Archive(url=url))
     """
 
     def get_archive_list(self, search_re: str = '.*') -> List[Archive]:

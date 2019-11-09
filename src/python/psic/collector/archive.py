@@ -1,6 +1,7 @@
 import os
 import re
 import tarfile
+import zipfile
 from datetime import datetime, timedelta
 from math import ceil
 from typing import Union
@@ -18,20 +19,21 @@ class Archive:
     """An object that stores information about a particular storm. Does not store the actual archive archive by default,
     but instead stores a reference to the archive on a remote host (the NOAA website) and its information locally."""
 
-    archive_date: str  # The date listed with the archive (format varies based on storm)
-    archive_url: str  # The url location of the archive on the remote website
-    archive_label: str  # The label associated with the archive (usually 'TIF', 'RAW JPEG', or 'Unknown')
+    date: str  # The date listed with the archive (format varies based on storm)
+    url: str  # The url location of the archive on the remote website
+    type_label: str  # The label associated with the archive (usually 'TIF', 'RAW JPEG', or 'Unknown')
 
-    archive_file_name: str  # The archive file's name not including the file suffix
+    name: str  # The archive file's name not including the file suffix
+    type: str  # The archive file's type ('tar' or 'zip')
 
     # The full path to the local copy of the archive file, including file name and file suffix
-    archive_file_path: Union[bytes, str] or None = None
+    path: Union[bytes, str] or None = None
 
-    archive_file: tarfile.TarFile  # The TarFile object stored in memory
-    archive_index: tarfile.TarInfo = None  # The general info at the beginning of the TarFile object
+    data: tarfile.TarFile or zipfile.ZipFile  # The archive object stored in memory
+    index: tarfile.TarInfo or zipfile.ZipInfo = None  # The general info at the beginning of the archive object
 
     # Save a cache of the file size in bytes
-    archive_file_origin_size: int or None = None
+    file_origin_size: int or None = None
 
     def __init__(self, archive_url: str, archive_date: str = UNKNOWN, archive_label: str = UNKNOWN):
         """Initializes the object with required information for a archive file
@@ -40,19 +42,19 @@ class Archive:
         :param archive_date: The date that the archive corresponds to (format varies based on source URL)
         :param archive_label: The label associated with the archive
         """
-        self.archive_date = archive_date
-        self.archive_url = archive_url
-        self.archive_label = archive_label
+        self.date = archive_date
+        self.url = archive_url
+        self.type_label = archive_label
 
         # Grab the file name from the end of the URL
-        self.archive_file_name = re.findall('.*/([^/]+)\\.tar', self.archive_url)[0]
+        self.name = re.findall('.*/([^/]+)\\.tar', self.url)[0]
 
     def __str__(self) -> str:
         """Prints out the archive label and date in a human readable format"""
-        if self.archive_date == UNKNOWN and self.archive_label == UNKNOWN:
-            return self.archive_file_name + '.tar'
+        if self.date == UNKNOWN and self.type_label == UNKNOWN:
+            return self.name + '.tar'
         else:
-            return '(' + self.archive_date + ') ' + self.archive_file_name + '.tar [' + self.archive_label + ']'
+            return '(' + self.date + ') ' + self.name + '.tar [' + self.type_label + ']'
 
     def download_url(self, output_dir: str, user: str, overwrite: bool = False) \
             -> tarfile.TarFile or None:  # pragma: no cover
@@ -65,21 +67,21 @@ class Archive:
         :returns: The archive file that was downloaded
         """
         # The full path of the file including the file name and file type
-        self.archive_file_path = os.path.join(output_dir, str(self.archive_file_name) + '.tar')
+        self.path = os.path.join(output_dir, str(self.name) + '.tar')
 
         if not overwrite:
 
             # If the archive file does not exist locally in the cache
-            if os.path.exists(output_dir) and os.path.isfile(self.archive_file_path):
-                print('File \"' + self.archive_file_path + '\" already exists!  ... Skipping')
-                return tarfile.open(self.archive_file_path)
+            if os.path.exists(output_dir) and os.path.isfile(self.path):
+                print('File \"' + self.path + '\" already exists!  ... Skipping')
+                return tarfile.open(self.path)
 
         # Create the directory specified if it does not exist
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
         # Suffix for the file until download is complete
-        archive_file_path_part: str = self.archive_file_path + s.PART_SUFFIX
+        archive_file_path_part: str = self.path + s.PART_SUFFIX
 
         # See how far a file has been downloaded at the specified path if one exists
         with open(archive_file_path_part, 'ab') as f:
@@ -93,11 +95,11 @@ class Archive:
                 headers['Range'] = 'bytes=' + str(pos) + '-' + str(full_size_origin)
 
             # Send the HTTP request asking for the remaining bytes
-            dl_r = requests.get(self.archive_url, headers=headers, stream=True)
+            dl_r = requests.get(self.url, headers=headers, stream=True)
 
             # Check if the server sent only the remaining data
             if dl_r.status_code == requests.codes.partial_content:
-                print('\nDownloading the rest of ' + self.archive_file_name + '.tar ...')
+                print('\nDownloading the rest of ' + self.name + '.tar ...')
             else:
                 print('\nDownloading files...')
 
@@ -125,7 +127,7 @@ class Archive:
 
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
-                             desc='Downloading ' + self.archive_file_name + '.tar',
+                             desc='Downloading ' + self.name + '.tar',
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
@@ -145,24 +147,24 @@ class Archive:
             raise ConnectionError('File was not fully downloaded. Retry download!')
 
         # File download is complete. Change the name to reflect that it is a proper archive file
-        os.rename(archive_file_path_part, self.archive_file_path)
+        os.rename(archive_file_path_part, self.path)
 
         # Remove the lock file
         os.remove(archive_file_path_part + s.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
-        h.update_file_lock(base_file=self.archive_file_path, user=user,
+        h.update_file_lock(base_file=self.path, user=user,
                            total_size_byte=full_size_origin, part_size_byte=full_size_origin)
 
-        if Archive.verify_integrity(self.archive_file_path) is False:
-            os.remove(self.archive_file_path)
+        if Archive.verify_integrity(self.path) is False:
+            os.remove(self.path)
             Exception('Integrity could not be verified! Deleting it!')
 
         else:
             print('Extracting files...')
-            Archive.extract_archive(self.archive_file_path)
+            Archive.extract_archive(self.path)
 
-        return tarfile.open(self.archive_file_path)
+        return tarfile.open(self.path)
 
     def get_file_size_origin(self) -> int:  # pragma: no cover
         """Checks to see if the Archive object has its full size cached. If it doesn't then it will make a request to
@@ -170,10 +172,10 @@ class Archive:
 
         :return: The size of the archive file in bytes
         """
-        if self.archive_file_origin_size is not None:
-            return self.archive_file_origin_size
+        if self.file_origin_size is not None:
+            return self.file_origin_size
 
-        return get_full_content_length(self.archive_url)
+        return get_full_content_length(self.url)
 
     @staticmethod
     def verify_integrity(archive_file_path: Union[bytes, str]) -> bool:

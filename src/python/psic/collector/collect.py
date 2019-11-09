@@ -91,7 +91,7 @@ if OPTIONS.no_status is False:
 
                 # The path of the archive file including the file suffix
                 archive_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
-                                                 str(archive_file.archive_file_name) + '.tar')
+                                                 str(archive_file.name) + '.tar')
 
                 total_size: None or int = None  # Size of the archive file in bytes
 
@@ -214,12 +214,12 @@ if OPTIONS.download:
             while download_incomplete:
                 try:
                     lock_info_part = h.get_lock_info(
-                        base_file=os.path.join(save_path, str(archive.archive_file_name) + '.tar' + s.PART_SUFFIX))
+                        base_file=os.path.join(save_path, str(archive.name) + '.tar' + s.PART_SUFFIX))
 
                     if OPTIONS.overwrite is False and h.is_locked_by_another_user(
-                            base_file=str(archive.archive_file_name) + '.tar', this_user=OPTIONS.user):
+                            base_file=str(archive.name) + '.tar', this_user=OPTIONS.user):
 
-                        print('Another user has fully downloaded ', archive.archive_file_name, '.tar!  ... Skipping')
+                        print('Another user has fully downloaded ', archive.name, '.tar!  ... Skipping')
                         download_incomplete = False
 
                     elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
@@ -228,7 +228,7 @@ if OPTIONS.download:
                         download_incomplete = False
 
                     else:
-                        print('Another user is in the process of downloading ', archive.archive_file_name, '.tar!  ... Skipping')
+                        print('Another user is in the process of downloading ', archive.name, '.tar!  ... Skipping')
                         download_incomplete = False
 
                 except ConnectionError as e:
