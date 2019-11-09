@@ -7,8 +7,8 @@ from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
 
 # Matches archive files for most (if not all) formats
-URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"]+\\.tar)\\s*[\"\']"
-# Groups: <url>
+URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"]+\\.(tar|zip))\\s*[\"\']"
+# Groups: <archive_url>, <archive_type>
 
 
 class Storm:
@@ -21,7 +21,7 @@ class Storm:
 
     r: Response  # Holds the HTTP request information
 
-    archive_list: List[Archive] = list()  # A list of all tars associated with the storm (from the index.html)
+    archive_list: List[Archive] = list()  # A list of all archives associated with the storm (from the index.html)
     archive_list_last_pattern: str = None  # The last regular expression used to create the list of archive files
 
     def __init__(self, storm_url: str, storm_id: str, storm_title: str, storm_year: str or int):
@@ -60,17 +60,20 @@ class Storm:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for archive_url in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, self.r.text):
-            if re.search(search_re, archive_url):
+        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, self.r.text):
+            if re.search(search_re, archive_url) is not None:
 
-                exists = False
+                # Flag will be toggled to True if the current url matches an already accounted for archive
+                flag_exists = False
 
                 for archive in self.archive_list:
                     if archive.url == archive_url:
-                        exists = True
+                        # If the archive already appears in the list
+
+                        flag_exists = True
                         break
 
-                if exists is False:
+                if flag_exists is False:
                     self.archive_list.append(Archive(archive_url=archive_url))
 
     """ DISABLED: Does not cover JPEG files reliably
@@ -97,7 +100,7 @@ class Storm:
         """Get a list of all archive objects with the associated regular expression
 
         :param search_re: The regular expression to search for. Applies to archive date, url, and label
-        :returns: A list of archive references (information about tars from the website)
+        :returns: A list of archive references (information about archives from the website)
         """
 
         # If the user has already asked for a list with the same search expression (answer is not already known)
