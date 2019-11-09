@@ -4,7 +4,9 @@ import tarfile
 import zipfile
 from datetime import datetime, timedelta
 from math import ceil
+from tarfile import TarFile, TarInfo
 from typing import Union
+from zipfile import ZipFile, ZipInfo
 
 import requests
 from tqdm import tqdm
@@ -29,8 +31,8 @@ class Archive:
     # The full path to the local copy of the archive file, including file name and file suffix
     path: Union[bytes, str] or None = None
 
-    data: tarfile.TarFile or zipfile.ZipFile  # The archive object stored in memory
-    index: tarfile.TarInfo or zipfile.ZipInfo = None  # The general info at the beginning of the archive object
+    data: TarFile or ZipFile  # The archive object stored in memory
+    index: TarInfo or ZipInfo = None  # The general info at the beginning of the archive object
 
     # Save a cache of the file size in bytes
     file_origin_size: int or None = None
@@ -46,8 +48,8 @@ class Archive:
         self.url = archive_url
         self.type_label = archive_label
 
-        # Grab the file name from the end of the URL
-        self.name = re.findall('.*/([^/]+)\\.tar', self.url)[0]
+        # Parse out needed information from the URL
+        self.name, self.type = re.findall('.*/([^/]+)\\.(tar|zip)', self.url)[0]
 
     def __str__(self) -> str:
         """Prints out the archive label and date in a human readable format"""
@@ -63,8 +65,22 @@ class Archive:
         """
         return '.' + self.type
 
+    def is_zip(self) -> bool:
+        """Simply get if the archive is a .zip archive
+
+        :returns: Whether (True) or not (False) the archive is a .zip archive
+        """
+        return self.type == 'zip'
+
+    def is_tar(self) -> bool:
+        """Simply get if the archive is a .tar archive
+
+        :returns: Whether (True) or not (False) the archive is a .tar archive
+        """
+        return self.type == 'tar'
+
     def download_url(self, output_dir: str, user: str, overwrite: bool = False) \
-            -> tarfile.TarFile or None:  # pragma: no cover
+            -> Union[TarFile, ZipFile, None]:  # pragma: no cover
         """Download the archive file to the given path. Whether or not to overwrite
         any existing file can also be specified by the `overwrite` parameter.
 
@@ -74,24 +90,27 @@ class Archive:
         :returns: The archive file that was downloaded
         """
         # The full path of the file including the file name and file type
-        self.path = os.path.join(output_dir, str(self.name) + '.tar')
+        self.path = os.path.join(output_dir, str(self.name) + self.get_ext())
 
         if not overwrite:
 
             # If the archive file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.path):
                 print('File \"' + self.path + '\" already exists!  ... Skipping')
-                return tarfile.open(self.path)
+                if self.is_tar:
+                    return tarfile.open(self.path)
+                else:
+                    return ZipFile(self.path)
 
         # Create the directory specified if it does not exist
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
         # Suffix for the file until download is complete
-        archive_file_path_part: str = self.path + s.PART_SUFFIX
+        file_path_part: str = self.path + s.PART_SUFFIX
 
         # See how far a file has been downloaded at the specified path if one exists
-        with open(archive_file_path_part, 'ab') as f:
+        with open(file_path_part, 'ab') as f:
             headers = {}
             pos = f.tell()
 
@@ -106,12 +125,12 @@ class Archive:
 
             # Check if the server sent only the remaining data
             if dl_r.status_code == requests.codes.partial_content:
-                print('\nDownloading the rest of ' + self.name + '.tar ...')
+                print('\nDownloading the rest of ' + self.name + self.get_ext() + ' ...')
             else:
                 print('\nDownloading files...')
 
             # Get the current amount of bytes downloaded
-            local_size = os.path.getsize(archive_file_path_part)
+            local_size = os.path.getsize(file_path_part)
 
             # Get the amount of remaining bytes for the download
             remaining_size = int(dl_r.headers.get('Content-Length'))
@@ -134,30 +153,30 @@ class Archive:
 
             # Write the data and output the progress
             for data in tqdm(iterable=dl_r.iter_content(chunk_size=chunk_size),
-                             desc='Downloading ' + self.name + '.tar',
+                             desc='Downloading ' + self.name + self.get_ext(),
                              total=ceil((remaining_size + local_size) / chunk_size),
                              initial=ceil(local_size / chunk_size), unit=unit, miniters=1):
 
                 # Update the lock file every so often so others know it is being downloaded
                 if (datetime.now() - last_lock_update).total_seconds() > 180:  # 1800 seconds = 30 minutes
-                    h.update_file_lock(base_file=archive_file_path_part, user=user,
-                                       part_size_byte=os.path.getsize(archive_file_path_part),
+                    h.update_file_lock(base_file=file_path_part, user=user,
+                                       part_size_byte=os.path.getsize(file_path_part),
                                        total_size_byte=full_size_origin)
                 f.write(data)
 
             dl_r.close()
 
-        local_size = os.path.getsize(archive_file_path_part)
+        local_size = os.path.getsize(file_path_part)
 
         # Check to see that the file size is correct (in case of dropped connection)
         if local_size < full_size_origin:
             raise ConnectionError('File was not fully downloaded. Retry download!')
 
         # File download is complete. Change the name to reflect that it is a proper archive file
-        os.rename(archive_file_path_part, self.path)
+        os.rename(file_path_part, self.path)
 
         # Remove the lock file
-        os.remove(archive_file_path_part + s.LOCK_SUFFIX)
+        os.remove(file_path_part + s.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
         h.update_file_lock(base_file=self.path, user=user,
@@ -171,7 +190,10 @@ class Archive:
             print('Extracting files...')
             Archive.extract_archive(self.path)
 
-        return tarfile.open(self.path)
+        if self.is_tar:
+            return tarfile.open(self.path)
+        else:
+            return ZipFile(self.path)
 
     def get_file_size_origin(self) -> int:  # pragma: no cover
         """Checks to see if the Archive object has its full size cached. If it doesn't then it will make a request to
@@ -195,12 +217,27 @@ class Archive:
         print('Checking the archive\'s integrity...')
         # Check archive integrity by trying to read every file (may take a while)
         try:
-            # print('  Opening file locally...')
-            tf = tarfile.open(archive_file_path)
-            # print('  Testing members...')
-            for member in tf.getmembers():
-                # print('    Testing member ' + member.name + '...')
-                tf.extractfile(member.name)
+            if tarfile.is_tarfile(archive_file_path):
+                with tarfile.open(archive_file_path) as f:
+
+                    # Test the tar archive for some possible errors by trying to load each image from the archive
+                    for member in f.getmembers():
+                        # print('    Testing member ' + member.name + '...')
+                        f.extractfile(member.name)
+
+            elif zipfile.is_zipfile(archive_file_path):
+                with zipfile.ZipFile(archive_file_path) as f:
+
+                    # Built in method checks CRCs and returns first file w/ error (returns None if all is good)
+                    first_error = f.testzip()
+
+                    if first_error is not None:
+                        # A file is corrupted
+
+                        raise IOError('File %s was found to be corrupted in the archive!' % first_error)
+
+            else:
+                raise IOError('File is not of a supported archive type!')
 
         except IOError as e:
             h.print_error('There was an error in reading ' + archive_file_path + ' file. It might be corrupted!')
@@ -217,18 +254,28 @@ class Archive:
 
         :param archive_file_path: The path to the archive file (including the file extension) to extract
         """
-        tf = tarfile.open(archive_file_path)
+
+        f: TarFile or ZipFile
+
+        if tarfile.is_tarfile(archive_file_path):
+            f = tarfile.open(archive_file_path)
+        elif zipfile.is_zipfile(archive_file_path):
+            f = zipfile.ZipFile(archive_file_path)
+        else:
+            raise IOError('File is not of a supported archive type!')
 
         # Extract to a directory of the same name, but without the file extension
-        extract_dir_path = archive_file_path.replace('.tar', '')
+        extract_dir_path = os.path.splitext(archive_file_path)[0]
 
         # Create the directory specified if it does not exist
         if not os.path.exists(extract_dir_path):
             os.makedirs(extract_dir_path)
 
-        for member in tf.getmembers():
+        for member in f.getmembers():
             if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
                 print('\rCreating \t' + member.name + ' ... ', end='')
-                tf.extract(member, extract_dir_path)
+                f.extract(member, extract_dir_path)
             elif member.name != '.':
                 print('\rSkipping \t' + member.name + ' as it already exists ... ', end='')
+
+        f.close()
