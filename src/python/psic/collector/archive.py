@@ -54,9 +54,9 @@ class Archive:
     def __str__(self) -> str:
         """Prints out the archive label and date in a human readable format"""
         if self.date == UNKNOWN and self.type_label == UNKNOWN:
-            return self.name + '.tar'
+            return self.name + self.get_ext()
         else:
-            return '(' + self.date + ') ' + self.name + '.tar [' + self.type_label + ']'
+            return '(' + self.date + ') ' + self.name + self.get_ext() + ' [' + self.type_label + ']'
 
     def get_ext(self) -> str:
         """Simply get the file extension for this archive (e.g. '.tar' or '.zip')
