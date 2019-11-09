@@ -1,8 +1,6 @@
 import re
 from typing import List
 
-from requests import Response
-
 from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
 
@@ -18,8 +16,6 @@ class Storm:
     storm_id: str  # The name given to the storm, located in the url to identify it in the list
     storm_title: str  # The full name of the storm as listed on the NOAA page
     storm_year: int  # The year that the storm occurred
-
-    r: Response  # Holds the HTTP request information
 
     archive_list: List[Archive] = list()  # A list of all archives associated with the storm (from the index.html)
     archive_list_last_pattern: str = None  # The last regular expression used to create the list of archive files
@@ -47,8 +43,14 @@ class Storm:
         :param search_re: A regular expression to search all archive files for
         """
 
-        # Load the storm's index.html
-        self.r = get_http_response(self.storm_url)
+        r_text: str  # The text in which to search for links to archives
+        if self.storm_id == 'apr11_tornado':
+            # Specific case for Tuscaloosa, AL Tornado (2011), obtaining info requires querying ArcGIS
+            # Just give the permanent archive link
+            r_text = '"http://geodesy.noaa.gov/storm_archive/storms/apr11_tornado/jgw_met/all_world.zip"'
+        else:
+            # Load the storm's index.html
+            r_text = get_http_response(self.storm_url).text
 
         # Clear all existing archive files
         self.archive_list = list()
@@ -60,7 +62,7 @@ class Storm:
         search_re = re.compile(search_re, re.IGNORECASE)
 
         # Find all storm data by regex parsing of URLs
-        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, self.r.text):
+        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text):
             if re.search(search_re, archive_url) is not None:
 
                 # Flag will be toggled to True if the current url matches an already accounted for archive

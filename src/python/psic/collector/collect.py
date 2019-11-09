@@ -189,7 +189,11 @@ if OPTIONS.no_status is False:
                   ' (' + str(floor((stat_storm_archive_downloaded / stat_storm_archive_size) * 100)) + '%)')
 
         else:
-            print('\t' * 2 + '<No archive files detected in index.html>')
+            if storm.storm_id == 'redriver':
+                # North Dakota Flooding (2011) does not provide an archive, only listed with "Contact for download info"
+                print('\t' * 2 + '<No archive provided. Contact NOAA for questions>')
+            else:
+                print('\t' * 2 + '<No archive files detected in index.html>')
 
         print()
         storm_number += 1
