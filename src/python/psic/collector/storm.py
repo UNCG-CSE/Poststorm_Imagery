@@ -8,7 +8,7 @@ from psic.collector.connection_handler import get_http_response
 from psic.collector.tar_ref import TarRef
 
 # Matches .tar files for most (if not all) formats
-URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "\"\\s*(http[^\"]+\\.tar)\\s*\""
+URL_STORMS_REGEX_PATTERN_TAR_GENERAL = "[\"\']\\s*(https?[^\"]+\\.tar)\\s*[\"\']"
 # Groups: <tar_url>
 
 
