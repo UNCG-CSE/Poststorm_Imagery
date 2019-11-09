@@ -87,13 +87,13 @@ if OPTIONS.no_status is False:
 
         # Display archive file statistics if any archives are found
         if len(archive_list) > 0:
-            for archive_file in archive_list:
+            for archive in archive_list:
 
                 # The path of the archive file including the file suffix
                 archive_file_path = os.path.join(os.path.join(DOWNLOAD_PATH, storm.storm_id.title()),
-                                                 str(archive_file.name) + '.tar')
+                                                 str(archive.name) + archive.get_ext())
 
-                total_size: None or int = None  # Size of the archive file in bytes
+                total_size: int or None = None  # Size of the archive file in bytes
 
                 # Create an appending string to print statuses next to archive info
                 exists_str: str = ''
@@ -110,7 +110,7 @@ if OPTIONS.no_status is False:
 
                     # Resort to querying the website if the total size cannot be determined locally
                     if type(total_size) is not int:
-                        total_size = archive_file.get_file_size_origin()
+                        total_size = archive.get_file_size_origin()
 
                     if user == OPTIONS.user:
                         exists_str += 'Fully downloaded: ' + h.to_readable_bytes(total_size)
@@ -132,9 +132,9 @@ if OPTIONS.no_status is False:
                     stat_total_archive_downloaded += total_size
                     stat_storm_archive_downloaded += total_size
 
-                #################################################################
+                ####################################################################
                 # A download for the archive file has been started by another user #
-                #################################################################
+                ####################################################################
 
                 elif os.path.exists(archive_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX):
 
@@ -142,8 +142,8 @@ if OPTIONS.no_status is False:
                     lock_info = h.get_lock_info(base_file=archive_file_path + s.PART_SUFFIX)
 
                     last_modified = os.path.getmtime(archive_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX)
+                    total_size = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]  # The number of total bytes to download
                     partial_size: int = lock_info[s.LOCK_PART_SIZE_BYTES_FIELD]  # The # of bytes downloaded so far
-                    total_size: int = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]  # The number of total bytes to download
                     user: str = lock_info['user']  # The account that started the download (created the lock)
 
                     """Add information about who initiated the lock, how much is downloaded so far,
@@ -174,12 +174,12 @@ if OPTIONS.no_status is False:
                 else:
                     exists_str += 'Not downloaded.'
 
-                print('\t\t-', archive_file, ' ...', h.to_readable_bytes(archive_file.get_file_size_origin()),
+                print('\t\t-', archive, ' ...', h.to_readable_bytes(archive.get_file_size_origin()),
                       ' ...', exists_str)
 
                 # Resort to querying the website if the total size cannot be determined locally
                 if type(total_size) is not int:
-                    total_size = archive_file.get_file_size_origin()
+                    total_size = archive.get_file_size_origin()
 
                 stat_total_archive_size += total_size
                 stat_storm_archive_size += total_size
@@ -198,9 +198,9 @@ if OPTIONS.no_status is False:
         print('Total:', h.to_readable_bytes(stat_total_archive_downloaded), '/', h.to_readable_bytes(stat_total_archive_size),
               ' (' + str(floor((stat_total_archive_downloaded / stat_total_archive_size) * 100)) + '%)')
 
-#############################################
+################################################
 # Start the actual collection of archive files #
-#############################################
+################################################
 
 if OPTIONS.download:
     for storm in storms:
@@ -214,12 +214,13 @@ if OPTIONS.download:
             while download_incomplete:
                 try:
                     lock_info_part = h.get_lock_info(
-                        base_file=os.path.join(save_path, str(archive.name) + '.tar' + s.PART_SUFFIX))
+                        base_file=os.path.join(save_path, str(archive.name) + archive.get_ext() + s.PART_SUFFIX))
 
                     if OPTIONS.overwrite is False and h.is_locked_by_another_user(
-                            base_file=str(archive.name) + '.tar', this_user=OPTIONS.user):
+                            base_file=str(archive.name) + archive.get_ext(), this_user=OPTIONS.user):
 
-                        print('Another user has fully downloaded ', archive.name, '.tar!  ... Skipping')
+                        print('Another user has fully downloaded ' + archive.name + archive.get_ext() +
+                              '!  ... Skipping')
                         download_incomplete = False
 
                     elif OPTIONS.overwrite or lock_info_part['user'] is None or OPTIONS.user == lock_info_part['user']:
@@ -228,7 +229,8 @@ if OPTIONS.download:
                         download_incomplete = False
 
                     else:
-                        print('Another user is in the process of downloading ', archive.name, '.tar!  ... Skipping')
+                        print('Another user is in the process of downloading ' + archive.name + archive.get_ext() +
+                              '!  ... Skipping')
                         download_incomplete = False
 
                 except ConnectionError as e:
