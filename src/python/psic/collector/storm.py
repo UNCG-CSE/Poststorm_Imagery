@@ -4,7 +4,6 @@ from typing import List
 from requests import Response
 
 from psic.collector.archive import Archive
-# Matches archive files for a given storm (Florence and newer)
 from psic.collector.connection_handler import get_http_response
 
 # Matches archive files for most (if not all) formats
