@@ -56,7 +56,8 @@ Beta branch is the main place to submit new code.
 
 1. Python 3.6 or 3.7 [**(Download Here)**](https://www.python.org/downloads/)
 2. Pipenv **(Run `pip install pipenv`)**
-3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`.
+3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`
+   (See [**Configuring Module**](https://post-storm-imagery.readthedocs.io/en/latest/configure_python_path/))
 
 *If you get an error message that looks something like `Module not found: "psic"`,
 then the `PYTHONPATH` is not configured correctly!*
