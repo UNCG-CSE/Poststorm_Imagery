@@ -80,7 +80,7 @@ if OPTIONS.no_status is False:
     for storm in storms:
         stat_storm_archive_size: int = 0  # Running total of bytes downloaded (by storm)
         stat_storm_archive_downloaded: int = 0  # Running total of bytes downloaded (by storm)
-        archive_list: List[Archive] = storm.get_archive_list(OPTIONS.archive)  # All Archive for each storm
+        archive_list: List[Archive] = storm.get_archive_list(OPTIONS.archive)  # All archives for each storm
 
         # Output storm number, name, and year
         print(str(storm_number) + '.  \t' + str(storm))
