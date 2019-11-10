@@ -59,7 +59,8 @@ const terrain_id_tag_pair={
     SandyCoastlineId: 'sandy_coastline',
     MarshId:'marsh',
     RiverId:'river',
-    NodeId:'none'
+    NoneId:'none',
+    InlandId:'inland',
 };
 
 // Used to validate wat is given for form submission
