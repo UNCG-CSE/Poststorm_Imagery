@@ -31,14 +31,12 @@ const smallSizeImagePath=process.env.SMALL_SIZE_IMAGE_PATH;
 // Used to take user form inputs and convert over to integers for TensorFlow
 const tag_name_value_pairs={
     development:{
-        NoneId:0,
-        DevelopedId:1,
-        UndevelopedId:2
+        UndevelopedId:0,
+        DevelopedId:1
     },
     washover:{
-        NoneId:0,
-        VisibleWashoverId:1,
-        NoVisibleWashoverId:2
+        NoVisibleWashoverId:0,
+        VisibleWashoverId:1
     },
     impact:{
         NoneId:0,
@@ -52,6 +50,7 @@ const tag_name_value_pairs={
         NoneId:'NoneId',
         RiverId:'RiverId',
         MarshId:'MarshId',
+        InlandId:'InlandId',
         SandyCoastlineId:'SandyCoastlineId'
     }
 };
@@ -60,7 +59,8 @@ const terrain_id_tag_pair={
     SandyCoastlineId: 'sandy_coastline',
     MarshId:'marsh',
     RiverId:'river',
-    NodeId:'none'
+    NoneId:'none',
+    InlandId:'inland',
 };
 
 // Used to validate wat is given for form submission
