@@ -13,7 +13,9 @@ nav:
     - Configuring Module: configure_python_path.md
     - Data Collection: collector.md
     - Cataloging Images: cataloging.md
-    - Dashboard UI: dashboard.md
+    - Dashboard UI:
+        - Dashboard: dashboard.md
+        - Dashboard Information: dashboard_info.md
     - Release Drafting: release_drafting.md
     - Reports:
         - September 24th, 2019: reports/progress_report_24-09-2019.md
