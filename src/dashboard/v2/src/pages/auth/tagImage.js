@@ -512,12 +512,12 @@ function Index(props) {
                           label="Undeveloped"
                         />
 
-                        <Field
+                        {/* <Field
                           component={RadioButton}
                           name="developmentGroup"
                           id="NoneId"
                           label="N/A"
-                        />
+                        /> */}
 
                       </RadioButtonGroup>
 
@@ -545,18 +545,18 @@ function Index(props) {
                           id="NoVisibleWashoverId"
                           label="No Washover"
                         />
-                        <Field
+                        {/* <Field
                           component={RadioButton}
                           name="washoverVisibilityGroup"
                           id="NoneId"
                           label="N/A"
-                        />
+                        /> */}
                       </RadioButtonGroup>
 
                       <br/>
 
                       <RadioButtonGroup
-                        id="washoverGroupId"
+                        id="impactGroupId"
                         label="Storm Impact"
                         value={values.impactGroup}
                         error={errors.impactGroup}
