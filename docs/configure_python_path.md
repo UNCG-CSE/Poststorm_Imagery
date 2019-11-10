@@ -21,15 +21,15 @@ The `psic` module is located under `src/python` in the project, so we'll need to
 
 ### Windows 10
 
-1.  Click `#!text Start` in the bottom-left
+1.  Click `Start` in the bottom-left
 2.  Search `environment variables`
-3.  Click `#!text Edit the system environment variables` in the search results
+3.  Click `Edit the system environment variables` in the search results
 4.  Click the `Environment Variables...` button in the bottom right-hand corner of the window that pops up
-5.  Click `#!text New...` and add the variable as either a user or system variable.
-    Variable name will be `PYTHONPATH` and value will be `#!text <path to project>/src/python`
+5.  Click `New...` and add the variable as either a user or system variable.
+    Variable name will be `PYTHONPATH` and value will be `<path to project>/src/python`
 
 
 !!! error "Module not found: 'psic'"
-    If you get an error that says something like `#!text Module 'psic' not found!`, then the python interpreter can't
+    If you get an error that says something like `Module 'psic' not found!`, then the python interpreter can't
     find the project. Double-check that the project is in the `PYTHONPATH`. You should see it in your environment
     variables when running `env` from terminal in **Linux** or in the environmental variables screen in **Windows 10**.
