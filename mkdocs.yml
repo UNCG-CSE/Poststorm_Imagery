@@ -38,8 +38,8 @@ theme:
 # This works well wtih the admonition extension
 extra_css:
     - stylesheets/extra.css
-    - stylesheets/extra.css.map
-    - stylesheets/extra.scss
+    # - stylesheets/extra.css.map
+    # - stylesheets/extra.scss
 #   - stylesheets/dark_theme.css
 #   - stylesheets/codehilite.css
 
