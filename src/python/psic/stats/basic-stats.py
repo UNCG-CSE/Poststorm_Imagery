@@ -4,6 +4,7 @@ import cv2
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
+# import pandas as pd
 from PIL import Image
 from scipy.stats import norm
 
@@ -232,7 +233,7 @@ def average_images(folder):
 # concat_images('data/test_ocean_images')
 # concat_images('data/test_shoreline_images')
 
-# Generate histograms for the concatenated (sum of all images) images in each directory
+# # Generate histograms for the concatenated (sum of all images) images in each directory
 # grayscale_image_histogram('data/test_inland_images/concat.jpg')
 # grayscale_image_histogram('data/test_ocean_images/concat.jpg')
 # grayscale_image_histogram('data/test_shoreline_images/concat.jpg')

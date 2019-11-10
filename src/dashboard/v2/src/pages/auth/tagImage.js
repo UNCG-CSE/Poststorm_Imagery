@@ -213,9 +213,11 @@ const CheckboxButton = ({
   form: { errors, touched },
   id,
   label,
+  checked,
+  disabled
 
 }) => {
-
+  //console.log(onChange)
   return (
     <div>
 
@@ -224,7 +226,7 @@ const CheckboxButton = ({
           name={name}
           id={id}
           type="checkbox"
-          checked={value}
+          checked={value }
           onChange={onChange}
           onBlur={onBlur}
           value={value}
@@ -232,6 +234,7 @@ const CheckboxButton = ({
           inputProps={{
             'aria-label': 'primary checkbox',
           }}
+          //disabled={disabled}
         />
       } label={label} />
 
@@ -265,7 +268,7 @@ class CheckboxGroup extends React.Component {
   };
 
   render() {
-    const { value, error, touched, label, children,style } = this.props;
+    const { value, error, touched, label, children,style,onChange } = this.props;
 
     return (
       <div >
@@ -273,7 +276,6 @@ class CheckboxGroup extends React.Component {
         <FormLabel component="legend" style={style}>{label}</FormLabel>
           <FormGroup  row>
             {React.Children.map(children, child => {
-
               return React.cloneElement(child, {
 
                 field: {
@@ -281,6 +283,7 @@ class CheckboxGroup extends React.Component {
                   onChange: this.handleChange,
                   onBlur: this.handleBlur,
                   style:style
+
                 }
               });
             })}
@@ -304,6 +307,8 @@ function Index(props) {
 
   const [isSubmitingForm, setSubmitionDisable] = React.useState(false);
 
+  const [terrainNoneStatus, setTerrainNoneStatus] = React.useState(true);
+
   function handle_image_collapse() {
     setExpanded(!expanded);
   }
@@ -323,6 +328,7 @@ function Index(props) {
   function handle_error_on_submit(res,enable=true){
     //setSubmitionDisable(enable)
     alert(res)
+    location.reload();
   }
 
   function handle_success_on_submit(res,enable=true){
@@ -334,11 +340,15 @@ function Index(props) {
   //submit
   function submit_as_ocean(values, actions) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/submit_ocean_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -349,11 +359,15 @@ function Index(props) {
 
   function skip_image(values) {
     setSubmitionDisable(true)
+    const date=new Date()
     let json_to_send ={
       image_id:props.data.image_id,
-      user_id:props.data.user_id
+      user_id:props.data.user_id,
+      time_end_tagging:date.getTime(),
+      time_start_tagging:props.data.time_start_tagging,
+      user_name: hasUser ? props.user.nickname: undefined
     }
-
+    console.log(json_to_send)
     axios.post(`http://${IP}:3000/api/skip_image`, json_to_send)
     .then(res => {
       handle_success_on_submit(res,false)
@@ -364,15 +378,18 @@ function Index(props) {
 
   function submit_tags(values, actions) {
     setSubmitionDisable(true)
-
+    const date=new Date()
     let form_values= {
 
         ...values,
         additional_notes:document.getElementById("outlined-dense-multiline").value,
         image_id:props.data.image_id,
-        user_id:props.data.user_id
+        user_id:props.data.user_id,
+        time_end_tagging:date.getTime(),
+        time_start_tagging:props.data.time_start_tagging,
+        user_name: hasUser ? props.user.nickname: undefined
     }
-
+    console.log(form_values)
     axios.post(`http://${IP}:3000/api/submit_image_tags`, form_values)
     .then(res => {
 
@@ -383,6 +400,10 @@ function Index(props) {
 
   }
 
+  function toggleNa(){
+    terrainNoneStatus(!terrainNoneStatus)
+    console.log(terrainNoneStatus)
+  }
   return (
     <div>
       <CenterGrid>
@@ -397,7 +418,7 @@ function Index(props) {
 
           <CardActionArea disabled>
             <Collapse in={!expanded} timeout="auto" unmountOnExit>
-              <CardMedia component="img" alt="Post Storm Image to tag" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
+              <CardMedia component="img" alt="Error - Please click full image button" image={props.data.small_image_path|| SAD_FACE} title="Contemplative Reptile"/>
               <CardContent>
                 {/* <Typography gutterBottom variant="h5" component="h2">
                   {props.data.small_image_path} !!
@@ -443,14 +464,14 @@ function Index(props) {
                 developmentGroup: "",
                 washoverVisibilityGroup: "",
                 impactGroup:"",
-                terrianGroup:[],
+                terrainGroup:[],
                 //additionalNotes:""
               }}
               validationSchema={Yup.object().shape({
-                developmentGroup: Yup.string().required("Please select a option"),
-                washoverVisibilityGroup: Yup.string().required("Please select a option"),
-                impactGroup: Yup.string().required("Please select a option"),
-                terrianGroup: Yup.array().required("Please select atleast one option"),
+                developmentGroup: Yup.string().required("Please select an option"),
+                washoverVisibilityGroup: Yup.string().required("Please select an option"),
+                impactGroup: Yup.string().required("Please select an option"),
+                terrainGroup: Yup.array().required("Please select at least one option"),
                 //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
@@ -491,6 +512,13 @@ function Index(props) {
                           label="Undeveloped"
                         />
 
+                        {/* <Field
+                          component={RadioButton}
+                          name="developmentGroup"
+                          id="NoneId"
+                          label="N/A"
+                        /> */}
+
                       </RadioButtonGroup>
 
                       <br/>
@@ -517,12 +545,18 @@ function Index(props) {
                           id="NoVisibleWashoverId"
                           label="No Washover"
                         />
+                        {/* <Field
+                          component={RadioButton}
+                          name="washoverVisibilityGroup"
+                          id="NoneId"
+                          label="N/A"
+                        /> */}
                       </RadioButtonGroup>
 
                       <br/>
 
                       <RadioButtonGroup
-                        id="washoverGroupId"
+                        id="impactGroupId"
                         label="Storm Impact"
                         value={values.impactGroup}
                         error={errors.impactGroup}
@@ -556,37 +590,66 @@ function Index(props) {
                           label="Inundation"
                         />
 
+                        <Field
+                          component={RadioButton}
+                          name="impactGroup"
+                          id="NoneId"
+                          label="N/A"
+                        />
+
                       </RadioButtonGroup>
 
                       <br/>
 
                       <CheckboxGroup
-                        id="terrianGroup"
-                        label="Terrian Type"
-                        value={values.terrianGroup}
-                        error={errors.terrianGroup}
-                        touched={touched.terrianGroup}
+                        id="terrainGroup"
+                        label="Terrain Type"
+                        value={values.terrainGroup}
+                        error={errors.terrainGroup}
+                        touched={touched.terrainGroup}
                         onChange={setFieldValue}
                         onBlur={setFieldTouched}
                         style={MyTheme.palette.purple800}
+
                       >
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="RiverId"
                           label="River"
+                          disabled={terrainNoneStatus}
+
                         />
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="MarshId"
                           label="Marsh"
+                          disabled={terrainNoneStatus}
                         />
                         <Field
                           component={CheckboxButton}
-                          name="terrianGroup"
+                          name="terrainGroup"
                           id="SandyCoastlineId"
                           label="Sandy Coastline"
+                          disabled={terrainNoneStatus}
+                        />
+
+                        <Field
+                          component={CheckboxButton}
+                          name="terrainGroup"
+                          id="InlandId"
+                          label="Inland"
+                          disabled={terrainNoneStatus}
+                        />
+
+                        <Field
+                          component={CheckboxButton}
+                          name="terrainGroup"
+                          id="NoneId"
+                          label="N/A"
+                          //onChange='aaaaaaaaaaaaaaaaaaa'
+                          // checked={terrainNoneStatus}
                         />
                       </CheckboxGroup>
 
@@ -650,7 +713,8 @@ Index.getInitialProps = async function(props) {
     if(props.req.user)
     {
       options ={
-        userId:props.req.user.user_id
+        userId:props.req.user.user_id,
+        user_name:props.req.user.nickname
       }
     }
     // const options ={
@@ -665,9 +729,10 @@ Index.getInitialProps = async function(props) {
     {
       typed_user_id=props.req.user.user_id
     }
-
+    const date=new Date()
     return {
       data:{
+        time_start_tagging:date.getTime(),
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
         small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
         image_id:response.data.image_id,

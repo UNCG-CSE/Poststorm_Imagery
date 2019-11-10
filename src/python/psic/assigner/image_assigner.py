@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 from os import path
 from typing import List, Dict, Union
 
@@ -15,6 +16,8 @@ MINIMUM_TAGGERS_NEEDED: int = 2
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
 
+MINUTES_BETWEEN_BACKUPS: float = 15
+
 
 class ImageAssigner:
     """
@@ -28,9 +31,6 @@ class ImageAssigner:
     tagging (in the scope of the directory containing the catalog.csv).
     """
 
-    # For this class, use queues instead of lists for the sake of implementing into an asynchronous environment due to
-    # the Queue object's ability to enforce blocking.
-
     random.seed(a=RANDOM_SEED)
 
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
@@ -38,7 +38,7 @@ class ImageAssigner:
     debug: bool = False
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
-    small_path: Union[bytes, str, None]  # The path to the resized image scope path
+    small_path: Union[bytes, str]  # The path to the resized image scope path
 
     pending_images_queue: List[Image] or None = list()  # The queue that stores all images left to tag by their ID
 
@@ -49,8 +49,10 @@ class ImageAssigner:
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
 
+    last_backup_timestamp: float  # The last time a backup of the assigner state was made
+
     def __init__(self, scope_path: Union[bytes, str],
-                 small_path: Union[bytes, str, None] = None, **kwargs):
+                 small_path: Union[bytes, str], **kwargs):
 
         # Enable debugging flag (True = output debug statements, False = don't output debug statements)
         self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
@@ -65,19 +67,19 @@ class ImageAssigner:
         if path.isfile(self.catalog_path) is False:
             raise CatalogNotFoundException
 
-        try:
-            if small_path is not None and path.exists(h.validate_and_expand_path(small_path)):
-                self.small_path = h.validate_and_expand_path(small_path)
-            else:
-                self.small_path = None
-        except OSError:
-            self.small_path = None
+        if path.exists(h.validate_and_expand_path(small_path)):
+            self.small_path = h.validate_and_expand_path(small_path)
+        else:
+            raise OSError('Could not find the path: %s on the local file-system!' % small_path)
 
         # Add each image into the queue
         for image in self._image_list_from_csv():
             self.pending_images_queue.append(image)
             if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
+
+        # Set a starting value for the last time the assigner was backed up
+        self.last_backup_timestamp = datetime.now().timestamp()
 
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
@@ -95,12 +97,28 @@ class ImageAssigner:
             'file'}).values.tolist()
 
         for f in rel_file_paths:
-            image_list.append(Image(original_size_path=f[0],
-                                    small_size_path=f[0]))
+            image_list.append(Image(rel_path=f[0]))
 
-        # TODO: Should probably ensure that each image exists and has a smaller version and possibly create a smaller
-        #  image if it doesn't exist.
         return random.sample(image_list, k=len(image_list))
+
+    def is_time_for_backup(self, max_minutes=MINUTES_BETWEEN_BACKUPS) -> bool:
+        """
+        A method to get if it is time for a new backup to be taken. This simply takes the number of minutes specified or
+        the default value defined in the class and sees if the time since the last backup exceeds the specified number
+        of minutes. This method does not change any values. It only does a comparison.
+
+        :param max_minutes: The max number of minutes to wait in-between backups
+        :return: Whether (True) or not (False) it is time for the next backup to occur
+        """
+
+        # Calculate the difference between the last backup and now
+        return (datetime.now().timestamp() - self.get_last_backup_timestamp()) > (max_minutes * 60)
+
+    def get_last_backup_timestamp(self) -> float:
+        return self.last_backup_timestamp
+
+    def mark_last_backup_timestamp(self):
+        self.last_backup_timestamp = datetime.now().timestamp()
 
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         """
@@ -114,10 +132,18 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].original_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.current_image[user_id].small_size_path))
+                path.join(self.scope_path, self.current_image[user_id].rel_path))
+
+    def has_a_current_image(self, user_id: str) -> bool:
+        """
+        Check if the user has an image currently. This can be used to check for cases where the user has not been
+        assigned an image yet (i.e. they logged into the dashboard for the first time).
+
+        :return: Whether (True) or not (False) the user currently is assigned an image"""
+        return user_id in self.current_image.keys()
 
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
@@ -132,10 +158,10 @@ class ImageAssigner:
         # If the user has no current image, assign them one from the pending queue
 
         if user_id not in self.current_image.keys():
-            self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
+            self.get_next_image(user_id=user_id)
 
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 
@@ -156,10 +182,10 @@ class ImageAssigner:
         """
         if full_size:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).original_size_path))
+                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
         else:
             return h.validate_and_expand_path(
-                path.join(self.scope_path, self.get_next_image(user_id=user_id, skip=skip).small_size_path))
+                path.join(self.small_path, self.get_next_image(user_id=user_id, skip=skip).rel_path))
 
     def get_next_image(self, user_id: str, expanded: bool = False, skip: bool = False) -> Image:
         """
@@ -180,27 +206,38 @@ class ImageAssigner:
 
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
+
+            # Record that the user started tagging the image
+            self.current_image[user_id].mark_tagging_start(user_id=user_id)
+
             return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].get_taggers()) \
-                and len(self.current_image[user_id].taggers[user_id].keys()) > 0:
+                and len(self.current_image[user_id].get_tags(user_id=user_id).keys()) > 0:
             self._user_done_tagging_current_image(user_id=user_id)
         else:
             self._user_skip_tagging_current_image(user_id=user_id)
 
+        # Record that the user stopped tagging the most recent image
+        self.current_image[user_id].mark_tagging_stop(user_id=user_id)
+
+        # Set the chosen image as the user's current image
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
 
+        # Record that the user started tagging the new image
+        self.current_image[user_id].mark_tagging_start(user_id=user_id)
+
         if expanded:
-            return self.current_image[user_id].expanded(self.scope_path)
+            return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
         else:
             return self.current_image[user_id]
 
     def _get_next_suitable_image(self, user_id: str) -> Image:
         next_image: Image = self.pending_images_queue.pop()
 
-        if user_id in (next_image.skippers or next_image.get_taggers()):
+        if (user_id in next_image.get_skippers()) or (user_id in next_image.get_taggers()):
             if self.debug:
-                print('User has already processed %s (tagged or skipped)' % next_image.original_size_path)
+                print('User has already processed %s (tagged or skipped)' % next_image.rel_path)
 
             # Recursively search until an image that has not been tagged or skipped by this user is found
             next_next_image = self._get_next_suitable_image(user_id=user_id)
@@ -211,26 +248,23 @@ class ImageAssigner:
             return next_image
 
     def _user_done_tagging_current_image(self, user_id: str):
-        if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED:
-            # If enough people have tagged this image
+        if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED \
+                and self.current_image[user_id].get_best_tags() is not None:
+            # If enough people have tagged this image and there's a consensus
 
-            final_tags = self.current_image[user_id].get_best_tags()
+            self.current_image[user_id].finalize_tags()
 
-            if final_tags is None:
-                # There is no consensus between users on what the accurate tags are
-                self.pending_images_queue.append(self.current_image[user_id])
-            else:
-                # Majority of users agree on a tag for this image
-                self.finished_tagged_queue.append(self.current_image[user_id])
+            # Majority of users agree on a tag for this image
+            self.finished_tagged_queue.append(self.current_image[user_id])
         else:
             # If image needs more people to tag it
             self.pending_images_queue.append(self.current_image[user_id])
 
     def _user_skip_tagging_current_image(self, user_id: str):
 
-        self.current_image[user_id].skippers.add(user_id)
+        self.current_image[user_id].add_skipper(user_id)
 
-        if len(self.current_image[user_id].skippers) > MAX_ALLOWED_SKIPS:
+        if len(self.current_image[user_id].get_skippers()) > MAX_ALLOWED_SKIPS:
             # If the image has exceeded the allowed number of skips
             self.max_skipped_queue.append(self.current_image[user_id])
         else:
