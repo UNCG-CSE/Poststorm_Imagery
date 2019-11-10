@@ -10,6 +10,9 @@ ignore:
   # Test files
   - '**/psic/tests'
 
+  # Misc statistics files
+  - '**/psic/stats'
+
   # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
