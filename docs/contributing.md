@@ -7,7 +7,7 @@ When committing to the repository, there are a few conventions that should be fo
 - Code is clean and commented where needed
 - Any unused code is either removed or commented out
 - Methods that are not entirely obvious as to how they work should have a doc comment explaining the purpose and
-  arguments (see [Storm.py](https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/src/python/Poststorm_Imagery/collector/Storm.py)
+  arguments (see [Storm.py](https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/src/python/psic/collector/storm.py)
   for an example)
 - Code with different functions should be reasonably separated by directories of their function
 - When changing any functions, documentation referencing that code should be changed to match (.md files / doc comments)
@@ -25,9 +25,9 @@ changes with the original creator
 ## Project & External Data
 
 - All large data files must be excluded from the GitHub repository.
-  *Note: All files except `.gitignore` files are ignored in the `#!text data` folder, so storing data in a sub-directory
+  *Note: All files except `.gitignore` files are ignored in the `data` folder, so storing data in a sub-directory
   there is a good option! To force Git to commit a directory, but not the files in it, you can copy
-  the `.gitignore` from `#!text data/tar_cache` into the directory.*
+  the `.gitignore` from `data/tar_cache` into the directory.*
 
 [^1]:   !!! note "Other Branches"
             Create new branches with beta as the base, as needed, making sure to name them appropriately to the feature you are

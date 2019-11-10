@@ -11,7 +11,7 @@ The only requirement is **Node.js** which is a JavaScript runtime built on
 Chrome's V8 JavaScript engine. Simply go to [here](https://nodejs.org/en/) and
 download the latest version, *at this time **12.13.0 LTS***.
 
-### Setting Up The Environment
+## Setting Up The Environment
 
 Now that you have Node installed you are going to need to install the packages.
 
@@ -23,19 +23,30 @@ Now that you have Node installed you are going to need to install the packages.
 3. Now you need to determine if you want to run the Node servers with localhost
    or your machines IP address.
 
-### Configure Auth0
+## Configure Auth0
 
 the `v2` dashboard now has user authentication provided by Auth0. As such we have to add some configuration to get
 things working. At `src/dashboard/v2` a file called `.env` should exist that contains the following contents:
 
-```
-PORT= Port to have the web server to be on
+```dotenv
+PORT=3000  # The port of the server to run on
 
-AUTH0_DOMAIN= The domain given by auth0
-AUTH0_CLIENT_ID= Id so auth0 knows who this is
-AUTH0_CLIENT_SECRET= secret key for authentication, DONT SHARE THIS EVER, LIKE EVER
-AUTH0_CALLBACK_URL= call back route, for example http://localhost:3000/callback
-BASE_URL= our sites base url, for example http://localhost:3000
+AUTH0_DOMAIN=  # The domain of the authenticator
+AUTH0_CLIENT_ID=  # The admin's ID
+AUTH0_CLIENT_SECRET=  # The admin's secret
+
+BASE_IP=localhost  # The IP to run the server on
+BASE_URL=http://localhost:3000  # The URL of the server (include http/https and port)
+AUTH0_CALLBACK_URL=http://localhost:3000/callback  # The callback URL for logout (same as BASE_URL, but with /callback)
+
+ASSIGNER_SCRIPT=assign_batch.py
+ASSIGNER_SOURCE=../../python/psic/assigner/
+IMAGE_SOURCE=/home/matmorcat/P-Sick/
+
+FULL_SIZE_IMAGE_PATH=/home/matmorcat/P-Sick/data/Florence  # The scope path to where the catalog.csv should exist
+SMALL_SIZE_IMAGE_PATH=/home/matmorcat/P-Sick/small/Florence  # The scope path to the small version of the above
+
+# The IP in src/dashboard/v2/src/server-config.js must also be changed to the same value used here!
 ```
 
 !!! Note
@@ -43,11 +54,11 @@ BASE_URL= our sites base url, for example http://localhost:3000
     `AUTH0_DOMAIN`,`AUTH0_CLIENT_ID`,`AUTH0_CLIENT_SECRET` can all be obtained from the Auth0 website for the
     application. You may copy this file and rename it to `.env` then modify the values as needed.
 
-### Configuring Python Path
+## Configuring Python Path
 
-Follow the steps at [**Configuring Module**](./configure_python_path.md)
+Follow the steps at [**Configuring Module**](../configure_python_path.md)
 
-### Running
+## Running
 
 After setting up the packages and setting up the `.env` file for Auth0 we can start up the host server.
 Assuming your python paths for the `psic` modules are set you can simply run `npm run prod` to run the production
