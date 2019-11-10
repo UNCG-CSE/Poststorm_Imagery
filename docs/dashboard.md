@@ -28,14 +28,14 @@ Now that you have Node installed you are going to need to install the packages.
 the `v2` dashboard now has user authentication provided by Auth0. As such we have to add some configuration to get
 things working. At `src/dashboard/v2` a file called `.env` should exist that contains the following contents:
 
-```
-PORT= Port to have the web server to be on
+```js
+PORT = 3000 //Port to have the web server to be on
 
-AUTH0_DOMAIN= The domain given by auth0
-AUTH0_CLIENT_ID= Id so auth0 knows who this is
-AUTH0_CLIENT_SECRET= secret key for authentication, DONT SHARE THIS EVER, LIKE EVER
-AUTH0_CALLBACK_URL= call back route, for example http://localhost:3000/callback
-BASE_URL= our sites base url, for example http://localhost:3000
+AUTH0_DOMAIN = myAppName.auth0.com//The domain given by auth0
+AUTH0_CLIENT_ID = myAppId//Id so auth0 knows who this is
+AUTH0_CLIENT_SECRET = mysecrect//secret key for authentication, DONT SHARE THIS EVER, LIKE EVER
+AUTH0_CALLBACK_URL = http://localhost:3000/callback //call back route for logout
+BASE_URL= http://localhost:3000 //our sites base url
 ```
 
 !!! Note

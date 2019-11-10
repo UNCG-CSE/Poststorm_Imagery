@@ -26,12 +26,22 @@ nav:
 
 theme:
   name: 'material'
+  custom_dir: 'theme'
   font:
     text: 'Ubuntu'
     code: 'Ubuntu Mono'
   palette:
     primary: 'light green'
     accent: 'light green'
+    
+# Dark theme from https://github.com/fmaida/mkdocs-material-dark-theme
+# This works well wtih the admonition extension
+extra_css:
+    - stylesheets/extra.css
+    - stylesheets/extra.css.map
+    - stylesheets/extra.scss
+#   - stylesheets/dark_theme.css
+#   - stylesheets/codehilite.css
 
 plugins:
     - search
@@ -41,7 +51,11 @@ plugins:
 markdown_extensions:
     - toc
     - admonition
-    - codehilite
+    - codehilite:
+        guess_lang: False
+        use_pygments: True
+        noclasses: True
+        pygments_style: monokai
     - footnotes
     - pymdownx.details
     - pymdownx.emoji
