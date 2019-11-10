@@ -11,7 +11,7 @@ The only requirement is **Node.js** which is a JavaScript runtime built on
 Chrome's V8 JavaScript engine. Simply go to [here](https://nodejs.org/en/) and
 download the latest version, *at this time **12.13.0 LTS***.
 
-### Setting Up The Environment
+## Setting Up The Environment
 
 Now that you have Node installed you are going to need to install the packages.
 
@@ -23,7 +23,7 @@ Now that you have Node installed you are going to need to install the packages.
 3. Now you need to determine if you want to run the Node servers with localhost
    or your machines IP address.
 
-### Configure Auth0
+## Configure Auth0
 
 the `v2` dashboard now has user authentication provided by Auth0. As such we have to add some configuration to get
 things working. At `src/dashboard/v2` a file called `.env` should exist that contains the following contents:
@@ -54,11 +54,11 @@ SMALL_SIZE_IMAGE_PATH=/home/matmorcat/P-Sick/small/Florence  # The scope path to
     `AUTH0_DOMAIN`,`AUTH0_CLIENT_ID`,`AUTH0_CLIENT_SECRET` can all be obtained from the Auth0 website for the
     application. You may copy this file and rename it to `.env` then modify the values as needed.
 
-### Configuring Python Path
+## Configuring Python Path
 
 Follow the steps at [**Configuring Module**](../configure_python_path.md)
 
-### Running
+## Running
 
 After setting up the packages and setting up the `.env` file for Auth0 we can start up the host server.
 Assuming your python paths for the `psic` modules are set you can simply run `npm run prod` to run the production
