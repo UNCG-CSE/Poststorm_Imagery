@@ -631,20 +631,12 @@ function Index(props) {
                           label="Sandy Coastline"
                           disabled={terrianNoneStatus}
                         />
-
                         <Field
                           component={CheckboxButton}
                           name="terrianGroup"
-                          id="InlandId"
-                          label="Inland"
-                          disabled={terrianNoneStatus}
-                        />
-                        <Field
-                          component={CheckboxButton}
-                          name="terrianGroup"
-                          id="NoneId"
+                          id="NodeId"
                           label="N/A"
-                          //onChange='aaaaaaaaaaaaaaaaaaa'
+                          onChange='aaaaaaaaaaaaaaaaaaa'
                           // checked={terrianNoneStatus}
                         />
                       </CheckboxGroup>
