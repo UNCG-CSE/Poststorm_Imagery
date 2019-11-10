@@ -634,12 +634,21 @@ function Index(props) {
                           label="Sandy Coastline"
                           disabled={terrainNoneStatus}
                         />
+
                         <Field
                           component={CheckboxButton}
                           name="terrainGroup"
-                          id="NodeId"
+                          id="InlandId"
+                          label="Inland"
+                          disabled={terrainNoneStatus}
+                        />
+
+                        <Field
+                          component={CheckboxButton}
+                          name="terrainGroup"
+                          id="NoneId"
                           label="N/A"
-                          onChange='aaaaaaaaaaaaaaaaaaa'
+                          //onChange='aaaaaaaaaaaaaaaaaaa'
                           // checked={terrainNoneStatus}
                         />
                       </CheckboxGroup>

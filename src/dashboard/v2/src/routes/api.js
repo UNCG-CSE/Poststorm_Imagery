@@ -52,6 +52,7 @@ const tag_name_value_pairs={
         NoneId:'NoneId',
         RiverId:'RiverId',
         MarshId:'MarshId',
+        InlandId:'InlandId',
         SandyCoastlineId:'SandyCoastlineId'
     }
 };
