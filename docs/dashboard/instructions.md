@@ -56,7 +56,7 @@ SMALL_SIZE_IMAGE_PATH=/home/matmorcat/P-Sick/small/Florence  # The scope path to
 
 ### Configuring Python Path
 
-Follow the steps at [**Configuring Module**](./configure_python_path.md)
+Follow the steps at [**Configuring Module**](../configure_python_path.md)
 
 ### Running
 

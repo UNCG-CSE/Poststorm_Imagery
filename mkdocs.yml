@@ -14,8 +14,8 @@ nav:
     - Data Collection: collector.md
     - Cataloging Images: cataloging.md
     - Dashboard UI:
-        - Dashboard: dashboard.md
-        - Dashboard Information: dashboard_info.md
+        - Instructions: dashboard/instructions.md
+        - Structure: dashboard/structure.md
     - Release Drafting: release_drafting.md
     - Reports:
         - September 24th, 2019: reports/progress_report_24-09-2019.md
@@ -33,7 +33,7 @@ theme:
   palette:
     primary: 'light green'
     accent: 'light green'
-    
+
 # Dark theme from https://github.com/fmaida/mkdocs-material-dark-theme
 # This works well wtih the admonition extension
 extra_css:
