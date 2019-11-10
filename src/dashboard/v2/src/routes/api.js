@@ -44,6 +44,7 @@ const tag_name_value_pairs={
         NoneId:'NoneId',
         RiverId:'RiverId',
         MarshId:'MarshId',
+        InlandId: 'InlandId',
         SandyCoastlineId:'SandyCoastlineId'
     }
 }
@@ -77,7 +78,8 @@ const possible_terrianGroup_tags =[
     'RiverId',
     'MarshId',
     'SandyCoastlineId',
-    'NoneId'
+    'NoneId',
+    'InlandId'
 ]
 
 //Used to run python scripts in a sync manner so that we dont have to do promise nesting.
