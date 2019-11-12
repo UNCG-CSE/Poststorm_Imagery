@@ -1,11 +1,12 @@
 import re
+from os import path
 from typing import List
 
 from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
 
 # Matches archive files for most (if not all) formats
-URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"]+\\.(tar|zip))\\s*[\"\']"
+URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"\']+\\.(tar|zip))\\s*[\"\']"
 # Groups: <archive_url>, <archive_type>
 
 
@@ -51,6 +52,10 @@ class Storm:
         else:
             # Load the storm's index.html
             r_text = get_http_response(self.storm_url).text
+
+            # If no
+            if len(re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)) == 0 and self.storm_year < 2010:
+                r_text = get_http_response(path.join(path.split(self.storm_url)[0] + '/AddedInfo.HTM')).text
 
         # Clear all existing archive files
         self.archive_list = list()
