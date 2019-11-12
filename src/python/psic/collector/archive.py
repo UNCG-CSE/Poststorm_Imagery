@@ -49,7 +49,10 @@ class Archive:
         self.type_label = archive_label
 
         # Parse out needed information from the URL
-        self.name, self.type = re.findall('.*/([^/]+)\\.(tar|zip)', self.url)[0]
+        self.name, self.type = re.findall(re.compile('.*/([^/]+)\\.(tar|zip)', re.IGNORECASE), self.url)[0]
+
+        # Make sure the type is lower-case (e.g. don't distinguish between 'ZIP' and 'zip')
+        self.type = self.type.lower()
 
     def __str__(self) -> str:
         """Prints out the archive label and date in a human readable format"""

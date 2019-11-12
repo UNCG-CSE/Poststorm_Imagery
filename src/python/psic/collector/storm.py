@@ -6,7 +6,13 @@ from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
 
 # Matches archive files for most (if not all) formats
-URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = "[\"\']\\s*(https?[^\"\']+\\.(tar|zip))\\s*[\"\']"
+URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = re.compile("[\"\'=]\\s*(https?[^\"\'=]+\\.(tar|zip))\\s*[\"\'>]",
+                                                      re.IGNORECASE)
+# Groups: <archive_url>, <archive_type>
+
+# Matches archive files for most (if not all) formats
+URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE = re.compile("[\"\'=]\\s*([^\"\'=]+\\.(tar|zip))\\s*[\"\'>]",
+                                                       re.IGNORECASE)
 # Groups: <archive_url>, <archive_type>
 
 
@@ -55,7 +61,7 @@ class Storm:
 
             # If no
             if len(re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)) == 0 and self.storm_year < 2010:
-                r_text = get_http_response(path.join(path.split(self.storm_url)[0] + '/AddedInfo.HTM')).text
+                r_text = get_http_response(path.join(path.split(self.storm_url)[0], 'AddedInfo.HTM')).text
 
         # Clear all existing archive files
         self.archive_list = list()
@@ -66,8 +72,19 @@ class Storm:
         # Make search pattern case-insensitive
         search_re = re.compile(search_re, re.IGNORECASE)
 
+        flag_relative: bool = False
+        url_list = re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)
+
+        if len(url_list) == 0:
+            flag_relative = True
+            url_list = re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE, r_text)
+
         # Find all storm data by regex parsing of URLs
-        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text):
+        for archive_url, archive_type in url_list:
+
+            if flag_relative:
+                archive_url = path.join(path.split(self.storm_url)[0], archive_url)
+
             if re.search(search_re, archive_url) is not None:
 
                 # Flag will be toggled to True if the current url matches an already accounted for archive
