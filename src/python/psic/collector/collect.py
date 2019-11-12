@@ -193,7 +193,7 @@ if OPTIONS.no_status is False:
                 # North Dakota Flooding (2011) does not provide an archive, only listed with "Contact for download info"
                 print('\t' * 2 + '<No archive provided. Contact NOAA for questions>')
             else:
-                print('\t' * 2 + '<No archive files detected in index.html>')
+                print('\t' * 2 + '<No archive files detected>')
 
         print()
         storm_number += 1

@@ -4,8 +4,9 @@ from typing import List, Tuple
 
 from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
-
 # Matches archive files for most (if not all) formats
+from psic.collector.response_getter import get_full_content_length
+
 URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = re.compile("[\"\'=]\\s*(https?[^\"\'=]+\\.(tar|zip))\\s*[\"\'>]",
                                                       re.IGNORECASE)
 # Groups: <archive_url>, <archive_type>
@@ -88,7 +89,9 @@ class Storm:
                 if archive_url.startswith('http'):
                     url_list.append((archive_url, archive_type))
                 else:
-                    url_list.append((path.join(path.split(self.storm_url)[0], archive_url), archive_type))
+                    new_url = path.join(path.split(self.storm_url)[0], archive_url)
+                    if get_full_content_length(new_url) != 0:
+                        url_list.append((new_url, archive_type))
 
             # Find all storm data by regex parsing of URLs
             for archive_url, archive_type in url_list:

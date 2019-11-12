@@ -1,8 +1,6 @@
 import requests
 from requests import Response
 
-from psic import h
-
 
 def get_http_response(url: str) -> Response:
     """Attempts to connect to the website via an HTTP request
@@ -40,6 +38,5 @@ def get_full_content_length(url: str) -> int:
 
         return full_length
 
-    except (OSError, ConnectionError) as e:
-        h.print_error(e)
+    except (OSError, ConnectionError):
         return 0
