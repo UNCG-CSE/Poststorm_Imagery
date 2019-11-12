@@ -1,6 +1,6 @@
 import re
 from os import path
-from typing import List
+from typing import List, Tuple
 
 from psic.collector.archive import Archive
 from psic.collector.connection_handler import get_http_response
@@ -72,18 +72,16 @@ class Storm:
         # Make search pattern case-insensitive
         search_re = re.compile(search_re, re.IGNORECASE)
 
-        flag_relative: bool = False
-        url_list = re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)
+        url_list: List[Tuple[str, str]] = list()
 
-        if len(url_list) == 0:
-            flag_relative = True
-            url_list = re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE, r_text)
+        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE, r_text):
+            if archive_url.startswith('http'):
+                url_list.append((archive_url, archive_type))
+            else:
+                url_list.append((path.join(path.split(self.storm_url)[0], archive_url), archive_type))
 
         # Find all storm data by regex parsing of URLs
         for archive_url, archive_type in url_list:
-
-            if flag_relative:
-                archive_url = path.join(path.split(self.storm_url)[0], archive_url)
 
             if re.search(search_re, archive_url) is not None:
 
