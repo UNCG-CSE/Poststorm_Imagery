@@ -100,7 +100,7 @@ class Archive:
             # If the archive file does not exist locally in the cache
             if os.path.exists(output_dir) and os.path.isfile(self.path):
                 print('File \"' + self.path + '\" already exists!  ... Skipping')
-                if self.is_tar:
+                if self.is_tar():
                     return tarfile.open(self.path)
                 else:
                     return ZipFile(self.path)
@@ -193,7 +193,7 @@ class Archive:
             print('Extracting files...')
             Archive.extract_archive(self.path)
 
-        if self.is_tar:
+        if self.is_tar():
             return tarfile.open(self.path)
         else:
             return ZipFile(self.path)
@@ -266,7 +266,7 @@ class Archive:
             f_members = f.getmembers()
         elif zipfile.is_zipfile(archive_file_path):
             f = zipfile.ZipFile(archive_file_path)
-            f_members = f.namelist()
+            f_members = f.infolist()
         else:
             raise IOError('File is not of a supported archive type!')
 
@@ -278,10 +278,17 @@ class Archive:
             os.makedirs(extract_dir_path)
 
         for member in f_members:
-            if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
-                print('\rCreating \t' + member.name + ' ... ', end='')
+
+            name: str  # The name of the member
+            if type(member) == ZipInfo:
+                name = member.filename
+            else:
+                name = member.name
+
+            if os.path.exists(os.path.join(extract_dir_path, os.path.split(name)[1])) is False:
+                print('\rCreating \t' + name + ' ... ', end='')
                 f.extract(member, extract_dir_path)
             elif member.name != '.':
-                print('\rSkipping \t' + member.name + ' as it already exists ... ', end='')
+                print('\rSkipping \t' + name + ' as it already exists ... ', end='')
 
         f.close()
