@@ -50,19 +50,6 @@ class Storm:
         :param search_re: A regular expression to search all archive files for
         """
 
-        r_text: str  # The text in which to search for links to archives
-        if self.storm_id == 'apr11_tornado':
-            # Specific case for Tuscaloosa, AL Tornado (2011), obtaining info requires querying ArcGIS
-            # Just give the permanent archive link
-            r_text = '"http://geodesy.noaa.gov/storm_archive/storms/apr11_tornado/jgw_met/all_world.zip"'
-        else:
-            # Load the storm's index.html
-            r_text = get_http_response(self.storm_url).text
-
-            # If no
-            if len(re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)) == 0 and self.storm_year < 2010:
-                r_text = get_http_response(path.join(path.split(self.storm_url)[0], 'AddedInfo.HTM')).text
-
         # Clear all existing archive files
         self.archive_list = list()
 
@@ -72,31 +59,57 @@ class Storm:
         # Make search pattern case-insensitive
         search_re = re.compile(search_re, re.IGNORECASE)
 
-        url_list: List[Tuple[str, str]] = list()
+        try:
 
-        for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE, r_text):
-            if archive_url.startswith('http'):
-                url_list.append((archive_url, archive_type))
+            ##################################################################
+            # Define where the program should look in order to find archives #
+            ##################################################################
+
+            r_text: str  # The text in which to search for links to archives
+            if self.storm_id == 'apr11_tornado':
+                # Specific case for Tuscaloosa, AL Tornado (2011), obtaining info requires querying ArcGIS
+                # Just give the permanent archive link
+                r_text = '"http://geodesy.noaa.gov/storm_archive/storms/apr11_tornado/jgw_met/all_world.zip"'
             else:
-                url_list.append((path.join(path.split(self.storm_url)[0], archive_url), archive_type))
+                # Load the storm's index.html
+                r_text = get_http_response(self.storm_url).text
 
-        # Find all storm data by regex parsing of URLs
-        for archive_url, archive_type in url_list:
+                # Older storms have a link to the AddedInfo.HTM with archives listed there
+                if len(re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL, r_text)) == 0 and self.storm_year < 2010:
+                    r_text = get_http_response(path.join(path.split(self.storm_url)[0], 'AddedInfo.HTM')).text
 
-            if re.search(search_re, archive_url) is not None:
+            #########################################
+            # Assemble a list of archives available #
+            #########################################
 
-                # Flag will be toggled to True if the current url matches an already accounted for archive
-                flag_exists = False
+            url_list: List[Tuple[str, str]] = list()
 
-                for archive in self.archive_list:
-                    if archive.url == archive_url:
-                        # If the archive already appears in the list
+            for archive_url, archive_type in re.findall(URL_STORMS_REGEX_PATTERN_ARCHIVE_RELATIVE, r_text):
+                if archive_url.startswith('http'):
+                    url_list.append((archive_url, archive_type))
+                else:
+                    url_list.append((path.join(path.split(self.storm_url)[0], archive_url), archive_type))
 
-                        flag_exists = True
-                        break
+            # Find all storm data by regex parsing of URLs
+            for archive_url, archive_type in url_list:
 
-                if flag_exists is False:
-                    self.archive_list.append(Archive(archive_url=archive_url))
+                if re.search(search_re, archive_url) is not None:
+
+                    # Flag will be toggled to True if the current url matches an already accounted for archive
+                    flag_exists = False
+
+                    for archive in self.archive_list:
+                        if archive.url == archive_url:
+                            # If the archive already appears in the list
+
+                            flag_exists = True
+                            break
+
+                    if flag_exists is False:
+                        self.archive_list.append(Archive(archive_url=archive_url))
+
+        except ConnectionError:
+            self.archive_list = list()
 
     """ DISABLED: Does not cover JPEG files reliably
 

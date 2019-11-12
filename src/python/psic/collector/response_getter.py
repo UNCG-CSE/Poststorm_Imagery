@@ -16,13 +16,10 @@ def get_http_response(url: str) -> Response:
         if r.status_code == requests.codes.ok:
             return r
         else:
-            h.print_error('Connection refused! Returned code: ' + str(r.status_code))
-            exit()
+            raise ConnectionError('Connection refused! Returned code: ' + str(r.status_code))
 
     except Exception as e:
-        h.print_error('Error occurred while trying to connect to ' + url)
-        h.print_error('Error: ' + str(e))
-        exit()
+        raise ConnectionError('Error occurred while trying to connect to %s (%s)' % (url, e))
 
 
 def get_full_content_length(url: str) -> int:
