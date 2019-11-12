@@ -7,6 +7,7 @@ import numpy as np
 # import pandas as pd
 from PIL import Image
 from scipy.stats import norm
+import scipy.stats as stats
 
 red_super_list = []
 green_super_list = []
@@ -133,6 +134,17 @@ def grayscale_image_histogram(file):
 
     plt.show()
 
+
+def image_t_test(file1, file2):
+    img1 = cv2.imread(file1, 0)
+    img2 = cv2.imread(file2, 0)
+
+    vector1 = img1.ravel()
+    vector2 = img2.ravel()
+
+    # 2-sided t-test
+    print(stats.ttest_ind(vector1, vector2, False))
+    
 
 # This function horizontally concatenates every image in the specified directory
 def concat_images(folder):

@@ -10,6 +10,9 @@ ignore:
   # Test files
   - '**/psic/tests'
 
+  # Misc statistics files
+  - '**/psic/stats'
+
   # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
@@ -20,3 +23,11 @@ coverage:
   range: 50..90
   round: down
   precision: 2
+  status:
+    project:
+      default:
+        # basic
+        target: 75%
+        # advanced
+        only_pulls: true
+    patch: off

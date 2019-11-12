@@ -23,7 +23,7 @@ The script can be called via command-line using specific arguments.
 | -------------------: | ----------- | ------------------------------------------------------- | ---------------------------- |
 |     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern        | `.*`                         |
 |   `--archive`, `-a`  | *<regex\>*  | Search all archive files for a specific term or pattern | `.*`                         |
-|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to          | `#!text /data/archive_cache` |
+|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to          | `/data/archive_cache`        |
 | `--no_status`, `-n`  |             | Do not print out a report of all files found            | *False*                      |
 |  `--download`, `-d`  |             | Download the archive files as well after listing them   | *False*                      |
 | `--overwrite`, `-o`  |             | Overwrite existing archive files with the same name     | *False*                      |
@@ -33,14 +33,14 @@ The script can be called via command-line using specific arguments.
 !!! warning
     If the command doesn't understand one of your parameters, try
     again, but with quotes around any argument. Command-line treats anything separated by a space as two separate
-    arguments, so something like `-s Hurricane Florence` should instead be `#!text -s "Hurricane Florence"`
+    arguments, so something like `-s Hurricane Florence` should instead be `-s "Hurricane Florence"`
 
 
 !!! note "Important Note"
 
     The script will automatically download all archive files listed, sequentially, to the `--path` specified, or to the
     default cache folder if `--path` is left out of the parameters. Members of the P-Sick team would run the command
-    with `#!text -p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `#!text G:`
+    with `-p "G:\Shared drives\P-Sick\data"` assuming they have *Google Drive File Stream* as their `G:`
     drive (*Windows*).
 
 
@@ -111,7 +111,7 @@ The script can be called via command-line using specific arguments.
 
 
 -   If you want a list of all archive files that occurred in 2019 that contain **jpg** in the file name,
-    `#!text collect.py -s 2019 -a jpg`
+    `collect.py -s 2019 -a jpg`
 
     ??? quote "Resulting Output"
         ```text
@@ -143,7 +143,7 @@ The script can be called via command-line using specific arguments.
 
 
 -   Both the `--storm` and `--archive` flags also support regular expressions like
-    `#!text collect.py -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
+    `collect.py -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
     which outputs all *jpg* files for *all storms* where the pictures were taken in *October* (month 10) of any year:
 
     ??? quote "Resulting Output"
@@ -264,8 +264,8 @@ The script can be called via command-line using specific arguments.
 
 -   Once you've found the results you want, simply add the download parameter, `-d`, before or after any parameter
     (*but not between a parameter and argument(s)*) to the statement like so:
-    `#!text -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes
-    `#!text -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`
+    `-a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes
+    `-a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`
 
     You should see an output like this below the file report, in the console:
 
