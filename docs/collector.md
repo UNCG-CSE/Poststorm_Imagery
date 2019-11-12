@@ -3,40 +3,30 @@
 **Document Updated:** {{ git_revision_date }}
 
 In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data.
-Currently, the script can be called via command-line using specific arguments.
+The script can be called via command-line using specific arguments.
 
 !!! warning "Collector Caveat"
-    The script currently only recognizes Storms after Arthur (2015 and later) currently!
 
-    ??? info "Current Support List"
+    The script cannot retrieve archives for the following storms because they are not publicly available in archive
+    form:
 
-        1.  	Hurricane Dorian (2019) --> RGB & JPG
-        2.  	Hurricane Barry (2019) --> RGB & JPG
-        3.  	Hurricane Michael (2018) --> RGB & JPG
-        4.  	Hurricane Florence (2018) --> RGB & JPG
-        5.  	Tropical Storm Gordon (2018) --> RGB & JPG
-        6.  	Hurricane Nate (2017) --> RGB
-        7.  	Hurricane Maria (2017) --> RGB
-        8.  	Hurricane Irma (2017) --> RGB
-        9.  	Hurricane Harvey (2017) --> RGB
-        10.  	Hurricane Matthew (2016) --> RGB and/or JPG
-        11.  	Louisiana Flooding (2016) --> RGB and/or JPG
-        12.  	Midwest U.S. Flooding (2015) --> RGB and/or JPG
-        13.  	Illinois Tornadoes (2015) --> RGB and/or JPG
-
-        ...     Older Storms not supported yet!
+    20.  	North Dakota Flooding (2011)
+    31.  	Hurricane Dennis (2005)
+    32.  	Hurricane Ivan (2004)
+    33.  	Hurricane Jeanne (2004)
+    34.  	Hurricane Isabel (2003)
 
 
 ## Command-Line Quick Reference
 
-|            Parameter | Argument(s) | Function                                            | Default Value            |
-| -------------------: | ----------- | --------------------------------------------------- | ------------------------ |
-|     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern    | `.*`                     |
-|       `--tar`, `-t`  | *<regex\>*  | Search all archive files for a specific term or pattern | `.*`                     |
-|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to      | `#!text /data/archive_cache` |
-| `--no_status`, `-n`  |             | Do not print out a report of all files found        | *False*                  |
-|  `--download`, `-d`  |             | Download the archive files as well after listing them  | *False*                  |
-| `--overwrite`, `-o`  |             | Overwrite existing archive files with the same name    | *False*                  |
+|            Parameter | Argument(s) | Function                                                | Default Value                |
+| -------------------: | ----------- | ------------------------------------------------------- | ---------------------------- |
+|     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern        | `.*`                         |
+|   `--archive`, `-a`  | *<regex\>*  | Search all archive files for a specific term or pattern | `.*`                         |
+|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to          | `#!text /data/archive_cache` |
+| `--no_status`, `-n`  |             | Do not print out a report of all files found            | *False*                      |
+|  `--download`, `-d`  |             | Download the archive files as well after listing them   | *False*                      |
+| `--overwrite`, `-o`  |             | Overwrite existing archive files with the same name     | *False*                      |
 
 
 
@@ -95,11 +85,11 @@ Currently, the script can be called via command-line using specific arguments.
         ```
 
 2.  To list all archive files for *Hurricane Dorian* that contain **jpg** in the file name,
-    `collect.py -s Dorian -t jpg`
+    `collect.py -s Dorian -a jpg`
 
     ??? quote "Resulting Output"
         ```text
-        Download Status Report (September 23, 2019 at 02:28 PM) <-s Dorian -t jpg -p [...]>
+        Download Status Report (September 23, 2019 at 02:28 PM) <-s Dorian -a jpg -p [...]>
 
         1.  	Hurricane Dorian (2019)
                 - 20190904a_jpgs.tar  ... 1.73 GiBs  ... Not downloaded.
@@ -121,11 +111,11 @@ Currently, the script can be called via command-line using specific arguments.
 
 
 -   If you want a list of all archive files that occurred in 2019 that contain **jpg** in the file name,
-    `#!text collect.py -s 2019 -t jpg`
+    `#!text collect.py -s 2019 -a jpg`
 
     ??? quote "Resulting Output"
         ```text
-        Download Status Report (September 23, 2019 at 02:37 PM) <-s 2019 -t jpg -p [...]>
+        Download Status Report (September 23, 2019 at 02:37 PM) <-s 2019 -a jpg -p [...]>
 
         1.  	Hurricane Dorian (2019)
                 - 20190904a_jpgs.tar  ... 1.73 GiBs  ... Not downloaded.
@@ -152,13 +142,13 @@ Currently, the script can be called via command-line using specific arguments.
         ```
 
 
--   Both the `--storm` and `--tar` flag also support regular expressions like
-    `#!text collect.py -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
+-   Both the `--storm` and `--archive` flags also support regular expressions like
+    `#!text collect.py -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
     which outputs all *jpg* files for *all storms* where the pictures were taken in *October* (month 10) of any year:
 
     ??? quote "Resulting Output"
         ```text
-        Download Status Report (September 23, 2019 at 02:38 PM) <-s .* -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -p [...]>
+        Download Status Report (September 23, 2019 at 02:38 PM) <-s .* -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -p [...]>
 
         1.  	Hurricane Dorian (2019)
                 <No archive files detected in index.html>
@@ -274,8 +264,8 @@ Currently, the script can be called via command-line using specific arguments.
 
 -   Once you've found the results you want, simply add the download parameter, `-d`, before or after any parameter
     (*but not between a parameter and argument(s)*) to the statement like so:
-    `#!text -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes
-    `#!text -t jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`
+    `#!text -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg` becomes
+    `#!text -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg -d`
 
     You should see an output like this below the file report, in the console:
 
