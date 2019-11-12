@@ -259,11 +259,14 @@ class Archive:
         """
 
         f: TarFile or ZipFile
+        f_members: list
 
         if tarfile.is_tarfile(archive_file_path):
             f = tarfile.open(archive_file_path)
+            f_members = f.getmembers()
         elif zipfile.is_zipfile(archive_file_path):
             f = zipfile.ZipFile(archive_file_path)
+            f_members = f.namelist()
         else:
             raise IOError('File is not of a supported archive type!')
 
@@ -274,7 +277,7 @@ class Archive:
         if not os.path.exists(extract_dir_path):
             os.makedirs(extract_dir_path)
 
-        for member in f.getmembers():
+        for member in f_members:
             if os.path.exists(os.path.join(extract_dir_path, os.path.split(member.name)[1])) is False:
                 print('\rCreating \t' + member.name + ' ... ', end='')
                 f.extract(member, extract_dir_path)
