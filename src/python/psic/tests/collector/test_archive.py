@@ -9,7 +9,7 @@ from psic.collector.archive import Archive
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input')
-ARCHIVE_FILE_PATH = os.path.join(INPUT_PATH, 'test_archive.tar')
+ARCHIVE_FILE_PATHS = [os.path.join(INPUT_PATH, 'test_archive.tar'), os.path.join(INPUT_PATH, 'test_archive.zip')]
 EXTRACTED_DIR_PATH = os.path.join(INPUT_PATH, 'test_archive')
 
 
@@ -33,21 +33,32 @@ class TestArchive(unittest.TestCase):
         assert str(self.archive) == 'test_archive.tar'
         assert str(self.archive2) == '(20180919) test_archive.tar [Unknown]'
 
+    def test_is_zip(self):
+        assert not self.archive.is_zip()
+
+    def test_is_tar(self):
+        assert self.archive.is_tar()
+
     def test_verify_integrity(self):
-        assert self.archive.verify_integrity(ARCHIVE_FILE_PATH)
+        for archive_file_path in ARCHIVE_FILE_PATHS:
+            assert self.archive.verify_integrity(archive_file_path)
 
-    def test_1_extract_archive(self):
+    def test_extract_archive(self):
 
-        self.archive.extract_archive(ARCHIVE_FILE_PATH)
+        for archive_file_path in ARCHIVE_FILE_PATHS:
 
-        for file_name in ['C25870213', 'C25870216', 'C25870220']:
-            for extension in ['.jpg', '.geom']:
-                file_path = os.path.join(EXTRACTED_DIR_PATH, file_name + extension)
-                assert os.path.exists(file_path) and os.path.isfile(file_path)
+            # Delete the previous archive's extracted contents to try the function again with a new archive
+            if os.path.exists(EXTRACTED_DIR_PATH):
+                shutil.rmtree(EXTRACTED_DIR_PATH)
 
-    def test_2_extract_archive_already_exists(self):
+            self.archive.extract_archive(archive_file_path)
 
-        self.archive.extract_archive(ARCHIVE_FILE_PATH)
+            for file_name in ['C25870213', 'C25870216', 'C25870220']:
+                for extension in ['.jpg', '.geom']:
+                    file_path = os.path.join(EXTRACTED_DIR_PATH, file_name + extension)
+                    assert os.path.exists(file_path) and os.path.isfile(file_path)
+
+        self.archive.extract_archive(ARCHIVE_FILE_PATHS[0])
 
         out, err = self.capfd.readouterr()
         assert str(out).count('Skipping ') == 6
