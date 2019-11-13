@@ -10,7 +10,7 @@ GPS data for each image, file size, and date taken to help with statistical and 
 
 |            Parameter | Argument(s)    | Function                                                                                     | Default Value            |
 | -------------------: | -------------- | -------------------------------------------------------------------------------------------- | ------------------------ |
-|       `--path`, `-p` | *<path\>*      | The path on your computer to start looking for files and save the catalog to                 | `/data/tar_cache` |
+|       `--path`, `-p` | *<path\>*      | The path on your computer to start looking for files and save the catalog to                 | `/data/archive_cache` |
 |  `--extension`, `-e` | *<extension\>* | Only add files with this extension to the catalog                                            | `jpg`                    |
 |     `--fields`, `-e` | *<Set\>*       | Only include these fields from the .geom and system values                                   | *(See Note) [^1]*        |
 |      `--debug`, `-d` |                | Include parameter to output debug information to console                                     | *False*                  |
@@ -19,8 +19,8 @@ GPS data for each image, file size, and date taken to help with statistical and 
 !!! warning
     If the command doesn't understand one of your parameters, try
     again, but with quotes around any argument. Command-line treats anything separated by a space as two separate
-    arguments, so something like `-p C:\some dir\data\tar_cache\Florence` should instead be
-    `-p "C:\some dir\data\tar_cache\Florence"`
+    arguments, so something like `-p C:\some dir\data\archive_cache\Florence` should instead be
+    `-p "C:\some dir\data\archive_cache\Florence"`
 
 
 ??? quote "Catalog Snippet Example (data/catalog.csv)"

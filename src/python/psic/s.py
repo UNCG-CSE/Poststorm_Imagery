@@ -6,8 +6,7 @@ FORMAT_TIME = '%B %d, %Y at %I:%M %p'
 
 DATA_PATH = '../../../../data/'
 SMALL_PATH = '../../../../small/'
-TAR_CACHE = 'tar_cache/'
-TAR_SUFFIX = '.tar'
+ARCHIVE_CACHE = 'archive_cache/'
 
 LOCK_TOTAL_SIZE_BYTES_FIELD = 'total_size_bytes'
 LOCK_PART_SIZE_BYTES_FIELD = 'size_bytes'
