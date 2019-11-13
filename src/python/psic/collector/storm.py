@@ -111,7 +111,7 @@ class Storm:
                     if flag_exists is False:
                         self.archive_list.append(Archive(archive_url=archive_url))
 
-        except ConnectionError:
+        except ConnectionError:  # pragma: no cover
             self.archive_list = list()
 
     """ DISABLED: Does not cover JPEG files reliably

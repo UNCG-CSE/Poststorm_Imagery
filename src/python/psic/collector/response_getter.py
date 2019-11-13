@@ -26,7 +26,7 @@ def get_full_content_length(url: str) -> int:
         # Ask the server for head
         head = requests.head(url, stream=True, allow_redirects=True)
 
-        if head.headers.get('Content-Length') is None:
+        if head.headers.get('Content-Length') is None:  # pragma: no cover
             raise ConnectionError('Content-Length is 0! The website returned back response code ' + str(
                 head.status_code) + ' for ' + url)
 
@@ -38,5 +38,5 @@ def get_full_content_length(url: str) -> int:
 
         return full_length
 
-    except (OSError, ConnectionError):
+    except (OSError, ConnectionError):  # pragma: no cover
         return 0

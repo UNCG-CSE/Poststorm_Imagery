@@ -234,15 +234,15 @@ class Archive:
                     # Built in method checks CRCs and returns first file w/ error (returns None if all is good)
                     first_error = f.testzip()
 
-                    if first_error is not None:
+                    if first_error is not None:  # pragma: no cover
                         # A file is corrupted
 
                         raise IOError('File %s was found to be corrupted in the archive!' % first_error)
 
-            else:
+            else:  # pragma: no cover
                 raise IOError('File is not of a supported archive type!')
 
-        except IOError as e:
+        except IOError as e:  # pragma: no cover
             h.print_error('There was an error in reading ' + archive_file_path + ' file. It might be corrupted!')
             h.print_error('It is recommended to delete the archive and restart the download.')
             h.print_error('Error: ' + str(e))
@@ -267,7 +267,7 @@ class Archive:
         elif zipfile.is_zipfile(archive_file_path):
             f = zipfile.ZipFile(archive_file_path)
             f_members = f.infolist()
-        else:
+        else:  # pragma: no cover
             raise IOError('File is not of a supported archive type!')
 
         # Extract to a directory of the same name, but without the file extension
