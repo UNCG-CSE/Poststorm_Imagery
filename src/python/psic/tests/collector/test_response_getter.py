@@ -11,7 +11,7 @@ class TestResponseGetter(TestCase):
         self.assertEqual(requests.codes.ok, get_http_response('https://www.google.com/').status_code)
 
     def test_generic_response_failed(self):
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(ConnectionError):
             get_http_response('http://www.google.com/thispagedoesnotexist')
 
     def test_generic_response_exception(self):
