@@ -468,10 +468,10 @@ function Index(props) {
                 //additionalNotes:""
               }}
               validationSchema={Yup.object().shape({
-                developmentGroup: Yup.string().required("Please select a option"),
-                washoverVisibilityGroup: Yup.string().required("Please select a option"),
-                impactGroup: Yup.string().required("Please select a option"),
-                terrainGroup: Yup.array().required("Please select atleast one option"),
+                developmentGroup: Yup.string().required("Please select an option"),
+                washoverVisibilityGroup: Yup.string().required("Please select an option"),
+                impactGroup: Yup.string().required("Please select an option"),
+                terrainGroup: Yup.array().required("Please select at least one option"),
                 //additionalNotes: Yup.string(),
               })}
               onSubmit={(values, actions) => {
@@ -512,12 +512,12 @@ function Index(props) {
                           label="Undeveloped"
                         />
 
-                        <Field
+                        {/* <Field
                           component={RadioButton}
                           name="developmentGroup"
                           id="NoneId"
                           label="N/A"
-                        />
+                        /> */}
 
                       </RadioButtonGroup>
 
@@ -545,18 +545,18 @@ function Index(props) {
                           id="NoVisibleWashoverId"
                           label="No Washover"
                         />
-                        <Field
+                        {/* <Field
                           component={RadioButton}
                           name="washoverVisibilityGroup"
                           id="NoneId"
                           label="N/A"
-                        />
+                        /> */}
                       </RadioButtonGroup>
 
                       <br/>
 
                       <RadioButtonGroup
-                        id="washoverGroupId"
+                        id="impactGroupId"
                         label="Storm Impact"
                         value={values.impactGroup}
                         error={errors.impactGroup}
@@ -634,12 +634,21 @@ function Index(props) {
                           label="Sandy Coastline"
                           disabled={terrainNoneStatus}
                         />
+
                         <Field
                           component={CheckboxButton}
                           name="terrainGroup"
-                          id="NodeId"
+                          id="InlandId"
+                          label="Inland"
+                          disabled={terrainNoneStatus}
+                        />
+
+                        <Field
+                          component={CheckboxButton}
+                          name="terrainGroup"
+                          id="NoneId"
                           label="N/A"
-                          onChange='aaaaaaaaaaaaaaaaaaa'
+                          //onChange='aaaaaaaaaaaaaaaaaaa'
                           // checked={terrainNoneStatus}
                         />
                       </CheckboxGroup>

@@ -1,15 +1,13 @@
 """A file that contains some commonly used strings (constants)"""
 from os import path
 
-DATA_PATH = path.abspath('../../../../data')
-SMALL_PATH = path.abspath('../../../../small/')
-
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1
 FORMAT_TIME = '%B %d, %Y at %I:%M %p'
 
-TAR_CACHE = 'tar_cache/'
-TAR_SUFFIX = '.tar'
+DATA_PATH = '../../../../data/'
+SMALL_PATH = '../../../../small/'
+ARCHIVE_CACHE = 'archive_cache/'
 
 LOCK_TOTAL_SIZE_BYTES_FIELD = 'total_size_bytes'
 LOCK_PART_SIZE_BYTES_FIELD = 'size_bytes'

@@ -4,10 +4,11 @@ import argparse
 import os
 from typing import Union, Set
 
-from psic.cataloging.make_catalog import Cataloging
 from psic import s
+from psic.cataloging.make_catalog import Cataloging
 
-TAR_CACHE_PATH: Union[bytes, str] = os.path.join(s.DATA_PATH, s.TAR_CACHE)
+DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
+ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #
@@ -15,7 +16,7 @@ TAR_CACHE_PATH: Union[bytes, str] = os.path.join(s.DATA_PATH, s.TAR_CACHE)
 
 parser = argparse.ArgumentParser(prog='catalog')
 
-parser.add_argument('--path', '-p', default=TAR_CACHE_PATH,
+parser.add_argument('--path', '-p', default=ARCHIVE_CACHE_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
 parser.add_argument('--extension', '-e', default='jpg',

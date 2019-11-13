@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 from os import path
 from typing import List, Dict, Union
 
@@ -6,7 +7,6 @@ import pandas as pd
 
 from psic import h, s
 from psic.assigner.image_ref import Image
-
 # The maximum amount of times an image can be skipped and remain in the pending queue
 from psic.cataloging.make_catalog import Cataloging
 
@@ -16,6 +16,8 @@ MINIMUM_TAGGERS_NEEDED: int = 2
 
 # Make the randomization of images shown deterministically random for testing purposes (set to None to disable)
 RANDOM_SEED: Union[int, str, bytes, bytearray, None] = 405
+
+MINUTES_BETWEEN_BACKUPS: float = 15
 
 
 class ImageAssigner:
@@ -29,9 +31,6 @@ class ImageAssigner:
     project catalog folder specified in s.py and that the CSV file contains a column with a header named `file` that
     contains the relative paths of each image to be queued for tagging (in the scope path provided).
     """
-
-    # For this class, use queues instead of lists for the sake of implementing into an asynchronous environment due to
-    # the Queue object's ability to enforce blocking.
 
     random.seed(a=RANDOM_SEED)
 
@@ -50,6 +49,8 @@ class ImageAssigner:
 
     # Each user's current image once removed from the beginning of the image queue
     current_image: Dict[str, Image] = {}
+
+    last_backup_timestamp: float  # The last time a backup of the assigner state was made
 
     def __init__(self, scope_path: Union[bytes, str],
                  small_path: Union[bytes, str], **kwargs):
@@ -75,6 +76,9 @@ class ImageAssigner:
             if self.debug and verbosity >= 2:
                 print('Loaded %s from the %s file' % (str(image), self.catalog_path))
 
+        # Set a starting value for the last time the assigner was backed up
+        self.last_backup_timestamp = datetime.now().timestamp()
+
         if self.debug and verbosity >= 1:
             print('Next Pending Image (of %s): %s' % (len(self.pending_images_queue), self.pending_images_queue[0]))
 
@@ -95,6 +99,25 @@ class ImageAssigner:
 
         return random.sample(image_list, k=len(image_list))
 
+    def is_time_for_backup(self, max_minutes=MINUTES_BETWEEN_BACKUPS) -> bool:
+        """
+        A method to get if it is time for a new backup to be taken. This simply takes the number of minutes specified or
+        the default value defined in the class and sees if the time since the last backup exceeds the specified number
+        of minutes. This method does not change any values. It only does a comparison.
+
+        :param max_minutes: The max number of minutes to wait in-between backups
+        :return: Whether (True) or not (False) it is time for the next backup to occur
+        """
+
+        # Calculate the difference between the last backup and now
+        return (datetime.now().timestamp() - self.get_last_backup_timestamp()) > (max_minutes * 60)
+
+    def get_last_backup_timestamp(self) -> float:
+        return self.last_backup_timestamp
+
+    def mark_last_backup_timestamp(self):
+        self.last_backup_timestamp = datetime.now().timestamp()
+
     def get_current_image_path(self, user_id: str, full_size: bool = False) -> str:
         """
         Simply get the absolute path of the specified user's current image. Returns as just the full path with no
@@ -112,6 +135,14 @@ class ImageAssigner:
             return h.validate_and_expand_path(
                 path.join(self.scope_path, self.current_image[user_id].rel_path))
 
+    def has_a_current_image(self, user_id: str) -> bool:
+        """
+        Check if the user has an image currently. This can be used to check for cases where the user has not been
+        assigned an image yet (i.e. they logged into the dashboard for the first time).
+
+        :return: Whether (True) or not (False) the user currently is assigned an image"""
+        return user_id in self.current_image.keys()
+
     def get_current_image(self, user_id: str, expanded: bool = False) -> Image:
         """
         Get the Image object that contains information about the specified user's current image.
@@ -125,7 +156,7 @@ class ImageAssigner:
         # If the user has no current image, assign them one from the pending queue
 
         if user_id not in self.current_image.keys():
-            self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
+            self.get_next_image(user_id=user_id)
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
@@ -173,6 +204,10 @@ class ImageAssigner:
 
         if user_id not in self.current_image.keys():
             self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
+
+            # Record that the user started tagging the image
+            self.current_image[user_id].mark_tagging_start(user_id=user_id)
+
             return self.current_image[user_id]
 
         if (not skip) and (user_id in self.current_image[user_id].get_taggers()) \
@@ -181,7 +216,14 @@ class ImageAssigner:
         else:
             self._user_skip_tagging_current_image(user_id=user_id)
 
+        # Record that the user stopped tagging the most recent image
+        self.current_image[user_id].mark_tagging_stop(user_id=user_id)
+
+        # Set the chosen image as the user's current image
         self.current_image[user_id] = self._get_next_suitable_image(user_id=user_id)
+
+        # Record that the user started tagging the new image
+        self.current_image[user_id].mark_tagging_start(user_id=user_id)
 
         if expanded:
             return self.current_image[user_id].expanded(scope_path=self.scope_path, small_path=self.small_path)
@@ -205,8 +247,8 @@ class ImageAssigner:
 
     def _user_done_tagging_current_image(self, user_id: str):
         if len(self.current_image[user_id].get_taggers()) >= MINIMUM_TAGGERS_NEEDED \
-                and self.current_image[user_id].all_user_tags_equal():
-            # If enough people have tagged this image
+                and self.current_image[user_id].get_best_tags() is not None:
+            # If enough people have tagged this image and there's a consensus
 
             self.current_image[user_id].finalize_tags()
 
