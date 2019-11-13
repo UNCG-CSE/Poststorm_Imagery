@@ -13,12 +13,13 @@ ARCHIVE_FILE_PATH = os.path.join(INPUT_PATH, 'test_archive.tar')
 EXTRACTED_DIR_PATH = os.path.join(INPUT_PATH, 'test_archive')
 
 
-class TestTarRef(unittest.TestCase):
+class TestArchive(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
         cls.archive = Archive(archive_url='https://www.google.com/thispathdoesnotexist/test_archive.tar')
-        cls.tar2 = Archive(archive_url='https://www.google.com/thispathdoesnotexist/test_archive.tar', archive_date='20180919')
+        cls.archive2 = Archive(archive_url='https://www.google.com/thispathdoesnotexist/test_archive.tar',
+                               archive_date='20180919')
 
         if os.path.exists(EXTRACTED_DIR_PATH):
             shutil.rmtree(EXTRACTED_DIR_PATH)
