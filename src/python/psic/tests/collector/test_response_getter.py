@@ -15,7 +15,7 @@ class TestResponseGetter(TestCase):
             get_http_response('http://www.google.com/thispagedoesnotexist')
 
     def test_generic_response_exception(self):
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(ConnectionError):
             get_http_response('http:///')
 
     def test_get_full_content_length_correct(self):
