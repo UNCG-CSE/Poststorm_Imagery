@@ -76,6 +76,8 @@ class Cataloging:
         :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
         measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
         :param require_geom: Whether (True) or not (False) to require a .geom file present in search for valid files
+        :param override_catalog_path: If set, the program will not search for a catalog, and instead use the path to
+        the catalog provided as a string.
         """
 
         global flag_unsaved_changes  # Include the global variable defined at top of this script
@@ -89,7 +91,7 @@ class Cataloging:
         scope_path = h.validate_and_expand_path(path=scope_path)
         storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path)
 
-        if override_catalog_path is None: # pragma: no cover
+        if override_catalog_path is None:  # pragma: no cover
             try:
                 catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
             except CatalogNotFoundException:
@@ -140,7 +142,7 @@ class Cataloging:
         current_fields_needed: Set = fields_needed.copy()
         flag_unsaved_changes = False
 
-        catalog: pd.DataFrame = pd.DataFrame()
+        catalog: pd.DataFrame
 
         if os.path.exists(catalog_path) is False:
             # If the catalog file doesn't exist, create a new one
@@ -322,9 +324,9 @@ class Cataloging:
         path_tail: str = os.path.split(scope_path)[1]
 
         if len(path_tail) == 0 \
-            or path_tail[0].islower() \
+                or path_tail[0].islower() \
                 or 'jpg' in path_tail \
-                    or scope_path == s.DATA_PATH:
+                or scope_path == s.DATA_PATH:
             # If the current directory is either not defined (input ends with / instead of the dir name)
             # or the first character of the directory's name is lower-cased (storms should have capitals)
             # or the directory is actually a file or archive or is the data path
