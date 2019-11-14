@@ -29,13 +29,14 @@ class TestCataloging(TestCase):
 
     def test_generate_index_from_scope(self):
 
-        # Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
-        #                                      file_extension='jpg',
-        #                                      fields_needed=s.DEFAULT_FIELDS.copy(),
-        #                                      require_geom=True,
-        #                                      override_catalog_path=CATALOG_FILE,
-        #                                      debug=True,
-        #                                      verbosity=3)
+        Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
+                                             file_extension='jpg',
+                                             fields_needed=s.DEFAULT_FIELDS.copy(),
+                                             save_interval=1,
+                                             require_geom=True,
+                                             override_catalog_path=CATALOG_FILE,
+                                             debug=True,
+                                             verbosity=3)
         out, err = self.capfd.readouterr()
         print('OUTPUT: ' + str(out).replace('\r', '\\r\n'))
         with self.subTest(msg='Found all 3 files'):
@@ -70,6 +71,8 @@ class TestCataloging(TestCase):
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
                                              save_interval=1,
+                                             require_geom=True,
+                                             override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
 

@@ -65,7 +65,7 @@ class Cataloging:
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000, require_geom: bool = False,
-                                  override_catalog_path: Union[bytes, str] = None, **kwargs) -> None:
+                                  override_catalog_path: Union[bytes, str, None] = None, **kwargs) -> None:
         """
         A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
         allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
