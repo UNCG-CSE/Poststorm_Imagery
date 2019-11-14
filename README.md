@@ -22,8 +22,9 @@ https://post-storm-imagery.readthedocs.io/)
 - [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
 - [**John Weber**](https://github.com/JWeb56)
 
-**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 **Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
+
+**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
 
 ## Contributions 🤝
 
