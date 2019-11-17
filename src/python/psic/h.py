@@ -131,7 +131,8 @@ def all_files_recursively(root_path: Union[bytes, str],
                           require_geom: bool = True,
                           file_extension: str = 'jpg',
                           file_search_re: Pattern = '.*',
-                          **kwargs) -> List[str]:
+                          debug: bool = s.DEFAULT_DEBUG,
+                          verbosity: int = s.DEFAULT_VERBOSITY) -> List[str]:
     """A method to allow for recursively finding all files (including their absolute path on the local machine in
     order. This method also accepts an optional regular expression to match file names to and/or a specific file
     extension for the purpose of only getting specific file types.
@@ -141,14 +142,10 @@ def all_files_recursively(root_path: Union[bytes, str],
     :param require_geom: Whether or not to return only files with a .geom file associated with them
     :param file_extension: The file extension required to be included in the returned list
     :param file_search_re: The file name (including the extension) to be searched for as a regular expression
+    :param debug: Whether (True) or not (False) to override default debug flag and output additional statements
+    :param verbosity: The frequency of debug statement output (1 = LOW, 2 = MEDIUM, 3 = HIGH)
     :return: A list of files with their relative path
     """
-
-    # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-    debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-    # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-    verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
     # Make search pattern case-insensitive
     file_search_re = re.compile(file_search_re, re.IGNORECASE)

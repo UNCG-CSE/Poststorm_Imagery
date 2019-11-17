@@ -18,7 +18,9 @@ class Cataloging:
 
     @staticmethod
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
-                                  save_interval: int = 1000, **kwargs) -> None:
+                                  save_interval: int = 1000,
+                                  debug: bool = s.DEFAULT_DEBUG,
+                                  verbosity: int = s.DEFAULT_VERBOSITY) -> None:
         """
         A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
         allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
@@ -28,15 +30,11 @@ class Cataloging:
         :param fields_needed: The fields to include in the catalog (gathered from the local file system)
         :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
         measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
+        :param debug: Whether (True) or not (False) to override default debug flag and output additional statements
+        :param verbosity: The frequency of debug statement output (1 = LOW, 2 = MEDIUM, 3 = HIGH)
         """
 
         global flag_unsaved_changes  # Include the global variable defined at top of this script
-
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-        # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-        verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
         scope_path = h.validate_and_expand_path(path=scope_path)
         catalog_path = os.path.join(scope_path, Cataloging.CATALOG_FILE)
@@ -46,7 +44,8 @@ class Cataloging:
         ##########################################
 
         # Get a list of all files starting at the path specified
-        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True, **kwargs)
+        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True,
+                                                   debug=debug, verbosity=verbosity)
 
         if debug and verbosity >= 2:
             print()
@@ -151,7 +150,7 @@ class Cataloging:
                 # Look up the fields that are needed and still missing data
                 geom_data: Dict[str, str] or None = Cataloging._get_geom_fields(
                     field_id_set=row_fields_needed, file_path=os.path.join(
-                        scope_path, os.path.normpath(row['file'])), **kwargs)
+                        scope_path, os.path.normpath(row['file'])), debug=debug, verbosity=verbosity)
                 stat_files_accessed += 1
 
                 if geom_data is not None:
@@ -179,13 +178,9 @@ class Cataloging:
     #####################################
 
     @staticmethod
-    def _get_best_date(file_path: Union[bytes, str], **kwargs) -> str:
-
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-        # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-        verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
+    def _get_best_date(file_path: Union[bytes, str],
+                       debug: bool = s.DEFAULT_DEBUG,
+                       verbosity: int = s.DEFAULT_VERBOSITY) -> str:
 
         # Assume years can only be 2000 to 2099 (current unix time ends at 2038 anyways)
         pattern: Pattern = re.compile('[\\D]*(20\\d{2})(\\d{2})(\\d{2})\\D')
@@ -238,14 +233,9 @@ class Cataloging:
         flag_unsaved_changes = False
 
     @staticmethod
-    def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str], **kwargs) \
+    def _get_geom_fields(field_id_set: Set[str] or str, file_path: Union[bytes, str],
+                         debug: bool = s.DEFAULT_DEBUG, verbosity: int = s.DEFAULT_VERBOSITY) \
             -> Union[Dict[str, str], str, None]:
-
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-        # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-        verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
 
         is_single_input = False
 
@@ -263,8 +253,8 @@ class Cataloging:
 
         if os.path.getsize(geom_path) == 0:
             h.print_error('\n\nThe .geom file for "' + file_path + '": "' + geom_path + '" is 0 KiBs.\n'
-                          'Bad file access may have caused this, so check the archive to see if the image and the .geom '
-                          'files in the archive are the same as the unzipped versions!\n')
+                          'Bad file access may have caused this, so check the archive to see if the image and the .geom'
+                          ' files in the archive are the same as the unzipped versions!\n')
             return None
 
         result: Dict[str] = dict()
