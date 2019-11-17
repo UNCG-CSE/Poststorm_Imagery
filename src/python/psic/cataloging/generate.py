@@ -17,15 +17,16 @@ class Cataloging:
     CATALOG_FILE = s.CATALOG_FILE_NAME + '.csv'
 
     @staticmethod
-    def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
+    def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH,
+                                  fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000,
                                   debug: bool = s.DEFAULT_DEBUG,
                                   verbosity: int = s.DEFAULT_VERBOSITY,
                                   **kwargs) -> None:
         """
-        A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
-        allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
-        that can be looped through with a for-loop or similar.
+        A function to generate an index of all the data in the scope specified. Does not generate statistics, but
+        instead allows for listing the data details based off of each file's attributes. Returns a Generator (an
+        iterable object) that can be looped through with a for-loop or similar.
 
         :param scope_path: The root path to start indexing files from
         :param fields_needed: The fields to include in the catalog (gathered from the local file system)
