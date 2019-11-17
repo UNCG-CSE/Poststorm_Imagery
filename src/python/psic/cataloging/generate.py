@@ -20,7 +20,8 @@ class Cataloging:
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH, fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000,
                                   debug: bool = s.DEFAULT_DEBUG,
-                                  verbosity: int = s.DEFAULT_VERBOSITY) -> None:
+                                  verbosity: int = s.DEFAULT_VERBOSITY,
+                                  **kwargs) -> None:
         """
         A function to generate an index of all the data in the scope specified. Does not generate statistics, but instead
         allows for listing the data details based off of each file's attributes. Returns a Generator (an iterable object)
@@ -45,7 +46,7 @@ class Cataloging:
 
         # Get a list of all files starting at the path specified
         files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True,
-                                                   debug=debug, verbosity=verbosity)
+                                                   debug=debug, verbosity=verbosity, **kwargs)
 
         if debug and verbosity >= 2:
             print()
