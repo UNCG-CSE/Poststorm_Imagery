@@ -16,7 +16,7 @@ require_automerge_label = false
 blacklist_title_regex = "^WIP:.*" # default: "^WIP:.*", options: "" (disables regex), a regex string (e.g. ".*DONT\s*MERGE.*")
 
 # if these labels are set Kodiak will not merge the PR
-blacklist_labels = [] # default: [], options: list of label names (e.g. ["wip"])
+blacklist_labels = ["manual merge"] # default: [], options: list of label names (e.g. ["wip"])
 
 # choose a merge method. If the configured merge method is disabled for a
 # repository, Kodiak will report an error in a status message.
@@ -31,7 +31,7 @@ notify_on_conflict = true # default: true
 
 # if there are running status checks on a PR when it's up for merge, don't
 # wait for those to finish before updating the branch
-optimistic_updates = false # default: true
+optimistic_updates = true # default: true
 
 # use this for status checks that run indefinitely, like deploy jobs or the
 # WIP GitHub App
