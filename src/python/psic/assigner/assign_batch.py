@@ -141,6 +141,9 @@ try:
         # Write a backup every so often
         if assigner.is_time_for_backup():
 
+            # Set last backup date/time to now
+            assigner.mark_last_backup_timestamp()
+
             if not (path.exists(BACKUP_FOLDER) and path.isdir(BACKUP_FOLDER)):
                 mkdir(BACKUP_FOLDER)
 
@@ -148,9 +151,6 @@ try:
             backup_path = path.join(BACKUP_FOLDER, f_name + '-' + str(datetime.today().isoformat()) + f_ext)
 
             with open(backup_path, 'w') as f:
-
-                # Set last backup date/time to now
-                assigner.mark_last_backup_timestamp()
 
                 # Write a copy of the data to the backup file
                 f.write(jsonpickle.encode(assigner.save()))
