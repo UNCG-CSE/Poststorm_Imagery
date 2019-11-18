@@ -5,8 +5,9 @@ from typing import List, Dict, Union
 
 import pandas as pd
 
-from psic import h, s
+from psic import s
 from psic.assigner.image_ref import Image
+from psic.common import h
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
 MAX_ALLOWED_SKIPS: int = 1
@@ -35,7 +36,7 @@ class ImageAssigner:
 
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
     # archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
-    debug: bool = False
+    debug: bool
     scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str]  # The path to the resized image scope path
@@ -52,13 +53,11 @@ class ImageAssigner:
     last_backup_timestamp: float  # The last time a backup of the assigner state was made
 
     def __init__(self, scope_path: Union[bytes, str],
-                 small_path: Union[bytes, str], **kwargs):
+                 small_path: Union[bytes, str],
+                 debug: bool = s.DEFAULT_DEBUG,
+                 verbosity: int = s.DEFAULT_VERBOSITY):
 
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-        # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-        verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
+        self.debug = debug
 
         self.scope_path = h.validate_and_expand_path(scope_path)
 

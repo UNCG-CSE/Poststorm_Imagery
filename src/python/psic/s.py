@@ -1,4 +1,4 @@
-"""A file that contains some commonly used strings (constants)"""
+"""A file that contains some commonly used values"""
 
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1

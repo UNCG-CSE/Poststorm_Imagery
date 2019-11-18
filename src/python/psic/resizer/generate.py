@@ -3,20 +3,18 @@ from typing import Tuple, Union, List
 
 from PIL import Image
 
-from psic import s, h
+from psic import s
+from psic.common import h
 
 
 class ResizeImages:
 
     @staticmethod
     def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str],
-                          scale: float, save: bool = True, **kwargs) -> list:
-
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+                          scale: float, save: bool = True, debug: bool = s.DEFAULT_DEBUG) -> list:
 
         # Get all jpg files
-        files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', **kwargs)
+        files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', debug=debug)
 
         new_images: List[Image] = list()
 
