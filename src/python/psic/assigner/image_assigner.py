@@ -5,8 +5,9 @@ from typing import List, Dict, Union
 
 import pandas as pd
 
-from psic import h, s
+from psic import s
 from psic.assigner.image_ref import Image
+from psic.common import h
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
 MAX_ALLOWED_SKIPS: int = 1

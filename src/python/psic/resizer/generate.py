@@ -3,7 +3,8 @@ from typing import Tuple, Union, List
 
 from PIL import Image
 
-from psic import s, h
+from psic import s
+from psic.common import h
 
 
 class ResizeImages:
