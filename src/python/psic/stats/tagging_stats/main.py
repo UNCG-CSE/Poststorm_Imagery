@@ -1,33 +1,31 @@
 import pandas as pd
 import jsonpickle
 import numpy as np
+import matplotlib.pyplot as plt
+import os, os.path
+import dateutil.parser
 
-FILE_AS_ROOT = False
+# Constants
 
-JSON_FILE_TO_IMPORT = f"{'../../../../../../' if FILE_AS_ROOT else '../'}tagging_data_personal.json" 
-SCRIPT_PATH = "./src/python/psic/stats/tagging_stats"
-FILE_TO_TAG_RATIO = f"{'./' if FILE_AS_ROOT else './src/python/psic/stats/tagging_stats'}tag_ratio.csv"
+JSON_STATES_FOLDER =  "../tagging_json_states"
 
-# Used to get a pickgle at a specified path.
+# First get all the json states
+
+path = os.getcwd()
+files = os.listdir(JSON_STATES_FOLDER)
+files_json = [f for f in files if f[-4:] == 'json']
+files_json.sort()
+print(len(files_json))
+
+# Get the last state for testing
+
+TESTING_STATE = files_json[-1]
+
+# Depickle
+
 def get_pickle(path_to_file):
-    with open(JSON_FILE_TO_IMPORT, 'r') as f:
+    with open(path_to_file, 'r') as f:
         return jsonpickle.decode(f.read())
-        
-# Function to display some information about the json pickle file.
-def how_many_taggged(pickle_file):
-    done_tagging_count=len(pickle_file.finished_tagged_queue)
 
-    tagged_but_not_done_count=0
-    for image in pickle_file.pending_images_queue:
-        if len(image.get_taggers()) > 0:
-            tagged_but_not_done_count-=-1
-
-    print(f"{tagged_but_not_done_count} images have been tagged, but not completely")
-    print(f"{done_tagging_count} images have been tagged completely")
-    print(f"{tagged_but_not_done_count+done_tagging_count} images have been tagged, completely or not")
-
-# Get the json pickle
-data = get_pickle(JSON_FILE_TO_IMPORT)
-
-tag_ratio_data = pd.read_csv(FILE_TO_TAG_RATIO)
-print(tag_ratio_data.head())
+data = get_pickle(f"{JSON_STATES_FOLDER}/{TESTING_STATE}")
+print(len(data.finished_tagged_queue))
