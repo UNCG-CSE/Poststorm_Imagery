@@ -11,8 +11,10 @@ from zipfile import ZipFile, ZipInfo
 import requests
 from tqdm import tqdm
 
-from psic import s, h
+from psic import s
+from psic.collector.locking import update_file_lock
 from psic.collector.response_getter import get_full_content_length
+from psic.common import h
 
 UNKNOWN = 'Unknown'
 
@@ -162,9 +164,9 @@ class Archive:
 
                 # Update the lock file every so often so others know it is being downloaded
                 if (datetime.now() - last_lock_update).total_seconds() > 180:  # 1800 seconds = 30 minutes
-                    h.update_file_lock(base_file=file_path_part, user=user,
-                                       part_size_byte=os.path.getsize(file_path_part),
-                                       total_size_byte=full_size_origin)
+                    update_file_lock(base_file=file_path_part, user=user,
+                                     part_size_byte=os.path.getsize(file_path_part),
+                                     total_size_byte=full_size_origin)
                 f.write(data)
 
             dl_r.close()
@@ -182,8 +184,8 @@ class Archive:
         os.remove(file_path_part + s.LOCK_SUFFIX)
 
         # Tell others that the full file is downloaded
-        h.update_file_lock(base_file=self.path, user=user,
-                           total_size_byte=full_size_origin, part_size_byte=full_size_origin)
+        update_file_lock(base_file=self.path, user=user,
+                         total_size_byte=full_size_origin, part_size_byte=full_size_origin)
 
         if Archive.verify_integrity(self.path) is False:
             os.remove(self.path)

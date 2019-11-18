@@ -10,10 +10,12 @@ from typing import List, Union
 
 from requests.exceptions import RequestException
 
-from psic import s, h
+from psic import s
 from psic.collector.archive import Archive
 from psic.collector.connection_handler import ConnectionHandler
+from psic.collector.locking import get_lock_info, is_locked_by_another_user
 from psic.collector.storm import Storm
+from psic.common import h
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
@@ -104,7 +106,7 @@ if OPTIONS.no_status is False:
 
                 if os.path.exists(archive_file_path + s.LOCK_SUFFIX):
 
-                    lock_info = h.get_lock_info(base_file=archive_file_path)
+                    lock_info = get_lock_info(base_file=archive_file_path)
                     user: str = lock_info['user']
                     total_size = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]
 
@@ -139,7 +141,7 @@ if OPTIONS.no_status is False:
                 elif os.path.exists(archive_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX):
 
                     # Get the status of the file being downloaded elsewhere
-                    lock_info = h.get_lock_info(base_file=archive_file_path + s.PART_SUFFIX)
+                    lock_info = get_lock_info(base_file=archive_file_path + s.PART_SUFFIX)
 
                     last_modified = os.path.getmtime(archive_file_path + s.PART_SUFFIX + s.LOCK_SUFFIX)
                     total_size = lock_info[s.LOCK_TOTAL_SIZE_BYTES_FIELD]  # The number of total bytes to download
@@ -217,10 +219,10 @@ if OPTIONS.download:
             # Repeatedly try to download the archive until it completes successfully
             while download_incomplete:
                 try:
-                    lock_info_part = h.get_lock_info(
+                    lock_info_part = get_lock_info(
                         base_file=os.path.join(save_path, str(archive.name) + archive.get_ext() + s.PART_SUFFIX))
 
-                    if OPTIONS.overwrite is False and h.is_locked_by_another_user(
+                    if OPTIONS.overwrite is False and is_locked_by_another_user(
                             base_file=str(archive.name) + archive.get_ext(), this_user=OPTIONS.user):
 
                         print('Another user has fully downloaded ' + archive.name + archive.get_ext() +

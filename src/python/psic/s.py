@@ -1,4 +1,4 @@
-"""A file that contains some commonly used strings (constants)"""
+"""A file that contains some commonly used values"""
 from os import path
 
 DEFAULT_DEBUG: bool = False
