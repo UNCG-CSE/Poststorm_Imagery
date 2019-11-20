@@ -706,6 +706,8 @@ Index.getInitialProps = async function(props) {
     const axios = require('axios');
     const IP=await serverConfig.getIp()
 
+    let options;
+
     //if we have a user,set it
     if(props.req.user)
     {
@@ -715,7 +717,7 @@ Index.getInitialProps = async function(props) {
       }
     }
 
-    //const response; //= await axios.post(`http://${IP}:3000/api/getImage`,options);
+    const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
 
     let typed_user_id=undefined;
     if(props.req.user)
@@ -727,11 +729,11 @@ Index.getInitialProps = async function(props) {
     return {
       data:{
         time_start_tagging:date.getTime(),
-        textAreaText: ''
-        // full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
-        // small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
-        // image_id:response.data.image_id,
-        // user_id:typed_user_id//props.req.user.user_id
+        textAreaText: '',
+        full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
+        small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
+        image_id:response.data.image_id,
+        user_id:typed_user_id//props.req.user.user_id
       }
     }
 
