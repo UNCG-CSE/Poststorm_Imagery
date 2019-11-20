@@ -661,7 +661,7 @@ function Index(props) {
                         id="outlined-dense-multiline"
                         label="Additional Notes"
                         // isSubmitting
-                        value={text_box_text}
+                        //value={text_box_text}
                         rows="5"
                         margin="dense"
                         variant="outlined"
