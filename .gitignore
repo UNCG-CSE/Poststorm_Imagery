@@ -214,3 +214,4 @@ src/python/psic/stats/data
 .idea/
 !/.idea/codeStyles/
 src/dashboard/v2/.env
+server-config.js
