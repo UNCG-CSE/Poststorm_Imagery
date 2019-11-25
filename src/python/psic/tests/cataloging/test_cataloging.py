@@ -1,5 +1,6 @@
 import os
 from unittest import TestCase
+from unittest.mock import patch
 
 import pytest
 
@@ -8,8 +9,8 @@ from psic.cataloging.make_catalog import Cataloging
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
-INPUT_PATH = os.path.join(DATA_PATH, 'input')
-CATALOG_FILE = os.path.join(INPUT_PATH, Cataloging.CATALOG_FILE)
+INPUT_PATH = os.path.join(DATA_PATH, 'input/Florence')
+CATALOG_FILE = os.path.join(INPUT_PATH, s.CATALOG_FILE.replace('${storm_id}', 'Florence'))
 # EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
 # OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 
@@ -27,13 +28,24 @@ class TestCataloging(TestCase):
     def _pass_fixtures(self, capfd):
         self.capfd = capfd
 
-    def test_generate_index_from_scope(self):
+    @patch.object(Cataloging, 'get_catalog_path', return_value=CATALOG_FILE)
+    @patch.object(Cataloging, 'find_catalog_path', return_value=CATALOG_FILE)
+    @patch.object(Cataloging, '_get_storm_from_path', return_value='Florence')
+    def test_generate_index_from_scope(self, mock__get_storm_from_path, mock_find_catalog_path, mock_get_catalog_path):
 
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
+                                             save_interval=1,
+                                             require_geom=True,
+                                             override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
+
+        mock_find_catalog_path.assert_not_called()
+        mock__get_storm_from_path.assert_called()  # Called 5 times
+        mock_get_catalog_path.assert_called()  # Called 4 times
+
         out, err = self.capfd.readouterr()
         print('OUTPUT: ' + str(out).replace('\r', '\\r\n'))
         with self.subTest(msg='Found all 3 files'):
@@ -55,19 +67,21 @@ class TestCataloging(TestCase):
             assert 'Processing file 2 of 2 (50.00%)' in str(out)
 
         with self.subTest(msg='All default tags were found in a .geom file'):
-            assert str(out).count('Found 8 value(s)') == 2
+            assert str(out).count('Found 9 value(s)') == 2
 
         with self.subTest(msg='DataFrame is of right size'):
-            assert '[2 rows x 11 columns]' in str(out)
+            assert '[2 rows x 15 columns]' in str(out)
 
         with self.subTest(msg='Catalog was saved to disk at the end'):
-            assert str(out).count('Saved catalog to disk!') == 2
+            assert str(out).count('Saved catalog to disk!') == 3
 
         # Run it again to check if it detects existing catalog
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
                                              save_interval=1,
+                                             require_geom=True,
+                                             override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
 

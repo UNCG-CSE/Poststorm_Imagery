@@ -1,4 +1,5 @@
 """A file that contains some commonly used values"""
+from os import path
 
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1
@@ -20,9 +21,23 @@ URL_STORMS = URL_BASE + 'storms/'
 # Groups: <storm_url>, <storm_id>, <storm_title>, <storm_year>
 URL_STORMS_REGEX_PATTERN_INDEX = '<a href=\"(.+/storms/([^/]+)/.*?index\\.html)\">([^\\(]+)\\(([^\\)]+)\\)</a>'
 
-CATALOG_FILE_NAME = 'catalog'
+# This should only be changed if the format of the catalog is changed to where old versions aren't compatible
+CATALOG_SCHEMA = 'v2'
+
+# The base directory to store all new catalog files and read from existing catalog files (schema dependent)
+CATALOG_DATA_PATH = path.join(DATA_PATH, 'catalogs/' + CATALOG_SCHEMA + '/')
+
+# ${storm_id} is replaced with the storm's id (usually lower-cased storm name)
+CATALOG_FILE = '${storm_id}.csv'
+
+# If the storm_id cannot be parsed (e.g. scope starts in the 'data' folder, but not in any specific storm)
+CATALOG_FILE_DEFAULT = 'default.csv'
+
+# The catalog to store all storm data in when stacking
+CATALOG_FILE_GLOBAL = 'global.csv'
 
 # The fields to grab from the .geom file of images when assembling a catalog
-DEFAULT_FIELDS = {'file', 'size', 'date',
+DEFAULT_FIELDS = {'file', 'storm_id', 'archive', 'image',
+                  'date', 'size', 'geom_checksum',
                   'll_lat', 'll_lon', 'lr_lat', 'lr_lon',
                   'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
