@@ -1,5 +1,7 @@
 """A file that contains some commonly used strings (constants)"""
 
+GCLOUD_ERROR_REPORTING: bool = False
+
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1
 FORMAT_TIME = '%B %d, %Y at %I:%M %p'
