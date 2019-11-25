@@ -53,9 +53,6 @@ matrix:
     - node_modules/.bin/eslint . --fix
 #    - npm test
 
-  allow_failures:
-    - env: TOXENV=py38
-
 after_failure:
 # POST all failures on the main and beta branch to Discord
 - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
