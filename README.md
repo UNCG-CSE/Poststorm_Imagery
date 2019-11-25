@@ -55,7 +55,7 @@ Beta branch is the main place to submit new code.
 
 ### Project Pre-Requisites
 
-1. Python 3.6 or 3.7 [**(Download Here)**](https://www.python.org/downloads/)
+1. Python 3.6, 3.7, or 3.8 [**(Download Here)**](https://www.python.org/downloads/)
 2. Pipenv **(Run `pip install pipenv`)**
 3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`
    (See [**Configuring Module**](https://post-storm-imagery.readthedocs.io/en/latest/configure_python_path/))
