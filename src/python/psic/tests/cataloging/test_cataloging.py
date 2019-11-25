@@ -8,7 +8,7 @@ from psic.cataloging.make_catalog import Cataloging
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
-INPUT_PATH = os.path.join(DATA_PATH, 'input')
+INPUT_PATH = os.path.join(DATA_PATH, 'input/Florence')
 CATALOG_FILE = os.path.join(INPUT_PATH, s.CATALOG_FILE.replace('${storm_id}', 'florence'))
 # EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
 # OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
