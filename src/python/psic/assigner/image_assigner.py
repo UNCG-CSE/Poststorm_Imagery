@@ -7,7 +7,6 @@ import pandas as pd
 
 from psic import s
 from psic.assigner.image_ref import Image
-from psic.cataloging.make_catalog import CatalogNotFoundException
 from psic.common import h
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
