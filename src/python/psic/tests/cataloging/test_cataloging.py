@@ -64,7 +64,7 @@ class TestCataloging(TestCase):
             assert '[2 rows x 15 columns]' in str(out)
 
         with self.subTest(msg='Catalog was saved to disk at the end'):
-            assert str(out).count('Saved catalog to disk!') == 2
+            assert str(out).count('Saved catalog to disk!') == 3
 
         # Run it again to check if it detects existing catalog
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
