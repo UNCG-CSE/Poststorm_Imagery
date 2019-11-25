@@ -57,7 +57,7 @@ def validate_and_expand_path(path: Union[bytes, str]) -> Union[bytes, str]:
 
 def all_files_recursively(root_path: Union[bytes, str],
                           unix_sep: bool = False,
-                          require_geom: bool = True,
+                          require_geom: bool = False,
                           file_extension: str = 'jpg',
                           file_search_re: Pattern = '.*',
                           debug: bool = s.DEFAULT_DEBUG,

@@ -32,6 +32,7 @@ class TestCataloging(TestCase):
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
+                                             require_geom=True,
                                              debug=True,
                                              verbosity=3)
         out, err = self.capfd.readouterr()
@@ -68,6 +69,7 @@ class TestCataloging(TestCase):
                                              file_extension='jpg',
                                              fields_needed=s.DEFAULT_FIELDS.copy(),
                                              save_interval=1,
+                                             require_geom=True,
                                              debug=True,
                                              verbosity=3)
 

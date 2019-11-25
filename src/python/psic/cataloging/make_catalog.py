@@ -21,6 +21,7 @@ class Cataloging:
     def generate_index_from_scope(scope_path: Union[str, bytes] = s.DATA_PATH,
                                   fields_needed: Set = s.DEFAULT_FIELDS.copy(),
                                   save_interval: int = 1000,
+                                  require_geom: bool = False,
                                   debug: bool = s.DEFAULT_DEBUG,
                                   verbosity: int = s.DEFAULT_VERBOSITY,
                                   **kwargs) -> None:
@@ -33,6 +34,7 @@ class Cataloging:
         :param fields_needed: The fields to include in the catalog (gathered from the local file system)
         :param save_interval: The interval in which to save the data to the disk when accessing the .geom files,
         measured in file access operations. (0 = never save, 1000 = save after every 1,000 files read, etc.)
+        :param require_geom: Whether (True) or not (False) to require a .geom file present in search for valid files
         :param debug: Whether (True) or not (False) to override default debug flag and output additional statements
         :param verbosity: The frequency of debug statement output (1 = LOW, 2 = MEDIUM, 3 = HIGH)
         """
@@ -47,7 +49,7 @@ class Cataloging:
         ##########################################
 
         # Get a list of all files starting at the path specified
-        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=True,
+        files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=require_geom,
                                                    debug=debug, verbosity=verbosity, **kwargs)
 
         if debug and verbosity >= 2:

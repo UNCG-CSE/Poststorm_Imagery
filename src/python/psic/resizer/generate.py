@@ -14,7 +14,7 @@ class ResizeImages:
                           scale: float, save: bool = True, debug: bool = s.DEFAULT_DEBUG) -> list:
 
         # Get all jpg files
-        files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', debug=debug)
+        files: List[str] = h.all_files_recursively(root_path=path, require_geom=True, file_extension='jpg', debug=debug)
 
         new_images: List[Image] = list()
 
