@@ -29,6 +29,3 @@ coverage:
       default:
         # basic
         target: 75%
-        # advanced
-        only_pulls: true
-    patch: off
