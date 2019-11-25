@@ -83,6 +83,10 @@ class TestCataloging(TestCase):
                                              debug=True,
                                              verbosity=3)
 
+    @staticmethod
+    def test__get_storm_from_path():
+        assert Cataloging._get_storm_from_path(os.path.join(INPUT_PATH, '20180915a_jpgs')) == "Florence"
+
     # def test__get_best_date(self):
     #     self.fail()
     #
