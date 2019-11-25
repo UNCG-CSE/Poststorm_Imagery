@@ -16,6 +16,7 @@ ignore:
   # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
+  - '**/psic/cataloging/stack.py'
   - '**/psic/collector/collect.py'
   - '**/psic/resizer/resize.py'
 
