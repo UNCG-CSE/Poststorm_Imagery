@@ -311,7 +311,7 @@ class Cataloging:
             return None
 
     @staticmethod
-    def _get_storm_from_path(scope_path: Union[bytes, str] = None) -> str or None:
+    def _get_storm_from_path(scope_path: Union[bytes, str] = None, recurse_count: int = 0) -> str or None:
 
         scope_path = h.validate_and_expand_path(scope_path)
 
@@ -322,6 +322,9 @@ class Cataloging:
 
         path_tail: str = os.path.split(scope_path)[1]
 
+        if recurse_count > 10:
+            raise RecursionError('Could not find storm in path after 10 iterations!')
+
         if len(path_tail) <= 1 \
                 or path_tail[0].islower() \
                 or 'jpg' in path_tail \
@@ -331,7 +334,8 @@ class Cataloging:
             # or the directory is actually a file or archive or is the data path
 
             # Keep recursively checking each directory to match the pattern (traverse back through path)
-            return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0])
+            return Cataloging._get_storm_from_path(scope_path=os.path.split(scope_path)[0],
+                                                   recurse_count=(recurse_count + 1))
 
         else:
             return path_tail
