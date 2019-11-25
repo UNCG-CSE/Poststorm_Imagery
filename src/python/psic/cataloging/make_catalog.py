@@ -337,7 +337,7 @@ class Cataloging:
 
         if len(path_tail) <= 1 \
                 or path_tail[0].islower() \
-                or 'jpg' in path_tail \
+                or re.match('.*([._]).*', path_tail) \
                 or scope_path == s.DATA_PATH:
             # If the current directory is either not defined (input ends with / instead of the dir name)
             # or the first character of the directory's name is lower-cased (storms should have capitals)
