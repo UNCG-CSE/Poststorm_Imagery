@@ -42,7 +42,7 @@ class TestCataloging(TestCase):
                                              debug=True,
                                              verbosity=3)
 
-        mock_find_catalog_path.assert_called_once()
+        mock_find_catalog_path.assert_not_called()
         mock__get_storm_from_path.assert_called()  # Called 5 times
         mock_get_catalog_path.assert_called()  # Called 4 times
 
