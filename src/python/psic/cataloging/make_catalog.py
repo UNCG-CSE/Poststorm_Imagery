@@ -291,3 +291,8 @@ class Cataloging:
             f.close()
             h.print_error('\nCould not find any values for fields ' + str(field_id_set) + ' in ' + geom_path)
             return None
+
+
+class CatalogNotFoundException(IOError):
+    def __init__(self):
+        Exception.__init__(self, 'The catalog file was not found!')

@@ -7,6 +7,7 @@ import pandas as pd
 
 from psic import s
 from psic.assigner.image_ref import Image
+from psic.cataloging.make_catalog import CatalogNotFoundException
 from psic.common import h
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
@@ -288,8 +289,3 @@ class ImageAssigner:
         self.max_skipped_queue = self.max_skipped_queue.copy()
         self.current_image = self.current_image.copy()
         return self
-
-
-class CatalogNotFoundException(IOError):
-    def __init__(self):
-        Exception.__init__(self, 'The catalog file was not found!')
