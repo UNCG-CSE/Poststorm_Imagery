@@ -1,5 +1,6 @@
 import os
 from unittest import TestCase
+from unittest.mock import patch
 
 import pytest
 
@@ -9,7 +10,7 @@ from psic.cataloging.make_catalog import Cataloging
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input/Florence')
-CATALOG_FILE = os.path.join(INPUT_PATH, s.CATALOG_FILE.replace('${storm_id}', 'florence'))
+CATALOG_FILE = os.path.join(INPUT_PATH, s.CATALOG_FILE.replace('${storm_id}', 'Florence'))
 # EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
 # OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 
@@ -27,7 +28,10 @@ class TestCataloging(TestCase):
     def _pass_fixtures(self, capfd):
         self.capfd = capfd
 
-    def test_generate_index_from_scope(self):
+    @patch.object(Cataloging, 'get_catalog_path', return_value=CATALOG_FILE)
+    @patch.object(Cataloging, 'find_catalog_path', return_value=CATALOG_FILE)
+    @patch.object(Cataloging, '_get_storm_from_path', return_value='Florence')
+    def test_generate_index_from_scope(self, mock__get_storm_from_path, mock_find_catalog_path, mock_get_catalog_path):
 
         Cataloging.generate_index_from_scope(scope_path=INPUT_PATH,
                                              file_extension='jpg',
@@ -37,6 +41,11 @@ class TestCataloging(TestCase):
                                              override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
+
+        mock_find_catalog_path.assert_called_once()
+        mock__get_storm_from_path.assert_called()  # Called 5 times
+        mock_get_catalog_path.assert_called()  # Called 4 times
+
         out, err = self.capfd.readouterr()
         print('OUTPUT: ' + str(out).replace('\r', '\\r\n'))
         with self.subTest(msg='Found all 3 files'):
