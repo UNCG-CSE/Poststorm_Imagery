@@ -16,7 +16,7 @@ OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 class TestResizeImages(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUp(cls) -> None:
         if os.path.exists(OUTPUT_PATH):
             shutil.rmtree(OUTPUT_PATH)
 
@@ -44,7 +44,21 @@ class TestResizeImages(unittest.TestCase):
         assert 'Resizing file 1 of 2 (50.00%): ' in str(out)
         assert 'Resizing file 2 of 2 (100.00%): ' in str(out)
 
+    @staticmethod
+    def test_resize_image_at_path():
+        assert ResizeImages.resize_image_at_path(
+            original_path=os.path.join(INPUT_PATH, 'C26347592.jpg'),
+            small_path=os.path.join(OUTPUT_PATH, 'C26347592.jpg'),
+            scale=0.15)
+
+    @staticmethod
+    def test_resize_image_at_path_missing():
+        assert not ResizeImages.resize_image_at_path(
+            original_path=os.path.join(INPUT_PATH, 'DoesNotExist.jpg'),
+            small_path=os.path.join(OUTPUT_PATH, 'DoesNotExist.jpg'),
+            scale=0.15)
+
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDown(cls) -> None:
         if os.path.exists(OUTPUT_PATH):
             shutil.rmtree(OUTPUT_PATH)
