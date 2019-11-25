@@ -322,7 +322,7 @@ class Cataloging:
 
         path_tail: str = os.path.split(scope_path)[1]
 
-        if len(path_tail) == 0 \
+        if len(path_tail) <= 1 \
                 or path_tail[0].islower() \
                 or 'jpg' in path_tail \
                 or scope_path == s.DATA_PATH:
