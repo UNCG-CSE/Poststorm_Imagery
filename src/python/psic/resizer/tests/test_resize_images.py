@@ -1,6 +1,7 @@
 import os
 import shutil
 import unittest
+
 import pytest
 
 from psic.resizer.generate import ResizeImages

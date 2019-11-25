@@ -11,8 +11,6 @@ SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
 INPUT_PATH = os.path.join(DATA_PATH, 'input/Florence')
 CATALOG_FILE = os.path.join(INPUT_PATH, s.CATALOG_FILE.replace('${storm_id}', 'Florence'))
-# EXPECTED_PATH = os.path.join(DATA_PATH, 'expected')
-# OUTPUT_PATH = os.path.join(DATA_PATH, 'output')
 
 
 class TestCataloging(TestCase):
@@ -84,6 +82,10 @@ class TestCataloging(TestCase):
                                              override_catalog_path=CATALOG_FILE,
                                              debug=True,
                                              verbosity=3)
+
+    @staticmethod
+    def test__get_storm_from_path():
+        assert Cataloging._get_storm_from_path(os.path.join(INPUT_PATH, '20180915a_jpgs')) == "Florence"
 
     # def test__get_best_date(self):
     #     self.fail()

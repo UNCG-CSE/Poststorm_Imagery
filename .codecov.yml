@@ -8,7 +8,7 @@ ignore:
   - '**/psic/setup.py'
 
   # Test files
-  - '**/psic/tests'
+  - '**/tests'
 
   # Misc statistics files
   - '**/psic/stats'
