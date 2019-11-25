@@ -4,7 +4,7 @@ from unittest import TestCase
 import pytest
 
 from psic import s
-from psic.cataloging.generate import Cataloging
+from psic.cataloging.make_catalog import Cataloging
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')
