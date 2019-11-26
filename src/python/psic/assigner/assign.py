@@ -9,8 +9,9 @@ from typing import Union
 import jsonpickle
 
 from psic import s
-from psic.assigner.image_assigner import ImageAssigner, CatalogNotFoundException
+from psic.assigner.image_assigner import ImageAssigner
 from psic.assigner.json_response import JSONResponse
+from psic.cataloging.make_catalog import CatalogNotFoundException
 
 if s.DEFAULT_DEBUG:
     print('ARGV: ' + str(sys.argv))
@@ -20,10 +21,10 @@ curr_user = getpass.getuser()
 ASSIGNER_FILE_NAME: str = 'assigner_state-' + curr_user + '.json'
 
 DATA_PATH: Union[bytes, str] = path.abspath(s.DATA_PATH)
-TAR_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.TAR_CACHE)
+ARCHIVE_CACHE_PATH: Union[bytes, str] = path.join(DATA_PATH, s.ARCHIVE_CACHE)
 
 SMALL_PATH: Union[bytes, str] = path.abspath(s.SMALL_PATH)
-SMALL_TAR_CACHE_PATH: Union[bytes, str] = path.join(SMALL_PATH, s.TAR_CACHE)
+SMALL_ARCHIVE_CACHE_PATH: Union[bytes, str] = path.join(SMALL_PATH, s.ARCHIVE_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #
@@ -32,10 +33,10 @@ SMALL_TAR_CACHE_PATH: Union[bytes, str] = path.join(SMALL_PATH, s.TAR_CACHE)
 # Define a set of arguments that should always be included in all commands and sub-commands of the assign.py command
 parent = argparse.ArgumentParser(add_help=False)
 
-parent.add_argument('--path', '-p', default=TAR_CACHE_PATH, dest='path',
+parent.add_argument('--path', '-p', default=ARCHIVE_CACHE_PATH, dest='path',
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
-parent.add_argument('--small_path', '-s', default=SMALL_TAR_CACHE_PATH, dest='small_path',
+parent.add_argument('--small_path', '-s', default=SMALL_ARCHIVE_CACHE_PATH, dest='small_path',
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
 parent.add_argument('--response', '-r', choices=['json'], default='json', dest='format',

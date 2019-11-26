@@ -8,12 +8,16 @@ ignore:
   - '**/psic/setup.py'
 
   # Test files
-  - '**/psic/tests'
+  - '**/tests'
+
+  # Misc statistics files
+  - '**/psic/stats'
 
   # Command-line runners
   - '**/psic/main/pstorm.py'
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
+  - '**/psic/cataloging/stack.py'
   - '**/psic/collector/collect.py'
   - '**/psic/resizer/resize.py'
 
@@ -21,3 +25,8 @@ coverage:
   range: 50..90
   round: down
   precision: 2
+  status:
+    project:
+      default:
+        # basic
+        target: 75%

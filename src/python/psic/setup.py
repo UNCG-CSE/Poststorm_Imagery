@@ -9,7 +9,7 @@ with open('README.md', 'r', encoding='utf8') as fh:
 
 setup(
     name='psic',
-    version='1.3.1',
+    version='1.4.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     description='Classification and analysis of post-storm response imagery.',
@@ -28,6 +28,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Other',
         'Programming Language :: Other Scripting Engines',
         'Topic :: Scientific/Engineering',
