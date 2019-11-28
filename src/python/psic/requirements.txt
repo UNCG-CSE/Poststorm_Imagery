@@ -40,7 +40,7 @@ parso==0.5.1
 pickleshare==0.7.5
 pillow==6.2.1
 prometheus-client==0.7.1
-prompt-toolkit==3.0.0
+prompt-toolkit==3.0.1
 pygments==2.5.1
 pyparsing==2.4.5
 pyrsistent==0.15.6
