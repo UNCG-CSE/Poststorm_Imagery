@@ -1,3 +1,4 @@
+#def pixel returns either the green or blue average pixel value and writes the values to a csv
 import os
 
 import cv2
@@ -20,6 +21,7 @@ print(inland_images)
 inland_images_path = Path("G:/Shared drives/P-Sick/data/Florence/20180922a_jpgs/training_inland")
 
 shoreline_images_path = Path("G:/Shared drives/P-Sick/data/Florence/20180917a_jpgs/training_shoreline")
+
 def pixel(folder):
     i = 0
     for file in os.listdir(folder):
