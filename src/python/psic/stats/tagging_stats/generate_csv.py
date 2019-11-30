@@ -73,7 +73,7 @@ for image in finished_images:
 
     # This is the row we will populate and insert into the DF.
     image_dict_to_insert ={
-        'image_id':image.get_rel_path(),
+        'image_id':image.get_rel_path().split("/")[-1],
         'list_of_taggers':list(image.get_taggers())
     }
 
