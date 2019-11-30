@@ -1,0 +1,43 @@
+import os
+
+import cv2
+import csv
+import matplotlib.image as plt_img
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.stats as stats
+import pandas as pd
+from PIL import Image
+from scipy.stats import norm
+from pathlib import Path
+
+inland_images = {}
+shoreline_images = {}
+green = {}
+blue = {}
+
+print(inland_images)
+inland_images_path = Path("G:/Shared drives/P-Sick/data/Florence/20180922a_jpgs/training_inland")
+
+shoreline_images_path = Path("G:/Shared drives/P-Sick/data/Florence/20180917a_jpgs/training_shoreline")
+def pixel(folder):
+    i = 0
+    for file in os.listdir(folder):
+        if file.endswith(".jpg"):
+            jpg = os.path.join(folder, file)
+            jpg = cv2.imread(jpg)
+            green_avg = np.mean(jpg[:, :, 1])
+            green[i] = green_avg
+            #blue_avg = np.mean(jpg[:, :, 2])
+            #blue[i] = blue_avg
+            i = i+1
+    return green
+#shoreline_images = pixel(shoreline_images_path)
+inland_images = pixel(inland_images_path)
+#with open('shoreline_green.csv', 'w') as f:
+#    for key in shoreline_images.keys():
+#        f.write("%s,%s\n"%(key,shoreline_images[key]))
+
+with open('inland_green.csv', 'w') as f:
+    for key in inland_images.keys():
+        f.write("%s,%s\n" % (key, inland_images[key]))
