@@ -21,9 +21,8 @@ import statistics
 
 SELF_PATH = os.getcwd()
 PATH_TO_FILE_STREAM = 'G:\Shared drives\P-Sick'
-PATH_TO_IMAGES = os.path.join(PATH_TO_FILE_STREAM,'data\Florence\20180917a_jpgs')
+PATH_TO_IMAGES = os.path.join(PATH_TO_FILE_STREAM,'data\Florence/20180917a_jpgs')
 PATH_TO_TAG_CSV = os.path.join(SELF_PATH,'../tagging_data.csv')
-
 
 # First lets load the csv that has all the completely tagged image tags.
 df_image_tags = pd.read_csv(PATH_TO_TAG_CSV)
@@ -31,9 +30,19 @@ df_image_tags = pd.read_csv(PATH_TO_TAG_CSV)
 # Get a series of the images
 series_images = df_image_tags['image_id']
 
-# Testing to see if python can access the archive
+# Check if all the images in the series exist
+all_exist = True
+count = 0
+not_exist = 0
+for image in series_images:
+    count += 1
+    all_exist = all_exist and path.exists(os.path.join(PATH_TO_IMAGES,image))
+    if not path.exists(os.path.join(PATH_TO_IMAGES,image)):
+        not_exist += 1
 
-# Tell me if this path exists
-print(path.exists('G:\Shared drives\P-Sick\data\Florence')) # True
-print(path.exists('G:\Shared drives\P-Sick\data\Florence\20180917a_jpgs')) # False
+if all_exist:
+    print(f'All {count} images exist')
+else:
+    print(f'Of {count} images, {not_exist} dont exist')
+
 
