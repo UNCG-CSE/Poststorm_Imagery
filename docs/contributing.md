@@ -27,7 +27,7 @@ changes with the original creator
 - All large data files must be excluded from the GitHub repository.
   *Note: All files except `.gitignore` files are ignored in the `data` folder, so storing data in a sub-directory
   there is a good option! To force Git to commit a directory, but not the files in it, you can copy
-  the `.gitignore` from `data/tar_cache` into the directory.*
+  the `.gitignore` from `data/archive_cache` into the directory.*
 
 [^1]:   !!! note "Other Branches"
             Create new branches with beta as the base, as needed, making sure to name them appropriately to the feature you are

@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='psic',
-    version='1.2.0',
+    version='1.4.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     url='https://github.com/UNCG-CSE/Poststorm_Imagery',
@@ -26,6 +26,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Other',
         'Programming Language :: Other Scripting Engines',
         'Topic :: Scientific/Engineering',
