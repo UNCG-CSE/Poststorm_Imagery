@@ -20,7 +20,6 @@ for i, row in data.iterrows():
     # Load grayscale versions of the small images
     image = cv2.imread(image_path, 0)
     row['image'] = image
-    image.close()
 
 data.drop(columns=['image_id'], inplace=True)
 print(data)
