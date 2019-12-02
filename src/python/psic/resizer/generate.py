@@ -10,8 +10,8 @@ from psic.common import h
 class ResizeImages:
 
     @staticmethod
-    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str],
-                          scale: float, save: bool = True, debug: bool = s.DEFAULT_DEBUG) -> list:
+    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str], scale: float,
+                          img_filter=Image.ANTIALIAS, save: bool = True, debug: bool = s.DEFAULT_DEBUG) -> list:
 
         # Get all jpg files
         files: List[str] = h.all_files_recursively(root_path=path, require_geom=True, file_extension='jpg', debug=debug)
@@ -34,7 +34,8 @@ class ResizeImages:
 
                 if debug:
                     done_ratio = i / len(files)
-                    print('\rResizing file %d of %d (%.2f%%): %s ... ' % (i, len(files), done_ratio * 100, file), end='')
+                    print('\rResizing file %d of %d (%.2f%%): %s ... ' % (i, len(files), done_ratio * 100, file),
+                          end='')
 
                 # Open file as an image
                 original_image = Image.open(original_abs_path)
@@ -42,7 +43,8 @@ class ResizeImages:
                 # Resize the image based on given scale factor
                 try:
 
-                    new_image = ResizeImages.resize_image(original_image=original_image, scale=scale)
+                    new_image = ResizeImages.resize_image(original_image=original_image,
+                                                          scale=scale, img_filter=img_filter)
                     new_images.append(new_image)
 
                     if save:
@@ -63,7 +65,7 @@ class ResizeImages:
         return new_images
 
     @staticmethod
-    def resize_image(original_image: Image, scale: float) -> Image:
+    def resize_image(original_image: Image, scale: float, img_filter=Image.ANTIALIAS) -> Image:
 
         # Get the original image's width and height
         width, height = original_image.size
@@ -72,7 +74,7 @@ class ResizeImages:
         new_size: Tuple = (int(width * scale), int(height * scale))
 
         try:
-            return original_image.resize(new_size, Image.ANTIALIAS)
+            return original_image.resize(new_size, img_filter)
 
         except Exception as e:
             h.print_error(e)
