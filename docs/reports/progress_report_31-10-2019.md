@@ -68,14 +68,14 @@ images are annotated, I'll return to statistical analysis of those data. Total
 time spent on task: 15 hours
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
-https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/Data%20Statistics)
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/Data%20Statistics)
 
 Developed utility that inputs a GPS coordinate and outputs the image filename(s)
 that contains that lat/long point. Unlike image count script, it runs in O(n),
 hurray! Time spent on task: 5 hours.
 
 [![Source](https://img.shields.io/badge/Source-Click%20Me-informational)](
-https://github.com/UNCG-CSE/Poststorm_Imagery/tree/beta/src/python/psic/find_point)
+https://github.com/UNCG-CSE/Poststorm_Imagery/tree/master/src/python/psic/find_point)
 
 ---
 
