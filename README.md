@@ -6,8 +6,6 @@ https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
 https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master)
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=master)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
-[![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=master)](
-https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
