@@ -101,11 +101,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:060d19feef09453d3375ab23c7295ed36cb59e5a3904598ab903f93ec45f1f63",
-                "sha256:e468b8f03a0168a667982b50f0b4e0828cc32721bbea32b23934e55b7970eb7a"
+                "sha256:c66c7e27239855828a764b1e8fc72c24a6f4498a2637572094a78c5551fb9d51",
+                "sha256:f186b01b36609e0c5d0de27c7ef8e80c990c70478f8c880863004b3489a9030e"
             ],
             "markers": "python_version >= '3.3'",
-            "version": "==7.10.0"
+            "version": "==7.10.1"
         },
         "ipython-genutils": {
             "hashes": [
@@ -908,11 +908,11 @@
         },
         "mkdocs-material": {
             "hashes": [
-                "sha256:41e8041e1dba6b6fa6624e21d73c1c700f53e60400429a4c7ee10b769b5136b0",
-                "sha256:e0ccb48f21e671acc2f25e37ff1ea7aba0bcfe799393a7c687a97e07f9cb8528"
+                "sha256:307d76239ad7aa126ec7b2f6aa751f22bcabafdbe7679451b08ffe0bc005e22c",
+                "sha256:e11d89d236b2ea62e0a645ff3f55f64d66e9d4c3426771ffaeb24600521166b1"
             ],
             "index": "pypi",
-            "version": "==4.5.0"
+            "version": "==4.5.1"
         },
         "mkdocs-minify-plugin": {
             "hashes": [
