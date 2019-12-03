@@ -22,15 +22,15 @@ else:
 FINAL_TAGS_CSV = path.join(DRIVE_PATH, 'tag_csv/tagging_data.csv')
 SMALL_IMAGES_DIR = path.join(DRIVE_PATH, 'vsmall/5/Florence/20180917a_jpgs/jpgs')
 
-# Create new compressed images that are 5% of original image sizes using nearest neighbor selection
+# Create new compressed images that are 5% of original image sizes (516 x 388 pixels) using nearest neighbor selection
 ResizeImages.resize_all_images(path=path.join(DRIVE_PATH, 'data/Florence/20180917a_jpgs/jpgs'),
                                output_path=SMALL_IMAGES_DIR,
-                               scale=0.05,
-                               img_filter=Image.NEAREST)
+                               new_res=(516, 388),
+                               img_filter=Image.NEAREST,
+                               debug=True)
 
 data = pd.read_csv(FINAL_TAGS_CSV, usecols=['image_id', 'washover'])
 
-data['image'] = np.NaN
 print(data)
 
 X = list()  # The features of the data
