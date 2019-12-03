@@ -10,12 +10,12 @@ from typing import List, Union
 
 from requests.exceptions import RequestException
 
-from psic import s
-from psic.collector.archive import Archive
-from psic.collector.connection_handler import ConnectionHandler
-from psic.collector.locking import get_lock_info, is_locked_by_another_user
-from psic.collector.storm import Storm
-from psic.common import h
+from psicollect import s
+from psicollect.collector.archive import Archive
+from psicollect.collector.connection_handler import ConnectionHandler
+from psicollect.collector.locking import get_lock_info, is_locked_by_another_user
+from psicollect.collector.storm import Storm
+from psicollect.common import h
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)

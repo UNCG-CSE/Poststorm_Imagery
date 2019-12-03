@@ -205,10 +205,10 @@ dmypy.json
 ### Post-Storm Imagery specific config
 !/.gitignore
 ./data/
-src/python/psic/tests/**/output
+psicollect/tests/**/output
 
 ## John's stats test data
-src/python/psic/stats/data
+psicollect/stats/data
 
 ### All IDE Stuff (duplicates some of above)
 .idea/

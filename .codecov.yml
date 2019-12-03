@@ -5,23 +5,23 @@ ignore:
 #  - "[a-z]+/test_.*"  # regexp accepted
 
   # Setup configuration
-  - '**/psic/setup.py'
+  - '**/psicollect/setup.py'
 
   # Test files
   - '**/tests'
 
   # Misc statistics files
-  - '**/psic/stats'
+  - '**/psicollect/stats'
 
   # Modeling files
-  - '**/psic/classify'
+  - '**/psicollect/classify'
 
   # Command-line runners
-  - '**/psic/assigner/assign.py'
-  - '**/psic/cataloging/catalog.py'
-  - '**/psic/cataloging/stack.py'
-  - '**/psic/collector/collect.py'
-  - '**/psic/resizer/resize.py'
+  - '**/psicollect/assigner/assign.py'
+  - '**/psicollect/cataloging/catalog.py'
+  - '**/psicollect/cataloging/stack.py'
+  - '**/psicollect/collector/collect.py'
+  - '**/psicollect/resizer/resize.py'
 
 coverage:
   range: 50..90

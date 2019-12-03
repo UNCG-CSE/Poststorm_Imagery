@@ -9,8 +9,8 @@ from typing import Union, List, Dict, Set, Pattern
 import pandas as pd
 from numpy import NaN
 
-from psic import s
-from psic.common import h
+from psicollect import s
+from psicollect.common import h
 
 flag_unsaved_changes = False  # Keep track of if files have been committed to the disk
 

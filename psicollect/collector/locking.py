@@ -2,7 +2,7 @@ import re
 from os.path import exists
 from typing import Union, TextIO, Dict
 
-from psic import s
+from psicollect import s
 
 
 def update_file_lock(base_file: Union[bytes, str], user: str,

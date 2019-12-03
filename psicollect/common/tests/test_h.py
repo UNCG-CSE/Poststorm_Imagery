@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from psic.common import h
+from psicollect.common import h
 
 
 class TestHelper(TestCase):

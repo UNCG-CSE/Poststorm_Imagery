@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='psic',
+    name='psicollect',
     version='1.4.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',

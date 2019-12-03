@@ -7,7 +7,7 @@ When committing to the repository, there are a few conventions that should be fo
 - Code is clean and commented where needed
 - Any unused code is either removed or commented out
 - Methods that are not entirely obvious as to how they work should have a doc comment explaining the purpose and
-  arguments (see [Storm.py](https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/src/python/psic/collector/storm.py)
+  arguments (see [Storm.py](https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/psicollect/collector/storm.py)
   for an example)
 - Code with different functions should be reasonably separated by directories of their function
 - When changing any functions, documentation referencing that code should be changed to match (.md files / doc comments)

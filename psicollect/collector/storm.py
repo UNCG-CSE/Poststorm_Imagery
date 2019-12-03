@@ -2,10 +2,10 @@ import re
 from os import path
 from typing import List, Tuple
 
-from psic.collector.archive import Archive
-from psic.collector.connection_handler import get_http_response
+from psicollect.collector.archive import Archive
+from psicollect.collector.connection_handler import get_http_response
 # Matches archive files for most (if not all) formats
-from psic.collector.response_getter import get_full_content_length
+from psicollect.collector.response_getter import get_full_content_length
 
 URL_STORMS_REGEX_PATTERN_ARCHIVE_GENERAL = re.compile("[\"\'=]\\s*(https?[^\"\'=]+\\.(tar|zip))\\s*[\"\'>]",
                                                       re.IGNORECASE)

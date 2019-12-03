@@ -2,8 +2,8 @@ import os
 from typing import List
 from unittest import TestCase
 
-from psic.collector.connection_handler import ConnectionHandler
-from psic.collector.storm import Storm
+from psicollect.collector.connection_handler import ConnectionHandler
+from psicollect.collector.storm import Storm
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')

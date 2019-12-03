@@ -4,8 +4,8 @@ from unittest.mock import patch
 
 import pytest
 
-from psic import s
-from psic.cataloging.make_catalog import Cataloging
+from psicollect import s
+from psicollect.cataloging.make_catalog import Cataloging
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')

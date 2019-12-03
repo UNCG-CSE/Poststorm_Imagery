@@ -4,7 +4,7 @@ import unittest
 
 import pytest
 
-from psic.collector.archive import Archive
+from psicollect.collector.archive import Archive
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')

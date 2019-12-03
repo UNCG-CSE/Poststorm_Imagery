@@ -1,8 +1,8 @@
 import os
 from unittest import TestCase
 
-from psic import s
-from psic.collector.locking import get_lock_info, update_file_lock, is_locked_by_another_user
+from psicollect import s
+from psicollect.collector.locking import get_lock_info, update_file_lock, is_locked_by_another_user
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(SELF_PATH, 'data')

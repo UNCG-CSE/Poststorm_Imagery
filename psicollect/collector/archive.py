@@ -11,10 +11,10 @@ from zipfile import ZipFile, ZipInfo
 import requests
 from tqdm import tqdm
 
-from psic import s
-from psic.collector.locking import update_file_lock
-from psic.collector.response_getter import get_full_content_length
-from psic.common import h
+from psicollect import s
+from psicollect.collector.locking import update_file_lock
+from psicollect.collector.response_getter import get_full_content_length
+from psicollect.common import h
 
 UNKNOWN = 'Unknown'
 

@@ -4,7 +4,7 @@ from os.path import isfile, join, splitext
 
 import pandas as pd
 
-from psic import s
+from psicollect import s
 
 # Get all storm-specific CSV files in the catalogs folder (e.g. data/catalogs/v2)
 catalogs = [f for f in listdir(s.CATALOG_DATA_PATH) if isfile(join(s.CATALOG_DATA_PATH, f))
