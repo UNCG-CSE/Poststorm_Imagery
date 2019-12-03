@@ -16,11 +16,10 @@ changes with the original creator
 
 ## Handling Branches
 
-| Branch       | Purpose                                                           |
-| ------------ | ----------------------------------------------------------------- |
-| Master       | Presentable, functional code                                      |
-| Beta         | Bug fixes & general addition                                      |
-| Others [^1]  | New distinct features that are incomplete / not functional yet    |
+| Branch | Purpose                                                           |
+| ------ | ----------------------------------------------------------------- |
+| Master | Bug fixes & general addition                                      |
+| Others | New distinct features that are incomplete / not functional yet    |
 
 ## Project & External Data
 
@@ -28,8 +27,3 @@ changes with the original creator
   *Note: All files except `.gitignore` files are ignored in the `data` folder, so storing data in a sub-directory
   there is a good option! To force Git to commit a directory, but not the files in it, you can copy
   the `.gitignore` from `data/archive_cache` into the directory.*
-
-[^1]:   !!! note "Other Branches"
-            Create new branches with beta as the base, as needed, making sure to name them appropriately to the feature you are
-            trying to make. Make sure that you occasionally pull new commits from beta to minimize merging conflicts if / when the
-            feature is pulled into beta!
