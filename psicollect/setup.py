@@ -2,14 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-from os import path
-
 from setuptools import setup, find_packages
-
-SELF_PATH = path.dirname(path.abspath(__file__))
-
-with open(path.join(SELF_PATH, 'requirements.txt')) as f:
-    required = f.read().splitlines()
 
 setup(
     name='psi-collect',
@@ -39,7 +32,7 @@ setup(
     ],
     keywords='python',
     license='MIT license',
-    install_requires=required,
+    install_requires=['requests', 'tqdm', 'pandas', 'Pillow', 'imageio'],
     packages=find_packages(),
     python_requires=">=3.6",
     zip_safe=False,
