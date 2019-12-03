@@ -22,6 +22,16 @@ matrix:
     after_success: codecov
 
   - language: python
+    python: 3.8
+    env: TOXENV=py38
+    cache: pip
+    before_install:
+      - pip install -U pip
+    install:
+      - pip install -U tox-travis
+    script: tox
+
+  - language: python
     python: 3.7
     env: TOXENV=flake8
     cache: pip
@@ -44,7 +54,7 @@ matrix:
 #    - npm test
 
 after_failure:
-# POST all failures on the main and beta branch to Discord
+# POST all failures on the main branch to Discord
 - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
 - chmod +x send.sh
 - ./send.sh failure $WEBHOOK_URL

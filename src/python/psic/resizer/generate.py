@@ -3,20 +3,19 @@ from typing import Tuple, Union, List
 
 from PIL import Image
 
-from psic import s, h
+from psic import s
+from psic.common import h
 
 
 class ResizeImages:
 
     @staticmethod
-    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str],
-                          scale: float, save: bool = True, **kwargs) -> list:
-
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
+    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str], scale: float or None = 0.15,
+                          new_res: Tuple[int, int] or None = None, img_filter=Image.ANTIALIAS, save: bool = True,
+                          debug: bool = s.DEFAULT_DEBUG) -> list:
 
         # Get all jpg files
-        files: List[str] = h.all_files_recursively(root_path=path, file_extension='jpg', **kwargs)
+        files: List[str] = h.all_files_recursively(root_path=path, require_geom=True, file_extension='jpg', debug=debug)
 
         new_images: List[Image] = list()
 
@@ -36,7 +35,8 @@ class ResizeImages:
 
                 if debug:
                     done_ratio = i / len(files)
-                    print('\rResizing file %d of %d (%.2f%%): %s ... ' % (i, len(files), done_ratio * 100, file), end='')
+                    print('\rResizing file %d of %d (%.2f%%): %s ... ' % (i, len(files), done_ratio * 100, file),
+                          end='')
 
                 # Open file as an image
                 original_image = Image.open(original_abs_path)
@@ -44,7 +44,8 @@ class ResizeImages:
                 # Resize the image based on given scale factor
                 try:
 
-                    new_image = ResizeImages.resize_image(original_image=original_image, scale=scale)
+                    new_image = ResizeImages.resize_image(original_image=original_image, scale=scale,
+                                                          new_res=new_res, img_filter=img_filter)
                     new_images.append(new_image)
 
                     if save:
@@ -65,28 +66,37 @@ class ResizeImages:
         return new_images
 
     @staticmethod
-    def resize_image(original_image: Image, scale: float) -> Image:
-
+    def resize_image(original_image: Image, scale: float or None = 0.15,
+                     new_res: Tuple[int, int] or None = None, img_filter=Image.ANTIALIAS) -> Image:
         # Get the original image's width and height
         width, height = original_image.size
 
-        # Reduce the size of the original image by a specified multiplier (scale factor)
-        new_size: Tuple = (int(width * scale), int(height * scale))
+        new_size: Tuple[int, int]
+
+        if new_res is not None:
+            new_size: Tuple = new_res
+        elif scale is not None:
+            # Reduce the size of the original image by a specified multiplier (scale factor)
+            new_size: Tuple = (int(width * scale), int(height * scale))
+        else:  # pragma: no cover
+            raise ValueError('Neither a scale factor or new resolution was specified for resizing!')
 
         try:
-            return original_image.resize(new_size, Image.ANTIALIAS)
+            return original_image.resize(new_size, img_filter)
 
         except Exception as e:
             h.print_error(e)
 
     @staticmethod
-    def resize_image_at_path(original_path: Union[bytes, str], small_path: Union[bytes, str], scale: float) -> bool:
+    def resize_image_at_path(original_path: Union[bytes, str], small_path: Union[bytes, str],
+                             scale: float or None = 0.15, new_res: Tuple[int, int] or None = None) -> bool:
         """
         Takes in an absolute path to an image file and resizes it and saves it to the specified small image path.
 
         :param original_path: The path to the full size image to compress
         :param small_path: The path to the resized image
         :param scale: The scale factor to reduce the image to (0.15 = 15% of the full image size)
+        :param new_res: The absolute resolution to resize the image to in pixels (width x height)
         :return: Whether (True) or not (False) the image was resized successfully (some images may not be able to)
         """
 
@@ -95,7 +105,7 @@ class ResizeImages:
             original_image = Image.open(original_path)
 
             # Resize the image based on given scale factor
-            new_image = ResizeImages.resize_image(original_image=original_image, scale=scale)
+            new_image = ResizeImages.resize_image(original_image=original_image, scale=scale, new_res=new_res)
 
             # Get the path for the new (smaller) image without the file's name & extension in it
             new_abs_dir = os.path.split(small_path)[0]

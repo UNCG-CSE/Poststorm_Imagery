@@ -5,8 +5,10 @@ from typing import List, Dict, Union
 
 import pandas as pd
 
-from psic import h, s
+from psic import s
 from psic.assigner.image_ref import Image
+from psic.common import h
+from psic.cataloging.make_catalog import Cataloging
 
 # The maximum amount of times an image can be skipped and remain in the pending queue
 MAX_ALLOWED_SKIPS: int = 1
@@ -26,17 +28,17 @@ class ImageAssigner:
     that has validation techniques built in. It is **not** designed to be run client-side as there is no validation of
     identity (user ID is passed as a parameter in most functions).
 
-    This class assumes that there exists a CSV file called `catalog.csv` at the specified scope_path and that the CSV
-    file contains a column with a header named `file` that contains the relative paths of each image to be queued for
-    tagging (in the scope of the directory containing the catalog.csv).
+    This class assumes that there exists a CSV file called `catalog.csv` at the specified scope_path or in the
+    project catalog folder specified in s.py and that the CSV file contains a column with a header named `file` that
+    contains the relative paths of each image to be queued for tagging (in the scope path provided).
     """
 
     random.seed(a=RANDOM_SEED)
 
     # storm_id: str  # The id of the storm (e.g. 'dorian' or 'florence')
     # archive_id: str  # The id of the archive (e.g. '20180919a_jpgs')
-    debug: bool = False
-    scope_path: Union[bytes, str]  # The path of where to find the data and catalog.csv
+    debug: bool
+    scope_path: Union[bytes, str]  # The path of where to find the data
     catalog_path: Union[bytes, str]  # The path to the catalog file
     small_path: Union[bytes, str]  # The path to the resized image scope path
 
@@ -52,20 +54,15 @@ class ImageAssigner:
     last_backup_timestamp: float  # The last time a backup of the assigner state was made
 
     def __init__(self, scope_path: Union[bytes, str],
-                 small_path: Union[bytes, str], **kwargs):
+                 small_path: Union[bytes, str],
+                 debug: bool = s.DEFAULT_DEBUG,
+                 verbosity: int = s.DEFAULT_VERBOSITY):
 
-        # Enable debugging flag (True = output debug statements, False = don't output debug statements)
-        self.debug: bool = (kwargs['debug'] if 'debug' in kwargs else s.DEFAULT_DEBUG)
-
-        # Enable verbosity (0 = only errors, 1 = low, 2 = medium, 3 = high)
-        verbosity: int = (kwargs['verbosity'] if 'verbosity' in kwargs else s.DEFAULT_VERBOSITY)
+        self.debug = debug
 
         self.scope_path = h.validate_and_expand_path(scope_path)
 
-        self.catalog_path = path.join(self.scope_path, s.CATALOG_FILE_NAME + '.csv')
-
-        if path.isfile(self.catalog_path) is False:
-            raise CatalogNotFoundException
+        self.catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
 
         if path.exists(h.validate_and_expand_path(small_path)):
             self.small_path = h.validate_and_expand_path(small_path)
@@ -76,7 +73,7 @@ class ImageAssigner:
         for image in self._image_list_from_csv():
             self.pending_images_queue.append(image)
             if self.debug and verbosity >= 2:
-                print('Loaded %s from the %s.csv file' % (str(image), s.CATALOG_FILE_NAME))
+                print('Loaded %s from the %s file' % (str(image), self.catalog_path))
 
         # Set a starting value for the last time the assigner was backed up
         self.last_backup_timestamp = datetime.now().timestamp()
@@ -289,8 +286,3 @@ class ImageAssigner:
         self.max_skipped_queue = self.max_skipped_queue.copy()
         self.current_image = self.current_image.copy()
         return self
-
-
-class CatalogNotFoundException(IOError):
-    def __init__(self):
-        Exception.__init__(self, 'The catalog file was not found!')

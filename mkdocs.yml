@@ -4,7 +4,7 @@ site_author: 'P-Sick Team'
 site_url: 'https://post-storm-imagery.readthedocs.io/en/latest/'
 
 repo_url: 'https://github.com/UNCG-CSE/Poststorm_Imagery/'
-edit_uri: 'edit/beta/docs/'
+edit_uri: 'edit/master/docs/'
 
 nav:
     - Home: index.md
@@ -20,10 +20,11 @@ nav:
     - Reports:
         - September 24th, 2019: reports/progress_report_24-09-2019.md
         - October 31th, 2019: reports/progress_report_31-10-2019.md
+        - December 3rd, 2019: reports/progress_report_03-12-2019.md
     - Slides:
         - September 24th, 2019: https://docs.google.com/presentation/d/1dLTfdUjqpIh-sr0QH6XXqJRppK400PCauQl_qsmUHqk/present?token=AC4w5VjKPNuxgH4Fvm43IBHer9S_VmB48g%3A1569313231926&includes_info_params=1&eisi=CPb9662D6eQCFYFXgQodpcoDuQ#slide=id.g1f87997393_0_782
         - October 31th, 2019: https://docs.google.com/presentation/d/1J_xktC5Rf-i9PXO-6zSJH6b0KM2t5hl4Ag_8eV1cd3Y/present?token=AC4w5VgYf0cUGPC4x3nJrF91Rjnviz8ruw%3A1572489034434&includes_info_params=1&eisi=CMSpvpK6xeUCFUvCxQodLsQLkw#slide=id.g1f87997393_0_782
-
+        - December 3rd, 2019: https://docs.google.com/presentation/d/1_QjnVBa18QjCM7rzX_N4geD7lekv2IRtm0PoWVWbiXI/edit
 theme:
   name: 'material'
   custom_dir: 'theme'
@@ -70,4 +71,4 @@ markdown_extensions:
     - pymdownx.tilde
 
 extra:
-    version: 1.2.0
+    version: 1.4.0

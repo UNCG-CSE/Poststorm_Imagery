@@ -5,7 +5,7 @@ from datetime import datetime
 from os import path
 from typing import Dict, Union, Set
 
-from psic import h
+from psic.common import h
 from psic.resizer.generate import ResizeImages
 
 

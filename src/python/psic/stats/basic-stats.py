@@ -4,10 +4,10 @@ import cv2
 import matplotlib.image as plt_img
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.stats as stats
 # import pandas as pd
 from PIL import Image
 from scipy.stats import norm
-import scipy.stats as stats
 
 red_super_list = []
 green_super_list = []
@@ -144,7 +144,7 @@ def image_t_test(file1, file2):
 
     # 2-sided t-test
     print(stats.ttest_ind(vector1, vector2, False))
-    
+
 
 # This function horizontally concatenates every image in the specified directory
 def concat_images(folder):
