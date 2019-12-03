@@ -7,7 +7,18 @@ Research scientists studying the effects of storms on land in the path of travel
 
 ### [**Rinty Chowdhury**](https://github.com/rintychy)
 
----
+#### Research with the tagged data
+
+***Time: 2 days***
+
+I had to read the prof lecture materials and resoureces given by prof a lot to figure out how the unsupervised clustering can be used within given data. I also had to use online help to understand the concept of the KMeans modeling and how can I implement it within my own data. Everytime I was trying to use it in my data, it was not working. It took long time for me to figure out how it works with my data.
+
+#### KMeans Model
+
+***Time: 8 hours***
+
+Doing the actual unsupervised clustering ploting and modeling took whole day. First, I apply the kmeans model into my data and plot the data into a cluster to see how it looks. I tried manupulating the axis and data to see which way it fits the model best. When I was happy with the clustering data, then I split the data for testing and training. Then i did the accuracy test and it came up to be 88% accurate which was quite good.
+
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)
 
