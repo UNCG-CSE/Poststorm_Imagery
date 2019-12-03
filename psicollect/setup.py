@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
+from os import path
+
 from setuptools import setup, find_packages
 
+SELF_PATH = path.dirname(path.abspath(__file__))
 
-with open('./requirements.txt') as f:
+with open(path.join(SELF_PATH, 'requirements.txt')) as f:
     required = f.read().splitlines()
 
 setup(
