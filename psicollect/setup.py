@@ -4,6 +4,10 @@
 """The setup script."""
 from setuptools import setup, find_packages
 
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(
     name='psicollect',
     version='1.4.0',
@@ -32,11 +36,8 @@ setup(
     ],
     keywords='python',
     license='MIT license',
-    install_requires=['requests', 'tqdm', 'jupyter', 'pandas', 'Pillow',
-                      'jsonpickle', 'imageio', 'matplotlib', 'scipy', 'opencv-python'],
-    include_package_data=True,
+    install_requires=required,
     packages=find_packages(),
-    test_suite='tests',
-    tests_require=['bumpversion', 'flake8', 'pytest', 'pytest-cov', 'pytest-runner'],
+    python_requires=">=3.6",
     zip_safe=False,
 )
