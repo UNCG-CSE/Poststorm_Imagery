@@ -71,11 +71,13 @@ class ResizeImages:
         # Get the original image's width and height
         width, height = original_image.size
 
+        new_size: Tuple[int, int]
+
         if new_res is not None:
+            new_size: Tuple = new_res
+        elif scale is not None:
             # Reduce the size of the original image by a specified multiplier (scale factor)
             new_size: Tuple = (int(width * scale), int(height * scale))
-        elif scale is not None:
-            new_size: Tuple = new_res
         else:  # pragma: no cover
             raise ValueError('Neither a scale factor or new resolution was specified for resizing!')
 
