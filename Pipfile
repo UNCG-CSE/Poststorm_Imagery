@@ -10,7 +10,6 @@ pre-commit = "*"
 pytest = "*"
 pytest-runner = "*"
 pytest-cov = "*"
-tox-travis = "*"
 
 [packages]
 requests = "*"
