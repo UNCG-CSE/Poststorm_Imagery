@@ -10,8 +10,9 @@ from psic.common import h
 class ResizeImages:
 
     @staticmethod
-    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str], scale: float,
-                          img_filter=Image.ANTIALIAS, save: bool = True, debug: bool = s.DEFAULT_DEBUG) -> list:
+    def resize_all_images(path: Union[bytes, str], output_path: Union[bytes, str], scale: float or None = 0.15,
+                          new_res: Tuple[int, int] or None = None, img_filter=Image.ANTIALIAS, save: bool = True,
+                          debug: bool = s.DEFAULT_DEBUG) -> list:
 
         # Get all jpg files
         files: List[str] = h.all_files_recursively(root_path=path, require_geom=True, file_extension='jpg', debug=debug)
@@ -43,8 +44,8 @@ class ResizeImages:
                 # Resize the image based on given scale factor
                 try:
 
-                    new_image = ResizeImages.resize_image(original_image=original_image,
-                                                          scale=scale, img_filter=img_filter)
+                    new_image = ResizeImages.resize_image(original_image=original_image, scale=scale,
+                                                          new_res=new_res, img_filter=img_filter)
                     new_images.append(new_image)
 
                     if save:
@@ -65,13 +66,18 @@ class ResizeImages:
         return new_images
 
     @staticmethod
-    def resize_image(original_image: Image, scale: float, img_filter=Image.ANTIALIAS) -> Image:
-
+    def resize_image(original_image: Image, scale: float or None = 0.15,
+                     new_res: Tuple[int, int] or None = None, img_filter=Image.ANTIALIAS) -> Image:
         # Get the original image's width and height
         width, height = original_image.size
 
-        # Reduce the size of the original image by a specified multiplier (scale factor)
-        new_size: Tuple = (int(width * scale), int(height * scale))
+        if new_res is not None:
+            # Reduce the size of the original image by a specified multiplier (scale factor)
+            new_size: Tuple = (int(width * scale), int(height * scale))
+        elif scale is not None:
+            new_size: Tuple = new_res
+        else:  # pragma: no cover
+            raise ValueError('Neither a scale factor or new resolution was specified for resizing!')
 
         try:
             return original_image.resize(new_size, img_filter)
