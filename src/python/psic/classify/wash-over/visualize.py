@@ -58,4 +58,4 @@ print(pd.DataFrame(X, columns=range(len(X[0]))))
 
 
 # Split into test and training sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=SEED)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=SEED)
