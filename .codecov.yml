@@ -13,6 +13,9 @@ ignore:
   # Misc statistics files
   - '**/psic/stats'
 
+  # Modeling files
+  - '**/psic/classify'
+
   # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'

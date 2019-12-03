@@ -20,7 +20,7 @@ blacklist_labels = ["manual merge"] # default: [], options: list of label names 
 
 # choose a merge method. If the configured merge method is disabled for a
 # repository, Kodiak will report an error in a status message.
-method = "merge" # default: "merge", options: "merge", "squash", "rebase"
+method = "squash" # default: "merge", options: "merge", "squash", "rebase"
 
 # once a PR is merged into master, delete the branch
 delete_branch_on_merge = true # default: false
