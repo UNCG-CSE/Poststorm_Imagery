@@ -1,8 +1,9 @@
-import pandas as pd
-from pathlib import Path
 import os
+from pathlib import Path
 
-#Counts images for each storm, creates a dataframe and visualization.
+import pandas as pd
+
+# Counts images for each storm, creates a dataframe and visualization.
 storm_count= {}
 images_path = "G:/Shared drives/P-Sick/data"
 path_list = Path(images_path)
