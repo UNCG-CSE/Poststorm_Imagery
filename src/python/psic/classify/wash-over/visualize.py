@@ -5,7 +5,6 @@ from os import path
 import cv2
 import numpy as np
 import pandas as pd
-from PIL import Image
 from sklearn.model_selection import train_test_split
 
 from psic.resizer.generate import ResizeImages
@@ -20,14 +19,8 @@ else:
     DRIVE_PATH = 'mnt/Secondary/mcmoretz@uncg.edu/C-Sick'
 
 FINAL_TAGS_CSV = path.join(DRIVE_PATH, 'tag_csv/tagging_data.csv')
+FULL_IMAGES_DIR = path.join(DRIVE_PATH, 'data/Florence/20180917a_jpgs/jpgs')
 SMALL_IMAGES_DIR = path.join(DRIVE_PATH, 'vsmall/5/Florence/20180917a_jpgs/jpgs')
-
-# Create new compressed images that are 5% of original image sizes (516 x 388 pixels) using nearest neighbor selection
-ResizeImages.resize_all_images(path=path.join(DRIVE_PATH, 'data/Florence/20180917a_jpgs/jpgs'),
-                               output_path=SMALL_IMAGES_DIR,
-                               new_res=(516, 388),
-                               img_filter=Image.NEAREST,
-                               debug=True)
 
 data = pd.read_csv(FINAL_TAGS_CSV, usecols=['image_id', 'washover'])
 
@@ -38,10 +31,16 @@ y = None  # The labels of the data
 
 for i, row in data.iterrows():
     print('\rLoaded %s of %s images ' % (i, len(data)) + '.' * (i % 3), end='')
-    image_path = path.join(SMALL_IMAGES_DIR, row['image_id'])
+    full_image_path = path.join(FULL_IMAGES_DIR, row['image_id'])
+    small_image_path = path.join(SMALL_IMAGES_DIR, row['image_id'])
+
+    if not (path.exists(small_image_path) and path.isfile(small_image_path)):
+        # Create a new compressed image that is 5% of original image size (516 x 388 pixels) using nearest neighbor
+        ResizeImages.resize_image_at_path(original_path=full_image_path, small_path=small_image_path,
+                                          new_res=(516, 388))
 
     # Load a 2d array of grayscale values
-    image: np.ndarray = cv2.imread(image_path, 0)
+    image: np.ndarray = cv2.imread(small_image_path, 0)
 
     # String each row together to form a single 1d array of features
     image = image.ravel()
