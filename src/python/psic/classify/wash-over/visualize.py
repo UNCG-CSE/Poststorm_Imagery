@@ -22,12 +22,13 @@ FINAL_TAGS_CSV = path.join(DRIVE_PATH, 'tag_csv/tagging_data.csv')
 FULL_IMAGES_DIR = path.join(DRIVE_PATH, 'data/Florence/20180917a_jpgs/jpgs')
 SMALL_IMAGES_DIR = path.join(DRIVE_PATH, 'vsmall/5/Florence/20180917a_jpgs/jpgs')
 
+print('Reading in the image list and labels...')
 data = pd.read_csv(FINAL_TAGS_CSV, usecols=['image_id', 'washover'])
 
 print(data)
 
 X = list()  # The features of the data
-y = None  # The labels of the data
+y = data['washover']  # The labels of the data
 
 for i, row in data.iterrows():
     print('\rLoaded %s of %s images ' % (i, len(data)) + '.' * (i % 3), end='')
@@ -51,6 +52,8 @@ for i, row in data.iterrows():
     X.append(list(image))
 
 print('\rLoaded all of the images!')
+
+print('\nGenerating a DataFrame from image features...')
 print(pd.DataFrame(X, columns=range(len(X[0]))))
 
 
