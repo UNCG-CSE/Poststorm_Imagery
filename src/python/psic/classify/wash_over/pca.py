@@ -1,12 +1,8 @@
-import warnings
-
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.decomposition import PCA
 
 from psic.classify.wash_over.prepare_washover import get_washover_data
-
-warnings.filterwarnings("ignore")
 
 SEED = 405
 
