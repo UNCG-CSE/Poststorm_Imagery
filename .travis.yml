@@ -41,18 +41,6 @@ matrix:
     - pip install -U tox-travis
     script: tox
 
-  - language: node_js
-    dist: trusty
-    node_js: node
-    before_install:
-    - cd src/dashboard/v2/
-    install:
-    - npm i
-    - npm install --only=dev
-    script:
-    - node_modules/.bin/eslint . --fix
-#    - npm test
-
 after_failure:
 # POST all failures on the main branch to Discord
 - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
