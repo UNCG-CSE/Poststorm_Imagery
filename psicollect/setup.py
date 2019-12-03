@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
-    name='psicollect',
+    name='psi-collect',
     version='1.4.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
