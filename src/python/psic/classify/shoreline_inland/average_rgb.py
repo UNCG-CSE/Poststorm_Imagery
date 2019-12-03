@@ -1,16 +1,9 @@
 #def pixel returns either the green or blue average pixel value and writes the values to a csv
 import os
+from pathlib import Path
 
 import cv2
-import csv
-import matplotlib.image as plt_img
-import matplotlib.pyplot as plt
 import numpy as np
-import scipy.stats as stats
-import pandas as pd
-from PIL import Image
-from scipy.stats import norm
-from pathlib import Path
 
 inland_images = {}
 shoreline_images = {}
