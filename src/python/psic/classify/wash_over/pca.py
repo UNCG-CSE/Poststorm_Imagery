@@ -4,8 +4,6 @@ from sklearn.decomposition import PCA
 
 from psic.classify.wash_over.prepare_washover import get_washover_data
 
-SEED = 405
-
 X, y = get_washover_data()
 
 print('Calculating variances and information...')
