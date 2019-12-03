@@ -88,13 +88,15 @@ class ResizeImages:
             h.print_error(e)
 
     @staticmethod
-    def resize_image_at_path(original_path: Union[bytes, str], small_path: Union[bytes, str], scale: float) -> bool:
+    def resize_image_at_path(original_path: Union[bytes, str], small_path: Union[bytes, str],
+                             scale: float or None = 0.15, new_res: Tuple[int, int] or None = None) -> bool:
         """
         Takes in an absolute path to an image file and resizes it and saves it to the specified small image path.
 
         :param original_path: The path to the full size image to compress
         :param small_path: The path to the resized image
         :param scale: The scale factor to reduce the image to (0.15 = 15% of the full image size)
+        :param new_res: The absolute resolution to resize the image to in pixels (width x height)
         :return: Whether (True) or not (False) the image was resized successfully (some images may not be able to)
         """
 
@@ -103,7 +105,7 @@ class ResizeImages:
             original_image = Image.open(original_path)
 
             # Resize the image based on given scale factor
-            new_image = ResizeImages.resize_image(original_image=original_image, scale=scale)
+            new_image = ResizeImages.resize_image(original_image=original_image, scale=scale, new_res=new_res)
 
             # Get the path for the new (smaller) image without the file's name & extension in it
             new_abs_dir = os.path.split(small_path)[0]
