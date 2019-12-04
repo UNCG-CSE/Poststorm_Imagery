@@ -246,3 +246,5 @@ if OPTIONS.download:
                 if download_incomplete:
                     h.print_error('Will retry download in 10 seconds...')
                     time.sleep(10)
+
+    print('\nDownloaded finished successfully!')
