@@ -20,8 +20,8 @@ coverage:
   range: 50..90
   round: down
   precision: 2
-  status:
-    project:
-      default:
-        # basic
-        target: 75%
+#  status:
+#    project:
+#      default:
+#        # basic
+#        target: 75%
