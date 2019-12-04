@@ -8,10 +8,8 @@ from psicollect.common import h, s
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 
 PATHS = {
-    'assign': '../assigner/assign.py',
     'catalog': '../cataloging/catalog.py',
-    'collect': '../collector/collect.py',
-    'resize': '../resizer/resize.py'
+    'collect': '../collector/collect.py'
 }
 
 
