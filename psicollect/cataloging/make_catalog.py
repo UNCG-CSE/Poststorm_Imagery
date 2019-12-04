@@ -260,9 +260,12 @@ class Cataloging:
                       ' .geom files accessed) ... ', end='')
                 Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
 
-        if debug and verbosity >= 1:
-            print()
-            print(catalog)
+        if debug:
+            print('\r')
+
+            if verbosity >= 1:
+                print()
+                print(catalog)
 
         # Do a final save of the file
         Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
