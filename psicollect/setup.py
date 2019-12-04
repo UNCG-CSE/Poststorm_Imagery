@@ -4,12 +4,14 @@
 """The setup script."""
 from setuptools import setup, find_packages
 
+with open('README.md', 'r', encoding='utf8') as fh:
+    long_description = fh.read()
+
 setup(
     name='psi-collect',
     version='1.4.0',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
-    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
     description='Collection, aggregation, and cataloging of storm imagery for '
                 'the purpose of data sciences and analysis.',
     classifiers=[
@@ -32,8 +34,12 @@ setup(
     ],
     keywords='python',
     license='MIT license',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     install_requires=['requests', 'tqdm', 'pandas', 'Pillow', 'imageio'],
     packages=find_packages(),
-    python_requires=">=3.6",
+    python_requires='>=3.6',
+    scripts=['common/pstorm.py'],
+    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
     zip_safe=False,
 )
