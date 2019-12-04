@@ -2,8 +2,8 @@
 
 **Document Updated:** {{ git_revision_date }}
 
-In order to pull data from the NOAA website, `collect.py` is provided to automate the process of gathering data.
-The script can be called via command-line using specific arguments.
+In order to pull data from the NOAA website, `collect.py` (`pstorm collect <args>`) is provided to automate the
+process of gathering data. The script can be called via command-line using the arguments below.
 
 !!! warning "Collector Caveat"
 

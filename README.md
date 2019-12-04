@@ -22,6 +22,12 @@ https://post-storm-imagery.readthedocs.io/)
 - [**Rinty Chowdhury**](https://github.com/rintychy)
 - [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
 
+## Usage
+
+1. Install Python 3.6, 3.7, or 3.8 [**(Download Here)**](https://www.python.org/downloads/)
+2. Run `pip3 install psi-collect` in your favorite terminal
+3. Run `pstorm collect -h` for help on collecting images or `pstorm catalog -h` for help on cataloging local archives
+
 ## Contributing / Developing
 
 ### Code of Conduct

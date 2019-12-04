@@ -2,8 +2,9 @@
 
 **Document Updated:** {{ git_revision_date }}
 
-Once data is downloaded and unpacked, the data can be cataloged in order to more quickly access key information such as
-GPS data for each image, file size, and date taken to help with statistical and spacial analysis.
+Once data is downloaded and unpacked, the data can be cataloged (`pstorm collect <args>`) in order to more quickly
+access key information such as GPS data for each image, file size, and date taken to help with statistical and
+spacial analysis.
 
 
 ## Command-Line Quick Reference
