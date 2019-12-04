@@ -4,8 +4,8 @@ import argparse
 from os import getcwd
 from typing import Union, Set
 
-from psicollect.cataloging.make_catalog import Cataloging
-from psicollect.common import s
+from psicollect.cataloging.make_catalog import Cataloging, CatalogNoEntriesException
+from psicollect.common import s, h
 
 DATA_PATH: Union[bytes, str] = s.DATA_PATH
 
@@ -38,8 +38,11 @@ parser.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
-Cataloging.generate_index_from_scope(scope_path=getcwd(),
-                                     file_extension=OPTIONS.extension,
-                                     fields_needed=OPTIONS.fields,
-                                     debug=OPTIONS.debug,
-                                     verbosity=OPTIONS.verbosity)
+try:
+    Cataloging.generate_index_from_scope(scope_path=getcwd(),
+                                         file_extension=OPTIONS.extension,
+                                         fields_needed=OPTIONS.fields,
+                                         debug=OPTIONS.debug,
+                                         verbosity=OPTIONS.verbosity)
+except CatalogNoEntriesException as e:
+    h.print_error(e)

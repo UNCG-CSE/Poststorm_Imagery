@@ -113,6 +113,9 @@ class Cataloging:
         files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=require_geom,
                                                    debug=debug, verbosity=verbosity, **kwargs)
 
+        if len(files) == 0:
+            raise CatalogNoEntriesException(curr_dir=scope_path)
+
         if debug and verbosity >= 2:
             print()
             print('Matching files in "' + str(scope_path) + '"\n')
@@ -491,6 +494,11 @@ class Cataloging:
             return result
 
 
+class CatalogNoEntriesException(IOError):
+    def __init__(self, curr_dir: str):
+        IOError.__init__(self, 'There were no images found in any sub-directories in ' + curr_dir)
+
+
 class CatalogNotFoundException(IOError):
     def __init__(self):
-        Exception.__init__(self, 'The catalog file was not found!')
+        IOError.__init__(self, 'The catalog file was not found!')
