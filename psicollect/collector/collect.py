@@ -17,7 +17,6 @@ from psicollect.collector.storm import Storm
 from psicollect.common import h, s
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
-ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
 
 ################################################
 # Define command-line parameters and arguments #
@@ -36,7 +35,7 @@ parser.add_argument('--archive', '-a', default='.*',
                          'found as well as the file name (excluding the extension) and the label (usually "TIF" or '
                          '"RAW JPEG". Defaults to ALL archive files (%(default)s).')
 
-parser.add_argument('--path', '-p', default=ARCHIVE_CACHE_PATH,
+parser.add_argument('--path', '-p', default=s.ARCHIVE_CACHE_PATH,
                     help='The path on your system to download the archive files to (Default: %(default)s).')
 
 parser.add_argument('--user', '-u', default=getpass.getuser(),
@@ -200,7 +199,8 @@ if OPTIONS.no_status is False:
         storm_number += 1
 
     if stat_total_archive_size > 0:
-        print('Total:', h.to_readable_bytes(stat_total_archive_downloaded), '/', h.to_readable_bytes(stat_total_archive_size),
+        print('Total:', h.to_readable_bytes(stat_total_archive_downloaded), '/',
+              h.to_readable_bytes(stat_total_archive_size),
               ' (' + str(floor((stat_total_archive_downloaded / stat_total_archive_size) * 100)) + '%)')
 
 ################################################

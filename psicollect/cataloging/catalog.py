@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 from typing import Union, Set
 
 from psicollect.cataloging.make_catalog import Cataloging
 from psicollect.common import s
 
-DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
-ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
+DATA_PATH: Union[bytes, str] = s.DATA_PATH
 
 ################################################
 # Define command-line parameters and arguments #
@@ -16,7 +14,7 @@ ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
 
 parser = argparse.ArgumentParser(prog=(s.ROOT_CMD + ' catalog'))
 
-parser.add_argument('--path', '-p', default=ARCHIVE_CACHE_PATH,
+parser.add_argument('--path', '-p', default=s.ARCHIVE_CACHE_PATH,
                     help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
 parser.add_argument('--extension', '-e', default='jpg',
