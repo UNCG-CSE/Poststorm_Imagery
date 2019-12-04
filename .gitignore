@@ -205,12 +205,9 @@ dmypy.json
 ### Post-Storm Imagery specific config
 !/.gitignore
 ./data/
-psicollect/tests/**/output
-
-## John's stats test data
-psicollect/stats/data
+!./data/catalogs
+tests/**/output
 
 ### All IDE Stuff (duplicates some of above)
 .idea/
 !/.idea/codeStyles/
-src/dashboard/v2/.env
