@@ -17,7 +17,7 @@ flag_unsaved_changes = False  # Keep track of if files have been committed to th
 class Cataloging:
 
     @staticmethod
-    def find_catalog_path(scope_path: str = None) -> str:
+    def parse_catalog_path(scope_path: str = None) -> str:
         """
         Attempts to find the catalog file given a current path. It does this by first checking to see if there is a
         local copy of the catalog in the scope specified. If there isn't, the search then goes to the project data
@@ -97,7 +97,7 @@ class Cataloging:
 
         if override_catalog_path is None:  # pragma: no cover
             try:
-                catalog_path = Cataloging.find_catalog_path(scope_path=scope_path)
+                catalog_path = Cataloging.parse_catalog_path(scope_path=scope_path)
             except CatalogNotFoundException:
                 catalog_path = Cataloging.get_catalog_path(storm_id=storm_id)
 

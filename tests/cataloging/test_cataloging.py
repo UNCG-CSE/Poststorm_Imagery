@@ -27,7 +27,7 @@ class TestCataloging(TestCase):
         self.capfd = capfd
 
     @patch.object(Cataloging, 'get_catalog_path', return_value=CATALOG_FILE)
-    @patch.object(Cataloging, 'find_catalog_path', return_value=CATALOG_FILE)
+    @patch.object(Cataloging, 'parse_catalog_path', return_value=CATALOG_FILE)
     @patch.object(Cataloging, '_get_storm_from_path', return_value='Florence')
     def test_generate_index_from_scope(self, mock__get_storm_from_path, mock_find_catalog_path, mock_get_catalog_path):
 
