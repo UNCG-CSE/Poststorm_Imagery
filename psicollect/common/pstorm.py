@@ -19,7 +19,7 @@ def main():
         sys.argv.remove(sys.argv[1])
         sys.argv[0] = str(script)
         exec(open(sys.argv[0]).read())
-    elif len(sys.argv) >= 2 and (sys.argv[1] is not ('-h' or '--help')):
+    elif len(sys.argv) >= 2 and (sys.argv[1] is not ('--help' or '-h')):
         print('Unknown sub-command "%s".'
               '\nValid sub-commands are %s'
               % (sys.argv[1], ', '.join(PATHS)))
