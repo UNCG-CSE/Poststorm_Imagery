@@ -1,4 +1,4 @@
-# Post-Storm Imagery Classification
+# Post-Storm Imagery Collection
 
 [![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=master)](
 https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
@@ -7,24 +7,22 @@ https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master)
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=master)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
 
-Classification and analysis of post-storm response imagery.
+Collection, aggregation, and cataloging of storm imagery for the purpose of data sciences and analysis.
 
 [![Documentation](https://img.shields.io/badge/Documentation-Click%20Me-brightgreen)](
 https://post-storm-imagery.readthedocs.io/)
 
 ## Team Members
 
-- [**Rinty Chowdhury**](https://github.com/rintychy)
-- [**Daniel Foster**](https://github.com/dlfosterbot)
 - [**Matthew Moretz**](https://github.com/Matmorcat)
-- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
+- [**Daniel Foster**](https://github.com/dlfosterbot)
+- [**Evan Goldstein**](https://github.com/ebgoldstein)
+- [**Somya Mohanty**](https://github.com/somyamohanty)
 - [**John Weber**](https://github.com/JWeb56)
+- [**Rinty Chowdhury**](https://github.com/rintychy)
+- [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
 
-**Mentor:** [**Dr. Evan B. Goldstein**](https://github.com/ebgoldstein)
-
-**Instructor:** [**Dr. Somya Mohanty**](https://github.com/somyamohanty)
-
-## Contributions 🤝
+## Contributing / Developing
 
 ### Code of Conduct
 
@@ -36,20 +34,24 @@ Make sure you understand our [**Code of Conduct**](https://post-storm-imagery.re
 Before committing to the repository **please** read the project
 [**Code Conventions**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/).
 
-## Getting the Project Running 🏃‍
-
-### Project Pre-Requisite
+### Project Pre-Requisites
 
 1. Python 3.6, 3.7, or 3.8 [**(Download Here)**](https://www.python.org/downloads/)
+2. Pipenv **(Run `pip install pipenv`)**
+3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`
+   (See [**Configuring Module**](https://post-storm-imagery.readthedocs.io/en/latest/configure_python_path/))
+
+*If you get an error message that looks something like `Module not found: "psic"`,
+then the `PYTHONPATH` is not configured correctly!*
 
 ***You will need this in order to run the project.***
 
-### Installing Dependencies
+### Installing Dependencies for Development
 
 1. Change current directory (`cd`) to `Poststorm_Imagery/` (the project root)
 2. Run `pipenv install` to install dependencies
 
-### Collecting Data
+### Testing the Collect Script
 
 1. Change current directory to the collector module (`cd collector/`)
 2. Either use `pipenv run collect.py <args>` or `pipenv shell` then `collect.py <args>`
