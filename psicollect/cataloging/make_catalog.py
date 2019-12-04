@@ -24,7 +24,7 @@ class Cataloging:
         directory to get the possible global copy.
 
         :param scope_path: The root path of the scope to search for the catalog.csv in or None to default to the
-        global, storm non-specific file if one exists ('data/catalogs/<schema version>/catalog.csv')
+        global, storm non-specific file if one exists ('default.csv')
         :return: The path to the catalog file, including the filename and extension
         :except CatalogNotFoundException: If a suitable catalog file cannot be found in the scope or project dir
         """
