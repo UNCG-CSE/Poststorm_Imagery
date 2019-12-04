@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from os import getcwd
 from typing import Union, Set
 
 from psicollect.cataloging.make_catalog import Cataloging
@@ -13,9 +14,6 @@ DATA_PATH: Union[bytes, str] = s.DATA_PATH
 ################################################
 
 parser = argparse.ArgumentParser(prog=(s.ROOT_CMD + ' catalog'))
-
-parser.add_argument('--path', '-p', default=s.ARCHIVE_CACHE_PATH,
-                    help='The path on your system to set the scope of file search to (Default: %(default)s).')
 
 parser.add_argument('--extension', '-e', default='jpg',
                     help='The file extension to restrict the search to (Default: %(default)s).')
@@ -40,7 +38,7 @@ parser.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
 # Add custom OPTIONS to the script when running command-line
 OPTIONS: argparse.Namespace = parser.parse_args()
 
-Cataloging.generate_index_from_scope(scope_path=OPTIONS.path,
+Cataloging.generate_index_from_scope(scope_path=getcwd(),
                                      file_extension=OPTIONS.extension,
                                      fields_needed=OPTIONS.fields,
                                      debug=OPTIONS.debug,

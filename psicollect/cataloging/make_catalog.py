@@ -321,7 +321,9 @@ class Cataloging:
 
         scope_path = h.validate_and_expand_path(scope_path)
 
-        if len(os.path.split(scope_path)[0]) == 0:
+        system_root = os.path.abspath(os.sep)
+
+        if os.path.split(scope_path)[0] == system_root:
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
 
             if debug:
