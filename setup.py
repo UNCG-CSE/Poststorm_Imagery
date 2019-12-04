@@ -40,6 +40,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=['requests', 'tqdm', 'pandas', 'Pillow', 'imageio'],
+    package_data={'catalogs': ['data/catalogs']},
     packages=find_packages(),
     project_urls={
         'Documentation': DOCS_URL,
