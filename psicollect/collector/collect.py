@@ -175,7 +175,7 @@ if OPTIONS.no_status is False:
                 else:
                     exists_str += 'Not downloaded.'
 
-                print('\t\t-', archive, ' ...', h.to_readable_bytes(archive.get_file_size_origin()),
+                print('\t-', archive, ' ...', h.to_readable_bytes(archive.get_file_size_origin()),
                       ' ...', exists_str)
 
                 # Resort to querying the website if the total size cannot be determined locally
