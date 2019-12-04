@@ -90,7 +90,7 @@ class Cataloging:
         global flag_unsaved_changes  # Include the global variable defined at top of this script
 
         if debug:
-            print('Attempting to parse the storm name from the given scope path...')
+            print('Attempting to parse the storm name from the given scope path for choice of CSV name...')
 
         scope_path = h.validate_and_expand_path(path=scope_path)
         storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path, debug=debug)
