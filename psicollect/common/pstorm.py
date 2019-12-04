@@ -3,7 +3,7 @@
 import os
 import sys
 
-from psic import h
+from psicollect.common import h
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 
