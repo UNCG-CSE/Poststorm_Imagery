@@ -185,7 +185,7 @@ if OPTIONS.no_status is False:
                 stat_total_archive_size += total_size
                 stat_storm_archive_size += total_size
 
-            print('\t\tTotal:', h.to_readable_bytes(stat_storm_archive_downloaded), '/',
+            print('\tTotal:', h.to_readable_bytes(stat_storm_archive_downloaded), '/',
                   h.to_readable_bytes(stat_storm_archive_size),
                   ' (' + str(floor((stat_storm_archive_downloaded / stat_storm_archive_size) * 100)) + '%)')
 
