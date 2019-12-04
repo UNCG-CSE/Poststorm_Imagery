@@ -5,7 +5,7 @@ ignore:
 #  - "[a-z]+/test_.*"  # regexp accepted
 
   # Setup configuration
-  - '**/psicollect/setup.py'
+  - 'setup.py'
 
   # Test files
   - '**/tests'
