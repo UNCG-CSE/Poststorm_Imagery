@@ -179,7 +179,7 @@ class Cataloging:
 
                 for i in range(len(files)):
 
-                    print(f'\rGetting size of file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
+                    print(f'\rGetting size of file {i + 1} of {len(files)} ({round((i / len(files)) * 100, 2)}%) ' +
                           '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
                     sizes.append(os.path.getsize(os.path.join(scope_path, files[i])))
 
@@ -192,7 +192,7 @@ class Cataloging:
 
                 for i in range(len(files)):
 
-                    print(f'\rGetting date taken from file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
+                    print(f'\rGetting date taken from file {i + 1} of {len(files)} ({round((i / len(files)) * 100, 2)}%) ' +
                           '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
                     dates.append(Cataloging._get_best_date(os.path.join(scope_path, files[i])))
 
@@ -233,18 +233,30 @@ class Cataloging:
         # For any remaining fields needed (i.e. ll_lat), look for them in the .geom files
         for i, row in catalog.iterrows():
 
-            print(f'\rProcessing .geom attributes of file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
-                  '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
+            dots = math.floor(((i + 1) % 9) / 3) + 1
+
+            print(f'\rProcessing .geom attributes of file {i + 1} of {len(files)} '
+                  f'({round((i / len(files)) * 100, 2)}%) ' +
+                  '.' * dots + ' ' * (3 - dots), end=' ')
 
             row_fields_needed = current_fields_needed.copy()
+            row_fields_existing = set()
 
             # Remove redundant queries to .geom file if the data is already present in the catalog
             for field in current_fields_needed:
                 if (type(row[field]) is str and len(row[field]) > 0) \
-                        or (type(row[field]) is not str and str(row[field]) != "nan"):
-                    print('Found existing data ... field: ' + field + '  row[field]: "' + str(row[field]) +
-                          '" type(row[field])' + str(type(row[field])) + ' ... Skipping this field!')
+                        or type(row[field] is not str and row[field] != NaN):
+
+                    row_fields_existing.add(field)
                     row_fields_needed.remove(field)
+
+            ending: str
+            if debug and verbosity >= 3:
+                ending = '\n'
+            else:
+                ending = '\r'
+
+            print(f'Found existing data for {row_fields_existing} ... skipping these fields!', end=ending)
 
             # Only query the .geom file if there are fields still unfilled
             if len(row_fields_needed) > 0:
@@ -262,7 +274,7 @@ class Cataloging:
                         catalog.at[i, key] = value
                         flag_unsaved_changes = True
 
-            if save_interval > 0 and stat_files_accessed % save_interval == 0:
+            if save_interval > 0 and stat_files_accessed != 0 and stat_files_accessed % save_interval == 0:
 
                 print('\rSaving catalog to disk (' + str(stat_files_accessed) +
                       ' .geom files accessed) ... ', end='')
@@ -277,6 +289,8 @@ class Cataloging:
 
         # Do a final save of the file
         Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
+
+        print('Saved all existing data successfully!')
 
     #####################################
     # Catalog-Specific Helper Functions #
