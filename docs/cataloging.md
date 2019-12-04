@@ -34,7 +34,7 @@ spacial analysis.
     should instead be
 
     ```
-    -p "{'file', 'storm_id', 'archive', 'image', 'date', 'size', 'geom_checksum', 'll_lat', 'll_lon', 'lr_lat',
+    -e "{'file', 'storm_id', 'archive', 'image', 'date', 'size', 'geom_checksum', 'll_lat', 'll_lon', 'lr_lat',
     'lr_lon', 'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}"
     ```
 
