@@ -19,14 +19,14 @@ process of gathering data. The script can be called via command-line using the a
 
 ## Command-Line Quick Reference
 
-|            Parameter | Argument(s) | Function                                                | Default Value                |
-| -------------------: | ----------- | ------------------------------------------------------- | ---------------------------- |
-|     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern        | `.*`                         |
-|   `--archive`, `-a`  | *<regex\>*  | Search all archive files for a specific term or pattern | `.*`                         |
-|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to          | `/data/archive_cache`        |
-| `--no_status`, `-n`  |             | Do not print out a report of all files found            | *False*                      |
-|  `--download`, `-d`  |             | Download the archive files as well after listing them   | *False*                      |
-| `--overwrite`, `-o`  |             | Overwrite existing archive files with the same name     | *False*                      |
+|            Parameter | Argument(s) | Function                                                | Default Value                           |
+| -------------------: | ----------- | ------------------------------------------------------- | --------------------------------------- |
+|     `--storm`, `-s`  | *<regex\>*  | Search all storms for a specific term or pattern        | `.*`                                    |
+|   `--archive`, `-a`  | *<regex\>*  | Search all archive files for a specific term or pattern | `.*`                                    |
+|      `--path`, `-p`  | *<path\>*   | The path on your computer to save the files to          | `<user_home>/psi/collect/data/archives` |
+| `--no_status`, `-n`  |             | Do not print out a report of all files found            | *False*                                 |
+|  `--download`, `-d`  |             | Download the archive files as well after listing them   | *False*                                 |
+| `--overwrite`, `-o`  |             | Overwrite existing archive files with the same name     | *False*                                 |
 
 
 
@@ -47,7 +47,7 @@ process of gathering data. The script can be called via command-line using the a
 ## Example Usages
 
 1.  To list all archive files for *Hurricane Dorian*,
-    `collect.py -s Dorian`
+    `pstorm collect -s Dorian`
 
     ??? quote "Resulting Output"
         ```text
@@ -85,7 +85,7 @@ process of gathering data. The script can be called via command-line using the a
         ```
 
 2.  To list all archive files for *Hurricane Dorian* that contain **jpg** in the file name,
-    `collect.py -s Dorian -a jpg`
+    `pstorm collect -s Dorian -a jpg`
 
     ??? quote "Resulting Output"
         ```text
@@ -111,7 +111,7 @@ process of gathering data. The script can be called via command-line using the a
 
 
 -   If you want a list of all archive files that occurred in 2019 that contain **jpg** in the file name,
-    `collect.py -s 2019 -a jpg`
+    `pstorm collect -s 2019 -a jpg`
 
     ??? quote "Resulting Output"
         ```text
@@ -143,7 +143,7 @@ process of gathering data. The script can be called via command-line using the a
 
 
 -   Both the `--storm` and `--archive` flags also support regular expressions like
-    `collect.py -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
+    `pstorm collect -a jpg.*\D20\d{2}10\d{2}|(\D|^)20\d{2}10\d{2}.*jpg`
     which outputs all *jpg* files for *all storms* where the pictures were taken in *October* (month 10) of any year:
 
     ??? quote "Resulting Output"

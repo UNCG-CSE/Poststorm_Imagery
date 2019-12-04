@@ -10,7 +10,6 @@ PROJECT_DIR = path.expanduser('~/psi/collect')
 
 DATA_PATH = path.join(PROJECT_DIR, 'data')
 ARCHIVE_CACHE_PATH = path.join(DATA_PATH, 'archives')
-ARCHIVE_CACHE = 'archive_cache/'
 
 LOCK_TOTAL_SIZE_BYTES_FIELD = 'total_size_bytes'
 LOCK_PART_SIZE_BYTES_FIELD = 'size_bytes'
