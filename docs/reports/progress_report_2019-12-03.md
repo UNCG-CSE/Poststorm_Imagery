@@ -21,8 +21,9 @@ Doing the actual unsupervised clustering ploting and modeling took whole day. Fi
 
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)
+***Time: 6 hours***
 
----
+Used KNN model to predict shoreline versus inland images using blue and green pixel values as features. Resulted in 100% accuracy due to correlation.
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)
 
