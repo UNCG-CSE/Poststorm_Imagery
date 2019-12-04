@@ -11,19 +11,30 @@ Research scientists studying the effects of storms on land in the path of travel
 
 ***Time: 2 days***
 
-I had to read the prof lecture materials and resoureces given by prof a lot to figure out how the unsupervised clustering can be used within given data. I also had to use online help to understand the concept of the KMeans modeling and how can I implement it within my own data. Everytime I was trying to use it in my data, it was not working. It took long time for me to figure out how it works with my data.
+I had to read the prof lecture materials and resources given by prof a lot to figure out how the unsupervised
+clustering can be used within given data. I also had to use online help to understand the concept of the KMeans modeling
+and how can I implement it within my own data. Every time I was trying to use it in my data, it was not working. It took
+a long time for me to figure out how it works with my data.
 
 #### KMeans Model
 
 ***Time: 8 hours***
 
-Doing the actual unsupervised clustering ploting and modeling took whole day. First, I apply the kmeans model into my data and plot the data into a cluster to see how it looks. I tried manupulating the axis and data to see which way it fits the model best. When I was happy with the clustering data, then I split the data for testing and training. Then i did the accuracy test and it came up to be 88% accurate which was quite good.
+Doing the actual unsupervised clustering plotting and modeling took whole day. First, I apply the KMeans model into my
+data and plot the data into a cluster to see how it looks. I tried manipulating the axis and data to see which way it
+fits the model best. When I was happy with the clustering data, then I split the data for testing and training. Then I
+did the accuracy test and it came up to be 88% accurate which was quite good.
 
+---
 
 ### [**Daniel Foster**](https://github.com/dlfosterbot)
+
 ***Time: 6 hours***
 
-Used KNN model to predict shoreline versus inland images using blue and green pixel values as features. Resulted in 100% accuracy due to correlation.
+Used KNN model to predict shoreline versus inland images using blue and green pixel values as features. Resulted in
+100% accuracy due to correlation.
+
+---
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)
 
@@ -62,7 +73,8 @@ The CNN part was painful. Earlier in October I had gone to the All Things Open 2
 about using CNN for image classification. However I didnt learn too much from it. I then tried to go look at Keras
 itself to see if they had any tutorials of its own, which it had
 [this](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html).
-However there where 2 problems, the first being that in this example they where changing the images them self by
+
+However, there where 2 problems, the first being that in this example they where changing the images them self by
 rotating, sheering, zooming which lead to various artifacts which would not be suitable for this topic. The bigger issue
 was that the model took forever. I let it ran for 5 minutes and it didnt even finish 1 epoch. I then tried to have
 TensorFlow use my GPU since I have RTX, but that also failed due to it requiring that I use Visual Studio IDE. I was
