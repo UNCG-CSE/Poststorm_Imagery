@@ -24,11 +24,22 @@ spacial analysis.
 !!! warning
     If the command doesn't understand one of your parameters, try
     again, but with quotes around any argument. Command-line treats anything separated by a space as two separate
-    arguments, so something like `-p C:\some dir\data\archive_cache\Florence` should instead be
-    `-p "C:\some dir\data\archive_cache\Florence"`
+    arguments, so something like
+
+    ```
+    -e {'file', 'storm_id', 'archive', 'image', 'date', 'size', 'geom_checksum', 'll_lat',
+    'll_lon', 'lr_lat', 'lr_lon', 'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}
+    ```
+
+    should instead be
+
+    ```
+    -p "{'file', 'storm_id', 'archive', 'image', 'date', 'size', 'geom_checksum', 'll_lat', 'll_lon', 'lr_lat',
+    'lr_lon', 'ul_lat', 'ul_lon', 'ur_lat', 'ur_lon'}"
+    ```
 
 
-??? quote "Catalog Snippet Example (data/catalogs/v2/Florence.csv)"
+??? quote "Catalog Snippet Example (Florence.csv)"
     ```
         file                                storm_id    archive         image           size        date        ur_lat              lr_lon              ur_lon              ll_lat              ul_lon              ll_lon              lr_lat              geom_checksum                       ul_lat
     0   20180919b_jpgs/jpgs/P26276665.jpg   florence    20180919b_jpgs  P26276665.jpg   5921685     2018/09/19  34.191330528689896  -77.8172986188853   -77.8071351918187   34.2084190030626    -77.7966678384306   -77.8109531705992   34.2002698812517    22bfdc9e8c7dd77694051c42b73ef383    34.2044620318067
