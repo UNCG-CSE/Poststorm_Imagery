@@ -12,7 +12,7 @@ with open('README.md', 'r', encoding='utf8') as fh:
 
 setup(
     name='psi-collect',
-    version='0.0.1',
+    version='0.0.2',
     author='Team P-Sick',
     author_email='mcmoretz@uncg.edu',
     description='Collection, aggregation, and cataloging of storm imagery for '
