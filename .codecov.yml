@@ -10,19 +10,11 @@ ignore:
   # Test files
   - '**/tests'
 
-  # Misc statistics files
-  - '**/psicollect/stats'
-
-  # Modeling files
-  - '**/psicollect/classify'
-
   # Command-line runners
-  - '**/psicollect/main/pcollect.py'
-  - '**/psicollect/assigner/assign.py'
+  - '**/psicollect/common/pcollect.py'
   - '**/psicollect/cataloging/catalog.py'
   - '**/psicollect/cataloging/stack.py'
   - '**/psicollect/collector/collect.py'
-  - '**/psicollect/resizer/resize.py'
 
 coverage:
   range: 50..90
