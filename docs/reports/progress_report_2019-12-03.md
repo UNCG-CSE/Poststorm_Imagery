@@ -38,6 +38,46 @@ Used KNN model to predict shoreline versus inland images using blue and green pi
 
 ### [**Matthew Moretz**](https://github.com/Matmorcat)
 
+In order to classify whether the data is wash-over or not, I made a very basic SVM model that could reach about an 82%
+accuracy using images compressed to 5% of their original size and converted to grayscale.
+
+### Compression of Feature Space
+
+***Time: 10 hours***
+
+One of the problems I encountered was that the dimensionality was too high to load all 250 images into memory at a time.
+I tried multiple different sizes, expanded the amount of heap space of my IDE to 8 GB, and made sure not to use
+notebooks in order to reduce memory and CPU overhead. I tried multiple forms of compression to see what would yield the
+smallest set of features, while retaining as much information as possible from the original images. 15% compression w/
+anti-aliasing was what we used for the dashboard, and it was still too large (almost 1080p resolution). I chose to
+compress the images down to 5% (516 x 388) of the original size using nearest neighbor scaling and converted the images
+to grayscale, which yielded a much smaller set of features (200,208 features) and still retained a large portion of the
+data. It took a fair bit of time to compress all the images and load them into a single DatFrame. There are other
+libraries that load data in chunk-wise, but this was a simple test of SVM and dimensionality reduction.
+
+### Testing PCA & Possible Further Reduction
+
+***Time: 2 hours***
+
+Along with the previously mentioned compression, I also performed a principal component analysis to get some insight
+and visualize the kind of the data I was working with. From the component analysis, I found that fewer than about
+70 principal components (using the 5% compressed, grayscale images) resulted in a 25% loss of variance (See [Figure 1]),
+suggesting that the data cannot be split into a small amount of features to reduce feature-space. I also plotted the
+data points of a PCA with 2 components and found that while the different classes (wash-over and no wash-over) did
+cluster together, there was still too much overlap for there to be an obvious small data solution (See [Figure 2]).
+I decided to work with the original grayscale 5% compressed images as the training time was still reasonable to compute.
+
+### Modeling and K-Fold Cross-Validation
+
+***Time: 2 hours***
+
+For the modeling portion, I used a cross-validation approach to help reduce the chance of over-fitting, and tried
+many different parameters to try and find what might yield the best results. I found that C did not have a large effect
+in the few trials I ran and that the main factor of how accurate the model could get was as a result of the kernel used.
+A linear kernel performed better than rbf and polynomial kernels, though only achieving about an 82% accuracy.
+
+For a listing of some of the results and their corresponding parameters, see [SVM Models].
+
 ---
 
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
@@ -84,3 +124,8 @@ some confusion matrix and test.
 ---
 
 ### [**John Weber**](https://github.com/JWeb56)
+
+
+[Figure 1]: (https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/docs/slides/figs/wash_over/explained_variance_pca.png)
+[Figure 2]: (https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/docs/slides/figs/wash_over/n2_pca.png)
+[SVM Models]: (https://github.com/UNCG-CSE/Poststorm_Imagery/blob/master/docs/slides/figs/wash_over/svm_models.md)
