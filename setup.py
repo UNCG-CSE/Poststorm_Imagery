@@ -48,7 +48,11 @@ setup(
         'Tracker': REPO_URL + '/issues',
     },
     python_requires='>=3.6',
-    scripts=['psicollect/common/pstorm.py'],
+    entry_points={  # Executable scripts as command-line
+        'console_scripts': [
+            'pcollect=psicollect.common.pcollect:main',
+        ],
+    },
     url=REPO_URL,
     zip_safe=False,
 )
