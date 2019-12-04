@@ -145,7 +145,7 @@ class Archive:
             if full_size_local != full_size_origin:
                 h.print_error('Remaining file size does not match with local cache. '
                               'Something went wrong with partial file request!')
-                exit()
+                exit(1)
 
             # How many bytes to load into memory before saving to the file
             chunk_size: int = 1024 * 1024

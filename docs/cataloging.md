@@ -13,7 +13,7 @@ spacial analysis.
 | -------------------: | -------------- | -------------------------------------------------------------------------------------------- | ------------------- |
 |  `--extension`, `-e` | *<extension\>* | Only add files with this extension to the catalog                                            | `jpg`               |
 |     `--fields`, `-e` | *<Set\>*       | Only include these fields from the .geom and system values                                   | *(See Note)*        |
-|      `--debug`, `-d` |                | Include parameter to output debug information to console                                     | *False*             |
+|     `--silent`, `-s` |                | Include parameter to silence non-error output to console                                     | *False*             |
 |  `--verbosity`, `-v` | *<level\>*     | The amount of information to log to console (0 = only errors, 1 = low, 2 = medium, 3 = high) | `1`                 |
 
 !!! note "Modifying Catalog Contents"

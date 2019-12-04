@@ -21,8 +21,8 @@ parser.add_argument('--fields', '-f', type=Set, default=s.DEFAULT_FIELDS.copy(),
                          'optional fields "size" and "date" for the size of the image and the date taken respectively '
                          '(Default: %(default)s).')
 
-parser.add_argument('--debug', '-d', action='store_true', default=s.DEFAULT_DEBUG,
-                    help='If included, the program will print info throughout the process (Default: %(default)s).')
+parser.add_argument('--silent', '-s', action='store_true', default=False,
+                    help='If included, the program will only print out errors (Default: %(default)s).')
 
 parser.add_argument('--verbosity', '-v', type=int, default=s.DEFAULT_VERBOSITY,
                     help='Changes the log / debug message verbosity. Not all functions may be affected by this '
@@ -40,7 +40,16 @@ try:
     Cataloging.generate_index_from_scope(scope_path=getcwd(),
                                          file_extension=OPTIONS.extension,
                                          fields_needed=OPTIONS.fields,
-                                         debug=OPTIONS.debug,
+                                         debug=(not OPTIONS.silent) or OPTIONS.debug,
                                          verbosity=OPTIONS.verbosity)
+
+    # Return that cataloging was successful
+    exit(0)
+
 except (CatalogNoEntriesException, PathParsingException) as e:
     h.print_error(e)
+except KeyboardInterrupt:
+    h.print_error('Cataloging was prematurely ended.')
+
+# If there was an exception return code 1 (error)
+exit(1)
