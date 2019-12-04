@@ -17,6 +17,7 @@ ignore:
   - '**/psicollect/classify'
 
   # Command-line runners
+  - '**/psicollect/main/pstorm.py'
   - '**/psicollect/assigner/assign.py'
   - '**/psicollect/cataloging/catalog.py'
   - '**/psicollect/cataloging/stack.py'
