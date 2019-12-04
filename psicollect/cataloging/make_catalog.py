@@ -324,27 +324,18 @@ class Cataloging:
 
         scope_path = h.validate_and_expand_path(scope_path)
 
-        system_root = os.path.abspath(os.sep)
+        path_head, path_tail = os.path.split(scope_path)
 
-        if os.path.split(scope_path)[0] == system_root:
+        if path_head == os.path.splitdrive(scope_path)[1] and path_tail == '':
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
 
-            if debug:
-                print('No storm found! Returning None')
-
-            return None
-
-        path_tail: str = os.path.split(scope_path)[1]
+            raise StormNotFoundException(curr_dir=scope_path)
 
         if recurse_count > 10:
             raise RecursionError('Could not find storm in path after 10 iterations!')
 
-        if len(path_tail) <= 1 \
-                or path_tail[0].islower() \
-                or re.match('.*([._]).*', path_tail) \
-                or scope_path == s.DATA_PATH:
-            # If the current directory is either not defined (input ends with / instead of the dir name)
-            # or the first character of the directory's name is lower-cased (storms should have capitals)
+        if path_tail[0].islower() or re.match('.*([._]).*', path_tail) or scope_path == s.DATA_PATH:
+            # If the first character of the directory's name is lower-cased (storms should have capitals)
             # or the directory is actually a file or archive or is the data path
 
             # Keep recursively checking each directory to match the pattern (traverse back through path)
@@ -358,23 +349,20 @@ class Cataloging:
             return path_tail
 
     @staticmethod
-    def _get_archive_from_path(scope_path: Union[bytes, str] = None) -> str or None:
+    def _get_archive_from_path(scope_path: Union[bytes, str] = None) -> str:
 
         scope_path = h.validate_and_expand_path(scope_path)
 
-        if len(os.path.split(scope_path)[0]) == 0:
+        path_head, path_tail = os.path.split(scope_path)
 
+        if path_head == os.path.splitdrive(scope_path)[1] and path_tail == '':
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
-            return None
 
-        path_tail: str = os.path.split(scope_path)[1]
+            raise()
 
-        if len(path_tail) == 0 \
-            or ('20' in path_tail and '_jpgs' in path_tail) is False \
-                or scope_path == s.DATA_PATH:
-            # If the current directory is either not defined (input ends with / instead of the dir name)
-            # or does not look like an archive name
-            # or is the data path
+        if ('20' in path_tail and '_jpgs' in path_tail) is False or scope_path == s.DATA_PATH:
+            # If the current directory does not look like an archive name or is the data path
+
             # Keep recursively checking each directory to match the pattern (traverse back through path)
             return Cataloging._get_archive_from_path(scope_path=os.path.split(scope_path)[0])
 
@@ -403,6 +391,7 @@ class Cataloging:
                 catalog.to_csv(Cataloging.get_catalog_path(storm_id=storm_id))
                 flag_unsaved_changes = False
                 flag_save_incomplete = False
+
             except PermissionError as e:  # pragma: no cover
                 h.print_error(str(e) + '\nTry closing the file if it is open in another program!\nWill attempt '
                                        'to save again in 10 seconds ... \n')
@@ -502,3 +491,8 @@ class CatalogNoEntriesException(IOError):
 class CatalogNotFoundException(IOError):
     def __init__(self):
         IOError.__init__(self, 'The catalog file was not found!')
+
+
+class StormNotFoundException(IOError):
+    def __init__(self, curr_dir: str):
+        IOError.__init__(self, 'Could not parse the storm name from the directory: ' + curr_dir)
