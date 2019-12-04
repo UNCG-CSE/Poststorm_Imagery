@@ -78,6 +78,21 @@ A linear kernel performed better than rbf and polynomial kernels, though only ac
 
 For a listing of some of the results and their corresponding parameters, see [SVM Models].
 
+
+# Most Notable Misc Changes
+
+***Time: Over 100 hours***
+
+- Replace PyUp bot with Dependabot as PyUp bot was misbehaving
+- Redid the catalogs to store more filesystem agnostic data and implement checksums, as the data is now provided in repo
+- Implemented methods to stack multiple catalogs for statistical analysis over multiple storms
+- Updated cataloging documentation
+- Added support for almost all edge-cases and storms currently available from NOAA
+- Added functionality to download, extract, and manipulate .zip files the same as .tar
+- Got the dashboard setup on a VM and production ready with Shah
+- Added functionality to assign image tags in batches to increase performance & reduce calls to assigner API
+- Initial preparations for distribution of collection portion of project
+
 ---
 
 ### [**Shah Nafis Rafique**](https://github.com/ShahNafisRafique)
