@@ -1,7 +1,7 @@
 """A file that contains some commonly used values"""
 from os import path
 
-ROOT_CMD: str = 'pcollect'
+ROOT_CMD: str = 'pstorm'
 DEFAULT_DEBUG: bool = False
 DEFAULT_VERBOSITY: int = 1
 FORMAT_TIME = '%B %d, %Y at %I:%M %p'

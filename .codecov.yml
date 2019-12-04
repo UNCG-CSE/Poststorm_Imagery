@@ -11,7 +11,7 @@ ignore:
   - '**/tests'
 
   # Command-line runners
-  - '**/psicollect/common/pcollect.py'
+  - '**/psicollect/common/pstorm.py'
   - '**/psicollect/cataloging/catalog.py'
   - '**/psicollect/cataloging/stack.py'
   - '**/psicollect/collector/collect.py'
