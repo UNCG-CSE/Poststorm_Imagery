@@ -4,8 +4,8 @@ import argparse
 import os
 from typing import Union, Set
 
-from psicollect import s
 from psicollect.cataloging.make_catalog import Cataloging
+from psicollect.common import s
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)

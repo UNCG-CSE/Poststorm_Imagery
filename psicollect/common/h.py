@@ -5,7 +5,7 @@ import re
 import sys
 from typing import Union, Pattern, List
 
-from psicollect import s
+from psicollect.common import s
 
 
 def print_error(*args, **kwargs) -> None:  # pragma: no cover

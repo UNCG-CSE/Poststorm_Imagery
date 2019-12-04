@@ -11,10 +11,9 @@ from zipfile import ZipFile, ZipInfo
 import requests
 from tqdm import tqdm
 
-from psicollect import s
 from psicollect.collector.locking import update_file_lock
 from psicollect.collector.response_getter import get_full_content_length
-from psicollect.common import h
+from psicollect.common import h, s
 
 UNKNOWN = 'Unknown'
 
