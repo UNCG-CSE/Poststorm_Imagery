@@ -329,7 +329,7 @@ class Cataloging:
         if path_head == os.path.splitdrive(scope_path)[1] and path_tail == '':
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
 
-            raise StormNotFoundException(curr_dir=scope_path)
+            raise PathParsingException(objective='the storm name')
 
         if recurse_count > 10:
             raise RecursionError('Could not find storm in path after 10 iterations!')
@@ -358,7 +358,7 @@ class Cataloging:
         if path_head == os.path.splitdrive(scope_path)[1] and path_tail == '':
             # If the filesystem root directory is reached, a storm-specific catalog cannot be found
 
-            raise ArchiveNotFoundException(curr_dir=scope_path)
+            raise PathParsingException(objective='the archive name')
 
         if ('20' in path_tail and '_jpgs' in path_tail) is False or scope_path == s.DATA_PATH:
             # If the current directory does not look like an archive name or is the data path
@@ -493,11 +493,6 @@ class CatalogNotFoundException(IOError):
         IOError.__init__(self, 'The catalog file was not found!')
 
 
-class StormNotFoundException(IOError):
-    def __init__(self, curr_dir: str):
-        IOError.__init__(self, 'Could not parse the storm name from the directory: ' + curr_dir)
-
-
-class ArchiveNotFoundException(IOError):
-    def __init__(self, curr_dir: str):
-        IOError.__init__(self, 'Could not parse the archive name from the directory: ' + curr_dir)
+class PathParsingException(IOError):
+    def __init__(self, objective: str):
+        IOError.__init__(self, 'Could not parse ' + objective + ' from the current path.')

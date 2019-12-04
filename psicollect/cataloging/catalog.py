@@ -4,7 +4,7 @@ import argparse
 from os import getcwd
 from typing import Set
 
-from psicollect.cataloging.make_catalog import Cataloging, CatalogNoEntriesException
+from psicollect.cataloging.make_catalog import Cataloging, CatalogNoEntriesException, PathParsingException
 from psicollect.common import s, h
 
 ################################################
@@ -42,5 +42,5 @@ try:
                                          fields_needed=OPTIONS.fields,
                                          debug=OPTIONS.debug,
                                          verbosity=OPTIONS.verbosity)
-except CatalogNoEntriesException as e:
+except (CatalogNoEntriesException, PathParsingException) as e:
     h.print_error(e)
