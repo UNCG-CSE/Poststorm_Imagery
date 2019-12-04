@@ -4,4 +4,4 @@
 
 __name__ = 'psic'
 __author__ = 'P-Sick'
-__version__ = '1.4.0'
+__version__ = '0.0.1'
