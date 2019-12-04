@@ -4,6 +4,9 @@
 """The setup script."""
 from setuptools import setup, find_packages
 
+REPO_URL = 'https://github.com/UNCG-CSE/Poststorm_Imagery'
+DOCS_URL = 'https://post-storm-imagery.readthedocs.io/en/latest/'
+
 with open('README.md', 'r', encoding='utf8') as fh:
     long_description = fh.read()
 
@@ -38,8 +41,13 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=['requests', 'tqdm', 'pandas', 'Pillow', 'imageio'],
     packages=find_packages(),
+    project_urls={
+        'Documentation': DOCS_URL,
+        'Source': REPO_URL,
+        'Tracker': REPO_URL + '/issues',
+    },
     python_requires='>=3.6',
-    scripts=['common/pstorm.py'],
-    url='https://github.com/UNCG-CSE/Poststorm_Imagery',
+    scripts=['psicollect/common/pstorm.py'],
+    url=REPO_URL,
     zip_safe=False,
 )
