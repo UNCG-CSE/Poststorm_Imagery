@@ -89,8 +89,7 @@ class Cataloging:
 
         global flag_unsaved_changes  # Include the global variable defined at top of this script
 
-        if debug:
-            print('Attempting to parse the storm name from the given scope path for choice of CSV name...')
+        print('Parsing out current path to determine catalog variables to use ... ', end='')
 
         scope_path = h.validate_and_expand_path(path=scope_path)
         storm_id: str or None = Cataloging._get_storm_from_path(scope_path=scope_path, debug=debug)
@@ -105,9 +104,13 @@ class Cataloging:
             # A catalog path is provided, so no need to search (used for testing)
             catalog_path = override_catalog_path
 
+        print('DONE')
+
         ##########################################
         # Collect matching files from filesystem #
         ##########################################
+
+        print('Getting a list of all valid images ... ', end='')
 
         # Get a list of all files starting at the path specified
         files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=require_geom,
@@ -117,8 +120,6 @@ class Cataloging:
             raise CatalogNoEntriesException(curr_dir=scope_path)
 
         if debug and verbosity >= 2:
-            print()
-            print('Matching files in "' + str(scope_path) + '"\n')
 
             if verbosity < 3 and len(files) > 10:
                 # Print only the first five and last five elements (similar to pandas's DataFrames)
@@ -139,13 +140,12 @@ class Cataloging:
                     print(('{:>' + str(len(str(len(files) + 1))) + '}').format(file_list_number) + '  ' + f)
                     file_list_number += 1
 
+        print('DONE')
+
         ####################################################################
         # Load / generate the table (DataFrame) if it doesn't exist        #
         # and populate with file path, file size, and date image was taken #
         ####################################################################
-
-        if debug:
-            print('\nGenerating DataFrame and calculating statistics ... \n')
 
         current_fields_needed: Set = fields_needed.copy()
         flag_unsaved_changes = False
@@ -154,6 +154,8 @@ class Cataloging:
 
         if os.path.exists(catalog_path) is False:
             # If the catalog file doesn't exist, create a new one
+
+            print('Parsing out information about images from their paths ... ', end='')
 
             entries: List[Dict[str, str or int]] = list()
 
@@ -170,13 +172,15 @@ class Cataloging:
             # DataFrame is populated with these fields, so remove them from the needed list
             current_fields_needed -= {'file', 'storm_id', 'archive', 'image'}
 
+            print('DONE')
+
             if 'size' in current_fields_needed:
                 sizes: List[int] = list()
 
-                if debug:
-                    print('Calculating sizes of files ... ')
-
                 for i in range(len(files)):
+
+                    print(f'\rGetting size of file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
+                          '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
                     sizes.append(os.path.getsize(os.path.join(scope_path, files[i])))
 
                 catalog['size'] = sizes
@@ -186,10 +190,10 @@ class Cataloging:
             if 'date' in current_fields_needed:
                 dates: List[str] = list()
 
-                if debug:
-                    print('Calculating modify time of files ... ')
-
                 for i in range(len(files)):
+
+                    print(f'\rGetting date taken from file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
+                          '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
                     dates.append(Cataloging._get_best_date(os.path.join(scope_path, files[i])))
 
                 catalog['date'] = dates
@@ -198,11 +202,17 @@ class Cataloging:
 
             # Create the file in the scope directory
             Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
+
         else:
+
+            print('Reading in existing catalog to try and fill in any missing values ... ', end='')
+
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
             # Remove basic info as it should already exist in the CSV file
             current_fields_needed -= {'file', 'storm_id', 'archive', 'image', 'date', 'size'}
+
+            print('DONE')
 
         ##########################################################################################
         # Collect information from the .geom files about latitude and longitude of image corners #
@@ -223,10 +233,8 @@ class Cataloging:
         # For any remaining fields needed (i.e. ll_lat), look for them in the .geom files
         for i, row in catalog.iterrows():
 
-            formatted_counter = '{:.2f}'.format(float((i / len(files)) * 100))
-
-            print('\rProcessing file ' + str(i + 1) + ' of ' + str(len(files)) +
-                  ' (' + formatted_counter + '%) ' + '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
+            print(f'\rProcessing .geom attributes of file {i + 1} of {len(files)} ({(i / len(files)) * 100}%) ' +
+                  '.' * (math.floor(((i + 1) % 9) / 3) + 1), end=' ')
 
             row_fields_needed = current_fields_needed.copy()
 

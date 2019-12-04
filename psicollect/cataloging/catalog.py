@@ -47,7 +47,7 @@ try:
     exit(0)
 
 except (CatalogNoEntriesException, PathParsingException) as e:
-    h.print_error(e)
+    h.print_error('\n' + str(e))
 except KeyboardInterrupt:
     h.print_error('\nCataloging was prematurely ended.')
 
