@@ -3,7 +3,7 @@
 import os
 import sys
 
-from psicollect.common import h
+from psicollect.common import h, s
 
 SELF_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,7 +27,7 @@ def main():
               % (sys.argv[1], ', '.join(PATHS)))
     else:
         print('Usage: %s [%s]'
-              % (sys.argv[0], '|'.join(PATHS)))
+              % (s.ROOT_CMD, '|'.join(PATHS)))
 
 
 if __name__ == 'main':
