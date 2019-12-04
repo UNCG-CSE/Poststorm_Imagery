@@ -2,12 +2,10 @@
 
 import argparse
 from os import getcwd
-from typing import Union, Set
+from typing import Set
 
 from psicollect.cataloging.make_catalog import Cataloging, CatalogNoEntriesException
 from psicollect.common import s, h
-
-DATA_PATH: Union[bytes, str] = s.DATA_PATH
 
 ################################################
 # Define command-line parameters and arguments #
