@@ -209,6 +209,26 @@ class Cataloging:
 
             catalog = pd.read_csv(catalog_path, usecols=lambda col_label: col_label in current_fields_needed)
 
+            if catalog.shape[0] < len(files):
+                # If there are fewer images found than listed in current catalog
+                h.print_error(f'Found {catalog.shape[0]} entries in the existing catalog and {len(files)} files in the '
+                              f'scope directory. Files are most likely missing or misplaced! ')
+                exit(1)
+
+            elif catalog.shape[0] > len(files):
+                # The number of images in the directory exceed the amount listed in the current catalog
+                h.print_error('The catalog seems to be missing some entries! Deleting old one and trying again ... ')
+                os.remove(catalog_path)
+                Cataloging.generate_index_from_scope(scope_path=scope_path,
+                                                     fields_needed=fields_needed,
+                                                     save_interval=save_interval,
+                                                     require_geom=require_geom,
+                                                     override_catalog_path=override_catalog_path,
+                                                     debug=debug,
+                                                     verbosity=verbosity,
+                                                     **kwargs)
+                exit(0)
+
             # Remove basic info as it should already exist in the CSV file
             current_fields_needed -= {'file', 'storm_id', 'archive', 'image', 'date', 'size'}
 
@@ -270,7 +290,22 @@ class Cataloging:
 
                     # Store the values in the catalog's respective column by field name, in memory
                     for key, value in geom_data.items():
-                        catalog.at[i, key] = value
+                        try:
+                            catalog.at[i, key] = value
+                        except ValueError as e:
+                            h.print_error('The catalog seems to be corrupted or out of date! Deleting old one and '
+                                          f'trying again ... \nError: {e}')
+                            os.remove(catalog_path)
+                            Cataloging.generate_index_from_scope(scope_path=scope_path,
+                                                                 fields_needed=fields_needed,
+                                                                 save_interval=save_interval,
+                                                                 require_geom=require_geom,
+                                                                 override_catalog_path=override_catalog_path,
+                                                                 debug=debug,
+                                                                 verbosity=verbosity,
+                                                                 **kwargs)
+                            exit(0)
+
                         flag_unsaved_changes = True
 
             if save_interval > 0 and stat_files_accessed != 0 and stat_files_accessed % save_interval == 0:
