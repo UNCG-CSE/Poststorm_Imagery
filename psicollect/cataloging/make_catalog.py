@@ -264,7 +264,8 @@ class Cataloging:
 
             # Remove redundant queries to .geom file if the data is already present in the catalog
             for field in current_fields_needed:
-                if pd.isnull(row[field]) is False:
+                if (type(row[field]) is str and len(row[field]) > 0) \
+                        or (type(row[field]) is not str and str(row[field]).lower() != "nan"):
                     row_fields_existing.add(field)
                     row_fields_needed.remove(field)
 
