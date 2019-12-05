@@ -116,6 +116,13 @@ class Cataloging:
         files: List[str] = h.all_files_recursively(scope_path, unix_sep=True, require_geom=require_geom,
                                                    debug=debug, verbosity=verbosity, **kwargs)
 
+        all_files = files.copy()
+        for file_path in all_files:
+            if os.path.split(file_path)[0].endswith('bak'):
+
+                # Remove all files that are in 'bak' dirs (backup files)
+                files.remove(file_path)
+
         if len(files) == 0:
             raise CatalogNoEntriesException(curr_dir=scope_path)
 
