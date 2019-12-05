@@ -6,8 +6,8 @@ import time
 from datetime import datetime
 from typing import Union, List, Dict, Set, Pattern
 
+import numpy as np
 import pandas as pd
-from numpy import NaN
 
 from psicollect.common import h, s
 
@@ -244,9 +244,7 @@ class Cataloging:
 
             # Remove redundant queries to .geom file if the data is already present in the catalog
             for field in current_fields_needed:
-                if (type(row[field]) is str and len(row[field]) > 0) \
-                        or type(row[field] is not str and row[field] != NaN):
-
+                if pd.isnull(row[field]) is False:
                     row_fields_existing.add(field)
                     row_fields_needed.remove(field)
 
@@ -256,7 +254,8 @@ class Cataloging:
             else:
                 ending = '\r'
 
-            print(f'Found existing data for {row_fields_existing} ... skipping these fields!', end=ending)
+            if len(row_fields_existing) > 0:
+                print(f'Found existing data for {row_fields_existing} ... skipping these fields!', end=ending)
 
             # Only query the .geom file if there are fields still unfilled
             if len(row_fields_needed) > 0:
@@ -290,7 +289,7 @@ class Cataloging:
         # Do a final save of the file
         Cataloging._force_save_catalog(catalog=catalog, scope_path=scope_path)
 
-        print('Saved all existing data successfully!')
+        print('Saved all existing data successfully!\n')
 
     #####################################
     # Catalog-Specific Helper Functions #
@@ -445,8 +444,8 @@ class Cataloging:
         if os.path.exists(geom_path) is False:
             h.print_error('\n\nCould not find .geom file for "' + file_path + '": "' + geom_path + '"')
             for field_id in field_id_set:
-                # Since no .geom file was found, fill with NaN values
-                result[field_id] = NaN
+                # Since no .geom file was found, fill with nan values
+                result[field_id] = np.nan
 
             return result
 
@@ -455,8 +454,8 @@ class Cataloging:
                           'Bad file access may have caused this, so check the archive to see if the image and '
                           'the .geom files in the archive are the same as the unzipped versions!\n')
             for field_id in field_id_set:
-                # Since no .geom file was found, fill with NaN values
-                result[field_id] = NaN
+                # Since no .geom file was found, fill with nan values
+                result[field_id] = np.nan
 
             return result
 
@@ -502,8 +501,8 @@ class Cataloging:
             f.close()
             h.print_error('\nCould not find any values for fields ' + str(field_id_set) + ' in ' + geom_path)
             for field_id in field_id_set:
-                # Fill missing fields with NaN values
-                result[field_id] = NaN
+                # Fill missing fields with nan values
+                result[field_id] = np.nan
 
             return result
 
