@@ -4,7 +4,7 @@ backcall==0.1.0
 bleach==3.1.0
 certifi==2019.11.28
 chardet==3.0.4
-colorama==0.4.1 ; sys_platform == 'win32'
+colorama==0.4.2 ; sys_platform == 'win32'
 cycler==0.10.0
 decorator==4.4.1
 defusedxml==0.6.0
