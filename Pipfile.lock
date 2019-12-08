@@ -935,10 +935,11 @@
         },
         "mkdocs-macros-plugin": {
             "hashes": [
-                "sha256:0574afaa3c7ca2c5428314743cb963a7f49698387cb709b04b85500370d87cef"
+                "sha256:059788bf2c1ad3ec8c5b640a8a75c8e7003d62cfbfdc38b25565a0d67e0eeac7",
+                "sha256:17507071ae8fb4224ab53732087d9a1156a4958c968761cc7c4f064e8de39dca"
             ],
             "index": "pypi",
-            "version": "==0.2.4"
+            "version": "==0.3.2"
         },
         "mkdocs-material": {
             "hashes": [
@@ -1108,6 +1109,12 @@
                 "sha256:29a9ffa0497e7f2be94ca0ed1ca1aa3cd4cf25a1f6b4f5f87f74b46ed91d609a"
             ],
             "version": "==2.0.5"
+        },
+        "termcolor": {
+            "hashes": [
+                "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
+            ],
+            "version": "==1.1.0"
         },
         "toml": {
             "hashes": [
