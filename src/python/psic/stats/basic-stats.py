@@ -40,7 +40,7 @@ def analyze_images(folder):
         green_list.append(green_avg)
         blue_list.append(blue_avg)
 
-        # print('Average pixel value for the Red Channel: ' + str(red_avg))
+        #print('Average pixel value for the Red Channel: ' + str(red_avg))
         # print('Average pixel value for the Green Channel: ' + str(green_avg))
         # print('Average pixel value for the Blue Channel: ' + str(blue_avg))
         # print('\n')
@@ -51,10 +51,10 @@ def analyze_images(folder):
     # print(blue_list)
     # print('\n')
     #
-    # print("Total Average Red Channel Value for " + folder + ': ' + str(np.mean(red_list)))
-    # print("Total Average Green Channel Value for " + folder + ': ' + str(np.mean(green_list)))
-    # print("Total Average Blue Channel Value for " + folder + ': ' + str(np.mean(blue_list)))
-    # print('\n')
+    print("Total Average Red Channel Value for " + folder + ': ' + str(np.mean(red_list)))
+    print("Total Average Green Channel Value for " + folder + ': ' + str(np.mean(green_list)))
+    print("Total Average Blue Channel Value for " + folder + ': ' + str(np.mean(blue_list)))
+    print('\n')
     #
     # red_super_list.append(np.mean(red_list))
     # green_super_list.append(np.mean(green_list))
@@ -220,7 +220,7 @@ def average_images(folder):
     out.show()
 
 
-# analyze_images('data/test_inland_images')
+analyze_images('data/test_inland_images')
 # analyze_images('data/test_ocean_images')
 # analyze_images('data/test_shoreline_images')
 # analyze_images('data/test_inland_images')

@@ -16,6 +16,7 @@ inland_images = {}
 shoreline_images = {}
 green = {}
 blue = {}
+red = {}
 
 print(inland_images)
 inland_images_path = Path("G:/Shared drives/P-Sick/data/Florence/20180922a_jpgs/training_inland")
