@@ -36,7 +36,7 @@ numpy==1.17.4
 opencv-python==4.1.2.30
 pandas==0.25.3
 pandocfilters==1.4.2
-parso==0.5.1
+parso==0.5.2
 pickleshare==0.7.5
 pillow==6.2.1
 prometheus-client==0.7.1
