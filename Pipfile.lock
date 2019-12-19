@@ -942,11 +942,11 @@
         },
         "mkdocs-macros-plugin": {
             "hashes": [
-                "sha256:059788bf2c1ad3ec8c5b640a8a75c8e7003d62cfbfdc38b25565a0d67e0eeac7",
-                "sha256:17507071ae8fb4224ab53732087d9a1156a4958c968761cc7c4f064e8de39dca"
+                "sha256:1484838e43a527ebf42850190359ca9f2fd79ec2fe36a6064d90289a9509fa7e",
+                "sha256:ea435a920a58ac9f819ace59fa4efc0887b24ba1cae14e58d3294d1edf80fc0f"
             ],
             "index": "pypi",
-            "version": "==0.3.2"
+            "version": "==0.3.3"
         },
         "mkdocs-material": {
             "hashes": [
