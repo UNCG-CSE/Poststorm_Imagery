@@ -26,7 +26,7 @@ markdown==3.1.1
 markupsafe==1.1.1
 mccabe==0.6.1
 mkdocs-git-revision-date-plugin==0.2
-mkdocs-macros-plugin==0.3.2
+mkdocs-macros-plugin==0.3.3
 mkdocs-material==4.6.0
 mkdocs-minify-plugin==0.2.1
 mkdocs==1.0.4
