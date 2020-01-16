@@ -21,7 +21,7 @@ jinja2==2.10.3
 jsonpickle==1.2
 jsonschema==3.2.0
 jupyter-client==5.3.4
-jupyter-console==6.0.0
+jupyter-console==6.1.0
 jupyter-core==4.6.1
 jupyter==1.0.0
 kiwisolver==1.1.0
