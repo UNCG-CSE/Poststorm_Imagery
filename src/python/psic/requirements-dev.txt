@@ -54,7 +54,7 @@ toml==0.10.0
 tornado==6.0.3
 tox-travis==0.12
 tox==3.14.3
-urllib3==1.25.7
+urllib3==1.25.8
 virtualenv==16.7.9
 wcwidth==0.1.8
 zipp==2.0.0
