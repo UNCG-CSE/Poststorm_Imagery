@@ -302,6 +302,8 @@ function Index(props) {
   const IP=props.ip
   const [value, setValue] = React.useState(0);
 
+  let text_box_text = props.data.textAreaText || ''
+
   const [expanded, setExpanded] = React.useState(false);
 
 
@@ -659,6 +661,7 @@ function Index(props) {
                         id="outlined-dense-multiline"
                         label="Additional Notes"
                         // isSubmitting
+                        //value={text_box_text}
                         rows="5"
                         margin="dense"
                         variant="outlined"
@@ -703,13 +706,9 @@ Index.getInitialProps = async function(props) {
     const axios = require('axios');
     const IP=await serverConfig.getIp()
 
-    let fetchPayload = [
-      {label:"Florence (2018)", value:1}
-      // {label:"Storm Dos",value:420},
-      // {label: "Storm III",value:1337}
-    ]
-
     let options;
+
+    //if we have a user,set it
     if(props.req.user)
     {
       options ={
@@ -717,10 +716,6 @@ Index.getInitialProps = async function(props) {
         user_name:props.req.user.nickname
       }
     }
-    // const options ={
-    //   userId:props.req.user.user_id
-    // }
-
 
     const response = await axios.post(`http://${IP}:3000/api/getImage`,options);
 
@@ -729,10 +724,12 @@ Index.getInitialProps = async function(props) {
     {
       typed_user_id=props.req.user.user_id
     }
+
     const date=new Date()
     return {
       data:{
         time_start_tagging:date.getTime(),
+        textAreaText: '',
         full_image_path:`http://${IP}:3000/api${response.data.full_image_path}`,
         small_image_path:`http://${IP}:3000/api${response.data.small_image_path}`,
         image_id:response.data.image_id,
@@ -742,11 +739,13 @@ Index.getInitialProps = async function(props) {
 
   //catch
   } catch(err) {
-    console.log(' <<< ERROR >>>',err)
+    console.log('<<< ERROR >>>',err)
 
-
+    const date=new Date()
     return {
       data:{
+        time_start_tagging:date.getTime(),
+        textAreaText: '',
         url:undefined
       }
     }
