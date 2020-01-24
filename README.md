@@ -6,8 +6,6 @@ https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
 https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/master)
 [![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=master)](
 https://post-storm-imagery.readthedocs.io/en/latest/?badge=master)
-[![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=master)](
-https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
 
 Classification and analysis of post-storm response imagery.
 
@@ -38,24 +36,11 @@ Make sure you understand our [**Code of Conduct**](https://post-storm-imagery.re
 Before committing to the repository **please** read the project
 [**Code Conventions**](https://post-storm-imagery.readthedocs.io/en/latest/contributing/).
 
-### Beta Branch
-
-[![Travis-CI](https://travis-ci.org/UNCG-CSE/Poststorm_Imagery.svg?branch=beta)](
-https://travis-ci.org/UNCG-CSE/Poststorm_Imagery)
-[![CodeCov](https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta/graph/badge.svg?token=LWncqYANtK)](
-https://codecov.io/gh/UNCG-CSE/Poststorm_Imagery/branch/beta)
-[![ReadTheDocs](https://readthedocs.org/projects/post-storm-imagery/badge/?version=beta)](
-https://post-storm-imagery.readthedocs.io/en/latest/?badge=beta)
-[![PyUp](https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/shield.svg?branch=beta)](
-https://pyup.io/repos/github/UNCG-CSE/Poststorm_Imagery/)
-
-Beta branch is the main place to submit new code.
-
 ## Getting the Project Running 🏃‍
 
 ### Project Pre-Requisites
 
-1. Python 3.6 or 3.7 [**(Download Here)**](https://www.python.org/downloads/)
+1. Python 3.6, 3.7, or 3.8 [**(Download Here)**](https://www.python.org/downloads/)
 2. Pipenv **(Run `pip install pipenv`)**
 3. You will need to add the folder containing the `psic` module (`src/python` by default) to your `PYTHONPATH`
    (See [**Configuring Module**](https://post-storm-imagery.readthedocs.io/en/latest/configure_python_path/))

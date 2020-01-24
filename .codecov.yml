@@ -8,14 +8,18 @@ ignore:
   - '**/psic/setup.py'
 
   # Test files
-  - '**/psic/tests'
+  - '**/tests'
 
   # Misc statistics files
   - '**/psic/stats'
 
+  # Modeling files
+  - '**/psic/classify'
+
   # Command-line runners
   - '**/psic/assigner/assign.py'
   - '**/psic/cataloging/catalog.py'
+  - '**/psic/cataloging/stack.py'
   - '**/psic/collector/collect.py'
   - '**/psic/resizer/resize.py'
 
@@ -28,6 +32,3 @@ coverage:
       default:
         # basic
         target: 75%
-        # advanced
-        only_pulls: true
-    patch: off

@@ -5,7 +5,7 @@ import os
 from typing import Union, Set
 
 from psic import s
-from psic.cataloging.generate import Cataloging
+from psic.cataloging.make_catalog import Cataloging
 
 DATA_PATH: Union[bytes, str] = os.path.abspath(s.DATA_PATH)
 ARCHIVE_CACHE_PATH: Union[bytes, str] = os.path.join(DATA_PATH, s.ARCHIVE_CACHE)
