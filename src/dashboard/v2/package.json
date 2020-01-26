@@ -9,7 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.28",
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "latest",
-    "axios": "^0.19.1",
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
     "clsx": "latest",
