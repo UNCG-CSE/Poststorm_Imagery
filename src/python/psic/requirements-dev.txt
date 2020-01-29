@@ -35,7 +35,7 @@ nodeenv==1.3.4
 packaging==20.1
 pep562==1.0
 pluggy==0.13.1
-pre-commit==1.21.0
+pre-commit==2.0.0
 py==1.8.1
 pycodestyle==2.5.0
 pyflakes==2.1.1
