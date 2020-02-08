@@ -14,7 +14,7 @@ entrypoints==0.3
 filelock==3.0.12
 flake8==3.7.9
 gitdb2==2.0.6
-gitpython==3.0.5
+gitpython==3.0.7
 htmlmin==0.1.12
 identify==1.4.11
 idna==2.8
