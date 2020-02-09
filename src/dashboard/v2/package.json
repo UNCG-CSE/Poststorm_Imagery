@@ -36,7 +36,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
     "styled-components": "^5.0.0",
-    "typescript": "^3.7.3",
+    "typescript": "^3.7.5",
     "uid-safe": "^2.1.5",
     "yup": "^0.28.1"
   },
