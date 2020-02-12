@@ -969,11 +969,11 @@
         },
         "mkdocs-minify-plugin": {
             "hashes": [
-                "sha256:181ec20a78be6aeb9e9e2477784f0e778011b10dd00d1398d0a2dd5019d5f5d0",
-                "sha256:27b68dfa54fa6ac6c91b2f2ec2bdeaf54ccf2ad8d6433d88a4a9a05029d91388"
+                "sha256:12fc10173f1e13470e8ac66564dd43a33326b911c9d5c4bf92be62fe06ff19f4",
+                "sha256:14cdee6dd71b149a47e8d8dc3630e8c1c3bc8ada3ba159bea9990bf382651e2c"
             ],
             "index": "pypi",
-            "version": "==0.2.2"
+            "version": "==0.2.3"
         },
         "more-itertools": {
             "hashes": [
@@ -1177,10 +1177,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:7e4e234e1f27755685dc54063d989756790b0682d60e304db589fa1604938013",
-                "sha256:e0099edd03c77e14a8ac9be62e45af28759984075d9409bb2c3a4edeb7420a23"
+                "sha256:526484e29a9a12f0680d251331e7841b36f1e2b918935377f173f764b1b8be89",
+                "sha256:ec376274f5abb6da25e0ef81d082d2884cda8fd924e1ff73b4c2bb5416d48c87"
             ],
-            "version": "==20.0.2"
+            "version": "==20.0.3"
         },
         "wcwidth": {
             "hashes": [
