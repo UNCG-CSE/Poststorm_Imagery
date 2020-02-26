@@ -55,6 +55,6 @@ tornado==6.0.3
 tox-travis==0.12
 tox==3.14.5
 urllib3==1.25.8
-virtualenv==20.0.5
+virtualenv==20.0.6
 wcwidth==0.1.8
 zipp==3.0.0
