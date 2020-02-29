@@ -6,7 +6,7 @@ certifi==2019.11.28
 chardet==3.0.4
 colorama==0.4.3 ; sys_platform == 'win32'
 cycler==0.10.0
-decorator==4.4.1
+decorator==4.4.2
 defusedxml==0.6.0
 entrypoints==0.3
 idna==2.9
