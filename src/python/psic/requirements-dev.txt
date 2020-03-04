@@ -51,7 +51,7 @@ requests==2.23.0
 six==1.14.0
 smmap2==3.0.1
 toml==0.10.0
-tornado==6.0.3
+tornado==6.0.4
 tox-travis==0.12
 tox==3.14.5
 urllib3==1.25.8
