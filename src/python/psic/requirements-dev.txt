@@ -39,7 +39,7 @@ pre-commit==2.1.1
 py==1.8.1
 pycodestyle==2.5.0
 pyflakes==2.1.1
-pygments==2.5.2
+pygments==2.6.1
 pymdown-extensions==6.3
 pyparsing==2.4.6
 pytest-cov==2.8.1
