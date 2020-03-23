@@ -25,7 +25,7 @@ livereload==2.6.1
 markdown==3.2.1
 markupsafe==1.1.1
 mccabe==0.6.1
-mkdocs-git-revision-date-plugin==0.2
+mkdocs-git-revision-date-plugin==0.3
 mkdocs-macros-plugin==0.4.4
 mkdocs-material==4.6.3
 mkdocs-minify-plugin==0.2.3
