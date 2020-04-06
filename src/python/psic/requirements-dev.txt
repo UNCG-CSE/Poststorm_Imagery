@@ -41,7 +41,7 @@ pycodestyle==2.5.0
 pyflakes==2.1.1
 pygments==2.6.1
 pymdown-extensions==6.3
-pyparsing==2.4.6
+pyparsing==2.4.7
 pytest-cov==2.8.1
 pytest-runner==5.2
 pytest==5.4.1
