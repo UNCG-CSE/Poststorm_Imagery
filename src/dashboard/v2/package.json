@@ -16,7 +16,7 @@
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.7.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.0",
+    "express-session": "^1.17.1",
     "formik": "^2.1.4",
     "fs": "0.0.1-security",
     "isomorphic-fetch": "^2.2.1",
