@@ -39,7 +39,7 @@ pandocfilters==1.4.2
 parso==0.6.2
 pickleshare==0.7.5
 pillow==7.0.0
-prometheus-client==0.7.1
+prometheus-client==0.8.0
 prompt-toolkit==3.0.4
 pygments==2.6.1
 pyparsing==2.4.6
